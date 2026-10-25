@@ -4904,11 +4904,12 @@ or a lever might only move through part of its travel, say from 5000 to 60000. T
 control never reaches its ends either. To fix it, you tell the class your own range — the reading
 at the bottom and the reading at the top — and it stretches <em>that</em> across the cockpit control
 instead:</p>
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="w"> </span><span class="nf">volume</span><span class="p">(</span><span class="n">DCSIN_ARC51_VOL</span><span class="p">,</span><span class="w"> </span><span class="n">VOLUME_KNOB_PIN</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="mi">60000</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="w"> </span><span class="nf">volume</span><span class="p">(</span><span class="n">DCSIN_ARC51_VOL</span><span class="p">,</span><span class="w"> </span><span class="n">VOLUME_KNOB_PIN</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">minRaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">maxRaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60000</span><span class="w"> </span><span class="p">});</span>
 </code></pre></div>
-<p>The three new numbers are, in order: whether to reverse the knob (<code>false</code> here), the bottom of
-your range, and the top. Anything below the bottom counts as the bottom, and anything above the
-top counts as the top, so the cockpit control always reaches both ends.</p>
+<p>Settings go in braces after the pin, each by its name, and you only write the ones you change —
+here the bottom of your range (<code>minRaw</code>) and the top (<code>maxRaw</code>). Anything below the bottom counts
+as the bottom, and anything above the top counts as the top, so the cockpit control always reaches
+both ends.</p>
 <p>To find your two numbers, turn on the
 <a href="../../../../firmware/debugging/#diagserial-the-debug-stream">debug stream</a> with the plain
 two-part line from the top of this page. Each time the knob moves, you'll see a line like
@@ -4917,19 +4918,19 @@ one, and put them in as the bottom and top. Then
 <a href="../../#the-debug-stream">turn the debug stream off again</a>.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p><strong>The cockpit knob turns the opposite way to mine.</strong>
-The outer legs are the other way round. Rather than rewiring them, add <code>true</code> after the pin
-address and the board will flip it for you:</p>
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="w"> </span><span class="nf">volume</span><span class="p">(</span><span class="n">DCSIN_ARC51_VOL</span><span class="p">,</span><span class="w"> </span><span class="n">VOLUME_KNOB_PIN</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+The outer legs are the other way round. Rather than rewiring them, add <code>{ .reverse = true }</code> after
+the pin address and the board will flip it for you:</p>
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="w"> </span><span class="nf">volume</span><span class="p">(</span><span class="n">DCSIN_ARC51_VOL</span><span class="p">,</span><span class="w"> </span><span class="n">VOLUME_KNOB_PIN</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">reverse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="p">});</span>
 </code></pre></div>
 <p><strong>The cockpit knob doesn't quite reach the end of its travel.</strong>
 Your knob doesn't use the whole range. Measure its two ends and set them, as described in
 <a href="#setting-the-range">Setting the range</a>.</p>
 <p><strong>The cockpit knob twitches when nobody's touching it, or DCS falls behind when I turn it
 quickly.</strong>
-The board is sending more changes than it needs to. Make the dead zone bigger by adding a fourth
-number after the bottom and top. At 1024, the knob sends about 64 steps across its whole turn,
-which is plenty for a volume or brightness knob:</p>
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="w"> </span><span class="nf">volume</span><span class="p">(</span><span class="n">DCSIN_ARC51_VOL</span><span class="p">,</span><span class="w"> </span><span class="n">VOLUME_KNOB_PIN</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">65535</span><span class="p">,</span><span class="w"> </span><span class="mi">1024</span><span class="p">);</span>
+The board is sending more changes than it needs to. A cockpit knob already has a dead zone of
+1024, about 64 steps across its whole turn. Make it bigger with the <code>hysteresis</code> setting — at 2048
+the knob sends about 32 steps, still plenty for a volume or brightness knob:</p>
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="w"> </span><span class="nf">volume</span><span class="p">(</span><span class="n">DCSIN_ARC51_VOL</span><span class="p">,</span><span class="w"> </span><span class="n">VOLUME_KNOB_PIN</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">hysteresis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2048</span><span class="w"> </span><span class="p">});</span>
 </code></pre></div>
 <p><strong>The cockpit knob doesn't move at all.</strong>
 Check that the middle leg is on the pin, not one of the outer legs, and that the pin is one of
@@ -4938,8 +4939,10 @@ the analog pins listed above.</p>
 <summary>Going further</summary>
 <p>No reading is perfectly steady: electrical noise makes the number wobble by a few steps even
 when nobody touches the knob. If the board passed on every wobble, it would bury DCS in tiny,
-pointless changes, so by default the dead zone is 128 steps (about 1/500 of a full turn).
-This dead zone is called <em>hysteresis</em>.</p>
+pointless changes, so there's a dead zone, called <em>hysteresis</em>. Its default depends on where the
+knob goes: 1024 steps (about 1/64 of a turn) for a cockpit control, so a quick turn doesn't
+flood DCS, and 128 steps (about 1/500) for a joystick axis, which wants the finer detail.
+Setting <code>hysteresis</code> yourself always overrides the default.</p>
 <p>On top of the dead zone, the board smooths the readings by averaging each one with the ones
 before it. It catches up with a fast turn in a fraction of a second, which is quick enough
 that you won't notice, and it's why the dead zone can stay so small.</p>
@@ -4947,9 +4950,9 @@ that you won't notice, and it's why the dead zone can stay so small.</p>
 position. So if you turned a knob while DCS wasn't running, the sim catches up as soon as it
 connects.</p>
 <p>A flight-control axis, such as a stick, wants a finer dead zone and a faster reading than a
-cockpit knob. The class takes two more settings after the dead zone, the smoothing strength
-and how often it reads, and a stick axis that's been tested on real hardware uses
-<code>OpenSkyhawk::AnalogInput roll(CTRL_ROLL, ROLL_PIN, false, 0, 65535, 32, 4, 2);</code>. Those
+cockpit knob. Two more settings cover that, the smoothing strength (<code>ewmaShift</code>) and how often
+it reads (<code>pollMs</code>, in milliseconds), and a stick axis that's been tested on real hardware uses
+<code>OpenSkyhawk::AnalogInput roll(CTRL_ROLL, ROLL_PIN, { .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 });</code>. Those
 settings rely on a 1 kΩ resistor and 100 nF capacitor filter at the board end of the wire,
 and on the debug stream being off. Only use them for a joystick axis, because a cockpit knob read that fast
 would crowd out every other control on the way to DCS.</p>

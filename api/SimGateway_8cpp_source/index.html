@@ -4663,6 +4663,7 @@
 <div class="highlight"><pre><span></span><code><span class="cp">#ifdef ARDUINO_ARCH_RP2040</span>
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"SimGateway.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;FirmwareVersion.h&gt;</span><span class="w">  </span><span class="c1">// OPENSKYHAWK_FW_* — the release version HELLO_ACK reports</span>
 
 <span class="c1">// ── TinyUSB HID backend (production builds only) ──────────────────────────────</span>
 <span class="c1">//</span>
@@ -5101,7 +5102,7 @@
 <span class="w">        </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_PROTO_VERSION</span><span class="p">,</span>
 <span class="w">        </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_VERSION</span><span class="p">,</span>
 <span class="w">        </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AXIS_CAL_SLOTS</span><span class="p">,</span>
-<span class="w">        </span><span class="n">SIMGATEWAY_FW_MAJOR</span><span class="p">,</span><span class="w"> </span><span class="n">SIMGATEWAY_FW_MINOR</span><span class="p">,</span><span class="w"> </span><span class="n">SIMGATEWAY_FW_PATCH</span><span class="p">,</span>
+<span class="w">        </span><span class="n">OPENSKYHAWK_FW_MAJOR</span><span class="p">,</span><span class="w"> </span><span class="n">OPENSKYHAWK_FW_MINOR</span><span class="p">,</span><span class="w"> </span><span class="n">OPENSKYHAWK_FW_PATCH</span><span class="p">,</span>
 <span class="w">    </span><span class="p">};</span>
 <span class="w">    </span><span class="n">_calSend</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_T_HELLO_ACK</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>
 <span class="p">}</span>
@@ -5142,9 +5143,10 @@
 <span class="w">    </span><span class="n">_calSend</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_T_CAL_DATA</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>
 <span class="p">}</span>
 
-<span class="c1">// Fixed 47 bytes in CalDiagField order — the client reads it with one typed view (#355).</span>
+<span class="c1">// Fixed CAL_DIAG_BYTES in CalDiagField order — the client reads it with one typed view (#355).</span>
+<span class="c1">// Zero-initialised, so the reserved tail goes out as 0 (#295).</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">_calSendDiag</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">seq</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_BYTES</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_BYTES</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
 <span class="w">    </span><span class="n">_put32</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_UPTIME_MS</span><span class="p">,</span><span class="w">         </span><span class="n">millis</span><span class="p">());</span>
 <span class="w">    </span><span class="n">_put32</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_FIRST_UART_ERR_MS</span><span class="p">,</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">firstUartErrMs</span><span class="p">);</span>
 <span class="w">    </span><span class="n">_put32</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_LAST_UART_ERR_MS</span><span class="p">,</span><span class="w">  </span><span class="n">_diag</span><span class="p">.</span><span class="n">lastUartErrMs</span><span class="p">);</span>
@@ -5167,7 +5169,7 @@
 <span class="w">    </span><span class="n">p</span><span class="p">[</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_RESET_REASON</span><span class="p">]</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">resetReason</span><span class="p">;</span>
 <span class="w">    </span><span class="n">_calSend</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_T_DIAG</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>
 <span class="p">}</span>
-<span class="k">static_assert</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_RESET_REASON</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_BYTES</span><span class="p">,</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_RESET_REASON</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DIAG_RESERVED</span><span class="p">,</span>
 <span class="w">              </span><span class="s">"CalDiagField grew: extend _calSendDiag to fill it"</span><span class="p">);</span>
 
 <span class="c1">// Write a candidate blob to flash and, only if that succeeds, make it the live calibration.</span>

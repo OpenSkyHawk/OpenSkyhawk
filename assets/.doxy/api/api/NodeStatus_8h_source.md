@@ -15,15 +15,20 @@
 // ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────
 // PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump
 // NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.
-// Full 28-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
-#define NODE_STATUS_PROTO_VERSION 3
-#define NODE_STATUS_REQ_ADDR      0x86FE     // host→device roster-request export address
+// Full 34-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
+#define NODE_STATUS_PROTO_VERSION 4
+// Host→device roster-request export address (#295, v4). No DCS-BIOS module exports here: every
+// aircraft ends by 0xB2FB and MetadataEnd is 0xFFFE (checked against DCS-BIOS v0.11.8). The old
+// 0x86FE is a live address for the AH-64D and the Mirage F1, so flying either answered every
+// export of that control with a roster burst. The A4EC refresh warns if a new DCS-BIOS release ever
+// puts an aircraft here (tools/gen_a4ec, --modules-dir).
+#define NODE_STATUS_REQ_ADDR      0xFF00
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
 
 constexpr uint8_t GATEWAY_NODE_ID = 0;
 
-constexpr uint8_t NODE_STATUS_ROW_BYTES = 14;
+constexpr uint8_t NODE_STATUS_ROW_BYTES = 17;
 
 enum class NodeStatusField : uint8_t {
     ID           = 0,   // u8: node ID; GATEWAY_NODE_ID = the bridge's own row, 1-63 = CAN nodes
@@ -37,6 +42,9 @@ enum class NodeStatusField : uint8_t {
     FAULT_MASK   = 11,  // u8: reserved, 00
     FAULT_ID     = 12,  // u8: NodeFaultCode
     NODE_KIND    = 13,  // u8: NodeKind
+    FW_MAJOR     = 14,  // u8: firmware release version from the node's READY_n; 00 00 00 = not reported
+    FW_MINOR     = 15,  // u8
+    FW_PATCH     = 16,  // u8
 };
 
 // ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────

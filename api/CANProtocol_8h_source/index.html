@@ -4702,6 +4702,14 @@
 <span class="p">};</span>
 <span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">TelemPayload</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s">"TelemPayload must fill one classic CAN frame"</span><span class="p">);</span>
 
+<span class="k">struct</span><span class="w"> </span><span class="nc">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">ReadyPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">fwMajor</span><span class="p">;</span><span class="w">  </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">fwMinor</span><span class="p">;</span><span class="w">  </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">fwPatch</span><span class="p">;</span><span class="w">  </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rsvd</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span><span class="w">  </span>
+<span class="p">};</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">ReadyPayload</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s">"ReadyPayload must fill one classic CAN frame"</span><span class="p">);</span>
+
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CanStatus</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">STARTING</span><span class="p">,</span><span class="w">   </span>
 <span class="w">    </span><span class="n">NORMAL</span><span class="p">,</span><span class="w">     </span>
@@ -4735,6 +4743,10 @@
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">canIdReady</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mh">0x400</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
+<span class="c1">// Reserved, not yet assigned (#295): 0x740-0x7BF for a future boot/update frame family —</span>
+<span class="c1">// BOOT_CMD_n = 0x740+n (bridge → node n), BOOT_RSP_n = 0x780+n (node n → bridge). The lowest</span>
+<span class="c1">// priority on the bus, so update traffic never delays a control. Don't allocate it to anything else.</span>
+
 <span class="c1">// ── controlId namespace ───────────────────────────────────────────────────────</span>
 <span class="c1">// Payload controlIds live inside ControlPacket data bytes. They are intentionally</span>
 <span class="c1">// separate from the 11-bit CAN arbitration IDs above.</span>
@@ -4762,6 +4774,11 @@
 <span class="k">using</span><span class="w"> </span><span class="n">CanSyncReqCallback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)();</span>
 
 <span class="c1">// ── Runtime API (STM32 only) ──────────────────────────────────────────────────</span>
+<span class="c1">//</span>
+<span class="c1">// Library-internal: the node libraries (PanelGroup, PanelBridge, PduNode) drive the bus through</span>
+<span class="c1">// these, not sketches. Not covered by the compatibility policy (#295) — except sendBatched(), which</span>
+<span class="c1">// a custom control class uses to send its value (with ControlPacket and the canIdEvt* functions</span>
+<span class="c1">// above, which are covered with the wire format).</span>
 
 <span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
@@ -4809,6 +4826,10 @@
 
 <span class="w">    </span><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="nf">makeNodeHealthPayload</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="n">NodeKind</span><span class="w"> </span><span class="n">kind</span><span class="p">,</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">dieTempC</span><span class="p">,</span>
 <span class="w">                                            </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">fault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="o">::</span><span class="n">NONE</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">ReadyPayload</span><span class="w"> </span><span class="nf">makeReadyPayload</span><span class="p">();</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">sendReady</span><span class="p">();</span>
 
 <span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">txDropCount</span><span class="p">();</span>
 

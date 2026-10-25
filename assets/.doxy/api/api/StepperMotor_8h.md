@@ -104,13 +104,6 @@ Homing: HomeMode::STALL drives into a mechanical end-stop (no sensor); HomeMode:
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

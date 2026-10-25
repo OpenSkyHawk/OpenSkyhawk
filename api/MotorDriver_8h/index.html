@@ -4739,8 +4739,6 @@
 <p>A MotorDriver moves a physical actuator (gauge stepper, geared stepper, RC servo) toward a commanded position without blocking the loop. It owns the low-level drive (coil energising / PWM), homing, and per-step timing; it knows nothing about DCS-BIOS. High-level controls — NeedleGauge (value → angle), and later a motorised DrumDisplay or trim indicator — <em>compose</em> a MotorDriver and drive it, so no stepper/servo code is duplicated across controls.</p>
 <p>A MotorDriver is NOT an OutputBase: it is owned and ticked (update()) by whatever control uses it, not registered on <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s output list directly.</p>
 <p>Concrete drivers: StepperMotor (now); ServoMotor / StepDirMotor (future siblings).</p>
-<p><strong>Version:</strong></p>
-<p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />

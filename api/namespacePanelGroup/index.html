@@ -5023,7 +5023,7 @@
 * <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a>.
 * forceReport() burst — one EVT per registered input.
 * flushBatched(canIdEvt(NODE_ID)).
-* READY_n frame (canIdReady(NODE_ID), DLC=0). (Heartbeat/HEALTH timers arm on the first <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a> call in <a href="./#function-loop"><strong>loop()</strong></a>.)</p>
+* READY_n frame (<a href="../namespaceCANProtocol/#function-sendready"><strong>CANProtocol::sendReady()</strong></a>: the firmware version, #295). (Heartbeat/HEALTH timers arm on the first <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a> call in <a href="./#function-loop"><strong>loop()</strong></a>.)</p>
 <p><strong>Note:</strong></p>
 <p>Wire.begin() must be called by the sketch before this function. <a href="./"><strong>PanelGroup</strong></a> never calls Wire.begin() — only start buses in use. </p>
 <hr>

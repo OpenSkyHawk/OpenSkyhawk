@@ -12,9 +12,11 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk.md) _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._    
     * **struct** [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) _One point on the acceleration curve (SwitecX25 form)._     
     * **class** [**ActionButton**](classOpenSkyhawk_1_1ActionButton.md) _Momentary push button driving a control that latches in the sim. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
+    * **struct** [**AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md) _Tuning for an_ [_**AnalogInput**_](classOpenSkyhawk_1_1AnalogInput.md) _. Every field has a default, so a sketch sets only what differs, by name:_`{ .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 }` _(#295)._    
     * **class** [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md) _Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) _Resistor-ladder multi-position selector — one analog_ `PinRef` _, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch)._    
     * **class** [**AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md) _Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16)._     
+    * **struct** [**AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md) _Tuning for an_ [_**AngleSensorInput**_](classOpenSkyhawk_1_1AngleSensorInput.md) _— the_[_**AnalogConfig**_](structOpenSkyhawk_1_1AnalogConfig.md) _fields that still mean something once the raw window comes from the centre and travel (#295). Set by name:_`{ .hysteresis = 512 }` _. Fields are only ever appended, each with a default._    
     * **class** [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md) _Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis._     
     * **struct** [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) _Captured endpoints for one axis, unsigned 0–65535 throughout._     
     * **class** [**BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md)     
@@ -57,9 +59,10 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md) _Three-position switch (ON-OFF-ON / spring-centred) on two pins. Emits 0 / 1 / 2 over CAN (MULTIPOS dispatch)._     
     * **class** [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md) _Multi-position rotary selector — N discrete pins, exactly one active at a time. Emits the active position index 0..N-1 over CAN (MULTIPOS dispatch)._     
     * **class** [**SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md) _Guarded switch — the DcsBios::SwitchWithCover2Pos equivalent. One physical switch pin drives two sim controls: the guard cover and the switch it protects._     
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d14.md) 
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d27.md) 
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d72.md)     
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d15.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d24.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d28.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d73.md)     
 * **struct** [**IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md)     
 * **namespace** [**PanelBridge**](namespacePanelBridge.md)     
 * **namespace** [**PanelGroup**](namespacePanelGroup.md) _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._    
@@ -70,9 +73,9 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
 * **struct** [**GatewayDiag**](structSimGateway_1_1GatewayDiag.md) _Link-health counters and event times (#355). Reported to the host as_ `DIAG` _._    
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d10.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d53.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d55.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d64.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d11.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d54.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d56.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d65.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d75.md)     
 

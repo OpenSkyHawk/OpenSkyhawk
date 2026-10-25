@@ -54,16 +54,6 @@ Inherits the following classes: [OpenSkyhawk::AnalogInput](classOpenSkyhawk_1_1A
 |  constexpr float | [**COUNTS\_PER\_DEG**](#variable-counts_per_deg)   = `65536.0f / 360.0f`<br>_Counts per degree: a full turn spans the 16-bit range (65536 / 360)._  |
 
 
-## Public Static Attributes inherited from OpenSkyhawk::AnalogInput
-
-See [OpenSkyhawk::AnalogInput](classOpenSkyhawk_1_1AnalogInput.md)
-
-| Type | Name |
-| ---: | :--- |
-|  constexpr uint8\_t | [**DEFAULT\_EWMA\_SHIFT**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_ewma_shift)   = `3`<br>_EWMA α = 1/2^3 = 1/8._  |
-|  constexpr uint16\_t | [**DEFAULT\_HYSTERESIS**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_hysteresis)   = `128`<br>_counts on the 16-bit output._  |
-|  constexpr uint16\_t | [**DEFAULT\_POLL\_MS**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_poll_ms)   = `8`<br>_default min interval between ADC reads (ms)._  |
-|  constexpr uint8\_t | [**MAX\_EWMA\_SHIFT**](classOpenSkyhawk_1_1AnalogInput.md#variable-max_ewma_shift)   = `15`<br>_cap: scaled&lt;&lt;shift must fit int32 at full scale._  |
 
 
 
@@ -108,7 +98,7 @@ See [OpenSkyhawk::AnalogInput](classOpenSkyhawk_1_1AnalogInput.md)
 
 | Type | Name |
 | ---: | :--- |
-|   | [**AngleSensorInput**](#function-anglesensorinput) (uint16\_t controlId, [**PinRef**](classPinRef.md) pin, float centerDeg, float travelDeg, uint16\_t pollMs=[**DEFAULT\_POLL\_MS**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_poll_ms)) <br>_Construct an absolute angle input._  |
+|   | [**AngleSensorInput**](#function-anglesensorinput) (uint16\_t controlId, [**PinRef**](classPinRef.md) pin, float centerDeg, float travelDeg, const [**AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md) & cfg={}) <br>_Construct an absolute angle input._  |
 
 
 ## Public Functions inherited from OpenSkyhawk::AnalogInput
@@ -117,7 +107,7 @@ See [OpenSkyhawk::AnalogInput](classOpenSkyhawk_1_1AnalogInput.md)
 
 | Type | Name |
 | ---: | :--- |
-|   | [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md#function-analoginput) (uint16\_t controlId, [**PinRef**](classPinRef.md) pin, bool reverse=false, uint16\_t minRaw=0, uint16\_t maxRaw=65535, uint16\_t hysteresis=[**DEFAULT\_HYSTERESIS**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_hysteresis), uint8\_t ewmaShift=[**DEFAULT\_EWMA\_SHIFT**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_ewma_shift), uint16\_t pollMs=[**DEFAULT\_POLL\_MS**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_poll_ms)) <br>_Construct a continuous analog input._  |
+|   | [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md#function-analoginput) (uint16\_t controlId, [**PinRef**](classPinRef.md) pin, const [**AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md) & cfg={}) <br>_Construct a continuous analog input._  |
 | virtual void | [**configure**](classOpenSkyhawk_1_1AnalogInput.md#function-configure) () override<br>_Configure the pin as an input. Called by_ [_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _._ |
 | virtual void | [**forceReport**](classOpenSkyhawk_1_1AnalogInput.md#function-forcereport) () override<br>_Sample fresh (bypassing the throttle) and emit the current value as the baseline._  |
 | virtual void | [**poll**](classOpenSkyhawk_1_1AnalogInput.md#function-poll) () override<br>_Throttled ADC read + EWMA; emit when the value clears the hysteresis or a rail._  |
@@ -289,7 +279,7 @@ OpenSkyhawk::AngleSensorInput::AngleSensorInput (
     PinRef pin,
     float centerDeg,
     float travelDeg,
-    uint16_t pollMs=DEFAULT_POLL_MS
+    const AngleConfig & cfg={}
 ) 
 ```
 
@@ -304,7 +294,7 @@ OpenSkyhawk::AngleSensorInput::AngleSensorInput (
 * `pin` analog [**PinRef**](classPinRef.md) for the sensor's output (STM32 ADC pin or [**ADS1115**](classADS1115.md) channel). 
 * `centerDeg` sensor angle at the knob's centre position. Wraps, so 370 == 10. 
 * `travelDeg` total mechanical travel, centred on centerDeg: the knob spans centerDeg ± travelDeg/2. Clamped to (0, 360) — up to just under a full turn, because the ends of a full turn are one sensor angle. The wrap point sits opposite centerDeg, so the closer travel comes to 360° the nearer that break sits to the ends of travel. 
-* `pollMs` min interval between ADC reads, ms (default DEFAULT\_POLL\_MS). Per instance; an [**ADS1115**](classADS1115.md) [**PinRef**](classPinRef.md) blocks ~8 ms per conversion regardless. 
+* `cfg` tuning — hysteresis, smoothing, poll rate; set only what differs. 
 
 
 

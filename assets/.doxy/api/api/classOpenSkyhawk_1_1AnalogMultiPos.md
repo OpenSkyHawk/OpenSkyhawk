@@ -51,7 +51,8 @@ Inherits the following classes: [OpenSkyhawk::MultiPosInput](classOpenSkyhawk_1_
 
 | Type | Name |
 | ---: | :--- |
-|  constexpr uint16\_t | [**DEFAULT\_DEADBAND**](#variable-default_deadband)   = `1000`<br>_counts trimmed from each band edge_  |
+|  constexpr uint16\_t | [**DEFAULT\_DEADBAND**](#variable-default_deadband)   = `1000`<br> |
+|  constexpr uint16\_t | [**NO\_DEADBAND**](#variable-no_deadband)   = `0`<br> |
 |  constexpr uint16\_t | [**POLL\_MS**](#variable-poll_ms)   = `8`<br>_min interval between ADC reads (ms)_  |
 
 
@@ -276,13 +277,33 @@ The base debounce window is 0: the deadband gaps provide the filtering, not a ti
 
 ### variable DEFAULT\_DEADBAND 
 
-_counts trimmed from each band edge_ 
 ```C++
 constexpr uint16_t OpenSkyhawk::AnalogMultiPos::DEFAULT_DEADBAND;
 ```
 
 
 
+counts trimmed from each band edge 
+
+
+        
+
+<hr>
+
+
+
+### variable NO\_DEADBAND 
+
+```C++
+constexpr uint16_t OpenSkyhawk::AnalogMultiPos::NO_DEADBAND;
+```
+
+
+
+No deadband — bands meet edge to edge. Pass this, not a literal `0`: a literal `0` is also a null `posVals` pointer, so `AnalogMultiPos(id, pin, n, 0)` is ambiguous and doesn't compile. 
+
+
+        
 
 <hr>
 
@@ -328,7 +349,7 @@ OpenSkyhawk::AnalogMultiPos::AnalogMultiPos (
 * `pin` analog [**PinRef**](classPinRef.md) (STM32 ADC GPIO or [**ADS1115**](classADS1115.md) channel). 
 * `numPos` N — number of positions (valid indices 0..N-1). 
 * `posVals` caller-owned array of N expected 16-bit ADC values, one per position. Must outlive this object. Use ANALOG\_NC for a position with no detent. 
-* `deadband` counts trimmed from each band edge for hysteresis (default 1000). 
+* `deadband` counts trimmed from each band edge for hysteresis (default 1000; NO\_DEADBAND for none). 
 
 
 
@@ -361,7 +382,7 @@ OpenSkyhawk::AnalogMultiPos::AnalogMultiPos (
 * `controlId` DCSIN\_\* or CTRL\_\* constant. 
 * `pin` analog [**PinRef**](classPinRef.md). 
 * `numPos` N — number of positions. 
-* `deadband` counts trimmed from each band edge (default 1000). 
+* `deadband` counts trimmed from each band edge (default 1000; NO\_DEADBAND for none). 
 
 
 

@@ -130,13 +130,6 @@ void loop() { PanelGroup::loop(); }
 
 
 
-**Version:**
-
-0.3.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

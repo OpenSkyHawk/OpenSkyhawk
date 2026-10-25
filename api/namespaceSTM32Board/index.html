@@ -4981,7 +4981,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-tick"><strong>tick</strong></a> () <br><em>Drive LED animations. Call once per loop() iteration.</em></td>
+<td style="text-align: left;"><a href="#function-tick"><strong>tick</strong></a> () <br><em>Drive LED animations. Called once per loop() iteration by the node library.</em></td>
 </tr>
 </tbody>
 </table>
@@ -5020,6 +5020,8 @@
 <div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">clockFault</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
 <p>When set, the CAN bit timing (tuned for 36 MHz APB1) is wrong for the actual clock, so callers MUST NOT drive the bus — a faulted node transmitting at the wrong rate corrupts every other frame. <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a> consults this and comes up in listen-only (silent) mode instead. Latched once at boot; read-only. </p>
+<p><strong>Note:</strong></p>
+<p>Library-internal: read by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> for node health. Not sketch API — not covered by the compatibility policy (#295). </p>
 <hr>
 
 <h3 id="function-diagserial">function diagSerial</h3>
@@ -5066,6 +5068,8 @@
 <li><code>fault</code> The node's current aggregated NodeFaultCode (from <a href="../namespaceOpenSkyhawk/#function-aggregatefaults"><strong>OpenSkyhawk::aggregateFaults()</strong></a>). </li>
 <li><code>detail</code> That fault's faultDetail() (non-null; ignored when fault == NONE). </li>
 </ul>
+<p><strong>Note:</strong></p>
+<p>Library-internal: used by the node-status service. Not sketch API — not covered by the compatibility policy (#295). </p>
 <hr>
 
 <h3 id="function-oncanstatus">function onCanStatus</h3>
@@ -5090,6 +5094,8 @@
 <p>UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend / overheat flagging, not precise ambient measurement. </p>
 <p><strong>Returns:</strong></p>
 <p>Die temperature in whole °C, or DIE_TEMP_UNAVAILABLE (<a href="../NodeStatus_8h/"><strong>NodeStatus.h</strong></a>) if the internal channels are unavailable on this variant. </p>
+<p><strong>Note:</strong></p>
+<p>Library-internal: read by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> for HEALTH_n. Not sketch API — not covered by the compatibility policy (#295). </p>
 <hr>
 
 <h3 id="function-readvddmv">function readVddMv</h3>
@@ -5100,6 +5106,8 @@
 <p>Uses the STM32F103 typical Vrefint of 1.20 V (the F103 has no VREFINT_CAL factory value), so absolute accuracy is limited; good for relative trend. </p>
 <p><strong>Returns:</strong></p>
 <p>Vdd in millivolts, or 0 if the internal reference is unavailable. </p>
+<p><strong>Note:</strong></p>
+<p>Library-internal: a diagnostic for the node libraries. Not sketch API — not covered by the compatibility policy (#295). </p>
 <hr>
 
 <h3 id="function-setdebug">function setDebug</h3>
@@ -5126,6 +5134,8 @@
 <ul>
 <li><code>active</code> True to (re)assert the data-flowing link; false to drop it immediately. </li>
 </ul>
+<p><strong>Note:</strong></p>
+<p>Library-internal: driven by <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>. Not sketch API — not covered by the compatibility policy (#295). </p>
 <hr>
 
 <h3 id="function-setwarning">function setWarning</h3>
@@ -5139,13 +5149,17 @@
 <ul>
 <li><code>on</code> True to raise WARNING (default); false to clear it. </li>
 </ul>
+<p><strong>Note:</strong></p>
+<p>Library-internal: raised by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>. Not sketch API — not covered by the compatibility policy (#295). </p>
 <hr>
 
 <h3 id="function-tick">function tick</h3>
-<p><em>Drive LED animations. Call once per loop() iteration.</em> 
+<p><em>Drive LED animations. Called once per loop() iteration by the node library.</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">tick</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
 <p>Advances blink state using millis(). Fully non-blocking. </p>
+<p><strong>Note:</strong></p>
+<p>Library-internal: <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> / <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> / <a href="../namespacePduNode/"><strong>PduNode</strong></a> call it from their loop(). Not sketch API — not covered by the compatibility policy (#295). </p>
 <hr>
 
 <hr />

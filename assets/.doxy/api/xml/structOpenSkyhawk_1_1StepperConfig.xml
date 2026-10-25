@@ -10,188 +10,9 @@
         <argsstring></argsstring>
         <name>stepsPerRev</name>
         <qualifiedname>OpenSkyhawk::StepperConfig::stepsPerRev</qualifiedname>
+        <initializer>= 1080</initializer>
         <briefdescription>
-<para>steps per full revolution (calibrate empirically) </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="75" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="75" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a77acbe1e2eb9309a3879962e2c26d50e" prot="public" static="no" mutable="no">
-        <type><ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" kindref="member">StepPattern</ref></type>
-        <definition>StepPattern OpenSkyhawk::StepperConfig::pattern</definition>
-        <argsstring></argsstring>
-        <name>pattern</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::pattern</qualifiedname>
-        <briefdescription>
-<para>coil drive sequence </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="76" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="76" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1ab296a0b0840caac9c9324aeaa7261f39" prot="public" static="no" mutable="no">
-        <type>const <ref refid="structOpenSkyhawk_1_1AccelPoint" kindref="compound">AccelPoint</ref> *</type>
-        <definition>const AccelPoint* OpenSkyhawk::StepperConfig::accel</definition>
-        <argsstring></argsstring>
-        <name>accel</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::accel</qualifiedname>
-        <briefdescription>
-<para>acceleration curve (not owned) </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="77" column="22" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="77" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a35aa00e9fcacee3b45db0e2d75209a7e" prot="public" static="no" mutable="no">
-        <type>uint8_t</type>
-        <definition>uint8_t OpenSkyhawk::StepperConfig::accelN</definition>
-        <argsstring></argsstring>
-        <name>accelN</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::accelN</qualifiedname>
-        <briefdescription>
-<para>entries in accel[] </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="78" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="78" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a9259690ad915f4b9d17f0be59f2c22fb" prot="public" static="no" mutable="no">
-        <type><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" kindref="member">HomeMode</ref></type>
-        <definition>HomeMode OpenSkyhawk::StepperConfig::home</definition>
-        <argsstring></argsstring>
-        <name>home</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::home</qualifiedname>
-        <briefdescription>
-<para>homing strategy </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="79" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="79" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a5695c15302816adf6794d0c0ee77b3a1" prot="public" static="no" mutable="no">
-        <type>bool</type>
-        <definition>bool OpenSkyhawk::StepperConfig::homeSeekClockwise</definition>
-        <argsstring></argsstring>
-        <name>homeSeekClockwise</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::homeSeekClockwise</qualifiedname>
-        <briefdescription>
-<para>direction to seek the home reference </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="80" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="80" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1ac4f0e0295dfcef32e1a9e75aacb6b933" prot="public" static="no" mutable="no">
-        <type><ref refid="structOpenSkyhawk_1_1HomeSensor" kindref="compound">HomeSensor</ref></type>
-        <definition>HomeSensor OpenSkyhawk::StepperConfig::sensor</definition>
-        <argsstring></argsstring>
-        <name>sensor</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::sensor</qualifiedname>
-        <briefdescription>
-<para>SENSOR-mode params (ignored for STALL) </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="81" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="81" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a60acc3b369297622fdce4530b6f9b0a9" prot="public" static="no" mutable="no">
-        <type>int16_t</type>
-        <definition>int16_t OpenSkyhawk::StepperConfig::homePosition</definition>
-        <argsstring></argsstring>
-        <name>homePosition</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::homePosition</qualifiedname>
-        <briefdescription>
-<para>step index assigned at the home reference </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="82" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="82" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a7b028d73ef16729b1d7f700dcb60f4be" prot="public" static="no" mutable="no">
-        <type>int16_t</type>
-        <definition>int16_t OpenSkyhawk::StepperConfig::parkPosition</definition>
-        <argsstring></argsstring>
-        <name>parkPosition</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::parkPosition</qualifiedname>
-        <briefdescription>
-<para>step to rest at after homing </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="83" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="83" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a687d530f51693137d2c2c9a33899441d" prot="public" static="no" mutable="no">
-        <type>int16_t</type>
-        <definition>int16_t OpenSkyhawk::StepperConfig::minPos</definition>
-        <argsstring></argsstring>
-        <name>minPos</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::minPos</qualifiedname>
-        <briefdescription>
-<para>lower travel clamp for moveTo (ignored if wrap) </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="84" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="84" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a1a5c5aef7debf6f295151683f297ad5e" prot="public" static="no" mutable="no">
-        <type>int16_t</type>
-        <definition>int16_t OpenSkyhawk::StepperConfig::maxPos</definition>
-        <argsstring></argsstring>
-        <name>maxPos</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::maxPos</qualifiedname>
-        <briefdescription>
-<para>upper travel clamp for moveTo (ignored if wrap) </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="85" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="85" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1ab45407d951c8b7a9b106b85e4848f659" prot="public" static="no" mutable="no">
-        <type>bool</type>
-        <definition>bool OpenSkyhawk::StepperConfig::wrap</definition>
-        <argsstring></argsstring>
-        <name>wrap</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::wrap</qualifiedname>
-        <briefdescription>
-<para>continuous-rotation gauge (shortest-path, no clamp) </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="86" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="86" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1ae608309976d278b430a54d6dbb403502" prot="public" static="no" mutable="no">
-        <type>uint8_t</type>
-        <definition>uint8_t OpenSkyhawk::StepperConfig::deadband</definition>
-        <argsstring></argsstring>
-        <name>deadband</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::deadband</qualifiedname>
-        <briefdescription>
-<para>ignore target changes within this many steps </para>
+<para>steps per full revolution (X27/BKA datasheet, 1/3°/step; calibrate empirically) </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -199,14 +20,15 @@
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="87" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="87" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a849fa6b409dc9740106e3cffd4692df0" prot="public" static="no" mutable="no">
-        <type>bool</type>
-        <definition>bool OpenSkyhawk::StepperConfig::autoRecal</definition>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a77acbe1e2eb9309a3879962e2c26d50e" prot="public" static="no" mutable="no">
+        <type><ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" kindref="member">StepPattern</ref></type>
+        <definition>StepPattern OpenSkyhawk::StepperConfig::pattern</definition>
         <argsstring></argsstring>
-        <name>autoRecal</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::autoRecal</qualifiedname>
+        <name>pattern</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::pattern</qualifiedname>
+        <initializer>= <ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a962e53b27cf971b35075f41d438a89d2" kindref="member">StepPattern::SWITEC_6STATE</ref></initializer>
         <briefdescription>
-<para>re-zero to homePosition when the sensor next asserts </para>
+<para>coil drive sequence </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -214,29 +36,63 @@
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="88" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="88" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a7894c8d187bdbd4518156bf7dba5d166" prot="public" static="no" mutable="no">
-        <type>uint32_t</type>
-        <definition>uint32_t OpenSkyhawk::StepperConfig::recalDebounceMs</definition>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1ab296a0b0840caac9c9324aeaa7261f39" prot="public" static="no" mutable="no">
+        <type>const <ref refid="structOpenSkyhawk_1_1AccelPoint" kindref="compound">AccelPoint</ref> *</type>
+        <definition>const AccelPoint* OpenSkyhawk::StepperConfig::accel</definition>
         <argsstring></argsstring>
-        <name>recalDebounceMs</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::recalDebounceMs</qualifiedname>
+        <name>accel</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::accel</qualifiedname>
+        <initializer>= <ref refid="namespaceOpenSkyhawk_1a20c16e74fd780323eed06d5e5db3157f" kindref="member">kSwitecDefaultAccel</ref></initializer>
         <briefdescription>
-<para>minimum interval between auto-recals </para>
+<para>acceleration curve (not owned) </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="89" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="89" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="89" column="22" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="89" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a5d160b5ec1b7a518113bf89781206abe" prot="public" static="no" mutable="no">
-        <type>uint16_t</type>
-        <definition>uint16_t OpenSkyhawk::StepperConfig::rangeSteps</definition>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a35aa00e9fcacee3b45db0e2d75209a7e" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::StepperConfig::accelN</definition>
         <argsstring></argsstring>
-        <name>rangeSteps</name>
-        <qualifiedname>OpenSkyhawk::StepperConfig::rangeSteps</qualifiedname>
+        <name>accelN</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::accelN</qualifiedname>
+        <initializer>= <ref refid="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" kindref="member">kSwitecDefaultAccelN</ref></initializer>
         <briefdescription>
-<para>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev </para>
+<para>entries in accel[] </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="90" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a9259690ad915f4b9d17f0be59f2c22fb" prot="public" static="no" mutable="no">
+        <type><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" kindref="member">HomeMode</ref></type>
+        <definition>HomeMode OpenSkyhawk::StepperConfig::home</definition>
+        <argsstring></argsstring>
+        <name>home</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::home</qualifiedname>
+        <initializer>= <ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7ac78decb824e426b2dbfc79ae121b79f4" kindref="member">HomeMode::STALL</ref></initializer>
+        <briefdescription>
+<para>homing strategy </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="91" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a5695c15302816adf6794d0c0ee77b3a1" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperConfig::homeSeekClockwise</definition>
+        <argsstring></argsstring>
+        <name>homeSeekClockwise</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::homeSeekClockwise</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>direction to seek the home reference </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -244,12 +100,173 @@
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="92" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="92" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1ac4f0e0295dfcef32e1a9e75aacb6b933" prot="public" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1HomeSensor" kindref="compound">HomeSensor</ref></type>
+        <definition>HomeSensor OpenSkyhawk::StepperConfig::sensor</definition>
+        <argsstring></argsstring>
+        <name>sensor</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::sensor</qualifiedname>
+        <initializer>= { true, 5, 2000 }</initializer>
+        <briefdescription>
+<para>SENSOR-mode params (ignored for STALL) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="93" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="93" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a60acc3b369297622fdce4530b6f9b0a9" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::StepperConfig::homePosition</definition>
+        <argsstring></argsstring>
+        <name>homePosition</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::homePosition</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>step index assigned at the home reference </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="94" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a7b028d73ef16729b1d7f700dcb60f4be" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::StepperConfig::parkPosition</definition>
+        <argsstring></argsstring>
+        <name>parkPosition</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::parkPosition</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>step to rest at after homing </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="95" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a687d530f51693137d2c2c9a33899441d" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::StepperConfig::minPos</definition>
+        <argsstring></argsstring>
+        <name>minPos</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::minPos</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>lower travel clamp for moveTo (ignored if wrap) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="96" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a1a5c5aef7debf6f295151683f297ad5e" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::StepperConfig::maxPos</definition>
+        <argsstring></argsstring>
+        <name>maxPos</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::maxPos</qualifiedname>
+        <initializer>= 945</initializer>
+        <briefdescription>
+<para>upper travel clamp for moveTo (ignored if wrap); default = rangeSteps </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="97" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1ab45407d951c8b7a9b106b85e4848f659" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperConfig::wrap</definition>
+        <argsstring></argsstring>
+        <name>wrap</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::wrap</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>continuous-rotation gauge (shortest-path, no clamp) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="98" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1ae608309976d278b430a54d6dbb403502" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::StepperConfig::deadband</definition>
+        <argsstring></argsstring>
+        <name>deadband</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::deadband</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+<para>ignore target changes within this many steps </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="99" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a849fa6b409dc9740106e3cffd4692df0" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperConfig::autoRecal</definition>
+        <argsstring></argsstring>
+        <name>autoRecal</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::autoRecal</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>re-zero to homePosition when the sensor next asserts </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="100" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a7894c8d187bdbd4518156bf7dba5d166" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::StepperConfig::recalDebounceMs</definition>
+        <argsstring></argsstring>
+        <name>recalDebounceMs</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::recalDebounceMs</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>minimum interval between auto-recals </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="101" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a5d160b5ec1b7a518113bf89781206abe" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::StepperConfig::rangeSteps</definition>
+        <argsstring></argsstring>
+        <name>rangeSteps</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::rangeSteps</qualifiedname>
+        <initializer>= 945</initializer>
+        <briefdescription>
+<para>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 945 = X27.589 ~315°; 0 → stepsPerRev </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="102" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a4fa728ff7fdf38a53da214e8188e18e8" prot="public" static="no" mutable="no">
         <type>uint16_t</type>
         <definition>uint16_t OpenSkyhawk::StepperConfig::homeStepUs</definition>
         <argsstring></argsstring>
         <name>homeStepUs</name>
         <qualifiedname>OpenSkyhawk::StepperConfig::homeStepUs</qualifiedname>
+        <initializer>= 0</initializer>
         <briefdescription>
 <para>homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000) </para>
         </briefdescription>
@@ -257,13 +274,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="93" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="93" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="103" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="103" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Full per-instance stepper configuration. Authored per sketch (panel wiring). </para>
     </briefdescription>
     <detaileddescription>
+<para>Every field has a default — the X27 / VID-29 / BKA-30 air-core family&apos;s — so a sketch sets only what differs, by name (#295): <programlisting><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">OpenSkyhawk::StepperConfig</ref><sp/>OIL_MOTOR<sp/>=<sp/>{<sp/>.<ref refid="structOpenSkyhawk_1_1StepperConfig_1a1a5c5aef7debf6f295151683f297ad5e" kindref="member">maxPos</ref><sp/>=<sp/>960,<sp/>.rangeSteps<sp/>=<sp/>960<sp/>};<sp/><sp/></highlight><highlight class="comment">//<sp/>320°<sp/>BKA-30</highlight></codeline>
+</programlisting> Fields are only ever appended, each with a default, so a new setting never breaks a sketch; a positional <computeroutput>{…}</computeroutput> initialiser that stops early gets the defaults for the rest.</para>
 <para><simplesect kind="note"><para><computeroutput>accel</computeroutput> must point at storage that outlives the <ref refid="classOpenSkyhawk_1_1StepperMotor" kindref="compound">StepperMotor</ref> (e.g. a static const table). <computeroutput>homePosition</computeroutput> / <computeroutput>parkPosition</computeroutput> / <computeroutput>minPos</computeroutput> / <computeroutput>maxPos</computeroutput> are in steps; a sketch may compute them from degrees as <computeroutput>round</computeroutput>(deg*stepsPerRev/360). </para>
 </simplesect>
 </para>
@@ -288,7 +307,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="74" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="74" bodyend="94"/>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="86" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="86" bodyend="104"/>
     <listofallmembers>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1ab296a0b0840caac9c9324aeaa7261f39" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>accel</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a35aa00e9fcacee3b45db0e2d75209a7e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>accelN</name></member>

@@ -29,16 +29,25 @@ uint16_t halfSpanCounts(float travelDeg) {
     return half > 32767u ? 32767u : (uint16_t)half;
 }
 
+// The base's config: the angle's own tuning, plus the raw window the travel implies (centred on
+// mid-scale — readRaw() moves the centre angle there).
+AnalogConfig baseConfig(float travelDeg, const AngleConfig& cfg) {
+    AnalogConfig a;
+    a.minRaw     = (uint16_t)(32768u - halfSpanCounts(travelDeg));
+    a.maxRaw     = (uint16_t)(32768u + halfSpanCounts(travelDeg));
+    a.hysteresis = cfg.hysteresis;
+    a.ewmaShift  = cfg.ewmaShift;
+    a.pollMs     = cfg.pollMs;
+    return a;
+}
+
 }  // namespace
 
 // The base's [minRaw, maxRaw] window is centred on mid-scale because readRaw() moves the centre
 // angle there — so the window is the same whatever part of the circle the knob sits on.
 AngleSensorInput::AngleSensorInput(uint16_t controlId, PinRef pin, float centerDeg,
-                                   float travelDeg, uint16_t pollMs)
-    : AnalogInput(controlId, pin, /*reverse=*/false,
-                  /*minRaw=*/(uint16_t)(32768u - halfSpanCounts(travelDeg)),
-                  /*maxRaw=*/(uint16_t)(32768u + halfSpanCounts(travelDeg)),
-                  DEFAULT_HYSTERESIS, DEFAULT_EWMA_SHIFT, pollMs),
+                                   float travelDeg, const AngleConfig& cfg)
+    : AnalogInput(controlId, pin, baseConfig(travelDeg, cfg)),
       _centerRaw(degToCounts(centerDeg)) {}
 
 uint16_t AngleSensorInput::readRaw() {

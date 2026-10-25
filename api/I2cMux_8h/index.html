@@ -4738,8 +4738,6 @@
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>One I2cMux instance == one TCA9548A chip on one I2C bus. A DrumDisplay (or any future muxed I2C output) holds a pointer to an I2cMux plus a channel index and calls select() before every I2C transaction so the right downstream branch is live. The mux is a passive switch — the U8G2 driver still owns the device address; the mux only routes SDA/SCL.</p>
-<p><strong>Version:</strong></p>
-<p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />

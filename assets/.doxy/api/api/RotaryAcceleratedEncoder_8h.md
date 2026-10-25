@@ -91,13 +91,6 @@ _Quadrature encoder with a momentum filter and a fast-detent step —_ [_**DcsBi
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

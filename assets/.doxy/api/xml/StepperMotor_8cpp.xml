@@ -379,23 +379,20 @@
 <codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_currentStep;</highlight></codeline>
 <codeline lineno="255"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="256"><highlight class="normal"></highlight></codeline>
-<codeline lineno="257"><highlight class="normal">StepperConfig<sp/><ref refid="namespaceOpenSkyhawk_1a46ddcd8bc34cc500234d4513a5952df5" kindref="member">makeX27Config</ref>(int16_t<sp/>homePosition,<sp/>int16_t<sp/>parkPosition,</highlight></codeline>
-<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int16_t<sp/>minPos,<sp/>int16_t<sp/>maxPos,</highlight></codeline>
-<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>HomeMode<sp/>home,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>homeSeekClockwise,<sp/>HomeSensor<sp/>sensor,</highlight></codeline>
-<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>wrap,<sp/>uint8_t<sp/>deadband,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>autoRecal,<sp/>uint32_t<sp/>recalDebounceMs,</highlight></codeline>
-<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>stepsPerRev,<sp/>uint16_t<sp/>rangeSteps,<sp/>uint16_t<sp/>homeStepUs)<sp/>{</highlight></codeline>
-<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>StepperConfig{</highlight></codeline>
-<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stepsPerRev,<sp/>StepPattern::SWITEC_6STATE,<sp/><ref refid="namespaceOpenSkyhawk_1a20c16e74fd780323eed06d5e5db3157f" kindref="member">kSwitecDefaultAccel</ref>,<sp/><ref refid="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" kindref="member">kSwitecDefaultAccelN</ref>,</highlight></codeline>
-<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>home,<sp/>homeSeekClockwise,<sp/>sensor,</highlight></codeline>
-<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>homePosition,<sp/>parkPosition,<sp/>minPos,<sp/>maxPos,</highlight></codeline>
-<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>wrap,<sp/>deadband,<sp/>autoRecal,<sp/>recalDebounceMs,</highlight></codeline>
-<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rangeSteps,<sp/>homeStepUs,</highlight></codeline>
-<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
-<codeline lineno="269"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="270"><highlight class="normal"></highlight></codeline>
-<codeline lineno="271"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="272"><highlight class="normal"></highlight></codeline>
-<codeline lineno="273"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal">StepperConfig<sp/><ref refid="namespaceOpenSkyhawk_1ad2483a1cf2688ed60e19ddc5b14737fa" kindref="member">makeX27Config</ref>(int16_t<sp/>homePosition,<sp/>int16_t<sp/>parkPosition,</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int16_t<sp/>minPos,<sp/>int16_t<sp/>maxPos,<sp/>HomeMode<sp/>home)<sp/>{</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/>StepperConfig<sp/>c;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>X27-family<sp/>defaults</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/>c.<ref refid="structOpenSkyhawk_1_1StepperConfig_1a9259690ad915f4b9d17f0be59f2c22fb" kindref="member">home</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>home;</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/>c.homePosition<sp/>=<sp/>homePosition;</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/>c.parkPosition<sp/>=<sp/>parkPosition;</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>c.minPos<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>minPos;</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/>c.maxPos<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>maxPos;</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>c;</highlight></codeline>
+<codeline lineno="266"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp"/>
   </compounddef>

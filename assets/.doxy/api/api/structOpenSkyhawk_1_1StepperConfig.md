@@ -36,23 +36,23 @@ _Full per-instance stepper configuration. Authored per sketch (panel wiring)._ [
 
 | Type | Name |
 | ---: | :--- |
-|  const [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) \* | [**accel**](#variable-accel)  <br>_acceleration curve (not owned)_  |
-|  uint8\_t | [**accelN**](#variable-acceln)  <br>_entries in accel[]_  |
-|  bool | [**autoRecal**](#variable-autorecal)  <br>_re-zero to homePosition when the sensor next asserts_  |
-|  uint8\_t | [**deadband**](#variable-deadband)  <br>_ignore target changes within this many steps_  |
-|  [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) | [**home**](#variable-home)  <br>_homing strategy_  |
-|  int16\_t | [**homePosition**](#variable-homeposition)  <br>_step index assigned at the home reference_  |
-|  bool | [**homeSeekClockwise**](#variable-homeseekclockwise)  <br>_direction to seek the home reference_  |
-|  uint16\_t | [**homeStepUs**](#variable-homestepus)  <br>_homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)_  |
-|  int16\_t | [**maxPos**](#variable-maxpos)  <br>_upper travel clamp for moveTo (ignored if wrap)_  |
-|  int16\_t | [**minPos**](#variable-minpos)  <br>_lower travel clamp for moveTo (ignored if wrap)_  |
-|  int16\_t | [**parkPosition**](#variable-parkposition)  <br>_step to rest at after homing_  |
-|  [**StepPattern**](namespaceOpenSkyhawk.md#enum-steppattern) | [**pattern**](#variable-pattern)  <br>_coil drive sequence_  |
-|  uint16\_t | [**rangeSteps**](#variable-rangesteps)  <br>_mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev_  |
-|  uint32\_t | [**recalDebounceMs**](#variable-recaldebouncems)  <br>_minimum interval between auto-recals_  |
-|  [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) | [**sensor**](#variable-sensor)  <br>_SENSOR-mode params (ignored for STALL)_  |
-|  uint16\_t | [**stepsPerRev**](#variable-stepsperrev)  <br>_steps per full revolution (calibrate empirically)_  |
-|  bool | [**wrap**](#variable-wrap)  <br>_continuous-rotation gauge (shortest-path, no clamp)_  |
+|  const [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) \* | [**accel**](#variable-accel)   = `[**kSwitecDefaultAccel**](namespaceOpenSkyhawk.md#variable-kswitecdefaultaccel)`<br>_acceleration curve (not owned)_  |
+|  uint8\_t | [**accelN**](#variable-acceln)   = `[**kSwitecDefaultAccelN**](namespaceOpenSkyhawk.md#variable-kswitecdefaultacceln)`<br>_entries in accel[]_  |
+|  bool | [**autoRecal**](#variable-autorecal)   = `false`<br>_re-zero to homePosition when the sensor next asserts_  |
+|  uint8\_t | [**deadband**](#variable-deadband)   = `1`<br>_ignore target changes within this many steps_  |
+|  [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) | [**home**](#variable-home)   = `HomeMode::STALL`<br>_homing strategy_  |
+|  int16\_t | [**homePosition**](#variable-homeposition)   = `0`<br>_step index assigned at the home reference_  |
+|  bool | [**homeSeekClockwise**](#variable-homeseekclockwise)   = `false`<br>_direction to seek the home reference_  |
+|  uint16\_t | [**homeStepUs**](#variable-homestepus)   = `0`<br>_homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)_  |
+|  int16\_t | [**maxPos**](#variable-maxpos)   = `945`<br>_upper travel clamp for moveTo (ignored if wrap); default = rangeSteps_  |
+|  int16\_t | [**minPos**](#variable-minpos)   = `0`<br>_lower travel clamp for moveTo (ignored if wrap)_  |
+|  int16\_t | [**parkPosition**](#variable-parkposition)   = `0`<br>_step to rest at after homing_  |
+|  [**StepPattern**](namespaceOpenSkyhawk.md#enum-steppattern) | [**pattern**](#variable-pattern)   = `StepPattern::SWITEC\_6STATE`<br>_coil drive sequence_  |
+|  uint16\_t | [**rangeSteps**](#variable-rangesteps)   = `945`<br>_mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 945 = X27.589 ~315°; 0 → stepsPerRev_  |
+|  uint32\_t | [**recalDebounceMs**](#variable-recaldebouncems)   = `0`<br>_minimum interval between auto-recals_  |
+|  [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) | [**sensor**](#variable-sensor)   = `{ true, 5, 2000 }`<br>_SENSOR-mode params (ignored for STALL)_  |
+|  uint16\_t | [**stepsPerRev**](#variable-stepsperrev)   = `1080`<br>_steps per full revolution (X27/BKA datasheet, 1/3°/step; calibrate empirically)_  |
+|  bool | [**wrap**](#variable-wrap)   = `false`<br>_continuous-rotation gauge (shortest-path, no clamp)_  |
 
 
 
@@ -98,6 +98,13 @@ _Full per-instance stepper configuration. Authored per sketch (panel wiring)._ [
 
 
 ## Detailed Description
+
+
+Every field has a default — the X27 / VID-29 / BKA-30 air-core family's — so a sketch sets only what differs, by name (#295): 
+```C++
+const OpenSkyhawk::StepperConfig OIL_MOTOR = { .maxPos = 960, .rangeSteps = 960 };  // 320° BKA-30
+```
+ Fields are only ever appended, each with a default, so a new setting never breaks a sketch; a positional `{…}` initialiser that stops early gets the defaults for the rest.
 
 
 
@@ -230,7 +237,7 @@ uint16_t OpenSkyhawk::StepperConfig::homeStepUs;
 
 ### variable maxPos 
 
-_upper travel clamp for moveTo (ignored if wrap)_ 
+_upper travel clamp for moveTo (ignored if wrap); default = rangeSteps_ 
 ```C++
 int16_t OpenSkyhawk::StepperConfig::maxPos;
 ```
@@ -286,7 +293,7 @@ StepPattern OpenSkyhawk::StepperConfig::pattern;
 
 ### variable rangeSteps 
 
-_mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev_ 
+_mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 945 = X27.589 ~315°; 0 → stepsPerRev_ 
 ```C++
 uint16_t OpenSkyhawk::StepperConfig::rangeSteps;
 ```
@@ -328,7 +335,7 @@ HomeSensor OpenSkyhawk::StepperConfig::sensor;
 
 ### variable stepsPerRev 
 
-_steps per full revolution (calibrate empirically)_ 
+_steps per full revolution (X27/BKA datasheet, 1/3°/step; calibrate empirically)_ 
 ```C++
 uint16_t OpenSkyhawk::StepperConfig::stepsPerRev;
 ```

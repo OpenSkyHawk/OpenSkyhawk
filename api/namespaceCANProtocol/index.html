@@ -4807,6 +4807,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-makereadypayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function makeReadyPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-onreceive" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4866,6 +4877,17 @@
     <span class="md-ellipsis">
       
         function sendBatched
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-sendready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function sendReady
       
     </span>
   </a>
@@ -5015,6 +5037,10 @@
 <td style="text-align: left;"><a href="#function-makenodehealthpayload"><strong>makeNodeHealthPayload</strong></a> (uint8_t nodeId, <a href="../NodeStatus_8h/#enum-nodekind"><strong>NodeKind</strong></a> kind, int8_t dieTempC, <a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a> fault=NodeFaultCode::NONE) <br><em>Build the 8-byte node-health payload for the current node.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">ReadyPayload</td>
+<td style="text-align: left;"><a href="#function-makereadypayload"><strong>makeReadyPayload</strong></a> () <br><em>Build the 8-byte READY_n payload: this build's firmware release version (#295).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-onreceive"><strong>onReceive</strong></a> (<a href="../CANProtocol_8h/#typedef-canrxcallback"><strong>CanRxCallback</strong></a> cb) <br><em>Register a general-purpose RX frame handler.</em></td>
 </tr>
@@ -5037,6 +5063,10 @@
 <tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-sendbatched"><strong>sendBatched</strong></a> (uint32_t canId, const ControlPacket &amp; pkt) <br><em>Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-sendready"><strong>sendReady</strong></a> () <br><em>Send this node's READY_n (</em> <code>canIdReady(NODE_ID)</code> <em>) carrying</em><a href="./#function-makereadypayload"><em><strong>makeReadyPayload()</strong></em></a> <em>.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -5170,6 +5200,14 @@
 <p>Fully populated NodeHealthPayload ready to send as HEALTH_n. </p>
 <hr>
 
+<h3 id="function-makereadypayload">function makeReadyPayload</h3>
+<p><em>Build the 8-byte READY_n payload: this build's firmware release version (#295).</em> 
+<div class="highlight"><pre><span></span><code><span class="n">ReadyPayload</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeReadyPayload</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<p><strong>Returns:</strong></p>
+<p>ReadyPayload with fwMajor/fwMinor/fwPatch from <a href="../FirmwareVersion_8h/"><strong>FirmwareVersion.h</strong></a>, reserved bytes 0. </p>
+<hr>
+
 <h3 id="function-onreceive">function onReceive</h3>
 <p><em>Register a general-purpose RX frame handler.</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">onReceive</span><span class="w"> </span><span class="p">(</span>
@@ -5246,6 +5284,13 @@
 <li><code>canId</code> CAN_ID_CTRL_BCAST, canIdEvt(NODE_ID), canIdEvtRel(NODE_ID), canIdEvtDir(NODE_ID), or canIdEvtAction(NODE_ID). </li>
 <li><code>pkt</code> ControlPacket to batch. </li>
 </ul>
+<hr>
+
+<h3 id="function-sendready">function sendReady</h3>
+<p><em>Send this node's READY_n (</em> <code>canIdReady(NODE_ID)</code> <em>) carrying</em><a href="./#function-makereadypayload"><em><strong>makeReadyPayload()</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendReady</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<p>Call once at the end of the node's setup(), after its boot EVT burst. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> marks the node alive, caches its version and broadcasts SYNC_REQ. Bounded retry like every other special frame (02-can-protocol.md). </p>
 <hr>
 
 <h3 id="function-servicenodestatus">function serviceNodeStatus</h3>

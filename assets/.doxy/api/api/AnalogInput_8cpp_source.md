@@ -17,17 +17,28 @@
 
 namespace OpenSkyhawk {
 
-AnalogInput::AnalogInput(uint16_t controlId, PinRef pin, bool reverse,
-                         uint16_t minRaw, uint16_t maxRaw,
-                         uint16_t hysteresis, uint8_t ewmaShift, uint16_t pollMs)
+namespace {
+
+// HYSTERESIS_AUTO → the route's default; an explicit value is used as given. The route is the one
+// PanelBridge applies: the DCS-BIOS range goes to DCS, everything else to HID.
+uint16_t resolveHysteresis(uint16_t controlId, uint16_t hysteresis) {
+    if (hysteresis != AnalogConfig::HYSTERESIS_AUTO) return hysteresis;
+    const bool dcs = controlId >= CTRL_ID_DCS_MIN && controlId <= CTRL_ID_DCS_MAX;
+    return dcs ? AnalogConfig::DCS_HYSTERESIS : AnalogConfig::HID_HYSTERESIS;
+}
+
+}  // namespace
+
+AnalogInput::AnalogInput(uint16_t controlId, PinRef pin, const AnalogConfig& cfg)
     : _controlId(controlId),
       _pin(pin),
-      _reverse(reverse),
-      _minRaw(minRaw),
-      _maxRaw(maxRaw),
-      _hysteresis(hysteresis),
-      _ewmaShift(ewmaShift > MAX_EWMA_SHIFT ? MAX_EWMA_SHIFT : ewmaShift),
-      _pollMs(pollMs),          // not clamped: 0 = read every loop iteration (see header @param)
+      _reverse(cfg.reverse),
+      _minRaw(cfg.minRaw),
+      _maxRaw(cfg.maxRaw),
+      _hysteresis(resolveHysteresis(controlId, cfg.hysteresis)),
+      _ewmaShift(cfg.ewmaShift > AnalogConfig::MAX_EWMA_SHIFT ? AnalogConfig::MAX_EWMA_SHIFT
+                                                             : cfg.ewmaShift),
+      _pollMs(cfg.pollMs),      // not clamped: 0 = read every loop iteration (see AnalogConfig)
       _acc(0),
       _smoothed(0),
       _lastSent(0),

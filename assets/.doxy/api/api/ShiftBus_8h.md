@@ -106,13 +106,6 @@ TechSpec: Firmware/ScratchPad/TechSpec/PanelGroup/Helpers/ShiftBus.md (issues #1
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

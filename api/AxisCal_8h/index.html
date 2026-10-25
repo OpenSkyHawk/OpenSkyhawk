@@ -4745,8 +4745,6 @@
 <p>This is the fix — three captured points (min, centre, max) and two linear segments, so centre lands exactly on 32768 regardless of how asymmetric the mechanical travel is.</p>
 <p>Everything here is <strong>pure</strong>: no EEPROM, no Serial, no millis(), no globals, no hardware. That is deliberate. <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a>'s <code>_hidSetAxis</code> is a no-op stub in SIMGATEWAY_TEST builds, so a transform reachable only through HIDAxis::dispatch() would be unobservable in tests; a free function taking its inputs as arguments is callable directly from a test sketch.</p>
 <p>Deliberately not wrapped in <code>#ifdef ARDUINO_ARCH_RP2040</code> — this is portable C++ and the guard would only obstruct compiling it anywhere else.</p>
-<p><strong>Version:</strong></p>
-<p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />

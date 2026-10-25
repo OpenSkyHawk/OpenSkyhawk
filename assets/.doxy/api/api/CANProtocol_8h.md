@@ -130,13 +130,6 @@ Dependency: [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin) mus
 
 
 
-**Version:**
-
-0.3.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 
@@ -367,6 +360,9 @@ struct __attribute__ (
 
 
 
+8-byte payload carried by READY\_n — the node's boot announcement (#295).
+
+
 8-byte payload carried by TELEM\_n frames — paged node telemetry (#216).
 
 
@@ -410,7 +406,10 @@ Rail voltage/current is intentionally NOT here — that is the PDU's dedicated p
 Byte 0 is a TelemPage ([**NodeStatus.h**](NodeStatus_8h.md)) naming the layout of the other seven bytes; page ids are global and append-only, so a page means the same thing whichever node sends it. Multi-byte fields inside a page are little-endian. [**PanelBridge**](namespacePanelBridge.md) forwards every TELEM\_n frame to the host unread (`_NODE_TELEM`), so a new page type needs no bridge change — the client owns the decode.
 
 
-First user: the PDU monitoring node — pages PDU\_RAIL\_12V / PDU\_RAIL\_5V / PDU\_STATUS. Generic node health (die temp, fault id) stays in HEALTH\_n and is never repeated here. 
+First user: the PDU monitoring node — pages PDU\_RAIL\_12V / PDU\_RAIL\_5V / PDU\_STATUS. Generic node health (die temp, fault id) stays in HEALTH\_n and is never repeated here.
+
+
+Sent once per boot, after the boot EVT burst, so every reflash, reset or power cycle announces the firmware the node now runs. [**PanelBridge**](namespacePanelBridge.md) caches the version per node and reports it in `_NODE_STATUS` (v4). Firmware older than this payload sends READY\_n empty (DLC 0): the bridge then reports the version as not reported (0.0.0). 
 
 
         

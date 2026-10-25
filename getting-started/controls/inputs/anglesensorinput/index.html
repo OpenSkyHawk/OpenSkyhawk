@@ -4947,10 +4947,13 @@ above the chip, directly over the middle.</p>
 <summary>Going further</summary>
 <p>Underneath, an <code>AngleSensorInput</code> is an <a href="../analoginput/">AnalogInput</a> with angle maths
 added. It smooths the readings and ignores tiny wobbles in exactly the same way, and it
-reports its position when the board starts up and whenever DCS asks. Unlike <code>AnalogInput</code>,
-it doesn't take a reverse or dead-zone setting: the sensor's <code>DIR</code> pin sets the direction,
-and the dead zone stays at the standard 128 steps. A joystick axis ID such as <code>CTRL_ROLL</code>
-works in place of the cockpit control name, just as it does for <code>AnalogInput</code>.</p>
+reports its position when the board starts up and whenever DCS asks. Its dead zone has the
+same defaults — 1024 steps for a cockpit control, 128 for a joystick axis — and you can change
+it the same way, in braces after the travel:
+<code>OpenSkyhawk::AngleSensorInput gunsightKnob(DCSIN_GUNSIGHT_KNB, GUNSIGHT_KNOB_PIN, 135, 150, { .hysteresis = 512 });</code>.
+Unlike <code>AnalogInput</code>, it has no reverse setting: the sensor's <code>DIR</code> pin sets the direction. A
+joystick axis ID such as <code>CTRL_ROLL</code> works in place of the cockpit control name, just as it does
+for <code>AnalogInput</code>.</p>
 <p>A sensor that reads a whole circle has to have a jump somewhere, because 0° and 360° are the
 same place. The class moves that jump to the point directly opposite your centre, as far from
 your knob's travel as it can go. That's why the travel has to be less than a full turn.</p>

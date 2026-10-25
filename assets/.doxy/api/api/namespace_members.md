@@ -139,12 +139,12 @@
 * **LinkAction** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **linkRecoveryBegin** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **linkRecoveryStep** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
-* **LinkPhase** ([**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d72.md))
+* **LinkPhase** ([**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d73.md))
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**PduNode**](namespacePduNode.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
 * **logNodeFaultEdge** ([**STM32Board**](namespaceSTM32Board.md))
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d75.md))
 
 
 ## m
@@ -152,6 +152,7 @@
 * **MASTER\_TIMEOUT\_MS** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeHeartbeatPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeNodeHealthPayload** ([**CANProtocol**](namespaceCANProtocol.md))
+* **makeReadyPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
@@ -164,7 +165,7 @@
 * **ntcTempDC** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **NodeCallback** ([**PanelBridge**](namespacePanelBridge.md))
 * **noteShiftBus** ([**PanelGroup**](namespacePanelGroup.md))
-* **namespace\_0d74\_1ae30af8389a9e349709c1fc94356c1904** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md))
+* **namespace\_0d75\_1afd29c9e9e8098b0c274cc1cba749fbfa** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d75.md))
 
 
 ## o
@@ -184,7 +185,7 @@
 * **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d75.md))
 
 
 ## r
@@ -209,6 +210,7 @@
 
 * **send** ([**CANProtocol**](namespaceCANProtocol.md))
 * **sendBatched** ([**CANProtocol**](namespaceCANProtocol.md))
+* **sendReady** ([**CANProtocol**](namespaceCANProtocol.md))
 * **serviceNodeStatus** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))

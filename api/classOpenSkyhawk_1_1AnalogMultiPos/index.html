@@ -4790,6 +4790,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-no_deadband" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NO_DEADBAND
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-poll_ms" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4932,7 +4943,11 @@
 <tbody>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-default_deadband"><strong>DEFAULT_DEADBAND</strong></a>   = <code>1000</code><br><em>counts trimmed from each band edge</em></td>
+<td style="text-align: left;"><a href="#variable-default_deadband"><strong>DEFAULT_DEADBAND</strong></a>   = <code>1000</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-no_deadband"><strong>NO_DEADBAND</strong></a>   = <code>0</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
@@ -5135,9 +5150,15 @@
 <p>The base debounce window is 0: the deadband gaps provide the filtering, not a timer. </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-default_deadband">variable DEFAULT_DEADBAND</h3>
-<p><em>counts trimmed from each band edge</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">DEFAULT_DEADBAND</span><span class="p">;</span>
-</code></pre></div></p>
+</code></pre></div>
+<p>counts trimmed from each band edge </p>
+<hr>
+
+<h3 id="variable-no_deadband">variable NO_DEADBAND</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">NO_DEADBAND</span><span class="p">;</span>
+</code></pre></div>
+<p>No deadband — bands meet edge to edge. Pass this, not a literal <code>0</code>: a literal <code>0</code> is also a null <code>posVals</code> pointer, so <code>AnalogMultiPos(id, pin, n, 0)</code> is ambiguous and doesn't compile. </p>
 <hr>
 
 <h3 id="variable-poll_ms">variable POLL_MS</h3>
@@ -5162,7 +5183,7 @@
 <li><code>pin</code> analog <a href="../classPinRef/"><strong>PinRef</strong></a> (STM32 ADC GPIO or <a href="../classADS1115/"><strong>ADS1115</strong></a> channel). </li>
 <li><code>numPos</code> N — number of positions (valid indices 0..N-1). </li>
 <li><code>posVals</code> caller-owned array of N expected 16-bit ADC values, one per position. Must outlive this object. Use ANALOG_NC for a position with no detent. </li>
-<li><code>deadband</code> counts trimmed from each band edge for hysteresis (default 1000). </li>
+<li><code>deadband</code> counts trimmed from each band edge for hysteresis (default 1000; NO_DEADBAND for none). </li>
 </ul>
 <hr>
 
@@ -5180,7 +5201,7 @@
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. </li>
 <li><code>pin</code> analog <a href="../classPinRef/"><strong>PinRef</strong></a>. </li>
 <li><code>numPos</code> N — number of positions. </li>
-<li><code>deadband</code> counts trimmed from each band edge (default 1000). </li>
+<li><code>deadband</code> counts trimmed from each band edge (default 1000; NO_DEADBAND for none). </li>
 </ul>
 <hr>
 

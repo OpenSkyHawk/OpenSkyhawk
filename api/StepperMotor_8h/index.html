@@ -4752,8 +4752,6 @@
 <p>A control-agnostic MotorDriver for instrument gauge steppers. Drives four coils through <a href="../classPinRef/"><strong>PinRef</strong></a>, so the coils may be native STM32 GPIO, one MCP23017 port, <strong>or</strong> ShiftBus '595 outputs with no code change. The motion engine is ported from Guy Carpenter's SwitecX25 library: an integer (no-FPU) table-driven trapezoidal accel/decel — a <code>vel</code> proxy ramps up one step at a time and decelerates once the steps remaining to target fall below <code>vel</code>, giving smooth acceleration into and out of every move.</p>
 <p>One drive profile (StepPattern::SWITEC_6STATE) covers the air-core instrument stepper family on hand — X27.589 / VID-29 / BKA-30 are the same motor electrically; a motor that runs reversed is corrected by swapping the two pins of one coil (c1↔c2 or c3↔c4), not a new profile. StepPattern::FULL_4STATE is reserved for generic geared 4-wire steppers.</p>
 <p>Homing: HomeMode::STALL drives into a mechanical end-stop (no sensor); HomeMode::SENSOR seeks a debounced digital home sensor — a micro switch, reed, hall, or opto-interrupter all read identically through one <a href="../classPinRef/"><strong>PinRef</strong></a> + an active-level flag.</p>
-<p><strong>Version:</strong></p>
-<p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />

@@ -129,27 +129,36 @@
 <codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>half<sp/>&gt;<sp/>32767u<sp/>?<sp/>32767u<sp/>:<sp/>(uint16_t)half;</highlight></codeline>
 <codeline lineno="32"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>base&apos;s<sp/>[minRaw,<sp/>maxRaw]<sp/>window<sp/>is<sp/>centred<sp/>on<sp/>mid-scale<sp/>because<sp/>readRaw()<sp/>moves<sp/>the<sp/>centre</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>angle<sp/>there<sp/>—<sp/>so<sp/>the<sp/>window<sp/>is<sp/>the<sp/>same<sp/>whatever<sp/>part<sp/>of<sp/>the<sp/>circle<sp/>the<sp/>knob<sp/>sits<sp/>on.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1AngleSensorInput_1ac37698b28ba96661796ad7064f090210" kindref="member">AngleSensorInput::AngleSensorInput</ref>(uint16_t<sp/>controlId,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>pin,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>centerDeg,</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>travelDeg,<sp/>uint16_t<sp/>pollMs)</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>AnalogInput(controlId,<sp/>pin,<sp/></highlight><highlight class="comment">/*reverse=*/</highlight><highlight class="normal">false,</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*minRaw=*/</highlight><highlight class="normal">(uint16_t)(32768u<sp/>-<sp/>halfSpanCounts(travelDeg)),</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*maxRaw=*/</highlight><highlight class="normal">(uint16_t)(32768u<sp/>+<sp/>halfSpanCounts(travelDeg)),</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DEFAULT_HYSTERESIS,<sp/>DEFAULT_EWMA_SHIFT,<sp/>pollMs),</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_centerRaw(degToCounts(centerDeg))<sp/>{}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>base&apos;s<sp/>config:<sp/>the<sp/>angle&apos;s<sp/>own<sp/>tuning,<sp/>plus<sp/>the<sp/>raw<sp/>window<sp/>the<sp/>travel<sp/>implies<sp/>(centred<sp/>on</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">//<sp/>mid-scale<sp/>—<sp/>readRaw()<sp/>moves<sp/>the<sp/>centre<sp/>angle<sp/>there).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">AnalogConfig<sp/>baseConfig(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>travelDeg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AngleConfig&amp;<sp/>cfg)<sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>AnalogConfig<sp/>a;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>a.minRaw<sp/><sp/><sp/><sp/><sp/>=<sp/>(uint16_t)(32768u<sp/>-<sp/>halfSpanCounts(travelDeg));</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>a.maxRaw<sp/><sp/><sp/><sp/><sp/>=<sp/>(uint16_t)(32768u<sp/>+<sp/>halfSpanCounts(travelDeg));</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>a.hysteresis<sp/>=<sp/>cfg.hysteresis;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>a.ewmaShift<sp/><sp/>=<sp/>cfg.ewmaShift;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>a.pollMs<sp/><sp/><sp/><sp/><sp/>=<sp/>cfg.pollMs;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>a;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal">uint16_t<sp/>AngleSensorInput::readRaw()<sp/>{</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Unsigned<sp/>wrap<sp/>is<sp/>the<sp/>0°/360°<sp/>seam<sp/>handling:<sp/>subtracting<sp/>the<sp/>centre<sp/>and<sp/>adding<sp/>mid-scale<sp/>is</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>modulo<sp/>65536,<sp/>so<sp/>a<sp/>travel<sp/>straddling<sp/>the<sp/>seam<sp/>is<sp/>contiguous<sp/>like<sp/>any<sp/>other.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint16_t)(AnalogInput::readRaw()<sp/>-<sp/>_centerRaw<sp/>+<sp/>32768u);</highlight></codeline>
-<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>base&apos;s<sp/>[minRaw,<sp/>maxRaw]<sp/>window<sp/>is<sp/>centred<sp/>on<sp/>mid-scale<sp/>because<sp/>readRaw()<sp/>moves<sp/>the<sp/>centre</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment">//<sp/>angle<sp/>there<sp/>—<sp/>so<sp/>the<sp/>window<sp/>is<sp/>the<sp/>same<sp/>whatever<sp/>part<sp/>of<sp/>the<sp/>circle<sp/>the<sp/>knob<sp/>sits<sp/>on.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1AngleSensorInput_1aa6b043d56ce1652982a0a92ebba5d8e6" kindref="member">AngleSensorInput::AngleSensorInput</ref>(uint16_t<sp/>controlId,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>pin,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>centerDeg,</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>travelDeg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AngleConfig&amp;<sp/>cfg)</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>AnalogInput(controlId,<sp/>pin,<sp/>baseConfig(travelDeg,<sp/>cfg)),</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_centerRaw(degToCounts(centerDeg))<sp/>{}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">uint16_t<sp/>AngleSensorInput::readRaw()<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Unsigned<sp/>wrap<sp/>is<sp/>the<sp/>0°/360°<sp/>seam<sp/>handling:<sp/>subtracting<sp/>the<sp/>centre<sp/>and<sp/>adding<sp/>mid-scale<sp/>is</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>modulo<sp/>65536,<sp/>so<sp/>a<sp/>travel<sp/>straddling<sp/>the<sp/>seam<sp/>is<sp/>contiguous<sp/>like<sp/>any<sp/>other.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint16_t)(AnalogInput::readRaw()<sp/>-<sp/>_centerRaw<sp/>+<sp/>32768u);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.cpp"/>
   </compounddef>

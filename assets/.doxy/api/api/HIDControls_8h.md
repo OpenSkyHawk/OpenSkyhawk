@@ -101,13 +101,6 @@ controlId routing by range: 0x0010–0x001F HID axes — routed to axis setters 
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

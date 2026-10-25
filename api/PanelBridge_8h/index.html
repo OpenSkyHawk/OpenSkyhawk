@@ -4657,6 +4657,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#detailed-description" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4664,6 +4675,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macro-definition-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro Definition Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Macro Definition Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-panelbridge_node_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define PANELBRIDGE_NODE_STATUS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4709,6 +4748,21 @@
 </tr>
 </tbody>
 </table>
+<h2 id="macros">Macros</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-panelbridge_node_status"><strong>PANELBRIDGE_NODE_STATUS</strong></a>  <code>1</code><br></td>
+</tr>
+</tbody>
+</table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> bridges the RP2040 <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> (UART2, PA2/PA3) and the <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> CAN cluster. It runs the DCS-BIOS library on Serial, batches DCS output to CAN CTRL_BCAST frames, routes CAN EVTs to DCS-BIOS commands or HID frames, and tracks <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> node liveness.</p>
 <p>Minimal production sketch: 
@@ -4725,10 +4779,14 @@
 <span class="w">    </span><span class="n">PanelBridge</span><span class="o">::</span><span class="n">loop</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div></p>
-<p><strong>Version:</strong></p>
-<p>0.2.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
+<h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
+<h3 id="define-panelbridge_node_status">define PANELBRIDGE_NODE_STATUS</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#define PANELBRIDGE_NODE_STATUS `1`</span>
+</code></pre></div>
+<hr>
+
 <hr />
 <p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelBridge/PanelBridge.h</code></p>
 

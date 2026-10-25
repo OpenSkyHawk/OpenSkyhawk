@@ -162,7 +162,7 @@ The first call arms a WATCHDOG\_MS hardware watchdog; after that, [**loop()**](n
 
 **Note:**
 
-Node-status reporting (#86) needs no handling here: [**PanelBridge**](namespacePanelBridge.md)'s `_NODE_STATUS` DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.
+Node-status reporting (#86) needs no handling here: [**PanelBridge**](namespacePanelBridge.md)'s `_NODE_STATUS` DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a DCS-BIOS export write (addr NODE\_STATUS\_REQ\_ADDR, 0xFF00) forwarded by step 1. Both transit transparently.
 
 
 

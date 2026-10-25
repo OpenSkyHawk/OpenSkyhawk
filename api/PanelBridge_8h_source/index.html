@@ -4665,6 +4665,14 @@
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
 
+<span class="c1">// Node-status reporting to the host (#86) — `_NODE_STATUS` / `_NODE_STATUS_END` / `_NODE_TELEM` and</span>
+<span class="c1">// the `0xFF00` roster request. On by default (#295): the client depends on it. Compile it out with</span>
+<span class="c1">// `-DPANELBRIDGE_NODE_STATUS=0`; node tracking itself (liveness, SYNC_REQ, WARNING, callbacks)</span>
+<span class="c1">// never depends on it. Test with `#if PANELBRIDGE_NODE_STATUS`, never `#ifdef`.</span>
+<span class="cp">#ifndef PANELBRIDGE_NODE_STATUS</span>
+<span class="cp">#define PANELBRIDGE_NODE_STATUS 1</span>
+<span class="cp">#endif</span>
+
 <span class="k">namespace</span><span class="w"> </span><span class="nn">PanelBridge</span><span class="w"> </span><span class="p">{</span>
 
 <span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">NodeCallback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">);</span>
@@ -4699,7 +4707,7 @@
 
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testHandleExport</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
 
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
+<span class="cp">#if PANELBRIDGE_NODE_STATUS</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testFeedHeartbeat</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uptime</span><span class="p">,</span>
 <span class="w">                           </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">rxCount</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">esr</span><span class="p">);</span>
 

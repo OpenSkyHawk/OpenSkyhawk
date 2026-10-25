@@ -35,6 +35,7 @@ _Continuous analog input (potentiometer / axis) for_ [_**OpenSkyhawk**_](namespa
 
 | Type | Name |
 | ---: | :--- |
+| struct | [**AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md) <br>_Tuning for an_ [_**AnalogInput**_](classOpenSkyhawk_1_1AnalogInput.md) _. Every field has a default, so a sketch sets only what differs, by name:_`{ .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 }` _(#295)._ |
 | class | [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md) <br>_Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 
 
@@ -87,13 +88,6 @@ _Continuous analog input (potentiometer / axis) for_ [_**OpenSkyhawk**_](namespa
 
 
 ## Detailed Description
-
-
-
-
-**Version:**
-
-0.1.0 
 
 
 

@@ -92,13 +92,6 @@ _N-pin rotary selector switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) 
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

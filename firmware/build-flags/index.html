@@ -5097,6 +5097,10 @@ this is just the flags.</p>
 <td><code>NODE_HEALTH_TELEM=0</code></td>
 <td>You specifically want health telemetry <strong>off</strong>. It is on by default — omitting the line does not disable it.</td>
 </tr>
+<tr>
+<td><code>PANELBRIDGE_NODE_STATUS=0</code></td>
+<td><strong>PanelBridge only.</strong> You specifically want node reporting to the host <strong>off</strong> — the client then shows no boards. On by default.</td>
+</tr>
 </tbody>
 </table>
 <h3 id="never-in-a-panel">Never in a panel</h3>
@@ -5119,25 +5123,25 @@ actually does.</p>
 <td><code>NODE_ID</code></td>
 <td>none — omitting it fails to compile</td>
 <td>every STM32 env that links our libraries; <code>WiringCheck</code> omits it deliberately</td>
-<td><code>CANProtocol.cpp:225</code>, <code>PanelGroup.cpp:300</code>, <code>STM32Board.h:29</code></td>
+<td><code>CANProtocol.cpp:226</code>, <code>PanelGroup.cpp:300</code>, <code>STM32Board.h:29</code></td>
 </tr>
 <tr>
 <td><code>PANELBRIDGE_NODE_STATUS</code></td>
-<td>off</td>
-<td>on in <code>Templates/PanelBridge</code></td>
-<td><code>PanelBridge.cpp:41</code> + ~10 more</td>
+<td><strong>on</strong></td>
+<td><code>=0</code> in <code>Tests/PanelBridge</code> <code>test_input_dispatch_dcs</code> / <code>_hid</code></td>
+<td><code>PanelBridge.h:38</code> (default), <code>PanelBridge.cpp:42</code> + ~10 more</td>
 </tr>
 <tr>
 <td><code>NODE_HEALTH_TELEM</code></td>
 <td><strong>on</strong></td>
 <td>never set</td>
-<td><code>CANProtocol.cpp:497</code> (<code>serviceNodeStatus</code>, every node)</td>
+<td><code>CANProtocol.cpp:511</code> (<code>serviceNodeStatus</code>, every node)</td>
 </tr>
 <tr>
 <td><code>NODE_OVERHEAT_C</code></td>
 <td><strong>unset — by design</strong></td>
 <td>bench envs only</td>
-<td><code>CANProtocol.cpp:451</code>, <code>CANProtocol.cpp:514</code></td>
+<td><code>CANProtocol.cpp:452</code>, <code>CANProtocol.cpp:528</code></td>
 </tr>
 <tr>
 <td><code>FORCE_CLOCK_FALLBACK</code></td>
@@ -5237,17 +5241,10 @@ client's rendering). Enabling it for real is a one-line <code>-DNODE_OVERHEAT_C=
 calibration data. See <code>FirmwarePlan/00-decisions.md</code>.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title"><code>NODE_HEALTH_TELEM</code> is ON by default — disable with <code>=0</code>, not by omission</p>
-<p>It's the only flag in this group that's on when absent (<code>#if !defined(X) || (X)</code>). Leaving it
-out gets you health telemetry; you need an explicit <code>-DNODE_HEALTH_TELEM=0</code> to turn it off.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title"><code>PANELBRIDGE_NODE_STATUS</code> is off in the library but on in every shipped PanelBridge</p>
-<p>The library defaults it off, so the table above says "off" — but the PanelBridge template
-enables it, and so does the E2E example. Every build you would actually flash to a cockpit
-has it on. (Most of the 13 <code>Tests/PanelBridge</code> envs leave it off; they are testing other
-things.) The client half is already released, which is why the default flipped in the
-template rather than in the library.</p>
+<p class="admonition-title"><code>NODE_HEALTH_TELEM</code> and <code>PANELBRIDGE_NODE_STATUS</code> are ON by default — disable with <code>=0</code>, not by omission</p>
+<p>They're the two flags in this group that are on when absent. Leaving them out gets you health
+telemetry and the bridge's node reporting; you need an explicit <code>=0</code> to turn either off. The
+client depends on both, so a shipped build keeps them on.</p>
 </div>
 <h2 id="pdu-node-thresholds-pdu_">PDU node thresholds (<code>PDU_*</code>)</h2>
 <p>The power-distribution node (<code>PowerMonitor</code> library, <code>Panels/PDU_*</code>) takes every limit as a
@@ -5432,62 +5429,62 @@ is set only by its own <code>Firmware/Tests/&lt;Library&gt;/platformio.ini</code
 <tr>
 <td><code>ANALOGINPUT_TEST</code></td>
 <td>AnalogInput</td>
-<td><code>Inputs/AnalogInput/AnalogInput.h:85</code></td>
+<td><code>Inputs/AnalogInput/AnalogInput.h:104</code></td>
 </tr>
 <tr>
 <td><code>ANALOGMULTIPOS_TEST</code></td>
 <td>AnalogMultiPos</td>
-<td><code>Inputs/AnalogMultiPos/AnalogMultiPos.h:90</code></td>
+<td><code>Inputs/AnalogMultiPos/AnalogMultiPos.h:93</code></td>
 </tr>
 <tr>
 <td><code>DRUMDISPLAY_TEST</code></td>
 <td>DrumDisplay</td>
-<td><code>DrumDisplay/DrumDisplay.h:279</code></td>
+<td><code>DrumDisplay/DrumDisplay.h:278</code></td>
 </tr>
 <tr>
 <td><code>LED_TEST</code></td>
 <td>LED</td>
-<td><code>Outputs/LED/LED.h:68</code></td>
+<td><code>Outputs/LED/LED.h:67</code></td>
 </tr>
 <tr>
 <td><code>MULTIPOS_TEST</code></td>
 <td>MultiPosInput</td>
-<td><code>Inputs/MultiPosInput/MultiPosInput.h:60</code></td>
+<td><code>Inputs/MultiPosInput/MultiPosInput.h:59</code></td>
 </tr>
 <tr>
 <td><code>NEEDLEGAUGE_TEST</code></td>
 <td>NeedleGauge</td>
-<td><code>Outputs/NeedleGauge/NeedleGauge.h:78</code></td>
+<td><code>Outputs/NeedleGauge/NeedleGauge.h:77</code></td>
 </tr>
 <tr>
 <td><code>PANELBRIDGE_TEST</code></td>
 <td>PanelBridge</td>
-<td><code>PanelBridge/PanelBridge.h:85</code></td>
+<td><code>PanelBridge/PanelBridge.h:92</code></td>
 </tr>
 <tr>
 <td><code>ROTARYENCODER_TEST</code></td>
 <td>RotaryEncoder</td>
-<td><code>Inputs/RotaryEncoder/RotaryEncoder.h:109</code></td>
+<td><code>Inputs/RotaryEncoder/RotaryEncoder.h:108</code></td>
 </tr>
 <tr>
 <td><code>SHIFTBUS_TEST</code></td>
 <td>ShiftBus</td>
-<td><code>Helpers/ShiftBus/ShiftBus.h:142</code></td>
+<td><code>Helpers/ShiftBus/ShiftBus.h:141</code></td>
 </tr>
 <tr>
 <td><code>SIMGATEWAY_TEST</code></td>
 <td>SimGateway</td>
-<td><code>SimGateway/SimGateway.cpp:11</code> (no-op HID stubs)</td>
+<td><code>SimGateway/SimGateway.cpp:12</code> (no-op HID stubs)</td>
 </tr>
 <tr>
 <td><code>STEPPERMOTOR_TEST</code></td>
 <td>StepperMotor</td>
-<td><code>Drivers/StepperMotor/StepperMotor.h:162</code></td>
+<td><code>Drivers/StepperMotor/StepperMotor.h:151</code></td>
 </tr>
 <tr>
 <td><code>STM32BOARD_TEST</code></td>
 <td>STM32Board</td>
-<td><code>STM32Board/STM32Board.h:32</code></td>
+<td><code>STM32Board/STM32Board.h:31</code></td>
 </tr>
 </tbody>
 </table>

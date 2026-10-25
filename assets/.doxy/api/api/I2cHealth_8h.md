@@ -98,13 +98,6 @@ This is the C++ analog of a trait: shared behaviour lives here, the contract (`i
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

@@ -11,6 +11,7 @@
 #ifdef ARDUINO_ARCH_RP2040
 
 #include "SimGateway.h"
+#include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the release version HELLO_ACK reports
 
 // ── TinyUSB HID backend (production builds only) ──────────────────────────────
 //
@@ -449,7 +450,7 @@ void _calSendHelloAck(uint8_t seq) {
         OpenSkyhawk::CAL_PROTO_VERSION,
         (uint8_t)OpenSkyhawk::CAL_VERSION,
         OpenSkyhawk::AXIS_CAL_SLOTS,
-        SIMGATEWAY_FW_MAJOR, SIMGATEWAY_FW_MINOR, SIMGATEWAY_FW_PATCH,
+        OPENSKYHAWK_FW_MAJOR, OPENSKYHAWK_FW_MINOR, OPENSKYHAWK_FW_PATCH,
     };
     _calSend(OpenSkyhawk::CAL_T_HELLO_ACK, seq, p, sizeof(p));
 }
@@ -490,9 +491,10 @@ void _calSendCalData(uint8_t seq) {
     _calSend(OpenSkyhawk::CAL_T_CAL_DATA, seq, p, sizeof(p));
 }
 
-// Fixed 47 bytes in CalDiagField order — the client reads it with one typed view (#355).
+// Fixed CAL_DIAG_BYTES in CalDiagField order — the client reads it with one typed view (#355).
+// Zero-initialised, so the reserved tail goes out as 0 (#295).
 void _calSendDiag(uint8_t seq) {
-    uint8_t p[OpenSkyhawk::CAL_DIAG_BYTES];
+    uint8_t p[OpenSkyhawk::CAL_DIAG_BYTES] = {};
     _put32(p + OpenSkyhawk::CAL_DIAG_UPTIME_MS,         millis());
     _put32(p + OpenSkyhawk::CAL_DIAG_FIRST_UART_ERR_MS, _diag.firstUartErrMs);
     _put32(p + OpenSkyhawk::CAL_DIAG_LAST_UART_ERR_MS,  _diag.lastUartErrMs);
@@ -515,7 +517,7 @@ void _calSendDiag(uint8_t seq) {
     p[OpenSkyhawk::CAL_DIAG_RESET_REASON]     = _diag.resetReason;
     _calSend(OpenSkyhawk::CAL_T_DIAG, seq, p, sizeof(p));
 }
-static_assert(OpenSkyhawk::CAL_DIAG_RESET_REASON + 1 == OpenSkyhawk::CAL_DIAG_BYTES,
+static_assert(OpenSkyhawk::CAL_DIAG_RESET_REASON + 1 == OpenSkyhawk::CAL_DIAG_RESERVED,
               "CalDiagField grew: extend _calSendDiag to fill it");
 
 // Write a candidate blob to flash and, only if that succeeds, make it the live calibration.

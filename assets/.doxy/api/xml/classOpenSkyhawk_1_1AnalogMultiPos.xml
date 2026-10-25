@@ -13,13 +13,29 @@
         <qualifiedname>OpenSkyhawk::AnalogMultiPos::DEFAULT_DEADBAND</qualifiedname>
         <initializer>= 1000</initializer>
         <briefdescription>
-<para>counts trimmed from each band edge </para>
         </briefdescription>
         <detaileddescription>
+<para>counts trimmed from each band edge </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="50" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="50" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="49" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1ac23d6656b579506fe49229b85d77b431" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::AnalogMultiPos::NO_DEADBAND</definition>
+        <argsstring></argsstring>
+        <name>NO_DEADBAND</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::NO_DEADBAND</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>No deadband — bands meet edge to edge. Pass this, not a literal <computeroutput>0</computeroutput>: a literal <computeroutput>0</computeroutput> is also a null <computeroutput>posVals</computeroutput> pointer, so <computeroutput>AnalogMultiPos(id, pin, n, 0)</computeroutput> is ambiguous and doesn&apos;t compile. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="52" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="52" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1aafd102fc9ba5d0ce2dda27c4d5d97e04" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint16_t</type>
@@ -35,7 +51,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="51" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="51" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="53" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="53" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -51,7 +67,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="105" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="105" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="108" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="108" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1a3ebc83a6e8849b4e85be1a6c5aa5121a" prot="private" static="no" mutable="no">
         <type>const uint16_t *</type>
@@ -66,7 +82,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="106" column="20" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="106" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="109" column="20" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="109" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1adcc6e72eaa819b6d0e4e846dff681796" prot="private" static="no" mutable="no">
         <type>uint16_t</type>
@@ -80,7 +96,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="107" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="107" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="110" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="110" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1a296c8316008f369488a514d61fef6088" prot="private" static="no" mutable="no">
         <type>uint16_t</type>
@@ -95,7 +111,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="108" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="108" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="111" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="111" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1ade50589de0b0f14d011291e7e586c876" prot="private" static="no" mutable="no">
         <type>uint32_t</type>
@@ -109,7 +125,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="109" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="109" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="112" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="112" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1aac4b12121b1c014962c7b41214ff4265" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -125,7 +141,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="110" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="110" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="113" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="113" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -197,7 +213,7 @@
 <parametername>deadband</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>counts trimmed from each band edge for hysteresis (default 1000). </para>
+<para>counts trimmed from each band edge for hysteresis (default 1000; NO_DEADBAND for none). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -205,7 +221,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="63" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="12" bodyend="19"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="66" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="12" bodyend="19"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1ae03d4d0a5037d6c74586aef3aceef3a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -263,7 +279,7 @@
 <parametername>deadband</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>counts trimmed from each band edge (default 1000). </para>
+<para>counts trimmed from each band edge (default 1000; NO_DEADBAND for none). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -271,7 +287,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="74" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="21" bodyend="27"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="77" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="21" bodyend="27"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1abea4b6cb61409c93dbf54145bb56a758" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -287,7 +303,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="78" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="29" bodyend="31"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="81" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="29" bodyend="31"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1a1e53e05b23249ae3c8eda91c84e87ffe" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -304,7 +320,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="88" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="33" bodyend="36"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="91" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="33" bodyend="36"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -326,7 +342,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="98" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="79" bodyend="92"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="101" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="79" bodyend="92"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-func">
@@ -347,7 +363,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="101" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="48" bodyend="77"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="104" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="48" bodyend="77"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1ad3e9d3eb2039288db52fcde9bb08df1f" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>uint16_t</type>
@@ -366,7 +382,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="102" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="38" bodyend="42"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="105" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="38" bodyend="42"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1a6ac4fc6fd08fa209d889b93bc2387df4" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -385,7 +401,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="103" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="44" bodyend="46"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="106" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="44" bodyend="46"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -437,7 +453,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="48" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="48" bodyend="115"/>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="47" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="47" bodyend="118"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a296c8316008f369488a514d61fef6088" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_cachedIdx</name></member>
       <member refid="classOpenSkyhawk_1_1MultiPosInput_1a89c35c04accd28662c3c2686cb24fe09" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_controlId</name></member>
@@ -457,6 +473,7 @@
       <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a6ac4fc6fd08fa209d889b93bc2387df4" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>isValid</name></member>
       <member refid="classOpenSkyhawk_1_1MultiPosInput_1ad32d74dbe25f0b9313c8341f9bd5d8a2" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>MultiPosInput</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1ac23d6656b579506fe49229b85d77b431" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>NO_DEADBAND</name></member>
       <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>NO_POSITION</name></member>
       <member refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>poll</name></member>
       <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1aafd102fc9ba5d0ce2dda27c4d5d97e04" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>POLL_MS</name></member>

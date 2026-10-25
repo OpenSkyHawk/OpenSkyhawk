@@ -108,13 +108,6 @@ Ownership: the sketch constructs the concrete U8G2 type (it knows the panel — 
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

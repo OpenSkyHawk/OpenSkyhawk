@@ -70,7 +70,7 @@
 |  void | [**setDebug**](#function-setdebug) (bool on) <br>_Enable or disable DiagSerial output._  |
 |  void | [**setLinkActive**](#function-setlinkactive) (bool active) <br>_Signal that application data is actively flowing → CONNECTED (green solid)._  |
 |  void | [**setWarning**](#function-setwarning) (bool on=true) <br>_Raise or clear the WARNING condition — red/green alternating at 500 ms._  |
-|  void | [**tick**](#function-tick) () <br>_Drive LED animations. Call once per loop() iteration._  |
+|  void | [**tick**](#function-tick) () <br>_Drive LED animations. Called once per loop() iteration by the node library._  |
 
 
 
@@ -195,6 +195,13 @@ bool STM32Board::clockFault ()
 
 When set, the CAN bit timing (tuned for 36 MHz APB1) is wrong for the actual clock, so callers MUST NOT drive the bus — a faulted node transmitting at the wrong rate corrupts every other frame. [**CANProtocol::start()**](namespaceCANProtocol.md#function-start) consults this and comes up in listen-only (silent) mode instead. Latched once at boot; read-only. 
 
+**Note:**
+
+Library-internal: read by [**CANProtocol**](namespaceCANProtocol.md) for node health. Not sketch API — not covered by the compatibility policy (#295). 
+
+
+
+
 
         
 
@@ -305,6 +312,13 @@ Holds its own static prev-fault state. A firmware binary has exactly ONE node id
 
 
 
+**Note:**
+
+Library-internal: used by the node-status service. Not sketch API — not covered by the compatibility policy (#295). 
+
+
+
+
 
         
 
@@ -370,6 +384,13 @@ Die temperature in whole °C, or DIE\_TEMP\_UNAVAILABLE ([**NodeStatus.h**](Node
 
 
 
+**Note:**
+
+Library-internal: read by [**CANProtocol**](namespaceCANProtocol.md) for HEALTH\_n. Not sketch API — not covered by the compatibility policy (#295). 
+
+
+
+
 
         
 
@@ -398,6 +419,13 @@ Uses the STM32F103 typical Vrefint of 1.20 V (the F103 has no VREFINT\_CAL facto
 **Returns:**
 
 Vdd in millivolts, or 0 if the internal reference is unavailable. 
+
+
+
+
+**Note:**
+
+Library-internal: a diagnostic for the node libraries. Not sketch API — not covered by the compatibility policy (#295). 
 
 
 
@@ -462,6 +490,13 @@ Call setLinkActive(true) on each unit of inbound data ([**PanelBridge**](namespa
 
 
 
+**Note:**
+
+Library-internal: driven by [**PanelGroup**](namespacePanelGroup.md) and [**PanelBridge**](namespacePanelBridge.md). Not sketch API — not covered by the compatibility policy (#295). 
+
+
+
+
 
         
 
@@ -492,6 +527,13 @@ Call when a degraded condition is detected that is not represented by CanStatus 
 
 
 
+**Note:**
+
+Library-internal: raised by [**CANProtocol**](namespaceCANProtocol.md) and [**PanelBridge**](namespacePanelBridge.md). Not sketch API — not covered by the compatibility policy (#295). 
+
+
+
+
 
         
 
@@ -501,7 +543,7 @@ Call when a degraded condition is detected that is not represented by CanStatus 
 
 ### function tick 
 
-_Drive LED animations. Call once per loop() iteration._ 
+_Drive LED animations. Called once per loop() iteration by the node library._ 
 ```C++
 void STM32Board::tick () 
 ```
@@ -509,6 +551,13 @@ void STM32Board::tick ()
 
 
 Advances blink state using millis(). Fully non-blocking. 
+
+**Note:**
+
+Library-internal: [**PanelGroup**](namespacePanelGroup.md) / [**PanelBridge**](namespacePanelBridge.md) / [**PduNode**](namespacePduNode.md) call it from their loop(). Not sketch API — not covered by the compatibility policy (#295). 
+
+
+
 
 
         

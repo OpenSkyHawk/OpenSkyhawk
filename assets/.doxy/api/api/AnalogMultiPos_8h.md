@@ -92,13 +92,6 @@ _Resistor-ladder multi-position selector for_ [_**OpenSkyhawk**_](namespaceOpenS
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

@@ -812,8 +812,16 @@
 * **NODE\_TELEM\_PROTO\_VERSION** ([**NodeStatus.h**](NodeStatus_8h.md))
 
 
+## o
+
+* **OPENSKYHAWK\_FW\_MAJOR** ([**FirmwareVersion.h**](FirmwareVersion_8h.md))
+* **OPENSKYHAWK\_FW\_MINOR** ([**FirmwareVersion.h**](FirmwareVersion_8h.md))
+* **OPENSKYHAWK\_FW\_PATCH** ([**FirmwareVersion.h**](FirmwareVersion_8h.md))
+
+
 ## p
 
+* **PANELBRIDGE\_NODE\_STATUS** ([**PanelBridge.h**](PanelBridge_8h.md))
 * **PDU\_12V\_OC\_MA** ([**PduConfig.h**](PduConfig_8h.md))
 * **PDU\_12V\_OV\_MV** ([**PduConfig.h**](PduConfig_8h.md))
 * **PDU\_12V\_UV\_MV** ([**PduConfig.h**](PduConfig_8h.md))
@@ -847,9 +855,6 @@
 * **SHIFTBUS\_MISO** ([**ShiftBus.cpp**](ShiftBus_8cpp.md))
 * **SHIFTBUS\_MOSI** ([**ShiftBus.cpp**](ShiftBus_8cpp.md))
 * **SHIFTBUS\_SCK** ([**ShiftBus.cpp**](ShiftBus_8cpp.md))
-* **SIMGATEWAY\_FW\_MAJOR** ([**SimGateway.h**](SimGateway_8h.md))
-* **SIMGATEWAY\_FW\_MINOR** ([**SimGateway.h**](SimGateway_8h.md))
-* **SIMGATEWAY\_FW\_PATCH** ([**SimGateway.h**](SimGateway_8h.md))
 
 
 

@@ -91,13 +91,6 @@ _Shared base for multi-position selector inputs (SwitchMultiPos, AnalogMultiPos,
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

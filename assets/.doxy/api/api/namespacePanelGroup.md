@@ -399,7 +399,7 @@ Performs the 8-step boot sequence:
 * [**CANProtocol::start()**](namespaceCANProtocol.md#function-start).
 * forceReport() burst — one EVT per registered input.
 * flushBatched(canIdEvt(NODE\_ID)).
-* READY\_n frame (canIdReady(NODE\_ID), DLC=0). (Heartbeat/HEALTH timers arm on the first [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus) call in [**loop()**](namespacePanelGroup.md#function-loop).)
+* READY\_n frame ([**CANProtocol::sendReady()**](namespaceCANProtocol.md#function-sendready): the firmware version, #295). (Heartbeat/HEALTH timers arm on the first [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus) call in [**loop()**](namespacePanelGroup.md#function-loop).)
 
 
 

@@ -234,7 +234,7 @@ void setup() {
     auto& d = out();
     d.print(F("[PDU] NODE_ID=")); d.println((int)NODE_ID);
     printCal();
-    CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+    CANProtocol::sendReady();
 }
 
 void loop() {

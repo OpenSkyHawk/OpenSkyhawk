@@ -4908,75 +4908,79 @@
 <tbody>
 <tr>
 <td style="text-align: right;">const <a href="../structOpenSkyhawk_1_1AccelPoint/"><strong>AccelPoint</strong></a> *</td>
-<td style="text-align: left;"><a href="#variable-accel"><strong>accel</strong></a>  <br><em>acceleration curve (not owned)</em></td>
+<td style="text-align: left;"><a href="#variable-accel"><strong>accel</strong></a>   = <code>[**kSwitecDefaultAccel**](namespaceOpenSkyhawk.md#variable-kswitecdefaultaccel)</code><br><em>acceleration curve (not owned)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint8_t</td>
-<td style="text-align: left;"><a href="#variable-acceln"><strong>accelN</strong></a>  <br><em>entries in accel[]</em></td>
+<td style="text-align: left;"><a href="#variable-acceln"><strong>accelN</strong></a>   = <code>[**kSwitecDefaultAccelN**](namespaceOpenSkyhawk.md#variable-kswitecdefaultacceln)</code><br><em>entries in accel[]</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
-<td style="text-align: left;"><a href="#variable-autorecal"><strong>autoRecal</strong></a>  <br><em>re-zero to homePosition when the sensor next asserts</em></td>
+<td style="text-align: left;"><a href="#variable-autorecal"><strong>autoRecal</strong></a>   = <code>false</code><br><em>re-zero to homePosition when the sensor next asserts</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint8_t</td>
-<td style="text-align: left;"><a href="#variable-deadband"><strong>deadband</strong></a>  <br><em>ignore target changes within this many steps</em></td>
+<td style="text-align: left;"><a href="#variable-deadband"><strong>deadband</strong></a>   = <code>1</code><br><em>ignore target changes within this many steps</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../namespaceOpenSkyhawk/#enum-homemode"><strong>HomeMode</strong></a></td>
-<td style="text-align: left;"><a href="#variable-home"><strong>home</strong></a>  <br><em>homing strategy</em></td>
+<td style="text-align: left;"><a href="#variable-home"><strong>home</strong></a>   = <code>HomeMode::STALL</code><br><em>homing strategy</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">int16_t</td>
-<td style="text-align: left;"><a href="#variable-homeposition"><strong>homePosition</strong></a>  <br><em>step index assigned at the home reference</em></td>
+<td style="text-align: left;"><a href="#variable-homeposition"><strong>homePosition</strong></a>   = <code>0</code><br><em>step index assigned at the home reference</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
-<td style="text-align: left;"><a href="#variable-homeseekclockwise"><strong>homeSeekClockwise</strong></a>  <br><em>direction to seek the home reference</em></td>
+<td style="text-align: left;"><a href="#variable-homeseekclockwise"><strong>homeSeekClockwise</strong></a>   = <code>false</code><br><em>direction to seek the home reference</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint16_t</td>
-<td style="text-align: left;"><a href="#variable-homestepus"><strong>homeStepUs</strong></a>  <br><em>homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)</em></td>
+<td style="text-align: left;"><a href="#variable-homestepus"><strong>homeStepUs</strong></a>   = <code>0</code><br><em>homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">int16_t</td>
-<td style="text-align: left;"><a href="#variable-maxpos"><strong>maxPos</strong></a>  <br><em>upper travel clamp for moveTo (ignored if wrap)</em></td>
+<td style="text-align: left;"><a href="#variable-maxpos"><strong>maxPos</strong></a>   = <code>945</code><br><em>upper travel clamp for moveTo (ignored if wrap); default = rangeSteps</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">int16_t</td>
-<td style="text-align: left;"><a href="#variable-minpos"><strong>minPos</strong></a>  <br><em>lower travel clamp for moveTo (ignored if wrap)</em></td>
+<td style="text-align: left;"><a href="#variable-minpos"><strong>minPos</strong></a>   = <code>0</code><br><em>lower travel clamp for moveTo (ignored if wrap)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">int16_t</td>
-<td style="text-align: left;"><a href="#variable-parkposition"><strong>parkPosition</strong></a>  <br><em>step to rest at after homing</em></td>
+<td style="text-align: left;"><a href="#variable-parkposition"><strong>parkPosition</strong></a>   = <code>0</code><br><em>step to rest at after homing</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../namespaceOpenSkyhawk/#enum-steppattern"><strong>StepPattern</strong></a></td>
-<td style="text-align: left;"><a href="#variable-pattern"><strong>pattern</strong></a>  <br><em>coil drive sequence</em></td>
+<td style="text-align: left;"><a href="#variable-pattern"><strong>pattern</strong></a>   = <code>StepPattern::SWITEC\_6STATE</code><br><em>coil drive sequence</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint16_t</td>
-<td style="text-align: left;"><a href="#variable-rangesteps"><strong>rangeSteps</strong></a>  <br><em>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev</em></td>
+<td style="text-align: left;"><a href="#variable-rangesteps"><strong>rangeSteps</strong></a>   = <code>945</code><br><em>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 945 = X27.589 ~315°; 0 → stepsPerRev</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint32_t</td>
-<td style="text-align: left;"><a href="#variable-recaldebouncems"><strong>recalDebounceMs</strong></a>  <br><em>minimum interval between auto-recals</em></td>
+<td style="text-align: left;"><a href="#variable-recaldebouncems"><strong>recalDebounceMs</strong></a>   = <code>0</code><br><em>minimum interval between auto-recals</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../structOpenSkyhawk_1_1HomeSensor/"><strong>HomeSensor</strong></a></td>
-<td style="text-align: left;"><a href="#variable-sensor"><strong>sensor</strong></a>  <br><em>SENSOR-mode params (ignored for STALL)</em></td>
+<td style="text-align: left;"><a href="#variable-sensor"><strong>sensor</strong></a>   = <code>{ true, 5, 2000 }</code><br><em>SENSOR-mode params (ignored for STALL)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint16_t</td>
-<td style="text-align: left;"><a href="#variable-stepsperrev"><strong>stepsPerRev</strong></a>  <br><em>steps per full revolution (calibrate empirically)</em></td>
+<td style="text-align: left;"><a href="#variable-stepsperrev"><strong>stepsPerRev</strong></a>   = <code>1080</code><br><em>steps per full revolution (X27/BKA datasheet, 1/3°/step; calibrate empirically)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
-<td style="text-align: left;"><a href="#variable-wrap"><strong>wrap</strong></a>  <br><em>continuous-rotation gauge (shortest-path, no clamp)</em></td>
+<td style="text-align: left;"><a href="#variable-wrap"><strong>wrap</strong></a>   = <code>false</code><br><em>continuous-rotation gauge (shortest-path, no clamp)</em></td>
 </tr>
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
+<p>Every field has a default — the X27 / VID-29 / BKA-30 air-core family's — so a sketch sets only what differs, by name (#295): 
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="w"> </span><span class="n">OIL_MOTOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">maxPos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">960</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">rangeSteps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">960</span><span class="w"> </span><span class="p">};</span><span class="w">  </span><span class="c1">// 320° BKA-30</span>
+</code></pre></div>
+ Fields are only ever appended, each with a default, so a new setting never breaks a sketch; a positional <code>{…}</code> initialiser that stops early gets the defaults for the rest.</p>
 <p><strong>Note:</strong></p>
 <p><code>accel</code> must point at storage that outlives the <a href="../classOpenSkyhawk_1_1StepperMotor/"><strong>StepperMotor</strong></a> (e.g. a static const table). <code>homePosition</code> / <code>parkPosition</code> / <code>minPos</code> / <code>maxPos</code> are in steps; a sketch may compute them from degrees as <code>round</code>(deg*stepsPerRev/360). </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
@@ -5029,7 +5033,7 @@
 <hr>
 
 <h3 id="variable-maxpos">variable maxPos</h3>
-<p><em>upper travel clamp for moveTo (ignored if wrap)</em> 
+<p><em>upper travel clamp for moveTo (ignored if wrap); default = rangeSteps</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">maxPos</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
@@ -5053,7 +5057,7 @@
 <hr>
 
 <h3 id="variable-rangesteps">variable rangeSteps</h3>
-<p><em>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev</em> 
+<p><em>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 945 = X27.589 ~315°; 0 → stepsPerRev</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">rangeSteps</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
@@ -5071,7 +5075,7 @@
 <hr>
 
 <h3 id="variable-stepsperrev">variable stepsPerRev</h3>
-<p><em>steps per full revolution (calibrate empirically)</em> 
+<p><em>steps per full revolution (X27/BKA datasheet, 1/3°/step; calibrate empirically)</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">stepsPerRev</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>

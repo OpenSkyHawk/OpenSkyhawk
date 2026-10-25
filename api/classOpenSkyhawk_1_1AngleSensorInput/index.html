@@ -4657,17 +4657,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#public-static-attributes-inherited-from-openskyhawkanaloginput" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Static Attributes inherited from OpenSkyhawk::AnalogInput
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#public-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4881,34 +4870,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="public-static-attributes-inherited-from-openskyhawkanaloginput">Public Static Attributes inherited from OpenSkyhawk::AnalogInput</h2>
-<p>See <a href="../classOpenSkyhawk_1_1AnalogInput/">OpenSkyhawk::AnalogInput</a></p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogInput/#variable-default_ewma_shift"><strong>DEFAULT_EWMA_SHIFT</strong></a>   = <code>3</code><br><em>EWMA α = 1/2^3 = 1/8.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogInput/#variable-default_hysteresis"><strong>DEFAULT_HYSTERESIS</strong></a>   = <code>128</code><br><em>counts on the 16-bit output.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogInput/#variable-default_poll_ms"><strong>DEFAULT_POLL_MS</strong></a>   = <code>8</code><br><em>default min interval between ADC reads (ms).</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogInput/#variable-max_ewma_shift"><strong>MAX_EWMA_SHIFT</strong></a>   = <code>15</code><br><em>cap: scaled&lt;&lt;shift must fit int32 at full scale.</em></td>
-</tr>
-</tbody>
-</table>
 <h2 id="public-functions">Public Functions</h2>
 <table>
 <thead>
@@ -4920,7 +4881,7 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-anglesensorinput"><strong>AngleSensorInput</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, float centerDeg, float travelDeg, uint16_t pollMs=<a href="../classOpenSkyhawk_1_1AnalogInput/#variable-default_poll_ms"><strong>DEFAULT_POLL_MS</strong></a>) <br><em>Construct an absolute angle input.</em></td>
+<td style="text-align: left;"><a href="#function-anglesensorinput"><strong>AngleSensorInput</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, float centerDeg, float travelDeg, const <a href="../structOpenSkyhawk_1_1AngleConfig/"><strong>AngleConfig</strong></a> &amp; cfg={}) <br><em>Construct an absolute angle input.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4936,7 +4897,7 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogInput/#function-analoginput"><strong>AnalogInput</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, bool reverse=false, uint16_t minRaw=0, uint16_t maxRaw=65535, uint16_t hysteresis=<a href="../classOpenSkyhawk_1_1AnalogInput/#variable-default_hysteresis"><strong>DEFAULT_HYSTERESIS</strong></a>, uint8_t ewmaShift=<a href="../classOpenSkyhawk_1_1AnalogInput/#variable-default_ewma_shift"><strong>DEFAULT_EWMA_SHIFT</strong></a>, uint16_t pollMs=<a href="../classOpenSkyhawk_1_1AnalogInput/#variable-default_poll_ms"><strong>DEFAULT_POLL_MS</strong></a>) <br><em>Construct a continuous analog input.</em></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogInput/#function-analoginput"><strong>AnalogInput</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, const <a href="../structOpenSkyhawk_1_1AnalogConfig/"><strong>AnalogConfig</strong></a> &amp; cfg={}) <br><em>Construct a continuous analog input.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -5067,7 +5028,7 @@
 <span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span>
 <span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">centerDeg</span><span class="p">,</span>
 <span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">travelDeg</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">pollMs</span><span class="o">=</span><span class="n">DEFAULT_POLL_MS</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">AngleConfig</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">cfg</span><span class="o">=</span><span class="p">{}</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
 <p><strong>Parameters:</strong></p>
@@ -5076,7 +5037,7 @@
 <li><code>pin</code> analog <a href="../classPinRef/"><strong>PinRef</strong></a> for the sensor's output (STM32 ADC pin or <a href="../classADS1115/"><strong>ADS1115</strong></a> channel). </li>
 <li><code>centerDeg</code> sensor angle at the knob's centre position. Wraps, so 370 == 10. </li>
 <li><code>travelDeg</code> total mechanical travel, centred on centerDeg: the knob spans centerDeg ± travelDeg/2. Clamped to (0, 360) — up to just under a full turn, because the ends of a full turn are one sensor angle. The wrap point sits opposite centerDeg, so the closer travel comes to 360° the nearer that break sits to the ends of travel. </li>
-<li><code>pollMs</code> min interval between ADC reads, ms (default DEFAULT_POLL_MS). Per instance; an <a href="../classADS1115/"><strong>ADS1115</strong></a> <a href="../classPinRef/"><strong>PinRef</strong></a> blocks ~8 ms per conversion regardless. </li>
+<li><code>cfg</code> tuning — hysteresis, smoothing, poll rate; set only what differs. </li>
 </ul>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>

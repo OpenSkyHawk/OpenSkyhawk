@@ -4759,8 +4759,6 @@
 <p>One DrumDisplay instance drives ONE OLED panel through a caller-owned U8G2 object. It renders a row of digit "tapes" that ease toward their target value with a mechanical-drum cascade (units rolls continuously; higher places dwell and roll only on carry), optionally followed by a 2-state hemisphere/mode flag tape. Multi-digit DCS-BIOS readouts (APN-153 SPEED, NAV LAT/LON, MAGVAR, ARC-51 frequency, BDHI range) are reconstructed from their per-digit DCS-BIOS output addresses via a DrumReadout descriptor.</p>
 <p>Renderer ported from the bench-verified SH1106 prototype (Tests/DrumDisplay roll_reference): per-cell setClipWindow + drawTape/drawFlag + per-place ease. Adds snap-then-settle, DCS-BIOS address→digit decode, and descriptor-driven geometry auto-fit.</p>
 <p>Ownership: the sketch constructs the concrete U8G2 type (it knows the panel — SH1106 vs SSD1306, size, rotation), calls Wire.begin() and oled.begin(), and passes the U8G2 by reference. DrumDisplay calls only base-class U8G2 methods. For N panels on one TCA9548A, construct N DrumDisplay instances sharing one I2cMux, each with its own channel; the class re-selects its channel before every buffer send.</p>
-<p><strong>Version:</strong></p>
-<p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />

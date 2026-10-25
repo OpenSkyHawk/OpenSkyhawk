@@ -4956,7 +4956,11 @@ lines between your points.</p>
 <p><strong>What <code>makeX27Config</code> fills in for you.</strong> 1,080 steps per full turn, and 945 steps
 (about 315°) between the motor's two end stops. Homing drives that distance plus an eighth,
 so it reaches the stop from anywhere. A motor with different stops, such as a 320° BKA-30,
-takes its own value; the full list of options is in the API reference.</p>
+takes its own value. Write the description by name instead, giving only what differs:</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="w"> </span><span class="n">OIL_MOTOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">maxPos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">960</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">rangeSteps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">960</span><span class="w"> </span><span class="p">};</span>
+</code></pre></div>
+<p>Everything you leave out keeps the X27 default. The full list of settings is in the API
+reference.</p>
 <p><strong>Smooth moves.</strong> Every move speeds up and slows down gently, using the same motion as
 Guy Carpenter's SwitecX25 library. Changes of a single step are ignored, so a value that
 flickers in the sim doesn't make the needle shiver.</p>

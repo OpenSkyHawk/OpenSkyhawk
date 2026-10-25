@@ -35,6 +35,7 @@ _Magnetic angle sensor as an absolute knob / axis, for_ [_**OpenSkyhawk**_](name
 
 | Type | Name |
 | ---: | :--- |
+| struct | [**AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md) <br>_Tuning for an_ [_**AngleSensorInput**_](classOpenSkyhawk_1_1AngleSensorInput.md) _— the_[_**AnalogConfig**_](structOpenSkyhawk_1_1AnalogConfig.md) _fields that still mean something once the raw window comes from the centre and travel (#295). Set by name:_`{ .hysteresis = 512 }` _. Fields are only ever appended, each with a default._ |
 | class | [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md) <br>_Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis._  |
 
 
@@ -87,13 +88,6 @@ _Magnetic angle sensor as an absolute knob / axis, for_ [_**OpenSkyhawk**_](name
 
 
 ## Detailed Description
-
-
-
-
-**Version:**
-
-0.1.0 
 
 
 

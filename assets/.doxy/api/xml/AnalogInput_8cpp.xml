@@ -130,98 +130,109 @@
 <codeline lineno="11"><highlight class="normal"></highlight></codeline>
 <codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight></codeline>
-<codeline lineno="14"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1AnalogInput_1a322efb80c3873b9f2455b60ace04ba73" kindref="member">AnalogInput::AnalogInput</ref>(uint16_t<sp/>controlId,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>pin,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reverse,</highlight></codeline>
-<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>minRaw,<sp/>uint16_t<sp/>maxRaw,</highlight></codeline>
-<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>hysteresis,<sp/>uint8_t<sp/>ewmaShift,<sp/>uint16_t<sp/>pollMs)</highlight></codeline>
-<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>_controlId(controlId),</highlight></codeline>
-<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_pin(pin),</highlight></codeline>
-<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_reverse(reverse),</highlight></codeline>
-<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_minRaw(minRaw),</highlight></codeline>
-<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_maxRaw(maxRaw),</highlight></codeline>
-<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_hysteresis(hysteresis),</highlight></codeline>
-<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_ewmaShift(ewmaShift<sp/>&gt;<sp/>MAX_EWMA_SHIFT<sp/>?<sp/>MAX_EWMA_SHIFT<sp/>:<sp/>ewmaShift),</highlight></codeline>
-<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_pollMs(pollMs),<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>not<sp/>clamped:<sp/>0<sp/>=<sp/>read<sp/>every<sp/>loop<sp/>iteration<sp/>(see<sp/>header<sp/>@param)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_acc(0),</highlight></codeline>
-<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_smoothed(0),</highlight></codeline>
-<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_lastSent(0),</highlight></codeline>
-<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_lastReadMs(0),</highlight></codeline>
-<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_initialized(false)<sp/>{}</highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::configure()<sp/>{</highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>_pin.configureAsInput();</highlight></codeline>
-<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight></codeline>
-<codeline lineno="35"><highlight class="normal">uint16_t<sp/>AnalogInput::readRaw()<sp/>{</highlight></codeline>
-<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ANALOGINPUT_TEST</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>_readCount++;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>one<sp/>ADC<sp/>read,<sp/>on<sp/>every<sp/>path:<sp/>poll(),<sp/>forceReport(),<sp/>debugStep()</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_testRawSet)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_testRaw;</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_pin.readAnalog();</highlight></codeline>
-<codeline lineno="41"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="normal">uint16_t<sp/>AnalogInput::readScaled()<sp/>{</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>raw<sp/>=<sp/>readRaw();<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>virtual:<sp/>AngleSensorInput<sp/>re-centres<sp/>before<sp/>the<sp/>clamp<sp/>below</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//<sp/>HYSTERESIS_AUTO<sp/>→<sp/>the<sp/>route&apos;s<sp/>default;<sp/>an<sp/>explicit<sp/>value<sp/>is<sp/>used<sp/>as<sp/>given.<sp/>The<sp/>route<sp/>is<sp/>the<sp/>one</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>applies:<sp/>the<sp/>DCS-BIOS<sp/>range<sp/>goes<sp/>to<sp/>DCS,<sp/>everything<sp/>else<sp/>to<sp/>HID.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">uint16_t<sp/>resolveHysteresis(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>hysteresis)<sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(hysteresis<sp/>!=<sp/><ref refid="structOpenSkyhawk_1_1AnalogConfig_1a454e635856bcfa15d6b3d5bbdc65cda5" kindref="member">AnalogConfig::HYSTERESIS_AUTO</ref>)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hysteresis;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>dcs<sp/>=<sp/>controlId<sp/>&gt;=<sp/><ref refid="CANProtocol_8h_1a05ae1732f5ce786b88fff167c94adba2" kindref="member">CTRL_ID_DCS_MIN</ref><sp/>&amp;&amp;<sp/>controlId<sp/>&lt;=<sp/><ref refid="CANProtocol_8h_1a641852573b3979285d256589876be93b" kindref="member">CTRL_ID_DCS_MAX</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dcs<sp/>?<sp/><ref refid="structOpenSkyhawk_1_1AnalogConfig_1a5ee14b8bfd378fbf342c2d91b927c5c7" kindref="member">AnalogConfig::DCS_HYSTERESIS</ref><sp/>:<sp/><ref refid="structOpenSkyhawk_1_1AnalogConfig_1ac3b08361220add0b770b11756ade6c25" kindref="member">AnalogConfig::HID_HYSTERESIS</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1AnalogInput_1ae85d93b9dc40eaf22ec3407e48ebcd7e" kindref="member">AnalogInput::AnalogInput</ref>(uint16_t<sp/>controlId,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>pin,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AnalogConfig&amp;<sp/>cfg)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>_controlId(controlId),</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_pin(pin),</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_reverse(cfg.reverse),</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_minRaw(cfg.minRaw),</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_maxRaw(cfg.maxRaw),</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_hysteresis(resolveHysteresis(controlId,<sp/>cfg.hysteresis)),</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_ewmaShift(cfg.ewmaShift<sp/>&gt;<sp/>AnalogConfig::MAX_EWMA_SHIFT<sp/>?<sp/>AnalogConfig::MAX_EWMA_SHIFT</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>cfg.ewmaShift),</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_pollMs(cfg.pollMs),<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>not<sp/>clamped:<sp/>0<sp/>=<sp/>read<sp/>every<sp/>loop<sp/>iteration<sp/>(see<sp/>AnalogConfig)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_acc(0),</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_smoothed(0),</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_lastSent(0),</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_lastReadMs(0),</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_initialized(false)<sp/>{}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::configure()<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>_pin.configureAsInput();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(raw<sp/>&lt;<sp/>_minRaw)<sp/>raw<sp/>=<sp/>_minRaw;</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(raw<sp/>&gt;<sp/>_maxRaw)<sp/>raw<sp/>=<sp/>_maxRaw;</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"></highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(raw<sp/>-<sp/>minRaw)<sp/>≤<sp/>65535,<sp/>×<sp/>65535<sp/>≤<sp/>4.29e9<sp/>→<sp/>fits<sp/>uint32;<sp/>no<sp/>Arduino<sp/>map()<sp/>overflow.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>span<sp/><sp/><sp/>=<sp/>(uint32_t)_maxRaw<sp/>-<sp/>_minRaw;</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>scaled<sp/>=<sp/>span<sp/>?<sp/>(uint16_t)((uint32_t)(raw<sp/>-<sp/>_minRaw)<sp/>*<sp/>65535u<sp/>/<sp/>span)<sp/>:<sp/>0;</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_reverse<sp/>?<sp/>(uint16_t)(65535u<sp/>-<sp/>scaled)<sp/>:<sp/>scaled;</highlight></codeline>
-<codeline lineno="53"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>AnalogInput::shouldEmit(uint16_t<sp/>v)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Ports<sp/>DcsBios<sp/>PotentiometerEWMA:<sp/>emit<sp/>on<sp/>&gt;<sp/>hysteresis<sp/>movement,<sp/>or<sp/>at<sp/>a<sp/>rail<sp/>moving<sp/>into<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(_lastSent<sp/>&gt;<sp/>v<sp/>&amp;&amp;<sp/>(uint16_t)(_lastSent<sp/>-<sp/>v)<sp/>&gt;<sp/>_hysteresis)</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>||<sp/>(v<sp/>&gt;<sp/>_lastSent<sp/>&amp;&amp;<sp/>(uint16_t)(v<sp/>-<sp/>_lastSent)<sp/>&gt;<sp/>_hysteresis)</highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>||<sp/>(v<sp/>&gt;<sp/>(uint16_t)(65535u<sp/>-<sp/>_hysteresis)<sp/>&amp;&amp;<sp/>v<sp/>&gt;<sp/>_lastSent)</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>||<sp/>(v<sp/>&lt;<sp/>_hysteresis<sp/>&amp;&amp;<sp/>v<sp/>&lt;<sp/>_lastSent);</highlight></codeline>
-<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="62"><highlight class="normal"></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::emit(uint16_t<sp/>v,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>init)<sp/>{</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastSent<sp/>=<sp/>v;</highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" kindref="member">CANProtocol::sendBatched</ref>(<ref refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" kindref="member">canIdEvt</ref>(NODE_ID),<sp/>ControlPacket{_controlId,<sp/>v});</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ANALOGINPUT_TEST</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>_emitCount++;</highlight></codeline>
-<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1a54f0c0c3de2c351a93f77c8a851c4861" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[ANA]<sp/>0x&quot;</highlight><highlight class="normal">));<sp/>d.print(_controlId,<sp/>HEX);</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;:<sp/>&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(v);</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(init)<sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>(init)&quot;</highlight><highlight class="normal">));</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.println();</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight></codeline>
-<codeline lineno="78"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::sample()<sp/>{</highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>scaled<sp/>=<sp/>readScaled();</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>_acc<sp/><sp/><sp/><sp/><sp/>+=<sp/>(int32_t)scaled<sp/>-<sp/>(_acc<sp/>&gt;&gt;<sp/>_ewmaShift);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>integer<sp/>EWMA:<sp/>α<sp/>=<sp/>1/2^ewmaShift</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>_smoothed<sp/>=<sp/>(uint16_t)(_acc<sp/>&gt;&gt;<sp/>_ewmaShift);</highlight></codeline>
-<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(shouldEmit(_smoothed))<sp/>emit(_smoothed);</highlight></codeline>
-<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="84"><highlight class="normal"></highlight></codeline>
-<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::forceReport()<sp/>{</highlight></codeline>
-<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>scaled<sp/>=<sp/>readScaled();</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>_acc<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>(int32_t)scaled<sp/>&lt;&lt;<sp/>_ewmaShift;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>seed<sp/>EWMA<sp/>so<sp/>smoothed<sp/>==<sp/>the<sp/>current<sp/>reading</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>_smoothed<sp/><sp/><sp/><sp/>=<sp/>scaled;</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastReadMs<sp/><sp/>=<sp/>millis();</highlight></codeline>
-<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>_initialized<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>emit(scaled,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>baseline,<sp/>unconditional</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="92"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight></codeline>
-<codeline lineno="94"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::poll()<sp/>{</highlight></codeline>
-<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_initialized)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="96"><highlight class="normal"></highlight></codeline>
-<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
-<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(now<sp/>-<sp/>_lastReadMs<sp/>&lt;<sp/>_pollMs)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>throttle<sp/>ADC<sp/>reads<sp/>(0<sp/>=<sp/>every<sp/>iteration)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastReadMs<sp/>=<sp/>now;</highlight></codeline>
-<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>sample();</highlight></codeline>
-<codeline lineno="101"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="102"><highlight class="normal"></highlight></codeline>
-<codeline lineno="103"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">uint16_t<sp/>AnalogInput::readRaw()<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ANALOGINPUT_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>_readCount++;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>one<sp/>ADC<sp/>read,<sp/>on<sp/>every<sp/>path:<sp/>poll(),<sp/>forceReport(),<sp/>debugStep()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_testRawSet)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_testRaw;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_pin.readAnalog();</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal">uint16_t<sp/>AnalogInput::readScaled()<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>raw<sp/>=<sp/>readRaw();<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>virtual:<sp/>AngleSensorInput<sp/>re-centres<sp/>before<sp/>the<sp/>clamp<sp/>below</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(raw<sp/>&lt;<sp/>_minRaw)<sp/>raw<sp/>=<sp/>_minRaw;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(raw<sp/>&gt;<sp/>_maxRaw)<sp/>raw<sp/>=<sp/>_maxRaw;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(raw<sp/>-<sp/>minRaw)<sp/>≤<sp/>65535,<sp/>×<sp/>65535<sp/>≤<sp/>4.29e9<sp/>→<sp/>fits<sp/>uint32;<sp/>no<sp/>Arduino<sp/>map()<sp/>overflow.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>span<sp/><sp/><sp/>=<sp/>(uint32_t)_maxRaw<sp/>-<sp/>_minRaw;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>scaled<sp/>=<sp/>span<sp/>?<sp/>(uint16_t)((uint32_t)(raw<sp/>-<sp/>_minRaw)<sp/>*<sp/>65535u<sp/>/<sp/>span)<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_reverse<sp/>?<sp/>(uint16_t)(65535u<sp/>-<sp/>scaled)<sp/>:<sp/>scaled;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>AnalogInput::shouldEmit(uint16_t<sp/>v)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Ports<sp/>DcsBios<sp/>PotentiometerEWMA:<sp/>emit<sp/>on<sp/>&gt;<sp/>hysteresis<sp/>movement,<sp/>or<sp/>at<sp/>a<sp/>rail<sp/>moving<sp/>into<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(_lastSent<sp/>&gt;<sp/>v<sp/>&amp;&amp;<sp/>(uint16_t)(_lastSent<sp/>-<sp/>v)<sp/>&gt;<sp/>_hysteresis)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>||<sp/>(v<sp/>&gt;<sp/>_lastSent<sp/>&amp;&amp;<sp/>(uint16_t)(v<sp/>-<sp/>_lastSent)<sp/>&gt;<sp/>_hysteresis)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>||<sp/>(v<sp/>&gt;<sp/>(uint16_t)(65535u<sp/>-<sp/>_hysteresis)<sp/>&amp;&amp;<sp/>v<sp/>&gt;<sp/>_lastSent)</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>||<sp/>(v<sp/>&lt;<sp/>_hysteresis<sp/>&amp;&amp;<sp/>v<sp/>&lt;<sp/>_lastSent);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::emit(uint16_t<sp/>v,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>init)<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastSent<sp/>=<sp/>v;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" kindref="member">CANProtocol::sendBatched</ref>(<ref refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" kindref="member">canIdEvt</ref>(NODE_ID),<sp/>ControlPacket{_controlId,<sp/>v});</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ANALOGINPUT_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>_emitCount++;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1a54f0c0c3de2c351a93f77c8a851c4861" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[ANA]<sp/>0x&quot;</highlight><highlight class="normal">));<sp/>d.print(_controlId,<sp/>HEX);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;:<sp/>&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(v);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(init)<sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>(init)&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.println();</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::sample()<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>scaled<sp/>=<sp/>readScaled();</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>_acc<sp/><sp/><sp/><sp/><sp/>+=<sp/>(int32_t)scaled<sp/>-<sp/>(_acc<sp/>&gt;&gt;<sp/>_ewmaShift);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>integer<sp/>EWMA:<sp/>α<sp/>=<sp/>1/2^ewmaShift</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>_smoothed<sp/>=<sp/>(uint16_t)(_acc<sp/>&gt;&gt;<sp/>_ewmaShift);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(shouldEmit(_smoothed))<sp/>emit(_smoothed);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::forceReport()<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>scaled<sp/>=<sp/>readScaled();</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>_acc<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>(int32_t)scaled<sp/>&lt;&lt;<sp/>_ewmaShift;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>seed<sp/>EWMA<sp/>so<sp/>smoothed<sp/>==<sp/>the<sp/>current<sp/>reading</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>_smoothed<sp/><sp/><sp/><sp/>=<sp/>scaled;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastReadMs<sp/><sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>_initialized<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>emit(scaled,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>baseline,<sp/>unconditional</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="104"><highlight class="normal"></highlight></codeline>
-<codeline lineno="105"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AnalogInput::poll()<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_initialized)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(now<sp/>-<sp/>_lastReadMs<sp/>&lt;<sp/>_pollMs)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>throttle<sp/>ADC<sp/>reads<sp/>(0<sp/>=<sp/>every<sp/>iteration)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastReadMs<sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>sample();</highlight></codeline>
+<codeline lineno="112"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp"/>
   </compounddef>

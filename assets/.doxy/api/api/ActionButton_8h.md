@@ -91,13 +91,6 @@ _Momentary push button that fires one DCS-BIOS action per press._ [More...](#det
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

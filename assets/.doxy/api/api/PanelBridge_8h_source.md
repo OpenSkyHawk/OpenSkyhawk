@@ -14,6 +14,14 @@
 
 #include <stdint.h>
 
+// Node-status reporting to the host (#86) — `_NODE_STATUS` / `_NODE_STATUS_END` / `_NODE_TELEM` and
+// the `0xFF00` roster request. On by default (#295): the client depends on it. Compile it out with
+// `-DPANELBRIDGE_NODE_STATUS=0`; node tracking itself (liveness, SYNC_REQ, WARNING, callbacks)
+// never depends on it. Test with `#if PANELBRIDGE_NODE_STATUS`, never `#ifdef`.
+#ifndef PANELBRIDGE_NODE_STATUS
+#define PANELBRIDGE_NODE_STATUS 1
+#endif
+
 namespace PanelBridge {
 
     using NodeCallback = void(*)(uint8_t nodeId);
@@ -48,7 +56,7 @@ namespace PanelBridge {
 
     void testHandleExport(uint16_t address, uint16_t value);
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
     void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
                            uint16_t rxCount, uint16_t esr);
 

@@ -36,9 +36,11 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | ---: | :--- |
 | struct | [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) <br>_One point on the acceleration curve (SwitecX25 form)._  |
 | class | [**ActionButton**](classOpenSkyhawk_1_1ActionButton.md) <br>_Momentary push button driving a control that latches in the sim. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
+| struct | [**AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md) <br>_Tuning for an_ [_**AnalogInput**_](classOpenSkyhawk_1_1AnalogInput.md) _. Every field has a default, so a sketch sets only what differs, by name:_`{ .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 }` _(#295)._ |
 | class | [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md) <br>_Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) <br>_Resistor-ladder multi-position selector — one analog_ `PinRef` _, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch)._ |
 | class | [**AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md) <br>_Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16)._  |
+| struct | [**AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md) <br>_Tuning for an_ [_**AngleSensorInput**_](classOpenSkyhawk_1_1AngleSensorInput.md) _— the_[_**AnalogConfig**_](structOpenSkyhawk_1_1AnalogConfig.md) _fields that still mean something once the raw window comes from the centre and travel (#295). Set by name:_`{ .hysteresis = 512 }` _. Fields are only ever appended, each with a default._ |
 | class | [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md) <br>_Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis._  |
 | struct | [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) <br>_Captured endpoints for one axis, unsigned 0–65535 throughout._  |
 | class | [**BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md) <br> |
@@ -89,13 +91,13 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | enum uint8\_t | [**CalDiagResetReason**](#enum-caldiagresetreason)  <br>_Why this boot happened, as reported in_ `DIAG` _._ |
 | enum uint8\_t | [**CalHelloAckField**](#enum-calhelloackfield)  <br>`HELLO_ACK` _payload (6 bytes, device→client)._ |
 | enum uint8\_t | [**CalNackField**](#enum-calnackfield)  <br>`NACK` _payload (3 bytes, device→client)._ |
-| enum uint8\_t | [**CalNackReason**](#enum-calnackreason)  <br>_NACK reasons._ `detail` _names the offending axis where one applies, else 0xFF._ |
+| enum uint8\_t | [**CalNackReason**](#enum-calnackreason)  <br> |
 | enum uint8\_t | [**CalRawField**](#enum-calrawfield)  <br>`RAW` _payload (5 bytes, device→client)._ |
 | enum uint8\_t | [**CalResetField**](#enum-calresetfield)  <br>`RESET` _payload (1 byte, client→device)._ |
 | enum uint8\_t | [**CalSessionAckField**](#enum-calsessionackfield)  <br>`SESSION_ACK` _payload (5 bytes, device→client)._ |
 | enum uint8\_t | [**CalSessionOpenField**](#enum-calsessionopenfield)  <br>`SESSION_OPEN` _payload (1 byte, client→device)._ |
 | enum uint8\_t | [**CalStreamSelectField**](#enum-calstreamselectfield)  <br>`STREAM_SELECT` _payload (1 byte, client→device)._ |
-| enum uint8\_t | [**CalType**](#enum-caltype)  <br>_Message types. High bit set = device→client, so direction is readable in a capture._  |
+| enum uint8\_t | [**CalType**](#enum-caltype)  <br> |
 | enum uint8\_t | [**DrumFont**](#enum-drumfont)  <br>_Glyph font size. Maps to a fixed monospace ProFont face._  |
 | enum uint8\_t | [**DrumScroll**](#enum-drumscroll)  <br>_Scroll behaviour per readout._  |
 | enum uint8\_t | [**EncoderMode**](#enum-encodermode)  <br>_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent. Scoped enum._  |
@@ -115,7 +117,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 |  constexpr uint8\_t | [**AXIS\_CAL\_SLOTS**](#variable-axis_cal_slots)   = `8`<br>_HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates._  |
 |  constexpr uint8\_t | [**CAL\_AXIS\_NONE**](#variable-cal_axis_none)   = `0xFF`<br>`RESET` _and the axis-selection fields use this to mean "all" / "none"._ |
 |  constexpr uint8\_t | [**CAL\_DATA\_REC\_BYTES**](#variable-cal_data_rec_bytes)   = `10`<br>_One_ `CAL_DATA` _record's length in bytes._ |
-|  constexpr uint8\_t | [**CAL\_DIAG\_BYTES**](#variable-cal_diag_bytes)   = `47`<br>`DIAG` _payload length._ |
+|  constexpr uint8\_t | [**CAL\_DIAG\_BYTES**](#variable-cal_diag_bytes)   = `64`<br>`DIAG` _payload length — 47 bytes in use, the rest reserved._ |
 |  constexpr uint16\_t | [**CAL\_ENVELOPE\_BYTES**](#variable-cal_envelope_bytes)   = `10`<br>_magic 4 + type 1 + seq 1 + len 2 + crc 2_  |
 |  constexpr uint8\_t | [**CAL\_FRAME\_MAGIC**](#variable-cal_frame_magic)   = `{ 0xAA, 0x53, 0x4B, 0x43 }`<br> |
 |  constexpr uint32\_t | [**CAL\_MAGIC**](#variable-cal_magic)   = `/* multi line expression */`<br>_Blob signature. Little-endian in flash, so a hexdump reads "OSKC"._  |
@@ -176,7 +178,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 |  bool | [**calLenValidForType**](#function-callenvalidfortype) (uint8\_t type, uint16\_t len) <br>_Is_ `len` _the only length this_`type` _may legally carry?_ |
 |  void | [**linkRecoveryBegin**](#function-linkrecoverybegin) ([**LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md) & s, bool afterRecoveryReboot) <br>_Reset the ladder._  |
 |  [**LinkAction**](namespaceOpenSkyhawk.md#enum-linkaction) | [**linkRecoveryStep**](#function-linkrecoverystep) ([**LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md) & s, uint32\_t now, bool healthy) <br>_Advance the ladder one tick._  |
-|  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL, bool homeSeekClockwise=false, [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) sensor={ true, 5, 2000 }, bool wrap=false, uint8\_t deadband=1, bool autoRecal=false, uint32\_t recalDebounceMs=0, uint16\_t stepsPerRev=1080, uint16\_t rangeSteps=945, uint16\_t homeStepUs=0) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._ |
+|  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _for an X27-family gauge from its travel._ |
 
 
 ## Public Static Functions
@@ -312,16 +314,20 @@ enum OpenSkyhawk::CalDiagField {
     CAL_DIAG_CDC_STALLS = 42,
     CAL_DIAG_RECOVERY_REBOOTS = 44,
     CAL_DIAG_WATCHDOG_RESETS = 45,
-    CAL_DIAG_RESET_REASON = 46
+    CAL_DIAG_RESET_REASON = 46,
+    CAL_DIAG_RESERVED = 47
 };
 ```
 
 
 
-`DIAG` payload (47 bytes, device→client): link-health counters and event times (#355).
+`DIAG` payload (64 bytes, device→client): link-health counters and event times (#355).
 
 
-Times are millis() since this boot; 0 means "never". Counters are u16 and saturate at 0xFFFF rather than wrap, so a large number never reads as a small one. The four UART error counters count status ticks on which that PL011 RSR bit was set — the core's UART IRQ owns the data register, so per-character counts are not available. The three u8 fields at the end survive a warm reboot (watchdog scratch registers) and reset on power-on. 
+Times are millis() since this boot; 0 means "never". Counters are u16 and saturate at 0xFFFF rather than wrap, so a large number never reads as a small one. The four UART error counters count status ticks on which that PL011 RSR bit was set — the core's UART IRQ owns the data register, so per-character counts are not available. The three u8 fields at the end survive a warm reboot (watchdog scratch registers) and reset on power-on.
+
+
+Bytes 47–63 are reserved (#295): transmit 0, ignore on receive. A calibration frame's `LEN` is fixed per type, so `DIAG` can't grow in place — a new counter fills reserved bytes instead, a minor change that older clients simply don't read. 
 
 
         
@@ -389,7 +395,6 @@ enum OpenSkyhawk::CalNackField {
 
 ### enum CalNackReason 
 
-_NACK reasons._ `detail` _names the offending axis where one applies, else 0xFF._
 ```C++
 enum OpenSkyhawk::CalNackReason {
     CAL_NACK_BAD_CRC = 0x01,
@@ -405,6 +410,10 @@ enum OpenSkyhawk::CalNackReason {
 
 
 
+NACK reasons. `detail` names the offending axis where one applies, else 0xFF. Reserved for firmware update (#295), not yet assigned: 0x09-0x0E. 
+
+
+        
 
 <hr>
 
@@ -495,7 +504,6 @@ enum OpenSkyhawk::CalStreamSelectField {
 
 ### enum CalType 
 
-_Message types. High bit set = device→client, so direction is readable in a capture._ 
 ```C++
 enum OpenSkyhawk::CalType {
     CAL_T_HELLO = 0x01,
@@ -519,6 +527,10 @@ enum OpenSkyhawk::CalType {
 
 
 
+Message types. High bit set = device→client, so direction is readable in a capture. Reserved for firmware update (#295), not yet assigned: 0x10-0x1F (client→device) and 0x90-0x9F (device→client). Don't allocate them to anything else. 
+
+
+        
 
 <hr>
 
@@ -743,7 +755,7 @@ constexpr uint8_t OpenSkyhawk::CAL_DATA_REC_BYTES;
 
 ### variable CAL\_DIAG\_BYTES 
 
-`DIAG` _payload length._
+`DIAG` _payload length — 47 bytes in use, the rest reserved._
 ```C++
 constexpr uint8_t OpenSkyhawk::CAL_DIAG_BYTES;
 ```
@@ -1636,29 +1648,20 @@ A DETACH is always followed by its ATTACH, whatever `healthy` says in between �
 
 ### function makeX27Config 
 
-_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._
+_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _for an X27-family gauge from its travel._
 ```C++
 StepperConfig OpenSkyhawk::makeX27Config (
     int16_t homePosition,
     int16_t parkPosition,
     int16_t minPos,
     int16_t maxPos,
-    HomeMode home=HomeMode::STALL,
-    bool homeSeekClockwise=false,
-    HomeSensor sensor={ true, 5, 2000 },
-    bool wrap=false,
-    uint8_t deadband=1,
-    bool autoRecal=false,
-    uint32_t recalDebounceMs=0,
-    uint16_t stepsPerRev=1080,
-    uint16_t rangeSteps=945,
-    uint16_t homeStepUs=0
+    HomeMode home=HomeMode::STALL
 ) 
 ```
 
 
 
-Bakes the motor-invariant fields — `stepsPerRev`, `pattern` (SWITEC\_6STATE), and the default SwitecX25 accel table — so a sketch specifies only the per-gauge wiring/travel. Shared by every X27 / VID-29 / BKA-30 gauge; override any default for a specific panel.
+Every other field keeps the [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) default (1080 steps/rev, SWITEC\_6STATE, the SwitecX25 accel table, 945-step stop-to-stop range, deadband 1, …). To change one of those, write the config by name instead: `{ .homePosition = 0, .maxPos = 960, .rangeSteps = 960 }`.
 
 
 
@@ -1671,15 +1674,6 @@ Bakes the motor-invariant fields — `stepsPerRev`, `pattern` (SWITEC\_6STATE), 
 * `minPos` lower moveTo travel clamp (ignored if wrap). 
 * `maxPos` upper moveTo travel clamp (ignored if wrap). 
 * `home` homing strategy. Default STALL. 
-* `homeSeekClockwise` seek direction. Default false. 
-* `sensor` home-sensor params (SENSOR mode). Default active-low, 5 ms, 2000 steps. 
-* `wrap` continuous-rotation gauge. Default false. 
-* `deadband` anti-jitter band, steps. Default 1. 
-* `autoRecal` re-zero on sensor crossing. Default false. 
-* `recalDebounceMs` minimum interval between auto-recals. Default 0. 
-* `stepsPerRev` full revolution in steps. Default 1080 (X27/BKA datasheet, 1/3°/step). 
-* `rangeSteps` mechanical stop-to-stop travel in steps = STALL home distance. Default 945 (X27.589 ~315°); set per gauge (e.g. 960 for a 320° BKA-30). 
-* `homeStepUs` homing seek rate µs/step. Default 0 → library default (2000 ≈ 500 steps/s). Keep under the motor start-stop rate (~774 steps/s) or the seek slips. 
 
 
 

@@ -119,7 +119,7 @@ enum CalHelloAckField : uint8_t {
     CAL_HELLO_ACK_PROTO        = 0,  // u8: CAL_PROTO_VERSION
     CAL_HELLO_ACK_BLOB_VERSION = 1,  // u8: CAL_VERSION
     CAL_HELLO_ACK_AXIS_SLOTS   = 2,  // u8: AXIS_CAL_SLOTS
-    CAL_HELLO_ACK_FW_MAJOR     = 3,  // u8: SimGateway firmware version
+    CAL_HELLO_ACK_FW_MAJOR     = 3,  // u8: firmware release version (FirmwareVersion.h)
     CAL_HELLO_ACK_FW_MINOR     = 4,  // u8
     CAL_HELLO_ACK_FW_PATCH     = 5,  // u8
 };
@@ -202,9 +202,10 @@ enum CalDiagField : uint8_t {
     CAL_DIAG_RECOVERY_REBOOTS   = 44,  // u8:  recovery ladder reboots (survives reboot)
     CAL_DIAG_WATCHDOG_RESETS    = 45,  // u8:  hardware watchdog resets (survives reboot)
     CAL_DIAG_RESET_REASON       = 46,  // u8:  CalDiagResetReason for this boot
+    CAL_DIAG_RESERVED           = 47,  // 17 bytes: reserved, transmit 0 (#295)
 };
 
-constexpr uint8_t CAL_DIAG_BYTES = 47;
+constexpr uint8_t CAL_DIAG_BYTES = 64;
 
 enum CalDiagResetReason : uint8_t {
     CAL_DIAG_RESET_POWER_ON = 0,  // cold start, RUN pin, or anything not listed below

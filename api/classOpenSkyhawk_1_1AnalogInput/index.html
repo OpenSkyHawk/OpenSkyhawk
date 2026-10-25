@@ -4646,17 +4646,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#public-static-attributes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Static Attributes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#public-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4719,67 +4708,6 @@
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-static-attributes-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Static Attributes Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Static Attributes Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#variable-default_ewma_shift" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable DEFAULT_EWMA_SHIFT
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-default_hysteresis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable DEFAULT_HYSTERESIS
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-default_poll_ms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable DEFAULT_POLL_MS
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-max_ewma_shift" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable MAX_EWMA_SHIFT
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -4900,33 +4828,6 @@
 </ul>
 <p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
 <p>Inherited by the following classes: <a href="../classOpenSkyhawk_1_1AngleSensorInput/">OpenSkyhawk::AngleSensorInput</a></p>
-<h2 id="public-static-attributes">Public Static Attributes</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-default_ewma_shift"><strong>DEFAULT_EWMA_SHIFT</strong></a>   = <code>3</code><br><em>EWMA α = 1/2^3 = 1/8.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-default_hysteresis"><strong>DEFAULT_HYSTERESIS</strong></a>   = <code>128</code><br><em>counts on the 16-bit output.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-default_poll_ms"><strong>DEFAULT_POLL_MS</strong></a>   = <code>8</code><br><em>default min interval between ADC reads (ms).</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-max_ewma_shift"><strong>MAX_EWMA_SHIFT</strong></a>   = <code>15</code><br><em>cap: scaled&lt;&lt;shift must fit int32 at full scale.</em></td>
-</tr>
-</tbody>
-</table>
 <h2 id="public-functions">Public Functions</h2>
 <table>
 <thead>
@@ -4938,7 +4839,7 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-analoginput"><strong>AnalogInput</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, bool reverse=false, uint16_t minRaw=0, uint16_t maxRaw=65535, uint16_t hysteresis=<a href="./#variable-default_hysteresis"><strong>DEFAULT_HYSTERESIS</strong></a>, uint8_t ewmaShift=<a href="./#variable-default_ewma_shift"><strong>DEFAULT_EWMA_SHIFT</strong></a>, uint16_t pollMs=<a href="./#variable-default_poll_ms"><strong>DEFAULT_POLL_MS</strong></a>) <br><em>Construct a continuous analog input.</em></td>
+<td style="text-align: left;"><a href="#function-analoginput"><strong>AnalogInput</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, const <a href="../structOpenSkyhawk_1_1AnalogConfig/"><strong>AnalogConfig</strong></a> &amp; cfg={}) <br><em>Construct a continuous analog input.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -5036,58 +4937,24 @@
 <h2 id="detailed-description">Detailed Description</h2>
 <p>A <strong>linear</strong> input, not a selector. It shares the MULTIPOS wire transport with the selector family only because DCS-BIOS <code>set_state</code> has no separate "continuous" dispatch — the 16-bit value is the control <em>position</em>, not an index.</p>
 <p>Read path (ports <a href="../namespaceDcsBios/"><strong>DcsBios</strong></a> <code>PotentiometerEWMA</code>): read the ADC (already 16-bit — STM32 ×16, or <a href="../classADS1115/"><strong>ADS1115</strong></a> 0–3.3V → 0–65534), clamp to <code>[minRaw, maxRaw]</code>, map to 0..65535 (reverse-aware), then apply an integer EWMA low-pass filter (α = 1/2^<code>ewmaShift</code>). A new value is emitted only when the smoothed value moves more than <code>hysteresis</code> counts from the last sent value, or when it reaches a rail (0 / 65535) moving toward it — a settled pot is silent, the endpoints always reached.</p>
-<p>The ADC is re-read at most every <code>pollMs</code> — a constructor parameter, default <code>DEFAULT_POLL_MS</code> (8 ms). It is <strong>per instance, not per node</strong>: two AnalogInputs on one board may read at different rates, and <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> owns no analog timer of its own (it calls <code>poll()</code> every iteration and lets each input decide). <code>forceReport()</code> samples fresh (bypassing the throttle) and emits the current value as the baseline. Integer EWMA (a shift, not a divide) keeps it cheap on the FPU-less STM32F103.</p>
+<p>The ADC is re-read at most every <code>pollMs</code> — an <a href="../structOpenSkyhawk_1_1AnalogConfig/"><strong>AnalogConfig</strong></a> field, default <code>DEFAULT_POLL_MS</code> (8 ms). It is <strong>per instance, not per node</strong>: two AnalogInputs on one board may read at different rates, and <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> owns no analog timer of its own (it calls <code>poll()</code> every iteration and lets each input decide). <code>forceReport()</code> samples fresh (bypassing the throttle) and emits the current value as the baseline. Integer EWMA (a shift, not a divide) keeps it cheap on the FPU-less STM32F103.</p>
 <p><code>pollMs</code> and <code>ewmaShift</code> are <strong>coupled</strong>: the filter time constant is τ ≈ 2^<code>ewmaShift</code> × <code>pollMs</code> — the defaults give 2^3 × 8 = 64 ms. Halving <code>pollMs</code> halves τ unless <code>ewmaShift</code> rises to match, so the two are chosen together, never one alone.</p>
 <p><a href="./#function-configure"><strong>configure()</strong></a> does not enable internal pull-ups; the wiper drives the pin directly.</p>
 <p>Used by: AN/ARC-51A VOL (volume potentiometer). </p>
-<h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
-<h3 id="variable-default_ewma_shift">variable DEFAULT_EWMA_SHIFT</h3>
-<p><em>EWMA α = 1/2^3 = 1/8.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="o">::</span><span class="n">DEFAULT_EWMA_SHIFT</span><span class="p">;</span>
-</code></pre></div></p>
-<hr>
-
-<h3 id="variable-default_hysteresis">variable DEFAULT_HYSTERESIS</h3>
-<p><em>counts on the 16-bit output.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="o">::</span><span class="n">DEFAULT_HYSTERESIS</span><span class="p">;</span>
-</code></pre></div></p>
-<hr>
-
-<h3 id="variable-default_poll_ms">variable DEFAULT_POLL_MS</h3>
-<p><em>default min interval between ADC reads (ms).</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="o">::</span><span class="n">DEFAULT_POLL_MS</span><span class="p">;</span>
-</code></pre></div></p>
-<hr>
-
-<h3 id="variable-max_ewma_shift">variable MAX_EWMA_SHIFT</h3>
-<p><em>cap: scaled&lt;&lt;shift must fit int32 at full scale.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="o">::</span><span class="n">MAX_EWMA_SHIFT</span><span class="p">;</span>
-</code></pre></div></p>
-<hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-analoginput">function AnalogInput</h3>
 <p><em>Construct a continuous analog input.</em> 
 <div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogInput</span><span class="o">::</span><span class="n">AnalogInput</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
 <span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">reverse</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">minRaw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">maxRaw</span><span class="o">=</span><span class="mi">65535</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">hysteresis</span><span class="o">=</span><span class="n">DEFAULT_HYSTERESIS</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ewmaShift</span><span class="o">=</span><span class="n">DEFAULT_EWMA_SHIFT</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">pollMs</span><span class="o">=</span><span class="n">DEFAULT_POLL_MS</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">AnalogConfig</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">cfg</span><span class="o">=</span><span class="p">{}</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
+<li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing — and, with the default config, the hysteresis (<a href="../structOpenSkyhawk_1_1AnalogConfig/#variable-hysteresis_auto"><strong>AnalogConfig::HYSTERESIS_AUTO</strong></a>). </li>
 <li><code>pin</code> analog <a href="../classPinRef/"><strong>PinRef</strong></a> (STM32 ADC GPIO or <a href="../classADS1115/"><strong>ADS1115</strong></a> channel). </li>
-<li><code>reverse</code> false (default): minRaw → 0, maxRaw → 65535. true: inverted. </li>
-<li><code>minRaw</code> raw ADC value mapping to 0 (default 0). Readings below are clamped. </li>
-<li><code>maxRaw</code> raw ADC value mapping to 65535 (default 65535). Above are clamped. </li>
-<li><code>hysteresis</code> output counts of movement required before a new value is emitted. </li>
-<li><code>ewmaShift</code> EWMA smoothing strength: α = 1/2^ewmaShift (default 3 → 1/8). Capped to MAX_EWMA_SHIFT (15) — beyond that the int32 accumulator (scaled &lt;&lt; shift) would overflow at full scale. </li>
-<li><code>pollMs</code> min interval between ADC reads, ms (default 8). Per instance, not per node. Not clamped: 0 means read every loop iteration, which is legal but makes τ track the loop rate — not a controlled quantity. An <a href="../classADS1115/"><strong>ADS1115</strong></a> <a href="../classPinRef/"><strong>PinRef</strong></a> blocks ~8 ms per conversion whatever this says, so keep those at the default or higher. </li>
+<li><code>cfg</code> tuning; set only the fields that differ, e.g. <code>{ .reverse = true }</code>. </li>
 </ul>
 <hr>
 

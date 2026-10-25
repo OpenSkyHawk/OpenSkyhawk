@@ -95,13 +95,6 @@ One I2cMux instance == one TCA9548A chip on one I2C bus. A DrumDisplay (or any f
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

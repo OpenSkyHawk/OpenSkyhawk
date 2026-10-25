@@ -65,12 +65,14 @@
 |  const NodeHealthPayload & | [**lastNodeHealth**](#function-lastnodehealth) () <br>_The HEALTH\_n payload_ [_**serviceNodeStatus()**_](namespaceCANProtocol.md#function-servicenodestatus) _last built for this node (#344)._ |
 |  HeartbeatPayload | [**makeHeartbeatPayload**](#function-makeheartbeatpayload) (uint8\_t nodeId, uint16\_t rxCount) <br>_Build the standard 8-byte heartbeat payload for the current node._  |
 |  NodeHealthPayload | [**makeNodeHealthPayload**](#function-makenodehealthpayload) (uint8\_t nodeId, [**NodeKind**](NodeStatus_8h.md#enum-nodekind) kind, int8\_t dieTempC, [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) fault=NodeFaultCode::NONE) <br>_Build the 8-byte node-health payload for the current node._  |
+|  ReadyPayload | [**makeReadyPayload**](#function-makereadypayload) () <br>_Build the 8-byte READY\_n payload: this build's firmware release version (#295)._  |
 |  void | [**onReceive**](#function-onreceive) ([**CanRxCallback**](CANProtocol_8h.md#typedef-canrxcallback) cb) <br>_Register a general-purpose RX frame handler._  |
 |  void | [**onStatusChange**](#function-onstatuschange) ([**CanStatusCallback**](CANProtocol_8h.md#typedef-canstatuscallback) cb) <br>_Register a CAN bus status change callback._  |
 |  void | [**onSyncReq**](#function-onsyncreq) ([**CanSyncReqCallback**](CANProtocol_8h.md#typedef-cansyncreqcallback) cb) <br>_Register a SYNC\_REQ handler._  |
 |  uint8\_t | [**rec**](#function-rec) () <br>_Return the CAN Receive Error Counter (0-255) from ESR._  |
 |  void | [**send**](#function-send) (uint32\_t canId, const uint8\_t \* data, uint8\_t len) <br>_Send a CAN frame._  |
 |  void | [**sendBatched**](#function-sendbatched) (uint32\_t canId, const ControlPacket & pkt) <br>_Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch._  |
+|  void | [**sendReady**](#function-sendready) () <br>_Send this node's READY\_n (_ `canIdReady(NODE_ID)` _) carrying_[_**makeReadyPayload()**_](namespaceCANProtocol.md#function-makereadypayload) _._ |
 |  void | [**serviceNodeStatus**](#function-servicenodestatus) ([**NodeKind**](NodeStatus_8h.md#enum-nodekind) kind, uint16\_t rxCount=0) <br>_Run the node-generic status duties. Call once per loop(), after_ [_**drain()**_](namespaceCANProtocol.md#function-drain) _._ |
 |  void | [**start**](#function-start) () <br>_Start the CAN peripheral and apply registered filters._  |
 |  void | [**startLoopback**](#function-startloopback) () <br>_Start in silent loopback mode — for bench testing only._  |
@@ -359,6 +361,31 @@ Fully populated NodeHealthPayload ready to send as HEALTH\_n.
 
 
 
+### function makeReadyPayload 
+
+_Build the 8-byte READY\_n payload: this build's firmware release version (#295)._ 
+```C++
+ReadyPayload CANProtocol::makeReadyPayload () 
+```
+
+
+
+
+
+**Returns:**
+
+ReadyPayload with fwMajor/fwMinor/fwPatch from [**FirmwareVersion.h**](FirmwareVersion_8h.md), reserved bytes 0. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
 ### function onReceive 
 
 _Register a general-purpose RX frame handler._ 
@@ -524,6 +551,24 @@ A frame ID with no batch slot is **silently discarded** — adding a batched fra
 * `pkt` ControlPacket to batch. 
 
 
+
+
+        
+
+<hr>
+
+
+
+### function sendReady 
+
+_Send this node's READY\_n (_ `canIdReady(NODE_ID)` _) carrying_[_**makeReadyPayload()**_](namespaceCANProtocol.md#function-makereadypayload) _._
+```C++
+void CANProtocol::sendReady () 
+```
+
+
+
+Call once at the end of the node's setup(), after its boot EVT burst. [**PanelBridge**](namespacePanelBridge.md) marks the node alive, caches its version and broadcasts SYNC\_REQ. Bounded retry like every other special frame (02-can-protocol.md). 
 
 
         

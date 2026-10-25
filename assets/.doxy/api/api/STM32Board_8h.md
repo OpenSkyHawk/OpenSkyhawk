@@ -99,13 +99,6 @@ Fixed hardware (same on every board — no constructor arguments):
 
 
 
-**Version:**
-
-0.4.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

@@ -4794,8 +4794,6 @@
 <p>One ShiftBus instance owns one SPI bus carrying both chains: '165 (parallel-in/serial-out) on MISO and '595 (serial-in/parallel-out) on MOSI, sharing SCK. A '165 read clocks the shared SCK and scrambles the '595 shift stage (latched outputs are unaffected), so every transaction is one full-duplex transfer(): pulse LOAD to capture the '165 inputs, shift the complete output frame while receiving the complete input frame, pulse LATCH to publish the '595 outputs. There is no partial read and no partial write.</p>
 <p>Sketches normally use the pre-defined global instance <code>ShiftBus1</code> (the TwoWire/Wire pattern) and perform no setup at all — declaring an SR-backed <a href="../classPinRef/"><strong>PinRef</strong></a> is the only opt-in. <a href="../classPinRef/#function-configureasinput"><strong>PinRef::configureAsInput()</strong></a>/configureAsOutput() notify the bus (direction, chain length); <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> then begin()s every active bus. A bus with no SR pins stays dormant: SPI.begin() is never called.</p>
 <p>TechSpec: Firmware/ScratchPad/TechSpec/PanelGroup/Helpers/ShiftBus.md (issues #197 / #133).</p>
-<p><strong>Version:</strong></p>
-<p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>

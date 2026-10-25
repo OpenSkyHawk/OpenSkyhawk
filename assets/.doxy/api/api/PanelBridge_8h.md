@@ -80,6 +80,11 @@ _STM32 CAN master and DCS-BIOS processing node for_ [_**OpenSkyhawk**_](namespac
 
 
 
+## Macros
+
+| Type | Name |
+| ---: | :--- |
+| define  | [**PANELBRIDGE\_NODE\_STATUS**](PanelBridge_8h.md#define-panelbridge_node_status)  `1`<br> |
 
 ## Detailed Description
 
@@ -107,13 +112,6 @@ void loop() {
 
 
 
-**Version:**
-
-0.2.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 
@@ -123,6 +121,22 @@ GPL-2.0-only — see Firmware/LICENSE
 
 
     
+## Macro Definition Documentation
+
+
+
+
+
+### define PANELBRIDGE\_NODE\_STATUS 
+
+```C++
+#define PANELBRIDGE_NODE_STATUS `1`
+```
+
+
+
+
+<hr>
 
 ------------------------------
 The documentation for this class was generated from the following file `Firmware/Libraries/PanelBridge/PanelBridge.h`

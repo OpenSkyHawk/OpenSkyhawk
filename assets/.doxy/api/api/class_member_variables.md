@@ -49,9 +49,9 @@
 
 * **delayUs** ([**OpenSkyhawk::AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md))
 * **DEBOUNCE\_MS** ([**OpenSkyhawk::ActionButton**](classOpenSkyhawk_1_1ActionButton.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
-* **DEFAULT\_EWMA\_SHIFT** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
-* **DEFAULT\_HYSTERESIS** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
-* **DEFAULT\_POLL\_MS** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
+* **DCS\_HYSTERESIS** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **DEFAULT\_EWMA\_SHIFT** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **DEFAULT\_POLL\_MS** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
 * **DEFAULT\_DEADBAND** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **deadzone** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **digitHeightMm** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
@@ -64,6 +64,7 @@
 
 ## e
 
+* **ewmaShift** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md))
 * **enabled** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
 * **EDGE\_MIN\_MS** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
 
@@ -89,6 +90,9 @@
 ## h
 
 * **hasA** ([**BatchState**](structBatchState.md))
+* **HID\_HYSTERESIS** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **HYSTERESIS\_AUTO** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **hysteresis** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md))
 * **home** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **homePosition** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **homeSeekClockwise** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
@@ -119,7 +123,9 @@
 
 ## m
 
-* **MAX\_EWMA\_SHIFT** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
+* **MAX\_EWMA\_SHIFT** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **maxRaw** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **minRaw** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
 * **max** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **min** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **magic** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md))
@@ -140,6 +146,7 @@
 ## n
 
 * **name** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md), [**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
+* **NO\_DEADBAND** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **nDigits** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **nGlyphs** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **nSources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
@@ -157,6 +164,7 @@
 
 ## p
 
+* **pollMs** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md))
 * **POLL\_MS** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **place** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **phase** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
@@ -171,7 +179,7 @@
 
 ## r
 
-* **reverse** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
+* **reverse** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **rangeSteps** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **recalDebounceMs** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **recoveryReboots** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))

@@ -22,6 +22,7 @@ static constexpr uint16_t ANALOG_NC = MultiPosInput::NO_POSITION;
 class AnalogMultiPos : public MultiPosInput {
 public:
     static constexpr uint16_t DEFAULT_DEADBAND = 1000;  
+    static constexpr uint16_t NO_DEADBAND      = 0;
     static constexpr uint16_t POLL_MS          = 8;     
 
     AnalogMultiPos(uint16_t controlId, PinRef pin, uint8_t numPos,

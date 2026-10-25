@@ -42,6 +42,8 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **struct** [**BatchState**](structBatchState.md) 
 * **struct** [**DcsBiosInputEntry**](structDcsBiosInputEntry.md) 
 * **struct** [**OpenSkyhawk::AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) _One point on the acceleration curve (SwitecX25 form)._ 
+* **struct** [**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md) _Tuning for an_ [_**AnalogInput**_](classOpenSkyhawk_1_1AnalogInput.md) _. Every field has a default, so a sketch sets only what differs, by name:_`{ .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 }` _(#295)._
+* **struct** [**OpenSkyhawk::AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md) _Tuning for an_ [_**AngleSensorInput**_](classOpenSkyhawk_1_1AngleSensorInput.md) _— the_[_**AnalogConfig**_](structOpenSkyhawk_1_1AnalogConfig.md) _fields that still mean something once the raw window comes from the centre and travel (#295). Set by name:_`{ .hysteresis = 512 }` _. Fields are only ever appended, each with a default._
 * **struct** [**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md) _Captured endpoints for one axis, unsigned 0–65535 throughout._ 
 * **struct** [**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md) _The whole persisted calibration set, written and erased as one unit._ 
 * **struct** [**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md) _Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter._ 

@@ -91,13 +91,6 @@ _Quadrature rotary encoder input for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.m
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

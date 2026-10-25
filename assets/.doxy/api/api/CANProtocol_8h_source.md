@@ -51,6 +51,14 @@ struct __attribute__((packed)) TelemPayload {
 };
 static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
 
+struct __attribute__((packed)) ReadyPayload {
+    uint8_t fwMajor;  
+    uint8_t fwMinor;  
+    uint8_t fwPatch;  
+    uint8_t rsvd[5];  
+};
+static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
+
 enum class CanStatus {
     STARTING,   
     NORMAL,     
@@ -84,6 +92,10 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
+// Reserved, not yet assigned (#295): 0x740-0x7BF for a future boot/update frame family —
+// BOOT_CMD_n = 0x740+n (bridge → node n), BOOT_RSP_n = 0x780+n (node n → bridge). The lowest
+// priority on the bus, so update traffic never delays a control. Don't allocate it to anything else.
+
 // ── controlId namespace ───────────────────────────────────────────────────────
 // Payload controlIds live inside ControlPacket data bytes. They are intentionally
 // separate from the 11-bit CAN arbitration IDs above.
@@ -111,6 +123,11 @@ using CanRxCallback      = void(*)(uint32_t canId, const uint8_t* data, uint8_t 
 using CanSyncReqCallback = void(*)();
 
 // ── Runtime API (STM32 only) ──────────────────────────────────────────────────
+//
+// Library-internal: the node libraries (PanelGroup, PanelBridge, PduNode) drive the bus through
+// these, not sketches. Not covered by the compatibility policy (#295) — except sendBatched(), which
+// a custom control class uses to send its value (with ControlPacket and the canIdEvt* functions
+// above, which are covered with the wire format).
 
 #ifdef ARDUINO_ARCH_STM32
 
@@ -158,6 +175,10 @@ namespace CANProtocol {
 
     NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t dieTempC,
                                             NodeFaultCode fault = NodeFaultCode::NONE);
+
+    ReadyPayload makeReadyPayload();
+
+    void sendReady();
 
     uint32_t txDropCount();
 

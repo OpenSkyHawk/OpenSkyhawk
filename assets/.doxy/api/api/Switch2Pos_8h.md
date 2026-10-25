@@ -91,13 +91,6 @@ _Debounced 2-position switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

@@ -5165,7 +5165,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-node_status_row_bytes"><strong>NODE_STATUS_ROW_BYTES</strong></a>   = <code>14</code><br><code>_NODE_STATUS</code> <em>row length in bytes, sent as twice as many hex chars (proto v3: 14 → 28 hex).</em></td>
+<td style="text-align: left;"><a href="#variable-node_status_row_bytes"><strong>NODE_STATUS_ROW_BYTES</strong></a>   = <code>17</code><br><code>_NODE_STATUS</code> <em>row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
@@ -5196,11 +5196,11 @@
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
-<td style="text-align: left;"><a href="./#define-node_status_proto_version"><strong>NODE_STATUS_PROTO_VERSION</strong></a>  <code>3</code><br></td>
+<td style="text-align: left;"><a href="./#define-node_status_proto_version"><strong>NODE_STATUS_PROTO_VERSION</strong></a>  <code>4</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
-<td style="text-align: left;"><a href="./#define-node_status_req_addr"><strong>NODE_STATUS_REQ_ADDR</strong></a>  <code>0x86FE</code><br></td>
+<td style="text-align: left;"><a href="./#define-node_status_req_addr"><strong>NODE_STATUS_REQ_ADDR</strong></a>  <code>0xFF00</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
@@ -5222,8 +5222,6 @@
 <p>Every wire value is a named <code>enum class X : T { NAME = literal }</code> or <code>constexpr T NAME = literal</code> so the client sync can read it (#346) — never only a comment, a bare literal or a format string.
 * <code>FaultSource</code> — the interface a fault-producing object implements so a node-level aggregator can roll it up. A <code>FaultSource</code> is <em>one piece</em> of node status, not the whole story.</p>
 <p>This is the neutral home for node-status vocabulary so it isn't shaped around any one node flavour (PanelGroup/OutputBase) or the HID namespace. <code>NodeHealthPayload</code> (the CAN HEALTH_n frame struct) stays in <code>CANProtocol.h</code>; the fault <em>detail</em> strings stay local (DiagSerial), never on the wire. Header-only contract + a tiny <code>FaultSource</code> registry (<code>NodeStatus.cpp</code>).</p>
-<p><strong>Version:</strong></p>
-<p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
@@ -5288,10 +5286,13 @@
 <span class="w">    </span><span class="n">HEALTH_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
 <span class="w">    </span><span class="n">FAULT_MASK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
 <span class="w">    </span><span class="n">FAULT_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
-<span class="w">    </span><span class="n">NODE_KIND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span>
+<span class="w">    </span><span class="n">NODE_KIND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FW_MAJOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FW_MINOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FW_PATCH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span>
 <span class="p">};</span>
 </code></pre></div></p>
-<p>Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE_STATUS_ROW_BYTES. The first six come from the node's HB_n (plus <code>present</code>), the last five from its HEALTH_n. (Not <code>NODE_ID</code>: every node build defines that as a macro.) </p>
+<p>Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE_STATUS_ROW_BYTES. The first six come from the node's HB_n (plus <code>present</code>), the next five from its HEALTH_n, the last three from its READY_n (v4, #295). Fields are only ever appended: a reader parses the fields it knows from a longer row and ignores the rest. (Not <code>NODE_ID</code>: every node build defines that as a macro.) </p>
 <hr>
 
 <h3 id="enum-nodetelemfield">enum NodeTelemField</h3>
@@ -5390,7 +5391,7 @@
 <hr>
 
 <h3 id="variable-node_status_row_bytes">variable NODE_STATUS_ROW_BYTES</h3>
-<p><code>_NODE_STATUS</code> <em>row length in bytes, sent as twice as many hex chars (proto v3: 14 → 28 hex).</em>
+<p><code>_NODE_STATUS</code> <em>row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex).</em>
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
@@ -5419,12 +5420,12 @@
 <hr>
 
 <h3 id="define-node_status_proto_version">define NODE_STATUS_PROTO_VERSION</h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_PROTO_VERSION `3`</span>
+<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_PROTO_VERSION `4`</span>
 </code></pre></div>
 <hr>
 
 <h3 id="define-node_status_req_addr">define NODE_STATUS_REQ_ADDR</h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_REQ_ADDR `0x86FE`</span>
+<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_REQ_ADDR `0xFF00`</span>
 </code></pre></div>
 <hr>
 

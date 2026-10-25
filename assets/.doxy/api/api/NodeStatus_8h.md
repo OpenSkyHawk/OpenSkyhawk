@@ -65,7 +65,7 @@ _Neutral node-status contract for every_ [_**OpenSkyhawk**_](namespaceOpenSkyhaw
 |  constexpr uint8\_t | [**GATEWAY\_NODE\_ID**](#variable-gateway_node_id)   = `0`<br>_Node ID of the Gateway board's_ [_**PanelBridge**_](namespacePanelBridge.md) _MCU — the CAN master._ |
 |  constexpr uint8\_t | [**HB\_ESR\_REC\_SHIFT**](#variable-hb_esr_rec_shift)   = `8`<br>_HB\_n_ `esr` _field: bit position of the receive error counter (REC, high byte)._ |
 |  constexpr uint8\_t | [**HB\_ESR\_TEC\_SHIFT**](#variable-hb_esr_tec_shift)   = `0`<br>_HB\_n_ `esr` _field: bit position of the transmit error counter (TEC, low byte)._ |
-|  constexpr uint8\_t | [**NODE\_STATUS\_ROW\_BYTES**](#variable-node_status_row_bytes)   = `14`<br>`_NODE_STATUS` _row length in bytes, sent as twice as many hex chars (proto v3: 14 → 28 hex)._ |
+|  constexpr uint8\_t | [**NODE\_STATUS\_ROW\_BYTES**](#variable-node_status_row_bytes)   = `17`<br>`_NODE_STATUS` _row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex)._ |
 |  constexpr uint8\_t | [**NODE\_TELEM\_ROW\_BYTES**](#variable-node_telem_row_bytes)   = `9`<br>`_NODE_TELEM` _row length in bytes, sent as twice as many hex chars (9 → 18 hex)._ |
 |  constexpr int16\_t | [**NTC\_TEMP\_UNAVAILABLE**](#variable-ntc_temp_unavailable)   = `-32768`<br>_PDU\_STATUS_ `ntcTempDC` _meaning "unavailable" — no reading yet, or the NTC is open/shorted._ |
 
@@ -117,8 +117,8 @@ _Neutral node-status contract for every_ [_**OpenSkyhawk**_](namespaceOpenSkyhaw
 | ---: | :--- |
 | define  | [**NODE\_STATUS\_END\_MSG\_NAME**](NodeStatus_8h.md#define-node_status_end_msg_name)  `"\_NODE\_STATUS\_END"`<br> |
 | define  | [**NODE\_STATUS\_MSG\_NAME**](NodeStatus_8h.md#define-node_status_msg_name)  `"\_NODE\_STATUS"`<br> |
-| define  | [**NODE\_STATUS\_PROTO\_VERSION**](NodeStatus_8h.md#define-node_status_proto_version)  `3`<br> |
-| define  | [**NODE\_STATUS\_REQ\_ADDR**](NodeStatus_8h.md#define-node_status_req_addr)  `0x86FE`<br> |
+| define  | [**NODE\_STATUS\_PROTO\_VERSION**](NodeStatus_8h.md#define-node_status_proto_version)  `4`<br> |
+| define  | [**NODE\_STATUS\_REQ\_ADDR**](NodeStatus_8h.md#define-node_status_req_addr)  `0xFF00`<br> |
 | define  | [**NODE\_TELEM\_MSG\_NAME**](NodeStatus_8h.md#define-node_telem_msg_name)  `"\_NODE\_TELEM"`<br> |
 | define  | [**NODE\_TELEM\_PROTO\_VERSION**](NodeStatus_8h.md#define-node_telem_proto_version)  `1`<br> |
 
@@ -142,13 +142,6 @@ Every wire value is a named `enum class X : T { NAME = literal }` or `constexpr 
 
 
 This is the neutral home for node-status vocabulary so it isn't shaped around any one node flavour (PanelGroup/OutputBase) or the HID namespace. `NodeHealthPayload` (the CAN HEALTH\_n frame struct) stays in `CANProtocol.h`; the fault _detail_ strings stay local (DiagSerial), never on the wire. Header-only contract + a tiny `FaultSource` registry (`NodeStatus.cpp`).
-
-
-
-
-**Version:**
-
-0.1.0 
 
 
 
@@ -268,13 +261,16 @@ enum NodeStatusField {
     HEALTH_FLAGS = 10,
     FAULT_MASK = 11,
     FAULT_ID = 12,
-    NODE_KIND = 13
+    NODE_KIND = 13,
+    FW_MAJOR = 14,
+    FW_MINOR = 15,
+    FW_PATCH = 16
 };
 ```
 
 
 
-Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE\_STATUS\_ROW\_BYTES. The first six come from the node's HB\_n (plus `present`), the last five from its HEALTH\_n. (Not `NODE_ID`: every node build defines that as a macro.) 
+Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE\_STATUS\_ROW\_BYTES. The first six come from the node's HB\_n (plus `present`), the next five from its HEALTH\_n, the last three from its READY\_n (v4, #295). Fields are only ever appended: a reader parses the fields it knows from a longer row and ignores the rest. (Not `NODE_ID`: every node build defines that as a macro.) 
 
 
         
@@ -477,7 +473,7 @@ constexpr uint8_t HB_ESR_TEC_SHIFT;
 
 ### variable NODE\_STATUS\_ROW\_BYTES 
 
-`_NODE_STATUS` _row length in bytes, sent as twice as many hex chars (proto v3: 14 → 28 hex)._
+`_NODE_STATUS` _row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex)._
 ```C++
 constexpr uint8_t NODE_STATUS_ROW_BYTES;
 ```
@@ -553,7 +549,7 @@ constexpr int16_t NTC_TEMP_UNAVAILABLE;
 ### define NODE\_STATUS\_PROTO\_VERSION 
 
 ```C++
-#define NODE_STATUS_PROTO_VERSION `3`
+#define NODE_STATUS_PROTO_VERSION `4`
 ```
 
 
@@ -566,7 +562,7 @@ constexpr int16_t NTC_TEMP_UNAVAILABLE;
 ### define NODE\_STATUS\_REQ\_ADDR 
 
 ```C++
-#define NODE_STATUS_REQ_ADDR `0x86FE`
+#define NODE_STATUS_REQ_ADDR `0xFF00`
 ```
 
 

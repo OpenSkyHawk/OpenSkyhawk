@@ -39,40 +39,32 @@ struct HomeSensor {
     uint16_t maxSeekSteps;  
 };
 
-struct StepperConfig {
-    uint16_t          stepsPerRev;       
-    StepPattern       pattern;           
-    const AccelPoint* accel;             
-    uint8_t           accelN;            
-    HomeMode          home;              
-    bool              homeSeekClockwise; 
-    HomeSensor        sensor;            
-    int16_t           homePosition;      
-    int16_t           parkPosition;      
-    int16_t           minPos;            
-    int16_t           maxPos;            
-    bool              wrap;              
-    uint8_t           deadband;          
-    bool              autoRecal;         
-    uint32_t          recalDebounceMs;   
-    // Appended for back-compat: existing positional initialisers omit these → value-initialised to
-    // 0 → legacy behaviour (STALL home drives stepsPerRev at the library default rate).
-    uint16_t          rangeSteps;        
-    uint16_t          homeStepUs;        
-};
-
 extern const AccelPoint kSwitecDefaultAccel[5];
 constexpr uint8_t kSwitecDefaultAccelN = 5;
 
+struct StepperConfig {
+    uint16_t          stepsPerRev       = 1080;  
+    StepPattern       pattern           = StepPattern::SWITEC_6STATE;  
+    const AccelPoint* accel             = kSwitecDefaultAccel;   
+    uint8_t           accelN            = kSwitecDefaultAccelN;  
+    HomeMode          home              = HomeMode::STALL;       
+    bool              homeSeekClockwise = false;  
+    HomeSensor        sensor            = { true, 5, 2000 };  
+    int16_t           homePosition      = 0;      
+    int16_t           parkPosition      = 0;      
+    int16_t           minPos            = 0;      
+    int16_t           maxPos            = 945;    
+    bool              wrap              = false;  
+    uint8_t           deadband          = 1;      
+    bool              autoRecal         = false;  
+    uint32_t          recalDebounceMs   = 0;      
+    uint16_t          rangeSteps        = 945;    
+    uint16_t          homeStepUs        = 0;      
+};
+
 StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
                             int16_t minPos, int16_t maxPos,
-                            HomeMode home = HomeMode::STALL,
-                            bool homeSeekClockwise = false,
-                            HomeSensor sensor = { true, 5, 2000 },
-                            bool wrap = false, uint8_t deadband = 1,
-                            bool autoRecal = false, uint32_t recalDebounceMs = 0,
-                            uint16_t stepsPerRev = 1080, uint16_t rangeSteps = 945,
-                            uint16_t homeStepUs = 0);
+                            HomeMode home = HomeMode::STALL);
 
 class StepperMotor : public MotorDriver {
 public:

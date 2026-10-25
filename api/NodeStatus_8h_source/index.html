@@ -4666,15 +4666,20 @@
 <span class="c1">// ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────</span>
 <span class="c1">// PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump</span>
 <span class="c1">// NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.</span>
-<span class="c1">// Full 28-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.</span>
-<span class="cp">#define NODE_STATUS_PROTO_VERSION 3</span>
-<span class="cp">#define NODE_STATUS_REQ_ADDR      0x86FE     </span><span class="c1">// host→device roster-request export address</span>
+<span class="c1">// Full 34-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.</span>
+<span class="cp">#define NODE_STATUS_PROTO_VERSION 4</span>
+<span class="c1">// Host→device roster-request export address (#295, v4). No DCS-BIOS module exports here: every</span>
+<span class="c1">// aircraft ends by 0xB2FB and MetadataEnd is 0xFFFE (checked against DCS-BIOS v0.11.8). The old</span>
+<span class="c1">// 0x86FE is a live address for the AH-64D and the Mirage F1, so flying either answered every</span>
+<span class="c1">// export of that control with a roster burst. The A4EC refresh warns if a new DCS-BIOS release ever</span>
+<span class="c1">// puts an aircraft here (tools/gen_a4ec, --modules-dir).</span>
+<span class="cp">#define NODE_STATUS_REQ_ADDR      0xFF00</span>
 <span class="cp">#define NODE_STATUS_MSG_NAME      "_NODE_STATUS"</span>
 <span class="cp">#define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"</span>
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">GATEWAY_NODE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">;</span>
 
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeStatusField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">ID</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">   </span><span class="c1">// u8: node ID; GATEWAY_NODE_ID = the bridge's own row, 1-63 = CAN nodes</span>
@@ -4688,6 +4693,9 @@
 <span class="w">    </span><span class="n">FAULT_MASK</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: reserved, 00</span>
 <span class="w">    </span><span class="n">FAULT_ID</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: NodeFaultCode</span>
 <span class="w">    </span><span class="n">NODE_KIND</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: NodeKind</span>
+<span class="w">    </span><span class="n">FW_MAJOR</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: firmware release version from the node's READY_n; 00 00 00 = not reported</span>
+<span class="w">    </span><span class="n">FW_MINOR</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8</span>
+<span class="w">    </span><span class="n">FW_PATCH</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8</span>
 <span class="p">};</span>
 
 <span class="c1">// ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────</span>

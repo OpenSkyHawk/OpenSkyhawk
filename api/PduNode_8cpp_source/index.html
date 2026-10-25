@@ -4886,7 +4886,7 @@
 <span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">out</span><span class="p">();</span>
 <span class="w">    </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[PDU] NODE_ID="</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">NODE_ID</span><span class="p">);</span>
 <span class="w">    </span><span class="n">printCal</span><span class="p">();</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">canIdReady</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">),</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendReady</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>

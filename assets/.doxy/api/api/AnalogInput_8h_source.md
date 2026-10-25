@@ -16,17 +16,25 @@
 
 namespace OpenSkyhawk {
 
-class AnalogInput : public InputBase {
-public:
-    static constexpr uint16_t DEFAULT_HYSTERESIS = 128;  
+struct AnalogConfig {
+    static constexpr uint16_t HYSTERESIS_AUTO    = 0xFFFF;
+    static constexpr uint16_t DCS_HYSTERESIS     = 1024;
+    static constexpr uint16_t HID_HYSTERESIS     = 128;
     static constexpr uint8_t  DEFAULT_EWMA_SHIFT = 3;    
     static constexpr uint8_t  MAX_EWMA_SHIFT     = 15;   
     static constexpr uint16_t DEFAULT_POLL_MS    = 8;    
 
-    AnalogInput(uint16_t controlId, PinRef pin, bool reverse = false,
-                uint16_t minRaw = 0, uint16_t maxRaw = 65535,
-                uint16_t hysteresis = DEFAULT_HYSTERESIS, uint8_t ewmaShift = DEFAULT_EWMA_SHIFT,
-                uint16_t pollMs = DEFAULT_POLL_MS);
+    bool     reverse    = false;
+    uint16_t minRaw     = 0;
+    uint16_t maxRaw     = 65535;
+    uint16_t hysteresis = HYSTERESIS_AUTO;
+    uint8_t  ewmaShift  = DEFAULT_EWMA_SHIFT;
+    uint16_t pollMs     = DEFAULT_POLL_MS;
+};
+
+class AnalogInput : public InputBase {
+public:
+    AnalogInput(uint16_t controlId, PinRef pin, const AnalogConfig& cfg = {});
 
     void poll() override;
 

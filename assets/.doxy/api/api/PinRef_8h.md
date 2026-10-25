@@ -108,13 +108,6 @@ Contains no logic beyond read/write dispatch — no debounce, no filtering, no s
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

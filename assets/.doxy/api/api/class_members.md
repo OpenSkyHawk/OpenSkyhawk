@@ -73,9 +73,9 @@
 
 * **delayUs** ([**OpenSkyhawk::AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md))
 * **DEBOUNCE\_MS** ([**OpenSkyhawk::ActionButton**](classOpenSkyhawk_1_1ActionButton.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
-* **DEFAULT\_EWMA\_SHIFT** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
-* **DEFAULT\_HYSTERESIS** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
-* **DEFAULT\_POLL\_MS** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
+* **DCS\_HYSTERESIS** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **DEFAULT\_EWMA\_SHIFT** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **DEFAULT\_POLL\_MS** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
 * **DEFAULT\_DEADBAND** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **deadzone** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **Dimmer** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md))
@@ -101,6 +101,7 @@
 
 ## e
 
+* **ewmaShift** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md))
 * **emit** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md), [**OpenSkyhawk::SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md))
 * **enabled** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
 * **erase** ([**OpenSkyhawk::Pdu::CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md))
@@ -138,6 +139,9 @@
 ## h
 
 * **hasA** ([**BatchState**](structBatchState.md))
+* **HID\_HYSTERESIS** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **HYSTERESIS\_AUTO** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **hysteresis** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md))
 * **head** ([**OpenSkyhawk::FaultSource**](classOpenSkyhawk_1_1FaultSource.md), [**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md))
 * **HIDAxis** ([**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md))
 * **HIDButton** ([**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md))
@@ -190,7 +194,9 @@
 
 ## m
 
-* **MAX\_EWMA\_SHIFT** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
+* **MAX\_EWMA\_SHIFT** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **maxRaw** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
+* **minRaw** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
 * **max** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **min** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **magic** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md))
@@ -213,6 +219,7 @@
 ## n
 
 * **name** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md), [**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
+* **NO\_DEADBAND** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **nDigits** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **nGlyphs** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **nSources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
@@ -238,6 +245,7 @@
 ## p
 
 * **poll** ([**OpenSkyhawk::ActionButton**](classOpenSkyhawk_1_1ActionButton.md), [**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md), [**OpenSkyhawk::SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md))
+* **pollMs** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md))
 * **POLL\_MS** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **posValAt** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **place** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
@@ -257,10 +265,10 @@
 ## r
 
 * **readPressed** ([**OpenSkyhawk::ActionButton**](classOpenSkyhawk_1_1ActionButton.md))
+* **reverse** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **readRaw** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **readScaled** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
 * **resolve** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
-* **reverse** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **reset** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
 * **RailMonitor** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
 * **resetPeak** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))

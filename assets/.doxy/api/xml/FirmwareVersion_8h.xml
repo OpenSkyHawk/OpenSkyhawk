@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="FirmwareVersion_8h" kind="file" language="C++">
+    <compoundname>FirmwareVersion.h</compoundname>
+    <includedby refid="CANProtocol_8cpp" local="no">Firmware/Libraries/CANProtocol/CANProtocol.cpp</includedby>
+    <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
+    <includedby refid="SimGateway_8cpp" local="no">Firmware/Libraries/SimGateway/SimGateway.cpp</includedby>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/CANProtocol/CANProtocol.cpp</label>
+        <link refid="CANProtocol_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/FirmwareVersion/FirmwareVersion.h</label>
+        <link refid="FirmwareVersion_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
+        <link refid="PanelBridge_8cpp"/>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/SimGateway/SimGateway.cpp</label>
+        <link refid="SimGateway_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="FirmwareVersion_8h_1a4857b6675d886f53768388cc56e08a33" prot="public" static="no">
+        <name>OPENSKYHAWK_FW_MAJOR</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareVersion/FirmwareVersion.h" line="18" column="9" bodyfile="Firmware/Libraries/FirmwareVersion/FirmwareVersion.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="FirmwareVersion_8h_1aafbbbeb44395027937d93e06f38b6ddc" prot="public" static="no">
+        <name>OPENSKYHAWK_FW_MINOR</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareVersion/FirmwareVersion.h" line="19" column="9" bodyfile="Firmware/Libraries/FirmwareVersion/FirmwareVersion.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="FirmwareVersion_8h_1a8c0111c6c8fca560f370fd06d81927ad" prot="public" static="no">
+        <name>OPENSKYHAWK_FW_PATCH</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareVersion/FirmwareVersion.h" line="20" column="9" bodyfile="Firmware/Libraries/FirmwareVersion/FirmwareVersion.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The firmware release version — one source for every board that reports it. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Every board is built from the same release, so there is one version, not one per library. It goes on the wire in two places: <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref>&apos;s calibration HELLO_ACK, and each STM32 node&apos;s READY_n payload (#295). release-please rewrites the three numbers below when a firmware release PR merges (generic updater, <computeroutput>x-release-please-*</computeroutput> markers; see release-please-config.json) — never edit them by hand.</para>
+<para>Shared between STM32 and RP2040. Contains only <computeroutput>#define</computeroutput> constants.</para>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="FirmwareVersion_8h_1a4857b6675d886f53768388cc56e08a33" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>OPENSKYHAWK_FW_MAJOR<sp/>0<sp/></highlight><highlight class="comment">//<sp/>x-release-please-major</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="FirmwareVersion_8h_1aafbbbeb44395027937d93e06f38b6ddc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>OPENSKYHAWK_FW_MINOR<sp/>1<sp/></highlight><highlight class="comment">//<sp/>x-release-please-minor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="FirmwareVersion_8h_1a8c0111c6c8fca560f370fd06d81927ad" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>OPENSKYHAWK_FW_PATCH<sp/>0<sp/></highlight><highlight class="comment">//<sp/>x-release-please-patch</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/FirmwareVersion/FirmwareVersion.h"/>
+  </compounddef>
+</doxygen>

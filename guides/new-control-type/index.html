@@ -3502,10 +3502,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-it-goes" class="md-nav__link">
+  <a href="#the-interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where it goes
+        The interface
       
     </span>
   </a>
@@ -3513,10 +3513,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-pattern" class="md-nav__link">
+  <a href="#sending-a-value" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The pattern
+        Sending a value
       
     </span>
   </a>
@@ -3524,10 +3524,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#value-encoding-and-panelbridge-dispatch" class="md-nav__link">
+  <a href="#an-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Value encoding and PanelBridge dispatch
+        An example
       
     </span>
   </a>
@@ -3535,21 +3535,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
+  <a href="#adding-it-to-the-library" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tests
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#then-document-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Then document it
+        Adding it to the library
       
     </span>
   </a>
@@ -4759,10 +4748,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-it-goes" class="md-nav__link">
+  <a href="#the-interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where it goes
+        The interface
       
     </span>
   </a>
@@ -4770,10 +4759,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-pattern" class="md-nav__link">
+  <a href="#sending-a-value" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The pattern
+        Sending a value
       
     </span>
   </a>
@@ -4781,10 +4770,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#value-encoding-and-panelbridge-dispatch" class="md-nav__link">
+  <a href="#an-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Value encoding and PanelBridge dispatch
+        An example
       
     </span>
   </a>
@@ -4792,21 +4781,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
+  <a href="#adding-it-to-the-library" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tests
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#then-document-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Then document it
+        Adding it to the library
       
     </span>
   </a>
@@ -4834,46 +4812,163 @@
 
 
 <h1 id="adding-a-new-control-type">Adding a New Control Type</h1>
-<p>Most input and output <a href="../../firmware/control-types/">control types</a> are specified but not yet
-implemented (Phase 4 inputs, Phase 5 outputs). If your panel needs one that doesn't exist, you
-may be the one writing it. This guide is the pattern; the per-class spec lives in the
-FirmwarePlan TechSpec.</p>
+<p>The <a href="../../firmware/control-types/">control types</a> cover the switches, selectors, encoders, pots,
+lamps, gauges and displays of the A-4E cockpit. If your panel needs something none of them does,
+you can write your own class — in your own sketch, or added to the library for everyone.</p>
+<p>The interface a control class is written against is part of the firmware's compatibility
+promise: a class you write against v1 keeps compiling and working on every 1.x release.</p>
 <div class="admonition note">
-<p class="admonition-title">Read the spec first</p>
-<p>Each control type has a detailed specification in the project's TechSpec (value encoding,
-debounce, polling rate, edge cases). Implement to the spec — don't improvise behaviour.
-Before writing a new class, check whether it only changes an existing class's <em>source</em> (inputs)
-or <em>sink</em> (outputs) — then it's a subclass in that class's family, not a new class. Names
-follow <code>dcs-bios-arduino-library</code> where an equivalent exists (<code>RotaryAcceleratedEncoder</code> extends
-<code>RotaryEncoder</code>; the planned <code>Dimmer</code> and <code>IntegerOutput</code> extend <code>AnalogOutput</code>).</p>
+<p class="admonition-title">Check the family first</p>
+<p>Before writing a new class, check whether yours only changes an existing class's <em>source</em>
+(inputs) or <em>sink</em> (outputs). Then it belongs in that class's family as a subclass, not as a
+new class. Names follow <code>dcs-bios-arduino-library</code> where an equivalent exists:
+<code>RotaryAcceleratedEncoder</code> extends <code>RotaryEncoder</code>, <code>Dimmer</code> and <code>IntegerOutput</code> extend
+<code>AnalogOutput</code>. Family subclasses use protected hooks that are <em>not</em> part of the promise, so
+they belong in the library, not a sketch.</p>
 </div>
-<h2 id="where-it-goes">Where it goes</h2>
-<p>Control classes live in the <strong><code>PanelGroup</code></strong> library (<code>Firmware/Libraries/PanelGroup/</code>). Inputs
-derive from the input base, outputs from the output base.</p>
-<h2 id="the-pattern">The pattern</h2>
-<ul>
-<li><strong>Self-registration.</strong> Constructors register the object into a static linked list — the
-  sketch just declares globals; <code>PanelGroup::loop()</code> walks the list. No manual registration.</li>
-<li><strong>Take a <code>PinRef</code>, not a raw pin.</strong> Support GPIO / MCP23017 / ADS1115 backends through
-  <code>PinRef</code>. PWM/servo outputs must check <code>isGpio()</code> (only direct GPIO can do PWM).</li>
-<li><strong>Inputs fire a <code>ControlPacket</code></strong> via <code>CANProtocol::sendBatched(canIdEvt(NODE_ID), pkt)</code> — the
-  <code>controlId</code> (passed to your constructor) decides routing, not the class. Honour the batch
-  flush rules (slot B <code>0x0000</code>; flush a half-full batch within two <code>loop()</code> iterations).</li>
-<li><strong>Outputs receive <code>CTRL_BCAST</code> packets</strong> dispatched by <code>PanelGroup::loop()</code>; pick out your
-  value by address + mask.</li>
-<li><strong>Normalise analog to 16-bit (0–65535)</strong> at the source — no rescaling downstream.</li>
-</ul>
-<h2 id="value-encoding-and-panelbridge-dispatch">Value encoding and PanelBridge dispatch</h2>
-<p>Inputs send a numeric <code>value</code>; PanelBridge maps it to a DCS-BIOS argument by <strong>dispatch type</strong>
-(<code>SWITCH</code>, <code>ACTION</code>, <code>ENCODER</code>, <code>ACCEL_ENCODER</code>, <code>MULTIPOS</code>). When you add an input class, decide
-which dispatch type it uses and make sure the generator/input-map handles it — see
-<a href="../../firmware/dcsbios-integration/">DCS-BIOS Integration</a>.</p>
-<h2 id="tests">Tests</h2>
-<p>Every control type ships with a test project under <code>Firmware/Tests/</code>. Add one that exercises the
-value semantics and edge cases from the spec, on real hardware where the type needs it.</p>
-<h2 id="then-document-it">Then document it</h2>
-<p>Update <a href="../../firmware/control-types/">Control Types</a>: move the type from "Planned" to
-implemented, and add an example. Honesty in the status table matters.</p>
+<h2 id="the-interface">The interface</h2>
+<p>An input derives from <code>OpenSkyhawk::InputBase</code>, an output from <code>OpenSkyhawk::OutputBase</code>. Declaring
+an object registers it — <code>PanelGroup::setup()</code> and <code>PanelGroup::loop()</code> find it on their own.</p>
+<table>
+<thead>
+<tr>
+<th>Input (<code>InputBase</code>)</th>
+<th>Called</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>configure()</code></td>
+<td>once, at start-up, after the expanders are ready — set your pins up here, not in the constructor</td>
+</tr>
+<tr>
+<td><code>forceReport()</code></td>
+<td>at start-up and on every <code>SYNC_REQ</code> — send the current state, unconditionally</td>
+</tr>
+<tr>
+<td><code>poll()</code></td>
+<td>every <code>loop()</code> — send only on a confirmed change; never block</td>
+</tr>
+<tr>
+<td><code>sampleTick()</code></td>
+<td>optional; from a sampling interrupt on boards that run one — read cached pins only</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Output (<code>OutputBase</code>)</th>
+<th>Called</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>configure()</code></td>
+<td>once, at start-up — set your pins up here</td>
+</tr>
+<tr>
+<td><code>onControlPacket(controlId, value)</code></td>
+<td>for every value DCS sends — keep the ones whose <code>controlId</code> is yours, store them, return</td>
+</tr>
+<tr>
+<td><code>update()</code></td>
+<td>optional; every <code>loop()</code> — do the continuous work (stepping, fading) here, not in <code>onControlPacket</code></td>
+</tr>
+</tbody>
+</table>
+<p>Read and write hardware through the <code>PinRef</code> you were given (<code>read()</code>, <code>write()</code>,
+<code>readAnalog()</code>, …), never a raw pin, so the class works on board pins, expanders and shift
+registers alike. An output that can fail (a display that stops answering, say) also derives from
+<code>FaultSource</code>, so the fault shows on the node's health.</p>
+<h2 id="sending-a-value">Sending a value</h2>
+<p>An input sends <code>CANProtocol::sendBatched(canIdEvt(NODE_ID), ControlPacket{ controlId, value })</code>.
+PanelGroup batches and flushes the frames for you. The <code>controlId</code> you were given decides where the
+value goes — a <code>DCSIN_*</code> id to DCS-BIOS, a <code>CTRL_*</code> id to the joystick — so the class never needs to
+know. Analog values are 0–65535, already scaled.</p>
+<p>The frame family decides what DCS-BIOS receives:</p>
+<table>
+<thead>
+<tr>
+<th>Frame</th>
+<th>Value</th>
+<th>DCS-BIOS gets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>canIdEvt</code></td>
+<td>the position or level</td>
+<td>that number (<code>set_state</code>)</td>
+</tr>
+<tr>
+<td><code>canIdEvtRel</code></td>
+<td>a signed step, ±n</td>
+<td><code>+n</code> / <code>-n</code> (<code>variable_step</code>)</td>
+</tr>
+<tr>
+<td><code>canIdEvtDir</code></td>
+<td>±1</td>
+<td><code>INC</code> / <code>DEC</code> (<code>fixed_step</code>)</td>
+</tr>
+<tr>
+<td><code>canIdEvtAction</code></td>
+<td>0</td>
+<td><code>TOGGLE</code> (<code>action</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>The relative, direction and action frames only reach DCS-BIOS; a joystick input uses <code>canIdEvt</code>.</p>
+<h2 id="an-example">An example</h2>
+<p>A pushbutton that sends 1 while held and 0 when released, written in a sketch:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;OpenSkyhawk.h&gt;</span>
+
+<span class="c1">// A pushbutton that sends 1 while held and 0 when released.</span>
+<span class="c1">// (No debounce — kept short. A real class should debounce, like Switch2Pos.)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleButton</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">SimpleButton</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_id</span><span class="p">(</span><span class="n">controlId</span><span class="p">),</span><span class="w"> </span><span class="n">_pin</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">configure</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_pin</span><span class="p">.</span><span class="n">configureAsInput</span><span class="p">();</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c1">// pins are ready only now</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">forceReport</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w">                             </span><span class="c1">// boot and every SYNC_REQ</span>
+<span class="w">        </span><span class="n">_pressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">_pin</span><span class="p">.</span><span class="n">read</span><span class="p">();</span><span class="w">                              </span><span class="c1">// active-low</span>
+<span class="w">        </span><span class="n">send</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">poll</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w">                                    </span><span class="c1">// every loop(); never block</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">pressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">_pin</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pressed</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_pressed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_pressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pressed</span><span class="p">;</span><span class="w"> </span><span class="n">send</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">send</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendBatched</span><span class="p">(</span><span class="n">canIdEvt</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">),</span><span class="w"> </span><span class="n">ControlPacket</span><span class="p">{</span><span class="w"> </span><span class="n">_id</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="n">_pressed</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_id</span><span class="p">;</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w">   </span><span class="n">_pin</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">_pressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">SimpleButton</span><span class="w"> </span><span class="nf">windDir</span><span class="p">(</span><span class="n">DCSIN_ASN41_WINDDIR_BTN</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PB0</span><span class="p">));</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+<span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">setup</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">loop</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="adding-it-to-the-library">Adding it to the library</h2>
+<p>A class added to the library lives under <code>Firmware/Libraries/PanelGroup/Inputs/</code> or <code>Outputs/</code>,
+follows its TechSpec in <code>Firmware/ScratchPad/TechSpec/</code>, and ships with a test project under
+<code>Firmware/Tests/</code> that exercises its values and edge cases, on real hardware where it needs it.
+Then add it to the <code>OpenSkyhawk.h</code> umbrella header and to
+<a href="../../firmware/control-types/">Control Types</a>, with an example.</p>
 
 
 

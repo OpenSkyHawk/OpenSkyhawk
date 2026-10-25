@@ -4826,7 +4826,7 @@
 <p><strong>Note:</strong></p>
 <p>The first call arms a WATCHDOG_MS hardware watchdog; after that, <a href="./#function-loop"><strong>loop()</strong></a> must be called at least that often or the chip resets (production builds only).</p>
 <p><strong>Note:</strong></p>
-<p>Node-status reporting (#86) needs no handling here: <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>'s <code>_NODE_STATUS</code> DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.</p>
+<p>Node-status reporting (#86) needs no handling here: <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>'s <code>_NODE_STATUS</code> DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a DCS-BIOS export write (addr NODE_STATUS_REQ_ADDR, 0xFF00) forwarded by step 1. Both transit transparently.</p>
 <p><strong>Note:</strong></p>
 <p>Parser state persists across calls — frames split across iterations assemble correctly. </p>
 <hr>

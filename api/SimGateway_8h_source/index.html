@@ -4727,12 +4727,6 @@
 <span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DEFAULT_UART_TX_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
 <span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DEFAULT_UART_RX_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span>
 
-<span class="c1">// Firmware version reported in the calibration protocol's HELLO_ACK, so the client can show</span>
-<span class="c1">// which build a device is running. Keep in step with library.json.</span>
-<span class="cp">#define SIMGATEWAY_FW_MAJOR 0</span>
-<span class="cp">#define SIMGATEWAY_FW_MINOR 1</span>
-<span class="cp">#define SIMGATEWAY_FW_PATCH 0</span>
-
 <span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">SerialUART</span><span class="o">&amp;</span><span class="w"> </span><span class="n">uart</span><span class="p">,</span>
 <span class="w">           </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">txPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_UART_TX_PIN</span><span class="p">,</span>
 <span class="w">           </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rxPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_UART_RX_PIN</span><span class="p">);</span>

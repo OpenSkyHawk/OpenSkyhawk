@@ -11,6 +11,7 @@
 
 
 * `#include "SimGateway.h"`
+* `#include <FirmwareVersion.h>`
 * `#include <Adafruit_TinyUSB.h>`
 * `#include <EEPROM.h>`
 * `#include "hardware/structs/uart.h"`

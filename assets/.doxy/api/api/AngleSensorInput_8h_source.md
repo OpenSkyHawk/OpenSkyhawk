@@ -16,12 +16,18 @@
 
 namespace OpenSkyhawk {
 
+struct AngleConfig {
+    uint16_t hysteresis = AnalogConfig::HYSTERESIS_AUTO;
+    uint8_t  ewmaShift  = AnalogConfig::DEFAULT_EWMA_SHIFT;
+    uint16_t pollMs     = AnalogConfig::DEFAULT_POLL_MS;
+};
+
 class AngleSensorInput : public AnalogInput {
 public:
     static constexpr float COUNTS_PER_DEG = 65536.0f / 360.0f;
 
     AngleSensorInput(uint16_t controlId, PinRef pin, float centerDeg, float travelDeg,
-                     uint16_t pollMs = DEFAULT_POLL_MS);
+                     const AngleConfig& cfg = {});
 
 protected:
     uint16_t readRaw() override;

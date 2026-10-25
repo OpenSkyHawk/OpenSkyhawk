@@ -91,13 +91,6 @@ _Family base for outputs driven by one 16-bit DCS-BIOS value._ [More...](#detail
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

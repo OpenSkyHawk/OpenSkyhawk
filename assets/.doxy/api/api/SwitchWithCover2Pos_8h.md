@@ -91,13 +91,6 @@ _Guarded 2-position switch — one pin drives the sim's cover and the switch und
 
 
 
-**Version:**
-
-0.1.0 
-
-
-
-
 **Copyright:**
 
 GPL-2.0-only — see Firmware/LICENSE 

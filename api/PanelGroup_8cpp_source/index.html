@@ -4961,9 +4961,10 @@
 <span class="w">    </span><span class="c1">// Step 7 — flush trailing batch</span>
 <span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">flushBatched</span><span class="p">(</span><span class="n">canIdEvt</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">));</span>
 
-<span class="w">    </span><span class="c1">// Step 8 — READY frame. The heartbeat/HEALTH timers arm on the first serviceNodeStatus() call</span>
-<span class="w">    </span><span class="c1">// in loop(); the master-loss watchdog stays disarmed until the first HB_0 is seen.</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">canIdReady</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">),</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// Step 8 — READY frame, carrying this build's firmware version (#295). The heartbeat/HEALTH</span>
+<span class="w">    </span><span class="c1">// timers arm on the first serviceNodeStatus() call in loop(); the master-loss watchdog stays</span>
+<span class="w">    </span><span class="c1">// disarmed until the first HB_0 is seen.</span>
+<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendReady</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="c1">// ── PanelGroup::loop ──────────────────────────────────────────────────────────</span>

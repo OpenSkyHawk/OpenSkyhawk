@@ -15,6 +15,7 @@
 * `#include <CANProtocol.h>`
 * `#include <NodeStatus.h>`
 * `#include <STM32Board.h>`
+* `#include <FirmwareVersion.h>`
 * `#include <A4EC_InputMap.h>`
 * `#include <string.h>`
 
