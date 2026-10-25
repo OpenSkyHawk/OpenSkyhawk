@@ -48,9 +48,10 @@ ADS1115  adc1;
 // ── J11 — direct GPIO ─────────────────────────────────────────────────────────
 // Pot → instrument lighting. Both Dimmer stations (this board's J_BL1 and board B's) read the
 // value this pot writes, so turning it is the sync check: the two strings must track together.
-// hysteresis 1024 (≈64 steps over the throw) — the 128 default floods DCS-BIOS import on a sweep.
-AnalogInput    instrPot (DCSIN_LIGHT_INT_INSTR, PinRef(PA0), /*reverse=*/false, 0, 65535,
-                         /*hysteresis=*/1024);
+// No AnalogConfig needed: hysteresis defaults to HYSTERESIS_AUTO, which resolves to
+// AnalogConfig::DCS_HYSTERESIS (1024, ≈64 steps over the throw) for a DCSIN_* id. The 128 HID
+// default would flood DCS-BIOS import on a sweep, which is why the route picks per id (#359).
+AnalogInput    instrPot (DCSIN_LIGHT_INT_INSTR, PinRef(PA0));
 
 // Resistor-ladder rotary → the >12-position case for AnalogMultiPos. TACAN's major channel
 // selector has a 4-bit mask (0x0780), so 16 positions; use as many as the physical switch has.
@@ -154,9 +155,9 @@ LED            spdbrkCaution(A_4E_C_D_SPDBRK_CAUTION, A_4E_C_D_SPDBRK_CAUTION_AM
                              PinRef(exp1, 1, 7));   // GPB7 — output-only by erratum
 
 // ── ADS1115 @0x48 ─────────────────────────────────────────────────────────────
-// Pot on the ADS path → white floodlight. Same class as the J11 pot, different backend.
-AnalogInput    floodPot(DCSIN_LIGHT_INT_FLOOD_WHT, PinRef(adc1, 0), /*reverse=*/false, 0, 65535,
-                        /*hysteresis=*/1024);
+// Pot on the ADS path → white floodlight. Same class as the J11 pot, different backend — and
+// identical declaration, which is the point: PinRef is the only thing that changes.
+AnalogInput    floodPot(DCSIN_LIGHT_INT_FLOOD_WHT, PinRef(adc1, 0));
 
 #if 0
 // ── AngleSensorInput (#294) — NOT a station on this rig ───────────────────────

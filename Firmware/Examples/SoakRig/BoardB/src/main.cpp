@@ -80,21 +80,19 @@ NeedleGauge  canopyNeedle(A_4E_C_CANOPY_POS, A_4E_C_CANOPY_POS_AM, canopyMotor, 
 // an X27 with the 4-state table proves the TABLE and the SEQUENCER, NOT the geared-motor profile
 // it is meant for — say so in the result. Swap CANOPY_MOTOR for this config to run it.
 //
-// makeX27Config() cannot express this: it hardcodes StepPattern::SWITEC_6STATE
-// (StepperMotor.cpp:263) and exposes no pattern parameter, so the field must be overwritten after
-// the fact. Passing the remaining arguments explicitly would only restate their defaults and
-// would still leave the pattern at 6-state — i.e. an alternate build that silently ran the main
-// build's drive sequence and reported FULL_4STATE as proven.
+// StepperConfig carries the X27 family defaults per field (#359), so this is a plain designated
+// initializer — every field not named keeps its default. Before that, makeX27Config() hardcoded
+// StepPattern::SWITEC_6STATE with no pattern parameter, so this block had to overwrite the field
+// after the call; a version that merely passed the helper's other arguments would have compiled,
+// looked right, and run the 6-state table while reporting FULL_4STATE proven.
 //
 // stepsPerRev stays at the X27 default, which under a 4-state table no longer describes this
 // motor, so the needle's travel will be wrong. That is expected and is not what this build
 // measures.
-static StepperConfig makeCanopy4StateConfig() {
-    StepperConfig cfg = makeX27Config(/*home*/0, /*park*/0, /*minPos*/0, /*maxPos*/300);
-    cfg.pattern = StepPattern::FULL_4STATE;
-    return cfg;
-}
-static const StepperConfig CANOPY_MOTOR_4STATE = makeCanopy4StateConfig();
+static const StepperConfig CANOPY_MOTOR_4STATE = {
+    .pattern = StepPattern::FULL_4STATE,
+    .maxPos  = 300,
+};
 #endif
 
 // ── Needle 2 — MCP23017 port B (the configuration that ships) ─────────────────

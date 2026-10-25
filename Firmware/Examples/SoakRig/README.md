@@ -94,9 +94,12 @@ Firmware-only differences are `#if 0` blocks in the sketches rather than duplica
 `EVT_ACTION` versus absolute 0/1 from the level — so they cannot share a pin and the second one
 has to be a reflash. (`SwitchWithCover2Pos` is the class that derives from `Switch2Pos`.)
 
-`FULL_4STATE` needs the config field overwritten after `makeX27Config()` returns: that helper
-hardcodes `StepPattern::SWITEC_6STATE` (`StepperMotor.cpp:263`) and takes no pattern argument, so a
-block that only passes its other parameters compiles, looks right, and runs the **6-state** table.
+`FULL_4STATE` is a plain designated initializer over `StepperConfig`, whose fields now default to
+the X27 family (#359) — everything it does not name keeps its default. It is spelled out rather
+than built from `makeX27Config()` because that helper fixes the pattern and takes no pattern
+argument: the older form had to overwrite the field after the call, and a version that merely
+passed the helper's other parameters compiled, looked right, and ran the **6-state** table while
+reporting the enum proven.
 
 `AngleSensorInput` is the odd one out: it is not a reflash of anything, it is a station this rig
 does not carry. It stays in the source, disabled, because board A's ADS is where it would land if
