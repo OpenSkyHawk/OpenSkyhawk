@@ -33,6 +33,7 @@ REPO_ROOT  = SCRIPT_DIR.parent.parent
 OUTPUT_DIR = REPO_ROOT / "Firmware" / "Libraries" / "A4EC"
 COMMITTED_SNAPSHOT = SCRIPT_DIR / "data" / "A-4E-C.jsonp"
 LEDGER_PATH        = SCRIPT_DIR / "id_ledger.json"
+NODE_STATUS_H      = REPO_ROOT / "Firmware" / "Libraries" / "NodeStatus" / "NodeStatus.h"
 
 DCSIN_BASE = 0x8001
 DCSIN_MAX  = 0x86FF
@@ -238,6 +239,55 @@ def emit_change_report(cmd_diff: dict, out_diff: dict) -> str:
     lines += ["", f"Added: {len(added)} new symbols."]
     return "\n".join(lines) + "\n"
 
+# ── Reserved DCS-BIOS address / names check (#295) ────────────────────────────
+# The client asks PanelBridge for the node roster by writing NODE_STATUS_REQ_ADDR into the DCS-BIOS
+# export stream, and PanelBridge answers with _NODE_* command messages. Both only work while no
+# DCS-BIOS aircraft uses that address or those names — 0x86FE was moved off for exactly that (the
+# AH-64D and Mirage F1 use it). A refresh checks every module in the release and warns if one now
+# does. It warns rather than fails: the refresh itself is still fine, the address may need moving.
+
+def read_reserved(node_status_h: Path = NODE_STATUS_H) -> tuple:
+    """(roster-request address, {message names}) as NodeStatus.h defines them — the single source."""
+    text = node_status_h.read_text(encoding="utf-8")
+    addr = int(re.search(r"#define\s+NODE_STATUS_REQ_ADDR\s+(0x[0-9A-Fa-f]+)", text).group(1), 16)
+    names = set(re.findall(r'#define\s+NODE_\w+_MSG_NAME\s+"(\w+)"', text))
+    return addr, names
+
+def find_reserved_conflicts(modules_dir: Path, addr: int, names: set) -> list:
+    """Every DCS-BIOS module output that covers `addr`, and every control named like ours."""
+    conflicts = []
+    for path in sorted(Path(modules_dir).glob("*.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            continue
+        for category in data.values():
+            if not isinstance(category, dict):          # AircraftAliases.json is a different shape
+                continue
+            for ident, ctrl in category.items():
+                if ident in names:
+                    conflicts.append(f"`{path.stem}` has a control named `{ident}`")
+                for out in ctrl.get("outputs", []):
+                    start = out["address"]
+                    length = out.get("max_length") if out.get("type") == "string" else None
+                    end = start + ((length + 1) // 2 * 2 if length else 2) - 1
+                    if start <= addr <= end:
+                        conflicts.append(f"`{path.stem}` uses `{addr:#06x}` (`{ident}`)")
+    return conflicts
+
+def emit_reserved_report(conflicts: list, addr: int) -> str:
+    lines = ["## Reserved address check", ""]
+    if not conflicts:
+        lines.append(f"No aircraft in this release uses the roster-request address `{addr:#06x}` or "
+                     "our `_NODE_*` message names.")
+    else:
+        lines += [f"**Warning:** the roster request (`NODE_STATUS_REQ_ADDR` = `{addr:#06x}`) or our "
+                  "`_NODE_*` names now clash with DCS-BIOS. Flying that aircraft would make the "
+                  "bridge send the roster on every update of that control. Move the address "
+                  "(`NodeStatus.h`, then client sync) before this reaches the cockpit.", ""]
+        lines += [f"- {c}" for c in conflicts]
+    return "\n".join(lines) + "\n"
+
 # ── Emission helpers ──────────────────────────────────────────────────────────
 
 def _c_str(val: Optional[str]) -> str:
@@ -381,6 +431,8 @@ def main() -> None:
                         help="Generation timestamp/label to embed; defaults to current UTC time")
     parser.add_argument("--source-label", metavar="TEXT",
                         help="Source label to embed; defaults to the source filename")
+    parser.add_argument("--modules-dir", metavar="DIR",
+                        help="DCS-BIOS release doc/json folder; warn if any module uses our reserved address/names")
     parser.add_argument("--change-report", metavar="PATH",
                         help="Write the removed/moved/added symbol report (Markdown) here")
     parser.add_argument("--fetch-github", action="store_true",
@@ -432,6 +484,12 @@ def main() -> None:
                  "change. Restore the ledger from git; do not edit or re-seed it.")
 
     report = emit_change_report(cmd_diff, out_diff)
+    if args.modules_dir:
+        req_addr, req_names = read_reserved()
+        conflicts = find_reserved_conflicts(Path(args.modules_dir), req_addr, req_names)
+        for c in conflicts:
+            print(f"WARNING: reserved address/name clash: {c}", file=sys.stderr)
+        report += "\n" + emit_reserved_report(conflicts, req_addr)
     print(report.rstrip())
     if args.change_report:
         Path(args.change_report).write_text(report, encoding="utf-8")

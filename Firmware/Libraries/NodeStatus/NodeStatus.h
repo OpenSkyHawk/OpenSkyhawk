@@ -37,7 +37,8 @@
 // Host→device roster-request export address (#295, v4). No DCS-BIOS module exports here: every
 // aircraft ends by 0xB2FB and MetadataEnd is 0xFFFE (checked against DCS-BIOS v0.11.8). The old
 // 0x86FE is a live address for the AH-64D and the Mirage F1, so flying either answered every
-// export of that control with a roster burst.
+// export of that control with a roster burst. The A4EC refresh warns if a new DCS-BIOS release ever
+// puts an aircraft here (tools/gen_a4ec, --modules-dir).
 #define NODE_STATUS_REQ_ADDR      0xFF00
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"

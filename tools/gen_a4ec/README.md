@@ -50,6 +50,13 @@ are the normal case. A removed symbol breaks the build of a sketch that uses it,
 a moved `A_4E_C_*` address silently breaks a lamp or gauge built against the old one,
 so either is the maintainer's call on the version bump.
 
+With `--modules-dir <release>/doc/json` (the refresh workflow passes it), the report also
+checks **every** aircraft in the release against our reserved DCS-BIOS items — the
+roster-request address `NODE_STATUS_REQ_ADDR` and the `_NODE_*` message names, read from
+`NodeStatus.h` — and warns if any aircraft now uses one (#295). The old `0x86FE` was moved
+because the AH-64D and Mirage F1 use it. A warning doesn't stop the refresh; it means the
+address should move before that DCS-BIOS version reaches the cockpit.
+
 ## Source resolution (priority order)
 
 1. `--source <path>` — explicit override, any platform, `.json` or `.jsonp`

@@ -393,3 +393,38 @@ def test_changed_dcsin_id_is_flagged():
     old = {"DCSIN_ARM_MASTER": 0x8001, "A_4E_C_X": 0x8400}
     new = {"DCSIN_ARM_MASTER": 0x8005, "A_4E_C_X": 0x8402}
     assert G.changed_dcsin_ids(G.diff_defines(old, new)) == [("DCSIN_ARM_MASTER", 0x8001, 0x8005)]
+
+
+# ── Reserved address / names check (#295) ─────────────────────────────────────
+
+def test_read_reserved_from_node_status_h():
+    """The roster address and _NODE_* names come from NodeStatus.h, the single source."""
+    addr, names = G.read_reserved()
+    assert addr == 0xFF00
+    assert names == {"_NODE_STATUS", "_NODE_STATUS_END", "_NODE_TELEM"}
+
+
+def _module(tmp_path, name, controls):
+    (tmp_path / f"{name}.json").write_text(json.dumps({"Cat": controls}), encoding="utf-8")
+
+
+def test_reserved_check_clear(tmp_path):
+    _module(tmp_path, "Plane", {"KNOB": {"outputs": [{"address": 0x8400, "type": "integer"}]}})
+    (tmp_path / "AircraftAliases.json").write_text(json.dumps({"": ["x"]}), encoding="utf-8")
+    assert G.find_reserved_conflicts(tmp_path, 0xFF00, {"_NODE_STATUS"}) == []
+    assert "No aircraft" in G.emit_reserved_report([], 0xFF00)
+
+
+def test_reserved_check_warns_on_address_and_name(tmp_path):
+    _module(tmp_path, "NewJet", {
+        "GAIN": {"outputs": [{"address": 0xFF00, "type": "integer"}]},
+        "_NODE_STATUS": {"outputs": []},
+    })
+    _module(tmp_path, "Display", {   # a string starting below 0xFF00 that runs over it
+        "TEXT": {"outputs": [{"address": 0xFEFC, "type": "string", "max_length": 8}]},
+    })
+    conflicts = G.find_reserved_conflicts(tmp_path, 0xFF00, {"_NODE_STATUS"})
+    assert any("NewJet" in c and "0xff00" in c for c in conflicts)
+    assert any("_NODE_STATUS" in c for c in conflicts)
+    assert any("Display" in c for c in conflicts)
+    assert "**Warning:**" in G.emit_reserved_report(conflicts, 0xFF00)
