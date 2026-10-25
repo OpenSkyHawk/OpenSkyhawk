@@ -13,7 +13,6 @@
  * This is the C++ analog of a trait: shared behaviour lives here, the contract (`i2cProbe()`) is
  * pure-virtual so a mixing class cannot compile without honouring it.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

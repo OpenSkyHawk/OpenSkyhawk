@@ -2,7 +2,6 @@
  * @file AnalogOutput.h
  * @brief Family base for outputs driven by one 16-bit DCS-BIOS value.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

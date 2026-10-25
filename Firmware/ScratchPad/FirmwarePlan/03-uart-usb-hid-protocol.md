@@ -274,7 +274,7 @@ the mapping — but that is data in the message, not the message's identity.
 | Type | `LEN` | Payload |
 |---|---|---|
 | `HELLO` | 0 | — |
-| `HELLO_ACK` | 6 | `proto`:u8, `blobVersion`:u8, `axisSlots`:u8 (8), `fw`:u8×3 (major, minor, patch) |
+| `HELLO_ACK` | 6 | `proto`:u8, `blobVersion`:u8, `axisSlots`:u8 (8), `fw`:u8×3 (major, minor, patch — the release version, `OPENSKYHAWK_FW_*` in `FirmwareVersion.h`) |
 | `GET_CAL` | 0 | — |
 | `CAL_DATA` | 82 | `presentMask`:u8, `calibratedMask`:u8, then **8 ×** { `controlId`:u16, `min`:u16, `centre`:u16, `max`:u16, `deadzone`:u16 } |
 | `SESSION_OPEN` | 1 | `axisIdx`:u8 — axis to stream, or `0xFF` for none |

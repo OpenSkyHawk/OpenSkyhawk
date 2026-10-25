@@ -11,7 +11,6 @@
  *   - UART : USART1 PA9 TX / PA10 RX @ 115200 (diagnostic tap)
  *   - CAN  : SN65HVD230 on PA11 (RX) / PA12 (TX)
  *
- * @version 0.4.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

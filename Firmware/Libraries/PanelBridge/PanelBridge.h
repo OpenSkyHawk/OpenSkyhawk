@@ -23,7 +23,6 @@
  * }
  * @endcode
  *
- * @version 0.2.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

@@ -19,7 +19,6 @@
  * seeks a debounced digital home sensor — a micro switch, reed, hall, or opto-interrupter
  * all read identically through one PinRef + an active-level flag.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

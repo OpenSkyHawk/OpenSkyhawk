@@ -18,7 +18,6 @@
  * Deliberately not wrapped in `#ifdef ARDUINO_ARCH_RP2040` — this is portable C++ and the
  * guard would only obstruct compiling it anywhere else.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -235,7 +234,7 @@ enum CalHelloAckField : uint8_t {
     CAL_HELLO_ACK_PROTO        = 0,  // u8: CAL_PROTO_VERSION
     CAL_HELLO_ACK_BLOB_VERSION = 1,  // u8: CAL_VERSION
     CAL_HELLO_ACK_AXIS_SLOTS   = 2,  // u8: AXIS_CAL_SLOTS
-    CAL_HELLO_ACK_FW_MAJOR     = 3,  // u8: SimGateway firmware version
+    CAL_HELLO_ACK_FW_MAJOR     = 3,  // u8: firmware release version (FirmwareVersion.h)
     CAL_HELLO_ACK_FW_MINOR     = 4,  // u8
     CAL_HELLO_ACK_FW_PATCH     = 5,  // u8
 };

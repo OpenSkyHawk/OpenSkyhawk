@@ -20,6 +20,7 @@ source** for any constant or API. When a doc and a header disagree, the header w
 | `CANProtocol` | STM32 | Packet structs (`ControlPacket`, `ControlPacketPair`), CAN IDs, the `controlId` namespace, TX/RX queues |
 | `STM32Board` | STM32 | Hardware init — CAN, UART, the bi-color status LED, SWD-only debug (JTAG pins freed as GPIO). Used by both STM32 tiers |
 | `HIDControls` | shared | HID `controlId` allocations (`CTRL_*`), shared between SimGateway and CANProtocol |
+| `FirmwareVersion` | shared | The firmware release version every board reports — one number for the whole release, set by the release process |
 | `PanelGroup` | STM32 | CAN sub-node: `PinRef`, MCP23017 management, input and output control classes |
 | `PanelBridge` | STM32 | CAN master + DCS-BIOS processor |
 | `PowerMonitor` | STM32 | The power-distribution (PDU) node: rail voltage/current + board temperature, `TELEM_n` telemetry, per-board calibration |

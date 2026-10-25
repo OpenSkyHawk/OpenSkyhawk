@@ -2,7 +2,6 @@
  * @file AngleSensorInput.h
  * @brief Magnetic angle sensor as an absolute knob / axis, for OpenSkyhawk PanelGroup nodes.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

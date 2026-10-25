@@ -214,18 +214,18 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 
 | Flag | Library it opens | First read at |
 |---|---|---|
-| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:85` |
-| `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:90` |
-| `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:279` |
-| `LED_TEST` | LED | `Outputs/LED/LED.h:68` |
-| `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:60` |
-| `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:78` |
-| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:85` |
-| `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:109` |
-| `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:142` |
-| `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:11` (no-op HID stubs) |
-| `STEPPERMOTOR_TEST` | StepperMotor | `Drivers/StepperMotor/StepperMotor.h:162` |
-| `STM32BOARD_TEST` | STM32Board | `STM32Board/STM32Board.h:32` |
+| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:84` |
+| `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:89` |
+| `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:278` |
+| `LED_TEST` | LED | `Outputs/LED/LED.h:67` |
+| `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:59` |
+| `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:77` |
+| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:84` |
+| `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:108` |
+| `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:141` |
+| `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:12` (no-op HID stubs) |
+| `STEPPERMOTOR_TEST` | StepperMotor | `Drivers/StepperMotor/StepperMotor.h:161` |
+| `STM32BOARD_TEST` | STM32Board | `STM32Board/STM32Board.h:31` |
 
 Paths are relative to `Firmware/Libraries/`, and the PanelGroup ones to
 `Firmware/Libraries/PanelGroup/`. Most seams are read in several places; the column gives the

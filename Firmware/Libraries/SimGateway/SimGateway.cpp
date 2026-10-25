@@ -1,6 +1,7 @@
 #ifdef ARDUINO_ARCH_RP2040
 
 #include "SimGateway.h"
+#include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the release version HELLO_ACK reports
 
 // ── TinyUSB HID backend (production builds only) ──────────────────────────────
 //
@@ -439,7 +440,7 @@ void _calSendHelloAck(uint8_t seq) {
         OpenSkyhawk::CAL_PROTO_VERSION,
         (uint8_t)OpenSkyhawk::CAL_VERSION,
         OpenSkyhawk::AXIS_CAL_SLOTS,
-        SIMGATEWAY_FW_MAJOR, SIMGATEWAY_FW_MINOR, SIMGATEWAY_FW_PATCH,
+        OPENSKYHAWK_FW_MAJOR, OPENSKYHAWK_FW_MINOR, OPENSKYHAWK_FW_PATCH,
     };
     _calSend(OpenSkyhawk::CAL_T_HELLO_ACK, seq, p, sizeof(p));
 }

@@ -8,7 +8,6 @@
  * live. The mux is a passive switch — the U8G2 driver still owns the device address;
  * the mux only routes SDA/SCL.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

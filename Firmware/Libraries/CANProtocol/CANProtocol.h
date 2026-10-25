@@ -13,7 +13,6 @@
  * Dependency: STM32Board::begin() must be called before CANProtocol::start().
  * CANProtocol owns CAN bus operation; STM32Board owns peripheral hardware init.
  *
- * @version 0.3.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
