@@ -564,3 +564,26 @@ reported".
 `06-panelbridge-api.md`, `09-startup-resync-diagnostics.md`, TechSpec (`CANProtocol`, `NodeStatus`,
 `PanelBridge`, `PanelGroup`, `PowerMonitor`, `README`), `docs/architecture/can-bus.md`,
 `docs/architecture/firmware-tiers.md`. Client half: SkyHawkClient sync of `NodeStatusField` v4.
+
+---
+
+## D22 — Within a major, the wire only grows and every reader tolerates growth (#295)
+
+**Decision:** From v1.0, CAN frames and payloads, the host `_NODE_*` lines and their enums are
+frozen per major. Writers only append: a frame never grows (8 bytes), a field never moves, resizes
+or changes meaning; new data goes into reserved bytes, a new `TelemPage`, or a new frame family in
+a free ID range, and new enum values are allowed. Readers accept a longer `_NODE_STATUS` row,
+parse the fields they know and ignore the rest, keep unknown enum values as "unknown (0xNN)", and
+ignore reserved bits. A shorter row means older firmware and is reported, not dropped silently.
+
+**Rationale:**
+- *A strict reader makes every addition a major.* The client dropped any `_NODE_STATUS` row whose
+  length wasn't exactly 28, so the first 1.x field (as #344's `nodeKind` and #295's version were)
+  would have blanked every 1.0 client's node list.
+- *Growth paths are named so they don't collide.* Health stays in `HEALTH_n` (its two reserved
+  bytes), node telemetry in `TELEM_n` pages, identity in `READY_n` — each owner kept single.
+- *The calibration channel is the exception.* Its `LEN` is fixed per type on purpose (false-frame
+  rejection inside the DCS-BIOS stream), so it grows by new message types instead (`03`).
+
+**Affects:** `02-can-protocol.md`, `03-uart-usb-hid-protocol.md`, `04-dcs-bios-integration.md`,
+`NodeStatus.h`. Client half: SkyHawkClient's `_NODE_STATUS` parser and alerts (client 1.0).

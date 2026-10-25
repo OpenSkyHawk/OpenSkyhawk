@@ -123,6 +123,28 @@ The row is `NODE_TELEM_ROW_BYTES` (9) bytes; `NodeTelemField` names the two offs
 
 Client side: OpenSkyhawk/SkyHawkClient#61.
 
+### Compatibility — how the host lines grow (#295, D22)
+
+`_NODE_STATUS`, `_NODE_STATUS_END`, `_NODE_TELEM` and the `0x86FE` roster request are frozen from
+v1.0 like the CAN wire (`02-can-protocol.md` § Compatibility). Within a major:
+
+- **Writers only append.** A new `_NODE_STATUS` field goes at the end of the row; existing fields
+  never move, resize or change meaning (that is a major). `NODE_STATUS_PROTO_VERSION` still bumps,
+  so the client's sync notices — but the row stays readable by older clients.
+- **Readers accept longer.** A well-formed row at least as long as the layout a reader knows is
+  parsed for the fields it knows; the rest is ignored. A shorter well-formed row means firmware
+  older than the reader needs: the client says "Gateway firmware too old", once — it never drops
+  rows silently.
+- **Unknown values show as unknown** — "unknown (0xNN)" for a `NodeKind`, `NodeFaultCode`,
+  `TelemPage` or flag bit — never an error.
+- **Versions:** each row's `fwMajor` comes from the node's `READY_n` (v4). The client warns when a
+  board's major differs from the node-0 row's (nodes on one bus share a major), and says "client
+  too old" when the Gateway's major is newer than the client supports. `000000` = not reported.
+- Malformed lines are dropped and logged for debugging only.
+
+The calibration channel on the USB CDC port follows its own rule — exact `LEN` per type, so it
+can't grow in place (`03-uart-usb-hid-protocol.md` § Calibration Protocol).
+
 ---
 
 ## DCSIN_* — Compact Transport Aliases

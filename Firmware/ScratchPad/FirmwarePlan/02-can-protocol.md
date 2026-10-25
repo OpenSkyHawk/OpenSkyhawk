@@ -363,6 +363,32 @@ unpacked C++ struct, because natural alignment can pad this layout beyond 8 byte
 
 ---
 
+## Compatibility — how the wire grows (#295, D22)
+
+From v1.0 the frame IDs and payloads are frozen: a change that breaks an existing reader is a new
+**major** version. Within a major, the wire only grows, and every reader tolerates growth:
+
+- **Frames never grow and fields never move.** A classic CAN frame carries 8 bytes, and the
+  STM32F103's bxCAN has no CAN FD. An existing field is never moved, resized or reinterpreted —
+  that is a major.
+- **Reserved bits and bytes:** transmit 0, ignore on receive. A later minor may give one a
+  meaning; an older reader keeps ignoring it.
+- **Unknown values are kept, not rejected.** A `NodeKind`, `NodeFaultCode`, `TelemPage` or flag bit
+  a reader doesn't know is carried as "unknown (0xNN)". New values are minor.
+- **Where new data goes** (each a minor):
+  - generic node health → `HEALTH_n`'s reserved bytes (6–7);
+  - node-specific telemetry → a new `TelemPage` on `TELEM_n` (append-only, forwarded unread);
+  - identity or anything else → `READY_n`'s reserved bytes (3–7), or a new frame family in a
+    free ID range (`0x013`–`0x0FF`, `0x1C0`–`0x1FF`, `0x240`–`0x2FF`, `0x340`–`0x3FF`,
+    `0x440`–`0x4FF`, `0x540`–`0x5FF`, `0x640`–`0x6FF`, `0x740`–`0x7FF`). Its position in the map
+    sets its arbitration priority (lower ID wins), which is frozen with it.
+- `TELEM_n` never carries generic health, and `HEALTH_n` never carries node-specific telemetry.
+
+`TEST_SEQ` / `ECHO_n` are covered only as far as other boards rely on them: the two IDs, and every
+node mirroring the 8 bytes unchanged. The payload contents are bridge-internal (above).
+
+---
+
 ## PanelBridge Receive Filter
 
 The heartbeat address family is `canIdHb(n) = 0x100 + n`, so the full HB range is
