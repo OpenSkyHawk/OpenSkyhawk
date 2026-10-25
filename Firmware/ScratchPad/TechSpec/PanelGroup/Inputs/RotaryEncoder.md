@@ -76,15 +76,28 @@ public:
     RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
                   EncoderStepsPerDetent stepsPerDetent = EncoderStepsPerDetent::One,
                   EncoderMode mode = EncoderMode::Rel, int16_t step = DEFAULT_STEP);
-    void poll() override;          // decode + emit on detent
+    void poll() override;          // decode (unless a sampler owns it) + drain pending → EVT
     void forceReport() override;   // resync state, NO EVT (relative)
     void configure() override;
+    void sampleTick() override;    // ISR-context decode (ShiftBus timer sampling); poll() then only drains
+
+    // Momentum filter / speed-up tuning (used by RotaryAcceleratedEncoder via the protected ctor)
+    static constexpr int8_t   MAX_MOMENTUM         = 4;
+    static constexpr uint32_t FAST_THRESHOLD_MS    = 175;
+    static constexpr uint32_t STOPPED_THRESHOLD_MS = 500;
 protected:
+    RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
+                  EncoderStepsPerDetent stepsPerDetent, EncoderMode mode, int16_t step,
+                  bool momentumFilter, int16_t fastStep);   // RotaryAcceleratedEncoder
     uint8_t readState();           // (pinA << 1) | pinB
 private:
-    void decode(uint8_t state);    // transition table → delta → emit
-    void emit(int8_t dir);         // dir = +1 (CW) / -1 (CCW); mode picks frame + value
-    // _pinA, _pinB, _mode, _step, _stepsPerDetent, _lastState, _delta, _initialized
+    void decode(uint8_t state);    // quadrature transition → (filter) → delta → pending detent
+    void countDetent(int8_t dir);  // classify slow / fast, bump the matching pending counter
+    void drainPending();           // take pending detents (IRQ-safe) → emit EVTs
+    void emit(int16_t value);      // one EVT on this mode's frame: REL ±magnitude, DIR ±1
+    // _pinA, _pinB, _mode, _step, _stepsPerDetent, _lastState, _delta,
+    // volatile _pendingDetents / _pendingFast, _filter, _fastStep, _momentum,
+    // _lastDetentMs, _hasLastDetent, volatile _sampled, _initialized
 };
 ```
 

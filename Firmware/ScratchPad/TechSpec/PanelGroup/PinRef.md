@@ -368,7 +368,7 @@ MCP23017 exp1(0x20, Wire);
 const PinRef PIN_EJECT_SAFE(exp1, PORT_A, 3);
 
 // ADS1115 ADC instance:
-ADS1115 adc(0x48, Wire);
+ADS1115 adc;   // registered in setup(): PanelGroup::registerADC(adc, 0x48, Wire);
 const PinRef PIN_RUDDER(adc, 0);
 
 OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PIN_MASTER_ARM);
