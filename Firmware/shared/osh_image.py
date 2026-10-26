@@ -5,6 +5,7 @@
 # The block is placed by stm32f103.ld at the app's start + 0x200; its layout is FirmwareImage.h.
 # imageCrc = CRC-32/MPEG-2 over imageLength bytes (32-bit little-endian words), the imageCrc word skipped.
 import os
+import pathlib
 import struct
 import subprocess
 
@@ -26,7 +27,7 @@ def crc32_mpeg2(data, skip_word=None):
 
 def section_file_offset(elf, name):
     """File offset of an ELF32 section by name — enough of the format to patch bytes in place."""
-    b = open(elf, "rb").read()
+    b = pathlib.Path(elf).read_bytes()
     shoff, = struct.unpack_from("<I", b, 0x20)
     shentsize, shnum, shstrndx = struct.unpack_from("<HHH", b, 0x2E)
     def sh(i):
@@ -53,7 +54,7 @@ def stamp_image(img):
 
 def flat_image(objcopy, elf, out):
     subprocess.check_call([objcopy, "-O", "binary", "--gap-fill", "0xFF", elf, out])
-    return open(out, "rb").read()
+    return pathlib.Path(out).read_bytes()
 
 
 def stamp(target, source, env):
