@@ -5,7 +5,8 @@ The Gateway has two chips, and each gets its own file. Flash both, from the same
 | File | Chip | Side |
 |---|---|---|
 | `${USB_FILE}` | RP2040 | USB side — talks to the PC |
-| `${COCKPIT_FILE}` | STM32F103C8 | Cockpit side — talks to the panels over CAN |
+| `${COCKPIT_FULL_FILE}` | STM32F103C8 | Cockpit side — the bootloader + the firmware, for a new board |
+| `${COCKPIT_FILE}` | STM32F103C8 | Cockpit side — the firmware alone, for a board that already has the bootloader |
 
 ## 1. USB side (RP2040)
 
@@ -18,7 +19,8 @@ The Gateway has two chips, and each gets its own file. Flash both, from the same
 
 1. Connect an ST-Link to the Gateway's SWD header.
 2. In [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html), connect
-   to the ST-Link, open `${COCKPIT_FILE}` and click **Download**. The file carries its own flash
+   to the ST-Link, open `${COCKPIT_FULL_FILE}` on a new board, or `${COCKPIT_FILE}` on one that
+   already has the OpenSkyhawk bootloader, and click **Download**. The file carries its own flash
    address, so there is nothing to type.
 
 If the ST-Link won't connect, see

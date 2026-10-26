@@ -35,6 +35,7 @@ STM32F103 — PanelBridge  [one per cockpit — runs DCS-BIOS library]
 | `09-startup-resync-diagnostics.md` | Boot sequences (all three nodes), SYNC_REQ/READY handshake, DIAG frames |
 | `10-implementation-plan.md` | Phased task list (Phases 1–6) |
 | `11-open-issues.md` | Deferred decisions, conditional revisit items, cross-document discrepancies |
+| `12-bootloader.md` | The CAN bootloader — flash layout, boot flow, NODE_ID copy in the option bytes, update protocol |
 | `examples/panelgroup-center-armament.md` | Full PanelGroup sketch with data flow |
 | `examples/panelbridge.md` | Full PanelBridge sketch |
 | `examples/simgateway.md` | Full SimGateway sketch with data flow |

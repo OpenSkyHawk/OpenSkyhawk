@@ -4,6 +4,8 @@
 #      so the .bin, the .elf and the board's flash all give the same CRC.
 # The block is placed by stm32f103.ld at the app's start + 0x200; its layout is FirmwareImage.h.
 # imageCrc = CRC-32/MPEG-2 over imageLength bytes (32-bit little-endian words), the imageCrc word skipped.
+# It also adds the `bootstrap` target (#363): build and flash Firmware/Bootloader, then this app — for a
+# blank board, which has nothing at 0x08000000 to start the app.
 import os
 import pathlib
 import struct
@@ -78,6 +80,12 @@ def rebuild_bin(target, source, env):
     flat_image(env.subst("$OBJCOPY"), str(source[0]), str(target[0]))
 
 
+def flash_bootloader(target, source, env):
+    """Build and upload Firmware/Bootloader with its own settings (its project accepts any SWD tap ID)."""
+    bootloader = os.path.join(env.GetProjectConfig().get("osh", "firmware"), "Bootloader")
+    return subprocess.call([env.subst("$PYTHONEXE"), "-m", "platformio", "run", "-d", bootloader, "-t", "upload"])
+
+
 try:
     Import("env")  # noqa: F821 — provided by PlatformIO; absent when the tests import this file
 except NameError:
@@ -85,3 +93,9 @@ except NameError:
 if env is not None:
     env.AddPostAction("$BUILD_DIR/${PROGNAME}.elf", stamp)
     env.AddPostAction("$BUILD_DIR/${PROGNAME}.bin", rebuild_bin)
+    env.AddCustomTarget(
+        name="bootstrap",
+        dependencies="$BUILD_DIR/${PROGNAME}.bin",
+        actions=[flash_bootloader, env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")],
+        title="Bootstrap",
+        description="Flash the bootloader and this app onto a blank board")

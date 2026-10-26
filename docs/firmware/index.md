@@ -21,6 +21,8 @@ source** for any constant or API. When a doc and a header disagree, the header w
 | `STM32Board` | STM32 | Hardware init — CAN, UART, the bi-color status LED, SWD-only debug (JTAG pins freed as GPIO). Used by both STM32 tiers |
 | `HIDControls` | shared | HID `controlId` allocations (`CTRL_*`), shared between SimGateway and CANProtocol |
 | `FirmwareVersion` | shared | The firmware release version every board reports — one number for the whole release, set by the release process |
+| `FirmwareImage` | STM32 | The identity block every firmware image carries — node, board kind, version, length and checksum |
+| `BootProtocol` | shared | The [bootloader](bootloader.md)'s CAN frames and codes — shared by the bootloader, the firmware and the updater |
 | `PanelGroup` | STM32 | CAN sub-node: `PinRef`, MCP23017 management, input and output control classes |
 | `PanelBridge` | STM32 | CAN master + DCS-BIOS processor |
 | `PowerMonitor` | STM32 | The power-distribution (PDU) node: rail voltage/current + board temperature, `TELEM_n` telemetry, per-board calibration |
@@ -51,6 +53,8 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
       `RotaryEncoder` (REL/DIR), `RotaryAcceleratedEncoder`, `ActionButton`
     - **Five output classes** — `LED`, `DrumDisplay`, `NeedleGauge`, `Dimmer` (PWM backlight)
       and `IntegerOutput` (your own callback), the last two over the `AnalogOutput` family base
+    - **[Bootloader](bootloader.md)** on every STM32 board — checks the firmware at power-up and takes
+      a new image over CAN, safe against an interrupted update
     - **Power-distribution node** (`PowerMonitor`, one per console) — per-rail voltage and current,
       board temperature, fault flags and calibration, reported on the `TELEM_n` frame; awaiting
       bench tuning on the PDU boards
@@ -67,6 +71,7 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
 - **[PlatformIO Setup](platformio-setup.md)** — start a firmware project from the templates
 - **[Build Flags](build-flags.md)** — all 32 `-D` flags: ours, the framework's, and the test seams
 - **[Compatibility & Versioning](compatibility.md)** — what 1.x keeps stable, and how versions move
+- **[Bootloader](bootloader.md)** — what starts the firmware, updates over CAN, and getting it onto a board
 - **[NODE_ID & CAN Addressing](node-id.md)** — the NODE_ID scheme, registry, and how to claim one
 - **[DCS-BIOS Integration](dcsbios-integration.md)** — `DCSIN_*` IDs, the A4EC headers, output addresses
 - **[HID Controls](hid-controls.md)** — the `CTRL_*` axis/button/hat allocations
