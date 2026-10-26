@@ -113,10 +113,11 @@ static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN
  * then reports the version as not reported (0.0.0).
  */
 struct __attribute__((packed)) ReadyPayload {
-    uint8_t fwMajor;  ///< 0: firmware release version (FirmwareVersion.h)
-    uint8_t fwMinor;  ///< 1
-    uint8_t fwPatch;  ///< 2
-    uint8_t rsvd[5];  ///< 3-7: reserved, transmit 0
+    uint8_t fwMajor;     ///< 0: firmware release version (FirmwareVersion.h)
+    uint8_t fwMinor;     ///< 1
+    uint8_t fwPatch;     ///< 2
+    uint8_t bootloader;  ///< 3: installed bootloader's protocol version, 0 = none (#365)
+    uint8_t rsvd[4];     ///< 4-7: reserved, transmit 0
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 
@@ -278,6 +279,8 @@ namespace CANProtocol {
      * - HB_0 on a non-bridge node: stamped for serviceNodeStatus()'s watchdog, then onReceive().
      * - The node's own `HB_NODE_ID`: stamped for serviceNodeStatus()'s duplicate NODE_ID check
      *   (#344), then onReceive().
+     * - The node's own `BOOT_CMD_n` (not on the bridge): a CONNECT resets into the bootloader when one
+     *   is installed (STM32Board::enterBootloader(), #365); never forwarded.
      * - All other frames: fires onReceive().
      *
      * Also services sendBatched() deadlines: a half-full ControlPacketPair that has
@@ -405,7 +408,8 @@ namespace CANProtocol {
 
     /**
      * @brief Build the 8-byte READY_n payload: this build's firmware release version (#295).
-     * @return ReadyPayload with fwMajor/fwMinor/fwPatch from FirmwareVersion.h, reserved bytes 0.
+     * @return ReadyPayload with fwMajor/fwMinor/fwPatch from FirmwareVersion.h, the bootloader
+     *         version (STM32Board::bootloaderVersion()), reserved bytes 0.
      */
     ReadyPayload makeReadyPayload();
 

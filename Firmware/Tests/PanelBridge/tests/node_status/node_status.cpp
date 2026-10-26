@@ -1,7 +1,7 @@
 // PanelBridge — node_status test (#86, v3 #344, v4 #295)
 //
 // Purpose: verify node-status reporting. PanelBridge surfaces connected nodes + health to the
-// host as `_NODE_STATUS` DCS-BIOS command messages (proto v4, 34 hex), emitted on:
+// host as `_NODE_STATUS` DCS-BIOS command messages ((proto v4, 38 hex)), emitted on:
 //   - node alive (dead/unseen → alive transition),
 //   - a node's board kind changing (its first HEALTH_n after the alive delta) (#344),
 //   - a node's firmware version changing (a READY_n while it is alive — a reflash) (#295),
@@ -20,7 +20,7 @@
 //   2. Open USB-UART @ 250000 (the _NODE_STATUS messages) and DiagSerial @ 115200 (phase log).
 //
 // Also at boot (before the bridge's first HEALTH_0, so its row reads not-yet-seen 80 / kind 00):
-//   _NODE_STATUS 0001ffuuuu0000eeee8000000000vvvvvv
+//   _NODE_STATUS 0001ffuuuu0000eeee8000000000vvvvvvbb00
 //   _NODE_STATUS_END 1
 //
 // Expected on USB-UART (250000), repeating each cycle n = 0, 1, 2, … Node 1 is fed a DEGRADED
@@ -32,27 +32,29 @@
 // node 2 never sends READY, so its version stays 000000 (not reported). pppppp = node 1's version
 // from the previous cycle (000000 on the first, kept across the timeout), nn = n in hex:
 //   Phase A — two nodes go alive (bare delta emits, no terminator):
-//     _NODE_STATUS 010100000A001200002A02000101pppppp
-//     _NODE_STATUS 0201020014003400028000000000000000
+//     _NODE_STATUS 010100000A001200002A02000101pppppp0000
+//     _NODE_STATUS 02010200140034000280000000000000000000
 //   Phase B — node 1's READY (version → 1.2.n delta), node 2's first HEALTH (kind 00 → 02 delta),
 //   then host request (full roster, node-0 row first, terminated; count includes node 0):
-//     _NODE_STATUS 010100000A001200002A020001010102nn
-//     _NODE_STATUS 0201020014003400022300000002000000
-//     _NODE_STATUS 0001ffuuuu0000eeeett00000003vvvvvv
-//     _NODE_STATUS 010100000A001200002A020001010102nn
-//     _NODE_STATUS 0201020014003400022300000002000000
+//     _NODE_STATUS 010100000A001200002A020001010102nn0000
+//     _NODE_STATUS 02010200140034000223000000020000000000
+//     _NODE_STATUS 0001ffuuuu0000eeeett00000003vvvvvvbb00
+//     _NODE_STATUS 010100000A001200002A020001010102nn0000
+//     _NODE_STATUS 02010200140034000223000000020000000000
 //     _NODE_STATUS_END 3
 //   Phase C — heartbeat timeout (~3 s after Phase A) removes both (present=00 deltas,
 //   cached health and version retained, incl. node 1's degraded fields and both kinds):
-//     _NODE_STATUS 010000000A001200002A020001010102nn
-//     _NODE_STATUS 0200020014003400022300000002000000
+//     _NODE_STATUS 010000000A001200002A020001010102nn0000
+//     _NODE_STATUS 02000200140034000223000000020000000000
 //
 // hex = nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2)
-//       faultMask(2) faultId(2) nodeKind(2) fwMajor(2) fwMinor(2) fwPatch(2); each field a
-//       fixed-width hex number (MSN first).
+//       faultMask(2) faultId(2) nodeKind(2) fwMajor(2) fwMinor(2) fwPatch(2) bootloader(2)
+//       bootState(2); each field a fixed-width hex number (MSN first). The injected READYs carry no
+//       bootloader byte, so CAN nodes read 00 00 (no bootloader, app running).
 // dieTempC int8 two's-complement (80 = unseen). Node-0 row: ff = the bridge's own CAN flags,
 // uuuu = its uptime in s, eeee = its ESR, tt = its die temp, kind 03 BRIDGE — live values;
-// vvvvvv = this build's version (FirmwareVersion.h; 000100 for 0.1.0).
+// vvvvvv = this build's version (FirmwareVersion.h; 000100 for 0.1.0); bb = the bridge's own
+// bootloader protocol version (01 behind the #363 bootloader, 00 when flashed at 0x08000000).
 
 #define DCSBIOS_DEFAULT_SERIAL
 #include <DcsBios.h>

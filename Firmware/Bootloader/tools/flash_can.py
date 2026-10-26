@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Bench host for the CAN bootloader (#363) — sends an app image straight onto the bus through a
-CANable (slcan, python-can), before the Gateway uploader (#366) exists.
+"""Bench host for the CAN bootloader (#363) — sends an app image to a board's bootloader, either
+straight onto the bus through a CANable (slcan, python-can) or through the Gateway's USB port and the
+PanelBridge relay (--gateway, #365), before the Gateway uploader (#366) exists.
 
   python3 flash_can.py PORT firmware.bin --node N          # flash node N (waits for its bootloader)
   python3 flash_can.py PORT --listen                       # print bootloader announcements
@@ -8,6 +9,7 @@ CANable (slcan, python-can), before the Gateway uploader (#366) exists.
   python3 flash_can.py PORT firmware.bin --delay-ms 100   # stretch the write for a power-pull test
   python3 flash_can.py PORT firmware.bin --unconfigured   # a board with no NODE_ID yet (one on the bus)
   python3 flash_can.py PORT --node N --set-node-id M      # move node N to NODE_ID M (invalidates its app)
+  python3 flash_can.py --gateway GW_PORT firmware.bin     # through the Gateway + bridge relay instead
 
 The image is a production firmware.bin (app at 0x08001000, identity block stamped by
 Firmware/shared/osh_image.py). Its identity block gives the length BEGIN announces and the CRC END
@@ -36,6 +38,7 @@ def protocol():
 
 
 P = protocol()
+BOOT_RSP = re.search(r'#define\s+BOOT_RSP_MSG_NAME\s+"([^"]+)"', HEADER.read_text())[1]
 BLK, DATA_BYTES, DATA_FRAMES = P["BLOCK_SIZE"], P["DATA_BYTES"], P["DATA_FRAMES"]
 STATES = {P["REQUESTED"]: "requested", P["APP_INVALID"]: "app invalid", P["UNCONFIGURED"]: "unconfigured",
           P["APP_UNSTABLE"]: "app unstable", P["CAUGHT"]: "caught at boot"}
@@ -81,6 +84,43 @@ class Bus:
 
     def close(self):
         self.bus.shutdown()
+
+
+class GatewayBus:
+    """The same send / recv through the Gateway's USB port (#365): a frame goes down as a DCS-BIOS
+    export record at RELAY_EXPORT_ADDRESS (id, length, one data byte per word), a bootloader frame
+    comes back as a `_BOOT_RSP <id><len><data>` line. Close the client first — it owns the port."""
+    def __init__(self, port):
+        import serial
+        self.s = serial.Serial(port, 250000, timeout=0.02)
+        self.buf = b""
+
+    def send(self, can_id, data):
+        data = bytes(data)
+        words = [can_id, len(data)] + [data[i] if i < len(data) else 0 for i in range(8)]
+        record = struct.pack("<HH", P["RELAY_EXPORT_ADDRESS"], 2 * P["RELAY_EXPORT_WORDS"])
+        record += b"".join(struct.pack("<H", w) for w in words)
+        self.s.write(b"\x55\x55\x55\x55" + record)   # sync first: the record parses from a clean state
+
+    def recv(self, timeout):
+        end = time.monotonic() + max(timeout, 0)
+        while True:
+            while b"\n" in self.buf:
+                line, self.buf = self.buf.split(b"\n", 1)
+                text = line.decode(errors="replace").strip()
+                if text.startswith(BOOT_RSP + " "):
+                    h = text.split(" ", 1)[1]
+                    try:
+                        n = int(h[3], 16)
+                        return int(h[:3], 16), bytes.fromhex(h[4:4 + 2 * n])
+                    except (ValueError, IndexError):
+                        continue
+            if time.monotonic() >= end:
+                return None
+            self.buf += self.s.read(256)
+
+    def close(self):
+        self.s.close()
 
 
 def listen(bus):
@@ -184,7 +224,8 @@ def flash(bus, img, node, stop_after, no_go, delay_ms=0, uid=None):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("port", help="the CANable's serial port")
+    ap.add_argument("port", nargs="?", help="the CANable's serial port")
+    ap.add_argument("--gateway", metavar="GW_PORT", help="go through the Gateway's USB port and the bridge relay instead")
     ap.add_argument("image", nargs="?", help="production firmware.bin")
     ap.add_argument("--node", type=int, help="target NODE_ID (default: the image's)")
     ap.add_argument("--listen", action="store_true", help="print bootloader announcements")
@@ -194,7 +235,14 @@ def main():
     ap.add_argument("--unconfigured", action="store_true", help="flash the one unconfigured board on the bus (no NODE_ID yet)")
     ap.add_argument("--set-node-id", type=int, metavar="M", help="move --node N to NODE_ID M (invalidates its app)")
     a = ap.parse_args()
-    bus = Bus(a.port)
+    if a.gateway:
+        if a.port and not a.image:      # one positional given: it is the image
+            a.image, a.port = a.port, None
+        bus = GatewayBus(a.gateway)
+    elif a.port:
+        bus = Bus(a.port)
+    else:
+        ap.error("a CANable port, or --gateway GW_PORT")
     try:
         if a.listen:
             listen(bus)
