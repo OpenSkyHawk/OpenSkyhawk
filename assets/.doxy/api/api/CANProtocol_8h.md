@@ -43,6 +43,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 | enum  | [**CanStatus**](#enum-canstatus)  <br>_CAN bus health states. Reported to_ [_**STM32Board**_](namespaceSTM32Board.md) _via onStatusChange()._ |
 | typedef void(\*)([**CanStatus**](CANProtocol_8h.md#enum-canstatus) status) | [**CanStatusCallback**](#typedef-canstatuscallback)  <br>_Fired when CAN bus status changes. Register via onStatusChange()._  |
 | typedef void(\*)() | [**CanSyncReqCallback**](#typedef-cansyncreqcallback)  <br>_Fired when SYNC\_REQ is received. Register via onSyncReq()._  |
+| enum uint8\_t | [**ReadyFlag**](#enum-readyflag)  <br>_ReadyPayload_ `flags` _bits (#383)._ |
 
 
 
@@ -196,6 +197,22 @@ using CanStatusCallback =  void(*)(CanStatus status);
 _Fired when SYNC\_REQ is received. Register via onSyncReq()._ 
 ```C++
 using CanSyncReqCallback =  void(*)();
+```
+
+
+
+
+<hr>
+
+
+
+### enum ReadyFlag 
+
+_ReadyPayload_ `flags` _bits (#383)._
+```C++
+enum ReadyFlag {
+    RESYNC = 0x01
+};
 ```
 
 
@@ -409,7 +426,10 @@ Byte 0 is a TelemPage ([**NodeStatus.h**](NodeStatus_8h.md)) naming the layout o
 First user: the PDU monitoring node — pages PDU\_RAIL\_12V / PDU\_RAIL\_5V / PDU\_STATUS. Generic node health (die temp, fault id) stays in HEALTH\_n and is never repeated here.
 
 
-Sent once per boot, after the boot EVT burst, so every reflash, reset or power cycle announces the firmware the node now runs. [**PanelBridge**](namespacePanelBridge.md) caches the version per node and reports it in `_NODE_STATUS` (v4). Firmware older than this payload sends READY\_n empty (DLC 0): the bridge then reports the version as not reported (0.0.0). 
+Sent once per boot, after the boot EVT burst, so every reflash, reset or power cycle announces the firmware the node now runs. [**PanelBridge**](namespacePanelBridge.md) caches the version per node and reports it in `_NODE_STATUS` (v4). Firmware older than this payload sends READY\_n empty (DLC 0): the bridge then reports the version as not reported (0.0.0).
+
+
+Sent again, flagged ReadyFlag::RESYNC, in answer to every SYNC\_REQ after that (#383): a bridge that booted after the node missed its boot READY and would otherwise never learn its version. 
 
 
         

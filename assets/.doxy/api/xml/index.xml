@@ -791,7 +791,7 @@
     <member refid="namespaceCANProtocol_1a1c61d1e29b732170869ac92225f580ad" kind="function"><name>busOff</name></member>
     <member refid="namespaceCANProtocol_1af5d7ba8e24001ec0c58625e0b7094161" kind="function"><name>makeHeartbeatPayload</name></member>
     <member refid="namespaceCANProtocol_1a4b64b667334501b64fec898158ec53f4" kind="function"><name>makeNodeHealthPayload</name></member>
-    <member refid="namespaceCANProtocol_1ae6aa7a24c35125935a61c2e8ecc6693f" kind="function"><name>makeReadyPayload</name></member>
+    <member refid="namespaceCANProtocol_1a216b9779a18f0f2808ccef2076977c95" kind="function"><name>makeReadyPayload</name></member>
     <member refid="namespaceCANProtocol_1ac41d6775e2db496cfce11e517b5a37c5" kind="function"><name>sendReady</name></member>
     <member refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kind="function"><name>txDropCount</name></member>
     <member refid="namespaceCANProtocol_1a598c3f06d60603c4ed497b1133655e49" kind="function"><name>lastNodeHealth</name></member>
@@ -2094,6 +2094,7 @@
     <member refid="CANProtocol_8cpp_1a94d6190085d54e36df12e4a6d9bdc37d" kind="variable"><name>_batches</name></member>
     <member refid="CANProtocol_8cpp_1a5b2a3b8032d639af719c01040846a52c" kind="variable"><name>_statusCb</name></member>
     <member refid="CANProtocol_8cpp_1a9687dabc39156fd4bf066fcf14ede868" kind="variable"><name>_syncReqCb</name></member>
+    <member refid="CANProtocol_8cpp_1a20f6a2f2cafd97cf8d263b57eb41dab0" kind="variable"><name>_readySent</name></member>
     <member refid="CANProtocol_8cpp_1a2794f36e9a2373b34e11d2b380ea327e" kind="variable"><name>_rxCb</name></member>
     <member refid="CANProtocol_8cpp_1a138fc366b9b00851dbd34f2ef9495e60" kind="variable"><name>_status</name></member>
     <member refid="CANProtocol_8cpp_1ae18bc05d725d5b3c6ecfbdb005c6797e" kind="variable"><name>_txDrops</name></member>
@@ -2129,6 +2130,8 @@
     <member refid="CANProtocol_8cpp_1a7368d39e78009c017d6f81ccf33b9b2c" kind="function"><name>HAL_CAN_RxFifo0MsgPendingCallback</name></member>
   </compound>
   <compound refid="CANProtocol_8h" kind="file"><name>CANProtocol.h</name>
+    <member refid="CANProtocol_8h_1a35b1db89f5a7cd60ecc21d0d1ee1646a" kind="enum"><name>ReadyFlag</name></member>
+    <member refid="CANProtocol_8h_1a35b1db89f5a7cd60ecc21d0d1ee1646aa17785252e510dea69f48efddd3d38954" kind="enumvalue"><name>RESYNC</name></member>
     <member refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kind="enum"><name>CanStatus</name></member>
     <member refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kind="enumvalue"><name>STARTING</name></member>
     <member refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a1e23852820b9154316c7c06e2b7ba051" kind="enumvalue"><name>NORMAL</name></member>

@@ -77,6 +77,7 @@
 |  bool | [**\_masterLost**](#variable-_masterlost)   = `false`<br> |
 |  bool | [**\_overheat**](#variable-_overheat)   = `false`<br> |
 |  uint8\_t | [**\_ownHbLoopPending**](#variable-_ownhblooppending)   = `0`<br> |
+|  bool | [**\_readySent**](#variable-_readysent)   = `false`<br> |
 |  [**CanRxCallback**](CANProtocol_8h.md#typedef-canrxcallback) | [**\_rxCb**](#variable-_rxcb)   = `nullptr`<br> |
 |  volatile uint8\_t | [**\_rxHead**](#variable-_rxhead)   = `0`<br> |
 |  [**RxQueueEntry**](structRxQueueEntry.md) | [**\_rxRing**](#variable-_rxring)  <br> |
@@ -433,6 +434,19 @@ bool _overheat;
 
 ```C++
 uint8_t _ownHbLoopPending;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_readySent 
+
+```C++
+bool _readySent;
 ```
 
 

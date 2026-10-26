@@ -4812,6 +4812,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#enum-readyflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum ReadyFlag
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5140,6 +5151,10 @@
 <td style="text-align: right;">typedef void(*)()</td>
 <td style="text-align: left;"><a href="#typedef-cansyncreqcallback"><strong>CanSyncReqCallback</strong></a>  <br><em>Fired when SYNC_REQ is received. Register via onSyncReq().</em></td>
 </tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-readyflag"><strong>ReadyFlag</strong></a>  <br><em>ReadyPayload</em> <code>flags</code> <em>bits (#383).</em></td>
+</tr>
 </tbody>
 </table>
 <h2 id="public-static-attributes">Public Static Attributes</h2>
@@ -5278,6 +5293,14 @@
 <div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">CanSyncReqCallback</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)();</span>
 </code></pre></div></p>
 <hr>
+
+<h3 id="enum-readyflag">enum ReadyFlag</h3>
+<p><em>ReadyPayload</em> <code>flags</code> <em>bits (#383).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">ReadyFlag</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">RESYNC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-can_id_ctrl_bcast">variable CAN_ID_CTRL_BCAST</h3>
 <p><em>Broadcast ControlPacketPair to all panels.</em> 
@@ -5362,7 +5385,8 @@
 <p>Rail voltage/current is intentionally NOT here — that is the PDU's dedicated power telemetry (TELEM_n / TelemPayload, #216; INA180A2 current sense on #202), not generic per-node health.</p>
 <p>Byte 0 is a TelemPage (<a href="../NodeStatus_8h/"><strong>NodeStatus.h</strong></a>) naming the layout of the other seven bytes; page ids are global and append-only, so a page means the same thing whichever node sends it. Multi-byte fields inside a page are little-endian. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> forwards every TELEM_n frame to the host unread (<code>_NODE_TELEM</code>), so a new page type needs no bridge change — the client owns the decode.</p>
 <p>First user: the PDU monitoring node — pages PDU_RAIL_12V / PDU_RAIL_5V / PDU_STATUS. Generic node health (die temp, fault id) stays in HEALTH_n and is never repeated here.</p>
-<p>Sent once per boot, after the boot EVT burst, so every reflash, reset or power cycle announces the firmware the node now runs. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> caches the version per node and reports it in <code>_NODE_STATUS</code> (v4). Firmware older than this payload sends READY_n empty (DLC 0): the bridge then reports the version as not reported (0.0.0). </p>
+<p>Sent once per boot, after the boot EVT burst, so every reflash, reset or power cycle announces the firmware the node now runs. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> caches the version per node and reports it in <code>_NODE_STATUS</code> (v4). Firmware older than this payload sends READY_n empty (DLC 0): the bridge then reports the version as not reported (0.0.0).</p>
+<p>Sent again, flagged ReadyFlag::RESYNC, in answer to every SYNC_REQ after that (#383): a bridge that booted after the node missed its boot READY and would otherwise never learn its version. </p>
 <hr>
 
 <h3 id="function-canidecho">function canIdEcho</h3>

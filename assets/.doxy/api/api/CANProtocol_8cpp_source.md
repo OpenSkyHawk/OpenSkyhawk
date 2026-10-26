@@ -61,6 +61,7 @@ static BatchState         _batches[5];
 
 static CanStatusCallback  _statusCb  = nullptr;
 static CanSyncReqCallback _syncReqCb = nullptr;
+static bool               _readySent = false;   // the boot READY is out: answer SYNC_REQ with READY (#383)
 static CanRxCallback      _rxCb      = nullptr;
 
 static CanStatus          _status         = CanStatus::STARTING;
@@ -301,6 +302,12 @@ void drain() {
         _rxHead = (_rxHead + 1) % RX_RING_SIZE;
 
         if (frame.canId == CAN_ID_SYNC_REQ) {
+            // Re-announce the version to a bridge that may have booted after us (#383) — flagged,
+            // so it doesn't broadcast SYNC_REQ back. Not before our own boot READY.
+            if (_readySent) {
+                const ReadyPayload p = makeReadyPayload(static_cast<uint8_t>(ReadyFlag::RESYNC));
+                send(canIdReady(NODE_ID), reinterpret_cast<const uint8_t*>(&p), sizeof(p));
+            }
             if (_syncReqCb) _syncReqCb();
         } else if (frame.canId == CAN_ID_TEST_SEQ) {
             send(canIdEcho(NODE_ID), frame.data, frame.len);
@@ -482,8 +489,9 @@ NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t di
     return p;
 }
 
-ReadyPayload makeReadyPayload() {
+ReadyPayload makeReadyPayload(uint8_t flags) {
     ReadyPayload p = {};
+    p.flags = flags;
     p.fwMajor = OPENSKYHAWK_FW_MAJOR;
     p.fwMinor = OPENSKYHAWK_FW_MINOR;
     p.fwPatch = OPENSKYHAWK_FW_PATCH;
@@ -494,6 +502,7 @@ ReadyPayload makeReadyPayload() {
 void sendReady() {
     const ReadyPayload p = makeReadyPayload();
     send(canIdReady(NODE_ID), reinterpret_cast<const uint8_t*>(&p), sizeof(p));
+    _readySent = true;
 }
 
 uint32_t txDropCount() { return _txDrops; }

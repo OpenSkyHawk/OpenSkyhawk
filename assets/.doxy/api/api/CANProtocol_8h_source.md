@@ -56,7 +56,13 @@ struct __attribute__((packed)) ReadyPayload {
     uint8_t fwMinor;     
     uint8_t fwPatch;     
     uint8_t bootloader;  
-    uint8_t rsvd[4];     
+    uint8_t flags;       
+    uint8_t rsvd[3];     
+};
+
+enum class ReadyFlag : uint8_t {
+    RESYNC = 0x01,  // an answer to SYNC_REQ, not a boot: the bridge caches the version but must not
+                    // broadcast SYNC_REQ for it (that would answer itself forever)
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 
@@ -177,7 +183,7 @@ namespace CANProtocol {
     NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t dieTempC,
                                             NodeFaultCode fault = NodeFaultCode::NONE);
 
-    ReadyPayload makeReadyPayload();
+    ReadyPayload makeReadyPayload(uint8_t flags = 0);
 
     void sendReady();
 

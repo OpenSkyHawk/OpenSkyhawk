@@ -87,6 +87,7 @@
 ## r
 
 * **RX\_RING\_SIZE** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **ReadyFlag** ([**CANProtocol.h**](CANProtocol_8h.md))
 
 
 ## s
@@ -118,6 +119,7 @@
 * **\_masterLost** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_overheat** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_ownHbLoopPending** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_readySent** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxCb** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxHead** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxRing** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
