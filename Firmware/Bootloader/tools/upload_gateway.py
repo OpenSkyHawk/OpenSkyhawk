@@ -159,7 +159,8 @@ def upload(gw, img, target, new_id, leave_after):
                 secs = struct.unpack_from("<H", p, C["UPL_RESULT_SECONDS"])[0]
                 dt = time.monotonic() - t1
                 print(f"\nresult: {RESULTS.get(p[0], hex(p[0]))} · node {p[1]} · v{p[2]}.{p[3]}.{p[4]} · "
-                      f"{p[5]} attempt(s) · {dt:.1f} s ({length / dt / 1024:.1f} KB/s incl. entering + confirming)")
+                      f"{p[5]} attempt(s) · {dt:.1f} s, Gateway {secs} s "
+                      f"({length / dt / 1024:.1f} KB/s incl. entering + confirming)")
                 return
 
 
