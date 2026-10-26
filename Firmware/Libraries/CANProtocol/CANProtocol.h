@@ -111,13 +111,23 @@ static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN
  * the firmware the node now runs. PanelBridge caches the version per node and reports it in
  * `_NODE_STATUS` (v4). Firmware older than this payload sends READY_n empty (DLC 0): the bridge
  * then reports the version as not reported (0.0.0).
+ *
+ * Sent again, flagged ReadyFlag::RESYNC, in answer to every SYNC_REQ after that (#383): a bridge
+ * that booted after the node missed its boot READY and would otherwise never learn its version.
  */
 struct __attribute__((packed)) ReadyPayload {
     uint8_t fwMajor;     ///< 0: firmware release version (FirmwareVersion.h)
     uint8_t fwMinor;     ///< 1
     uint8_t fwPatch;     ///< 2
     uint8_t bootloader;  ///< 3: installed bootloader's protocol version, 0 = none (#365)
-    uint8_t rsvd[4];     ///< 4-7: reserved, transmit 0
+    uint8_t flags;       ///< 4: ReadyFlag bits (#383); 0 = the boot READY
+    uint8_t rsvd[3];     ///< 5-7: reserved, transmit 0
+};
+
+/// ReadyPayload `flags` bits (#383).
+enum class ReadyFlag : uint8_t {
+    RESYNC = 0x01,  // an answer to SYNC_REQ, not a boot: the bridge caches the version but must not
+                    // broadcast SYNC_REQ for it (that would answer itself forever)
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 
@@ -408,17 +418,19 @@ namespace CANProtocol {
 
     /**
      * @brief Build the 8-byte READY_n payload: this build's firmware release version (#295).
+     * @param flags ReadyFlag bits — 0 for the boot READY.
      * @return ReadyPayload with fwMajor/fwMinor/fwPatch from FirmwareVersion.h, the bootloader
-     *         version (STM32Board::bootloaderVersion()), reserved bytes 0.
+     *         version (STM32Board::bootloaderVersion()), @p flags, reserved bytes 0.
      */
-    ReadyPayload makeReadyPayload();
+    ReadyPayload makeReadyPayload(uint8_t flags = 0);
 
     /**
-     * @brief Send this node's READY_n (`canIdReady(NODE_ID)`) carrying makeReadyPayload().
+     * @brief Send this node's boot READY_n (`canIdReady(NODE_ID)`) carrying makeReadyPayload().
      *
      * Call once at the end of the node's setup(), after its boot EVT burst. PanelBridge marks the
      * node alive, caches its version and broadcasts SYNC_REQ. Bounded retry like every other
-     * special frame (02-can-protocol.md).
+     * special frame (02-can-protocol.md). From then on drain() answers every SYNC_REQ with a READY
+     * flagged ReadyFlag::RESYNC (#383) — nothing for the caller to do.
      */
     void sendReady();
 

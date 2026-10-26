@@ -291,9 +291,14 @@ struct __attribute__((packed)) ReadyPayload {
     uint8_t fwMinor;  ///< 1
     uint8_t fwPatch;     ///< 2
     uint8_t bootloader;  ///< 3: STM32Board::bootloaderVersion() — 0 = none (#365)
-    uint8_t rsvd[4];     ///< 4-7: reserved, transmit 0
+    uint8_t flags;       ///< 4: ReadyFlag bits (#383) — 0 = the boot READY
+    uint8_t rsvd[3];     ///< 5-7: reserved, transmit 0
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
+
+enum class ReadyFlag : uint8_t {
+    RESYNC = 0x01,  // an answer to SYNC_REQ: the bridge caches the version, no SYNC_REQ back (#383)
+};
 
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
@@ -602,12 +607,14 @@ namespace CANProtocol {
      */
     uint32_t txDropCount();
 
-    /** @brief Build the READY_n payload: this build's firmware version (FirmwareVersion.h), #295. */
-    ReadyPayload makeReadyPayload();
+    /** @brief Build the READY_n payload: this build's firmware version (FirmwareVersion.h), #295.
+     *  @param flags ReadyFlag bits — 0 for the boot READY (#383). */
+    ReadyPayload makeReadyPayload(uint8_t flags = 0);
 
     /**
-     * @brief Send this node's READY_n with makeReadyPayload(). Called once, at the end of the node
-     *        library's setup() (PanelGroup step 8, PduNode) — never by sketches.
+     * @brief Send this node's boot READY_n with makeReadyPayload(). Called once, at the end of the
+     *        node library's setup() (PanelGroup step 8, PduNode) — never by sketches. From then on
+     *        drain() answers every SYNC_REQ with a READY flagged RESYNC before firing onSyncReq (#383).
      */
     void sendReady();
 

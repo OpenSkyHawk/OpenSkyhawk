@@ -89,7 +89,9 @@ populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + h
   timeout in `checkNodeTimeouts` emits `present=00` for a silently-dead node),
 - when an alive node's cached `nodeKind` changes (#344) — normally its first `HEALTH_n`, ~1 s after
   the alive delta, which went out with kind `00`,
-- when a `READY_n` changes an alive node's cached firmware version (#295) — a reflash inside the
+- when a `READY_n` changes an alive node's cached firmware version (#295) — a `RESYNC` READY
+  (#383, the answer to the bridge's own `SYNC_REQ`) is cached the same way but never triggers a
+  `SYNC_REQ` of its own — a reflash inside the
   heartbeat timeout, and
 - at boot, and in response to a host request — a DCS-BIOS export write to `NODE_STATUS_REQ_ADDR`
   (`0xFF00`; `0x86FE` before v4), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
