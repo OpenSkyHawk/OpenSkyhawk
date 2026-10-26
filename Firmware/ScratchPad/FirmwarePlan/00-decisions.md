@@ -635,3 +635,35 @@ state when its queue is full.
 
 **Affects:** `PanelBridge.cpp`, `02-can-protocol.md`, `06-panelbridge-api.md`, `10-implementation-plan.md`,
 TechSpec `PanelBridge`, PanelBridge README, `docs/architecture/can-bus.md`.
+
+---
+
+## D25 — Every production image carries a stamped identity block (#362)
+
+**Decision:** Each production STM32 image has a 32-byte identity block at image start + `0x200`:
+magic, layout version, size, image length, image CRC, NODE_ID, NodeKind and the firmware version.
+The role library defines it; a post-build step stamps the length and CRC (CRC-32/MPEG-2 over 32-bit
+words, gaps filled 0xFF). The block carries the version only — no commit id. Layout in `08`.
+
+**Rationale:**
+- *The image must say what it is before it is sent.* The uploader and the client refuse a file for
+  the wrong board kind or the wrong NODE_ID, and show the version it holds, without flashing it or
+  asking the board. A raw `.bin` has no metadata of its own.
+- *The bootloader needs a cheap "is the app whole?" check.* Length + CRC in the image lets it reject
+  an interrupted write at every boot. CRC-32/MPEG-2 over words is what the F103's CRC unit computes,
+  so the bootloader verifies 60 KB in hardware without a table.
+- *Fixed offset, not a symbol.* Readers (bootloader, uploader, client) find it without an ELF, from
+  the flat image or flash. `0x200` clears the F103 vector table (`0x10C`) with room to spare and
+  moves with the image when the bootloader shifts the app.
+- *0xFF gaps.* An ST-Link flash leaves gaps erased (0xFF) while `objcopy` fills them with 0x00, so
+  without the fill the `.bin`, the `.elf` and the board would give three answers for one image.
+- *Version only.* A release build is cut from its tag, so the version names the commit; dev builds
+  keep the last release's version (accepted). A commit id would only be known after the commit.
+- *Per-role, not per-sketch.* NODE_ID is already a build flag and the role fixes the NodeKind, so a
+  sketch author writes nothing. `Tests/` builds keep the default linker script — the block is
+  dropped there.
+
+**Affects:** `08-hardware-firmware-contracts.md`, TechSpec `FirmwareImage` + `README`,
+`Firmware/shared/` (linker script, `stm32.ini`, `osh_image.py`), the role libraries, every
+production `platformio.ini`, `docs/firmware/platformio-setup.md`. Consumers: #363 (bootloader),
+#366 (uploader), SkyHawkClient#177.
