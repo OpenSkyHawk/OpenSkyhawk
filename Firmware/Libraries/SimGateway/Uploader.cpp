@@ -93,11 +93,13 @@ void beginFrames() { _outLen = 0; _recLen = 0; for (int i = 0; i < 4; i++) _out[
 
 void addFrame(uint16_t id, const uint8_t* d, uint8_t n) {
     uint8_t f[1 + 2 * (2 + 8)];
+    if (n > 8) n = 8;
+    const uint8_t total = (uint8_t)(2 + n);   // id lo, id hi, data
     uint8_t k = 0;
     f[k++] = B::RELAY_FRAME_MARK | n;
     uint8_t raw[10] = {(uint8_t)id, (uint8_t)(id >> 8)};
     memcpy(raw + 2, d, n);
-    for (uint8_t i = 0; i < 2 + n; i++) {
+    for (uint8_t i = 0; i < total; i++) {
         if (raw[i] == 0x55)      { f[k++] = B::RELAY_ESCAPE; f[k++] = B::RELAY_ESC_55; }
         else if (raw[i] == 0x56) { f[k++] = B::RELAY_ESCAPE; f[k++] = B::RELAY_ESC_56; }
         else f[k++] = raw[i];
