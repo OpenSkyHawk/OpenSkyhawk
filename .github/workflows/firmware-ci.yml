@@ -34,6 +34,12 @@ jobs:
       # Pure Python, so this stays on PRs even though the build job does not.
       - name: Check PlatformIO impact map is up to date
         run: python3 .github/scripts/gen-platformio-impact-map.py --check
+      # The post-build stamp's CRC and offsets must match FirmwareImage.h — the bootloader and
+      # the uploader recompute them (#362). Pure Python, so it runs on PRs.
+      - name: Install pytest
+        run: python -m pip install --quiet pytest
+      - name: Test the image stamp
+        run: python -m pytest Firmware/shared/tests -q
 
   firmware:
     name: Build supported PlatformIO projects

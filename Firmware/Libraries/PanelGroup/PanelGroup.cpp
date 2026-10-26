@@ -2,6 +2,10 @@
 
 #include "PanelGroup.h"   // pulls in Helpers/ShiftBus/ShiftBus.h
 #include <STM32Board.h>
+#include <FirmwareImage.h>   // the image identity block (#362)
+
+// This image's identity block — the bootloader and the uploader check it (#362).
+OSH_FIRMWARE_IDENTITY(NodeKind::PANEL_GROUP);
 
 // ── Internal state ────────────────────────────────────────────────────────────
 

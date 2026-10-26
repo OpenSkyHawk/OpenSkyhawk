@@ -53,6 +53,29 @@ is that `USBCON` is never defined. Leave the flag in place as documentation of t
 For every flag in this file — plus the ones that aren't, their defaults, and where each is read —
 see [Build Flags](build-flags.md).
 
+## The production build lines
+
+The STM32 templates end with two short sections that every released image shares:
+
+```ini
+[platformio]
+extra_configs = ../../shared/stm32.ini   ; path from your project to Firmware/shared/
+
+[osh]
+firmware = ${PROJECT_DIR}/../..          ; the same path, to Firmware/
+```
+
+They pull in `Firmware/shared/stm32.ini`, which gives the image an **identity block**: 32 bytes
+naming the board's NODE_ID, its kind (PanelGroup, PDU or PanelBridge), the firmware version, and
+the image's length and checksum. A post-build step fills in the length and checksum, so
+`firmware.bin`, `firmware.elf` and the flashed board all give the same checksum. The firmware
+uploader checks the block before it sends anything, and the bootloader checks it at every boot.
+You set nothing by hand: the block comes from your `-DNODE_ID` and the role library your sketch
+uses.
+
+If you copy a template to a different depth, fix both paths. Under `Firmware/Panels/<YourPanel>/`
+they stay as shown.
+
 !!! warning "Keep the version constraint"
     The `@^20.0.0` is deliberate — don't drop it back to a bare `platform = ststm32`. An
     unconstrained platform resolves to whatever is newest at build time, so an upstream release

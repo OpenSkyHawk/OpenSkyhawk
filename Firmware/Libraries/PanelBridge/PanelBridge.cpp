@@ -25,8 +25,12 @@ namespace DcsBios {
 #include <NodeStatus.h>    // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <STM32Board.h>
 #include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the bridge's own node-0 row version (#295)
+#include <FirmwareImage.h>    // the image identity block (#362)
 #include <A4EC_InputMap.h>
 #include <string.h>
+
+// This image's identity block — the bootloader and the uploader check it (#362).
+OSH_FIRMWARE_IDENTITY(NodeKind::BRIDGE);
 
 namespace {
 
