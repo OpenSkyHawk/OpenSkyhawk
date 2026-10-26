@@ -65,9 +65,9 @@ cycle (~50 ms) to receive current output values. Outputs may be at default (zero
    handler validates HB/EVT/ECHO/READY ranges, discards everything else).
    See `02-can-protocol.md#panelbridge-receive-filter` for range validation rules.
 4. `canStart()`.
-5. Broadcast `SYNC_REQ` (0x012) — causes any already-running PanelGroup nodes to re-poll
-   and emit their current input states. Handles the case where PanelGroup nodes booted before
-   PanelBridge.
+5. No `SYNC_REQ` broadcast (#387): each already-running node is queued for a sync as its first
+   heartbeat arrives, and synced one at a time (`06` § Sequential sync). Handles the case where
+   PanelGroup nodes booted before PanelBridge.
 6. `DcsBios::setup()` is called by the sketch.
 
 ---
@@ -76,10 +76,10 @@ cycle (~50 ms) to receive current output values. Outputs may be at default (zero
 
 When PanelBridge receives a READY frame (`0x400+n`) from node n, the node is confirmed online
 and ready to answer a full-state request. PanelBridge logs the READY event, updates
-`lastSeenMs` like a heartbeat, marks the node alive if needed, and broadcasts `SYNC_REQ`.
+`lastSeenMs` like a heartbeat, marks the node alive if needed, and queues it for a sync (#387).
 
 READY does not carry input state itself. The state snapshot is the EVT burst emitted when the
-PanelGroup receives the following `SYNC_REQ`. It carries the node's firmware version instead
+PanelGroup receives its `SYNC_REQ`. It carries the node's firmware version instead
 (#295): PanelBridge caches it per node for `_NODE_STATUS` and pushes a delta when an alive node's
 version changes. An empty READY (older firmware) reads as not reported.
 
@@ -91,23 +91,23 @@ The handshake solves the case where PanelGroup nodes boot before PanelBridge:
 
 ```
 Timeline A — PanelBridge boots first (normal case):
-  PanelBridge boots → broadcasts SYNC_REQ (step 5)
+  PanelBridge boots (no SYNC_REQ, step 5)
   PanelGroup boots → initial EVT burst (step 6) → READY (step 7)
   PanelBridge receives EVTs during its own boot → routes normally
-  PanelBridge receives READY → broadcasts SYNC_REQ
-  PanelGroup re-polls → emits current EVTs again → routes normally
+  PanelBridge receives READY → queues the node → SYNC_REQ(n)
+  PanelGroup re-polls → emits current EVTs again → READY(RESYNC) → routes normally
 
 Timeline B — PanelGroup boots first (power sequencing race):
   PanelGroup boots → initial EVT burst (step 6) → READY (step 7)
     [PanelBridge not yet listening — EVTs and READY are lost]
-  PanelBridge boots → broadcasts SYNC_REQ (step 5)
-  PanelGroup receives SYNC_REQ → re-polls → emits EVTs again → routes normally
+  PanelBridge boots → the node's next HB → queued → SYNC_REQ(n), one node at a time
+  PanelGroup receives SYNC_REQ(n) → re-polls → emits EVTs again → READY(RESYNC) → routes normally
 
 Timeline C — Node recovers after heartbeat timeout:
   PanelBridge marks node dead after 3 seconds without HB
   Node resumes and sends HB or READY
-  PanelBridge marks node alive → broadcasts SYNC_REQ
-  PanelGroup re-polls → emits current EVTs again → routes normally
+  PanelBridge marks node alive → queues it → SYNC_REQ(n) — no other node answers
+  PanelGroup re-polls → emits current EVTs again → READY(RESYNC) → routes normally
 ```
 
 In all timelines, PanelBridge eventually receives all current input states.

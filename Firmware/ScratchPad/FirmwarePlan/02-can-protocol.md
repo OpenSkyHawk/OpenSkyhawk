@@ -96,7 +96,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 |-------|--------|-----------|-----|---------|
 | `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels — the whole DCS-BIOS export stream (`controlId` = export address, `0x0002`–`0xFFFE`; #295, D24) |
 | `TEST_SEQ` | `0x011` | PanelBridge → All | 8 | CAN throughput / RTT test — 8-byte payload echoed back unchanged by sub-nodes |
-| `SYNC_REQ` | `0x012` | PanelBridge → All | 0 | Request all nodes to re-poll inputs and emit EVTs. Sent on cold boot, on `model_time` backward, in response to `READY`, and when a node transitions from dead/unseen to alive. |
+| `SYNC_REQ` | `0x012` | PanelBridge → node n | 1 | Ask node n (byte 0) to re-poll its inputs and emit EVTs, ending with READY(RESYNC). Sent one node at a time from the bridge's sync queue (#387): a node seen alive (HB, boot READY, recovery) and every alive node on `model_time` backward. An empty `SYNC_REQ` (DLC 0) is for every node — nodes still honour it; the bridge no longer sends it. |
 | `HB_0` | `0x100` | PanelBridge → All | 8 | Master liveness beacon every 500 ms; every other node runs a master-loss watchdog on it (#93) |
 | `HB_n` | `0x100+n` | Node_n → PanelBridge | 8 | Node heartbeat every 500 ms for n=1-63 — see HB payload below |
 | `HEALTH_n` | `0x140+n` | Node_n → PanelBridge | 8 | Internal die-temp + node-health telemetry every 1000 ms (n=0-63, incl. PanelBridge itself) — see HEALTH payload below (#213/#221) |
@@ -308,24 +308,22 @@ struct ReadyPayload {          // 8 bytes, DLC 8
 };
 ```
 
-**Resync (#383).** The boot READY is the only time a node announced its version, so a bridge that
-booted after the node — a bridge-only reset, a Gateway update, a cold power-up where the bridge is
-slower — reported it as 0.0.0 until the node restarted. Since #383 every node also answers each
-`SYNC_REQ` with a READY flagged `ReadyFlag::RESYNC` (`0x01`), from `CANProtocol::drain()` once its
-boot READY is out. The bridge caches the version from it but does **not** broadcast `SYNC_REQ` for
-it (that would answer itself forever); a boot READY still triggers `SYNC_REQ` as before. Cost: one
-8-byte frame per node per `SYNC_REQ`. Firmware without the flag reads as a boot READY.
+**Resync (#383, #387).** The boot READY is the only time a node announced its version, so a bridge
+that booted after the node — a bridge-only reset, a Gateway update, a cold power-up where the bridge
+is slower — reported it as 0.0.0 until the node restarted. Since #383 every node also answers each
+`SYNC_REQ` for it with a READY flagged `ReadyFlag::RESYNC` (`0x01`), sent by `CANProtocol::drain()`
+**after** its EVT burst has left (#387: its transmit ring empty and all three mailboxes free, 50 ms
+cap — sent at once, a higher-ID frame of the burst could still go after it). It re-announces the
+version and marks the end of the node's answer: the bridge caches the version and moves its sync
+queue to the next node; it never queues a node for a RESYNC READY (they would answer each other
+forever). Cost: one 8-byte frame per sync. Firmware without the flag reads as a boot READY.
 
 PanelBridge caches the version per node (under `PANELBRIDGE_NODE_STATUS`), keeps it when the node
 times out, and reports it in `_NODE_STATUS` v4 (`04-dcs-bios-integration.md`). A READY from a node
 that is already alive — it rebooted inside the 3 s heartbeat timeout, e.g. a quick reflash — pushes
 a `_NODE_STATUS` delta when the version changed. Firmware older than #295 sends READY with DLC 0:
-the bridge reads that as **not reported** (0.0.0). The bridge's only other use of READY — mark the
-node alive, broadcast `SYNC_REQ` — is unchanged and ignores the payload.
-
-**Known gap (accepted):** READY is one frame per boot. If the bridge boots after a node, it never
-sees that node's READY, and the node reads 0.0.0 until it next reboots. A re-announce on the
-bridge's boot `SYNC_REQ` can be added later without a wire break (`SYNC_REQ` is empty today).
+the bridge reads that as **not reported** (0.0.0). The bridge's other use of a boot READY — mark the
+node alive, queue it for a sync — ignores the payload.
 
 ---
 

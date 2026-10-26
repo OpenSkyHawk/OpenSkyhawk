@@ -29,7 +29,7 @@ helper functions — **never hard-code these values**, always use the helper.
 |-------|--------|--------|-----------|-----|
 | `CTRL_BCAST` | `0x010` | `CAN_ID_CTRL_BCAST` | PanelBridge → All | 8 |
 | `TEST_SEQ` | `0x011` | `CAN_ID_TEST_SEQ` | PanelBridge → All | 8 |
-| `SYNC_REQ` | `0x012` | `CAN_ID_SYNC_REQ` | PanelBridge → All | 0 |
+| `SYNC_REQ` | `0x012` | `CAN_ID_SYNC_REQ` | PanelBridge → node *n* | 1 |
 | `HB_n` | `0x100 + n` | `canIdHb(n)` | Node *n* → PanelBridge | 8 |
 | `HEALTH_n` | `0x140 + n` | `canIdHealth(n)` | Node *n* → PanelBridge | 8 |
 | `TELEM_n` | `0x180 + n` | `canIdTelem(n)` | Node *n* → PanelBridge | 8 |
@@ -133,12 +133,15 @@ The `SYNC_REQ` / `READY` handshake makes input state deterministic:
 
 1. On cold boot a PanelGroup completes its initial input poll, then sends `READY_n`, carrying its
    firmware version so the client can show which build every board runs.
-2. PanelBridge broadcasts `SYNC_REQ` — on its own cold boot, on a DCS session change, when it
-   sees a `READY_n`, or when a node transitions from unseen to alive.
-3. On receiving `SYNC_REQ`, every PanelGroup re-polls all its inputs and re-sends their
-   current state as `EVT_n` frames. Every node also re-sends its `READY_n`, flagged as a resync,
-   so a bridge that started after it still learns its firmware version; a resync READY never
-   triggers another `SYNC_REQ`.
+2. PanelBridge asks for a node's state with a `SYNC_REQ` naming that node — when it first sees
+   the node (its heartbeat after the bridge boots, its `READY_n`, or its return after a timeout),
+   and for every node on a DCS session change. It asks **one node at a time**: all nodes answering
+   at once overflowed the bridge with only three nodes, and a full cockpit would send over a
+   thousand frames in one burst.
+3. The node re-polls all its inputs and re-sends their current state as `EVT_n` frames, then a
+   `READY_n` flagged as a resync. That READY tells the bridge the node is done, so it moves on to
+   the next one (or after 150 ms if a node doesn't answer), and it re-announces the node's
+   firmware version to a bridge that started after it. A resync READY never starts another sync.
 
 This guarantees PanelBridge can request a fresh input snapshot at any time. Missed *outputs*
 (LEDs, gauges) are tolerable — a fresh DCS-BIOS update arrives within ~50 ms. Missed *inputs*
