@@ -27,6 +27,7 @@ struct BatchState {
     bool          hasA;
     ControlPacket a;
     uint8_t       loopsWaited;
+    uint32_t      sinceMs;      // when `a` started waiting for a partner (#389)
 };
 
 // ── Private state ─────────────────────────────────────────────────────────────
@@ -45,6 +46,9 @@ static constexpr uint8_t TX_RING_SIZE    = CAN_TX_RING_SIZE;
 static constexpr uint8_t RX_RING_SIZE    = CAN_RX_RING_SIZE;
 static constexpr uint8_t MAX_FILTER_IDS  = 16;
 static constexpr uint8_t MAX_TX_ATTEMPTS = 3;
+// A lone batched packet waits this long for a partner (#389) — the bridge only (CTRL_BCAST, the
+// export stream); nodes keep the two-loop flush so input latency is unchanged.
+static constexpr uint32_t BATCH_HOLD_MS  = (NODE_ID) == GATEWAY_NODE_ID ? 2 : 0;
 
 static TxQueueEntry      _txRing[TX_RING_SIZE];
 static volatile uint8_t  _txHead = 0;
@@ -358,8 +362,11 @@ void drain() {
     // Service batch deadlines
     for (auto& b : _batches) {
         if (b.hasA) {
+            // Two loops AND >= BATCH_HOLD_MS: the bridge's loop takes microseconds while the export
+            // stream delivers a word every ~0.25 ms, so two loops alone sent nearly every frame half
+            // empty (1.45 of 2 packets on the bench, #389).
             b.loopsWaited++;
-            if (b.loopsWaited >= 2) {
+            if (b.loopsWaited >= 2 && (uint32_t)(millis() - b.sinceMs) >= BATCH_HOLD_MS) {
                 ControlPacketPair pair;
                 pair.a = b.a;
                 pair.b = { 0x0000, 0 };
@@ -424,6 +431,7 @@ void sendBatched(uint32_t canId, const ControlPacket& pkt) {
         b->a          = pkt;
         b->hasA       = true;
         b->loopsWaited = 0;
+        b->sinceMs    = millis();
     } else {
         ControlPacketPair pair;
         pair.a = b->a;
