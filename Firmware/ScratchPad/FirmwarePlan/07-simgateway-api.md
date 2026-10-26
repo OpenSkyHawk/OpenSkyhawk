@@ -391,6 +391,44 @@ scratch registers 0–3, so they survive a warm reboot and reset on power-on.
 
 ---
 
+## Uploader (#366)
+
+`Uploader` (`Uploader.h/.cpp`, library-internal) makes the Gateway the firmware uploader: it stages an
+image the client streams (`UPL_*`, `03` § Firmware upload) and flashes a board's bootloader over CAN
+through PanelBridge (`12-bootloader.md`, relay format `04`). Portable C++: SimGateway feeds it the
+client's frames, every line from PanelBridge, and a tick from `loop()`; it answers through callbacks.
+
+**Staging.** A 124 KB RAM buffer (`UPL_MAX_IMAGE_BYTES` — an app on a 128 KB board), `0xFF` past the
+image so the last block's padding is right. `UPL_END` verifies the CRC-32/MPEG-2 (the identity block's
+algorithm, CRC word skipped) and that the identity block matches `UPL_BEGIN`.
+
+**The flash** — a non-blocking state machine, phases reported in `UPL_STATUS`:
+
+| Phase | Does | Ends |
+|---|---|---|
+| ENTERING_BOOT | `CONNECT` every 100 ms on `BOOT_CMD_n` (a running app with a bootloader resets into it; a reset board is caught). Unconfigured target: waits for a `0x7C1` announcement for the UID hash, then `CONNECT [uid16]` on `0x7C0` | `CONNECTED`; 10 s → `NO_BOOTLOADER` (its `_NODE_STATUS` row shows bootloader 00) or `NO_RESPONSE` |
+| CONNECTED | Checks the bootloader's answer: kind (`KIND_MISMATCH`), room = flash − 4 KB (`TOO_BIG_FOR_BOARD`), NODE_ID (`ID_MISMATCH` unless `newNodeId` = the image's) — **before anything is erased** | → SETTING_ID or ERASING |
+| SETTING_ID | `SET_NODE_ID` → the board resets as the new node, app invalid | → ENTERING_BOOT at the new ID |
+| ERASING | `BEGIN` (the bootloader erases the image's pages first) | `BEGUN`; 6 s → retry |
+| WRITING | Up to `WINDOW_BLOCKS` (4) blocks in flight, **one block onto the UART per `loop()`** so HID and USB keep being served; go-back-N on `BLOCK_ACK.next`; 0.5 s without an ack → resend from the first unacked block (6 times → retry); `next` going backwards → the board restarted → retry | all acked |
+| VERIFYING | `END` with the CRC | `OK` → REBOOTING; `WRONG_NODE` / `WRONG_KIND` → final; else retry |
+| REBOOTING | `GO` | `GOING` (or 3 s: it reboots anyway) |
+| CONFIRMING | Waits for the image's NODE_ID row in `_NODE_STATUS`, newer than GO, app running | version equal → `OK`, different → `VERSION_MISMATCH`; 10 s → `TIMEOUT` |
+
+A transport failure retries the whole flash from ENTERING_BOOT (`UPL_RETRIES` = 2; the board is then in
+its bootloader, app invalid, and answers at once); exhausted → `WRITE_FAILED` / `VERIFY_FAILED`. The
+result goes out as `UPL_RESULT` if the client is still there (a frame within 5 s), and is always kept for
+`UPL_INFO_ACK`. Target `0` (the bridge) → `UNSUPPORTED` until #367.
+
+**While flashing it owns the UART:** SimGateway drops the client's export bytes (CDC → UART) and the
+uploader writes the relay records itself (sync + records, a few hundred bytes per block); `_BOOT_RSP`
+lines are consumed, not relayed. `_NODE_STATUS` lines are always read (the confirmation) and always
+relayed. Calibration and upload exclude each other (`NACK BUSY`).
+
+**Measured** (bench, 27.7 KB image): entering 0.12 s, erase 0.61 s, writing 2.22 s (12.5 KB/s), confirm
+~0.2 s — 3.2 s update. A mid-transfer reset retried and finished (2 attempts, 4.4 s); a client that left
+1 s in found `OK` in `UPL_INFO_ACK` afterwards.
+
 ## UART Pin Contract
 
 The standard SimGateway link uses RP2040 `Serial1` / UART0:

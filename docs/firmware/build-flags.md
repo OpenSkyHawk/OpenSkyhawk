@@ -218,7 +218,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 | `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:92` |
 | `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:108` |
 | `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:141` |
-| `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:12` (no-op HID stubs) |
+| `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:13` (no-op HID stubs) |
 | `STEPPERMOTOR_TEST` | StepperMotor | `Drivers/StepperMotor/StepperMotor.h:151` |
 | `STM32BOARD_TEST` | STM32Board | `STM32Board/STM32Board.h:31` |
 

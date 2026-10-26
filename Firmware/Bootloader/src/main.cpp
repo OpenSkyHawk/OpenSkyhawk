@@ -139,16 +139,24 @@ void can_init() {
     uint32_t t = g_ms;
     while ((CAN1->MSR & CAN_MSR_INAK) && g_ms - t < 100) {}      // joins after 11 recessive bits
 }
+void poll_can();
 void can_send(const uint8_t* d, uint8_t len) {
+    // Our replies (0x780+n) lose arbitration to a host streaming 0x740+n, so a mailbox can stay busy
+    // for a while: keep emptying the 3-deep RX FIFO meanwhile, or the stream overruns it (#366). Any
+    // of the three mailboxes will do — TXFP keeps them in request order.
     uint32_t t = g_ms;
-    while (!(CAN1->TSR & CAN_TSR_TME0)) { if (g_ms - t > 20) return; }   // nobody ACKs → drop it
+    while (!(CAN1->TSR & (CAN_TSR_TME0 | CAN_TSR_TME1 | CAN_TSR_TME2))) {
+        poll_can();
+        if (g_ms - t > 20) return;   // nobody ACKs → drop it
+    }
+    const uint32_t mb = (CAN1->TSR & CAN_TSR_CODE) >> CAN_TSR_CODE_Pos;
     uint8_t b[8] = {0};
     memcpy(b, d, len);
-    CAN1->sTxMailBox[0].TIR  = uint32_t(g_rsp_id) << 21;
-    CAN1->sTxMailBox[0].TDTR = len;
-    CAN1->sTxMailBox[0].TDLR = le32(b);
-    CAN1->sTxMailBox[0].TDHR = le32(b + 4);
-    CAN1->sTxMailBox[0].TIR |= CAN_TI0R_TXRQ;
+    CAN1->sTxMailBox[mb].TIR  = uint32_t(g_rsp_id) << 21;
+    CAN1->sTxMailBox[mb].TDTR = len;
+    CAN1->sTxMailBox[mb].TDLR = le32(b);
+    CAN1->sTxMailBox[mb].TDHR = le32(b + 4);
+    CAN1->sTxMailBox[mb].TIR |= CAN_TI0R_TXRQ;
 }
 bool can_recv(uint8_t* d, uint8_t* len) {
     if (!(CAN1->RF0R & CAN_RF0R_FMP0)) return false;
@@ -158,6 +166,20 @@ bool can_recv(uint8_t* d, uint8_t* len) {
     CAN1->RF0R |= CAN_RF0R_RFOM0;
     return true;
 }
+// Frames arriving while the bootloader writes flash land here (#366): the CAN FIFO holds only 3, and
+// a host streams WINDOW_BLOCKS ahead. Polled — between flash writes and in the main loop.
+struct RxFrame { uint8_t n; uint8_t d[8]; };
+constexpr uint8_t RING = Boot::WINDOW_BLOCKS * (Boot::DATA_FRAMES + 1) + 4;
+RxFrame  g_ring[RING];
+uint8_t  g_head, g_tail;
+void poll_can() {
+    while (uint8_t(g_head + 1) % RING != g_tail) {
+        RxFrame& f = g_ring[g_head];
+        if (!can_recv(f.d, &f.n)) return;
+        g_head = uint8_t(g_head + 1) % RING;
+    }
+}
+
 void reply(Reply code, uint8_t a = 0, uint8_t b = 0, uint8_t c = 0, uint8_t len = 2) {
     uint8_t d[4] = {uint8_t(code), a, b, c};
     can_send(d, len);
@@ -192,8 +214,10 @@ bool flash_program(volatile uint16_t* at, uint16_t v, uint32_t mode) {   // mode
     return ok && (mode == FLASH_CR_OPTPG ? uint8_t(*at) == uint8_t(v) : *at == v);
 }
 bool flash_write(uint32_t addr, const uint8_t* d, uint32_t n) {
-    for (uint32_t i = 0; i < n; i += 2)
+    for (uint32_t i = 0; i < n; i += 2) {
         if (!flash_program(reinterpret_cast<volatile uint16_t*>(addr + i), d[i] | (d[i + 1] << 8), FLASH_CR_PG)) return false;
+        poll_can();   // keep the stream flowing while we write
+    }
     return true;
 }
 
@@ -295,13 +319,37 @@ struct Session {
     bool     active = false;
 };
 Session s;
+uint32_t g_last_announce;
+
+// LEDs, and the announcement while waiting — called from the main loop and between BEGIN's page erases.
+void service() {
+    // Red + green together = "in the bootloader" — the app never lights both (#365):
+    // waiting: both blink 1 Hz · image arriving: both flicker ~8 Hz · app unstable: both, then
+    // red alone · unconfigured: both, then green alone (500 ms each).
+    bool half = (g_ms >> 9) & 1;
+    if (s.active)                                led((g_ms >> 6) & 1, (g_ms >> 6) & 1);
+    else if (g_state == BootState::APP_UNSTABLE) led(true, half);
+    else if (g_state == BootState::UNCONFIGURED) led(half, true);
+    else                                         led(half, half);
+    // Announce while waiting — and during a transfer that has gone quiet, so the bridge still sees
+    // the node alive in its bootloader (#365).
+    if (g_ms - g_last_announce >= Boot::ANNOUNCE_INTERVAL_MS && (!s.active || g_ms - g_last_cmd >= Boot::ANNOUNCE_INTERVAL_MS)) {
+        g_last_announce = g_ms;
+        announce(Reply::ANNOUNCE);
+    }
+}
 
 Status begin(uint32_t len) {
     s.active = false;
     s.total = (len + BLK - 1) / BLK * BLK;
     s.next = 0;
     if (!len || APP_ADDR + s.total > flash_end()) return Status::OUT_OF_RANGE;
-    if (!flash_erase(APP_ADDR)) return Status::FLASH_ERROR;   // the old app is invalid from here on
+    // Every page the image needs, now (#366) — page 0 first, so the old app is invalid from here on —
+    // so a streaming host never waits on a 20 ms erase. Pages past the image are never touched.
+    for (uint32_t a = APP_ADDR; a < APP_ADDR + s.total; a += PAGE) {
+        if (!flash_erase(a)) return Status::FLASH_ERROR;
+        service();
+    }
     s.active = true;
     return Status::OK;
 }
@@ -310,13 +358,10 @@ Status block() {
     uint32_t addr = APP_ADDR + uint32_t(s.index) * BLK;
     if (!s.active) return Status::OUT_OF_ORDER;
     if (crc16(s.buf, BLK) != s.want) return Status::BAD_CRC;
-    if (s.index && s.index + 1u == s.next) return Status::OK;   // a resend of the last block — already written
+    if (s.index < s.next) return Status::OK;   // a resend (go-back-N after a lost ack) — already written
     if (s.index != s.next || addr + BLK > APP_ADDR + s.total) return Status::OUT_OF_ORDER;
     if (s.index == 0) memcpy(s.blk0, s.buf, BLK);
-    else {
-        if (addr % PAGE == 0 && !flash_erase(addr)) return Status::FLASH_ERROR;
-        if (!flash_write(addr, s.buf, BLK)) return Status::FLASH_ERROR;
-    }
+    else if (!flash_write(addr, s.buf, BLK)) return Status::FLASH_ERROR;
     s.next++;
     return Status::OK;
 }
@@ -401,7 +446,10 @@ void handle(const uint8_t* m, uint8_t n) {
             s.have |= 1u << k;
             if (s.have == (1u << Boot::DATA_FRAMES) - 1) {
                 s.have = 0;
-                reply(Reply::BLOCK_ACK, uint8_t(s.index), uint8_t(s.index >> 8), uint8_t(block()), 4);
+                uint8_t st = uint8_t(block());
+                uint8_t d[6] = {uint8_t(Reply::BLOCK_ACK), uint8_t(s.index), uint8_t(s.index >> 8), st,
+                                uint8_t(s.next), uint8_t(s.next >> 8)};
+                can_send(d, sizeof d);
             }
         }
     }
@@ -453,27 +501,18 @@ int main() {
     }
     flash_unlock();
 
-    uint32_t last = g_ms - Boot::ANNOUNCE_INTERVAL_MS;
+    g_last_announce = g_ms - Boot::ANNOUNCE_INTERVAL_MS;
     g_last_cmd = g_ms;
     for (;;) {
-        // Red + green together = "in the bootloader" — the app never lights both (#365):
-        // waiting: both blink 1 Hz · image arriving: both flicker ~8 Hz · app unstable: both, then
-        // red alone · unconfigured: both, then green alone (500 ms each).
-        bool half = (g_ms >> 9) & 1;
-        if (s.active)                                led((g_ms >> 6) & 1, (g_ms >> 6) & 1);
-        else if (g_state == BootState::APP_UNSTABLE) led(true, half);
-        else if (g_state == BootState::UNCONFIGURED) led(half, true);
-        else                                         led(half, half);
-        // Announce while waiting — and during a transfer that has gone quiet, so the bridge still
-        // sees the node alive in its bootloader (#365).
-        if (g_ms - last >= Boot::ANNOUNCE_INTERVAL_MS && (!s.active || g_ms - g_last_cmd >= Boot::ANNOUNCE_INTERVAL_MS)) {
-            last = g_ms;
-            announce(Reply::ANNOUNCE);
-        }
+        service();
         // Entered on request or caught, the old app is still valid until BEGIN: nobody came → back to it.
         if ((g_state == BootState::REQUESTED || g_state == BootState::CAUGHT) && g_ms - g_last_cmd >= Boot::IDLE_TIMEOUT_MS)
             NVIC_SystemReset();
-        uint8_t m[8], n;
-        if (can_recv(m, &n) && n) handle(m, n);
+        poll_can();
+        if (g_tail != g_head) {
+            RxFrame& f = g_ring[g_tail];
+            if (f.n) handle(f.d, f.n);
+            g_tail = uint8_t(g_tail + 1) % RING;
+        }
     }
 }

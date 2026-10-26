@@ -684,7 +684,7 @@ release's `-full.hex`). Protocol and boot flow: `12-bootloader.md`.
   the Arduino model, not an option.
 - *Our own, not Katapult.* Katapult (#361 spike) checks only the first word of the app, writes the vector
   table first (a half-written image passes), has no timeout, uses CAN IDs that collide with
-  `HB_n` / `HEALTH_n` / `TELEM_n`, and is GPLv3 with a make/Kconfig build. Ours is ~2.9 KB bare-metal
+  `HB_n` / `HEALTH_n` / `TELEM_n`, and is GPLv3 with a make/Kconfig build. Ours is ~3.1 KB bare-metal
   CMSIS, in PlatformIO, on the IDs #295 reserved.
 - *4 KB, not less.* The F103 write-protects in 4 KB blocks and #364 protects the bootloader; a smaller
   bootloader would leave the rest of its block unusable anyway.
@@ -742,7 +742,7 @@ SkyHawkClient#175 (stuck / unstable states), #177 (From file…, change-node-ID-
 
 **Decision:** The host reaches a board's bootloader through the Gateway and PanelBridge with no new
 framing on either link. Down, each bootloader CAN frame is a DCS-BIOS export record at the reserved
-window `0xFF10`–`0xFF23` (one data byte per word); up, each bootloader frame is a `_BOOT_RSP` DCS-BIOS
+window (`0xFF10`, stream-encoded since #366 — D29); up, each bootloader frame is a `_BOOT_RSP` DCS-BIOS
 message. A running app enters its bootloader on a CONNECT, only when the bootloader's info block
 (`0x08000FF0`) says one is installed. `_NODE_STATUS` gains `bootloader` and `bootState` inside v4.
 
@@ -768,3 +768,33 @@ message. A running app enters its bootloader on a CONNECT, only when the bootloa
 (`bootloaderVersion()`, `enterBootloader()`), `PanelBridge`, the bootloader (info block, LEDs, idle
 announce), `02`, `04`, `06`, `09`, `12`, TechSpec, `docs/firmware/debugging.md`,
 `docs/firmware/bootloader.md`. Client half: SkyHawkClient#175.
+
+---
+
+## D29 — The Gateway is the uploader, and the transfer streams (#366)
+
+**Decision:** The Gateway's RP2040 stages an image the client streams over USB (`UPL_*` on the calibration
+envelope, `03`), then flashes the board itself through PanelBridge and finishes on its own: it checks NODE_ID,
+kind and size from the bootloader's answer before anything is erased, retries the whole flash twice after a
+transport failure, and confirms success by the board's `_NODE_STATUS` row reporting the image's version. The
+transfer streams: the bootloader erases the image's pages at BEGIN and buffers 4 blocks in flight (go-back-N
+on `BLOCK_ACK.next`), and the relay packs whole frames per export record with `0x55` / `0x56` escaped.
+
+**Rationale:**
+- *The client may go away.* A laptop sleeping or a USB cable pulled mid-flash must not leave a board half
+  written with nobody to finish it — the Gateway holds the image and the state, and reports the result when
+  the client comes back (`UPL_INFO_ACK`).
+- *No USB round trip per block.* Driving the protocol from the RP2040 takes the PC out of the per-block loop;
+  the client's own staging is a plain bulk copy.
+- *Speed had to be settled before the freeze (#367).* Stop-and-wait over the relay ran ~2.7 KB/s — bounded
+  by four UART bytes per data byte and one block in flight. Streaming lives in the bootloader, so it went in
+  now: ~0.25 KB more code, protocol version unchanged (nothing had shipped). With the denser relay
+  (~2 UART bytes per data byte, bridge firmware — still changeable later) the Gateway writes at ~12.5 KB/s:
+  a 60 KB board in ~6 s, a full cockpit in about a minute.
+- *Decide before erasing.* ID / kind / size checks use the bootloader's CONNECTED answer, so a wrong file
+  never costs a board its app.
+
+**Affects:** `BootProtocol.h` (window, `BLOCK_ACK.next`, relay encoding), `Firmware/Bootloader`
+(erase-at-BEGIN, RX ring, mailbox wait), `PanelBridge` (stream decoder), `SimGateway` (`Uploader`,
+`UploadProtocol.h`, `AxisCal.h` types / NACKs / inbound size), `03`, `04`, `06`, `07`, `12`, TechSpec,
+`docs/architecture/sim-gateway.md`, `docs/firmware/bootloader.md`. Client half: SkyHawkClient#175–#177.

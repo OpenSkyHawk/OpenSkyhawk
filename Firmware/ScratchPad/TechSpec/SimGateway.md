@@ -35,6 +35,9 @@ Firmware/Libraries/SimGateway/
 ├── AxisCal.cpp      ← implementation; no EEPROM, no Serial, no millis(), no globals
 ├── LinkRecovery.h   ← USB recovery ladder (#355): LinkAction, LinkRecovery, timing constants — pure
 ├── LinkRecovery.cpp ← ladder state machine; takes `now` + sampled health, returns the action
+├── UploadProtocol.h ← the uploader's USB contract (#366): states, phases, results, UPL_* payload offsets
+├── Uploader.h/.cpp  ← the firmware uploader (#366): 124 KB staging, the flash state machine, relay
+│                      encoding, `_BOOT_RSP` / `_NODE_STATUS` parsing — portable, I/O via callbacks
 └── library.json     ← platform: raspberrypi; dep: adafruit/Adafruit TinyUSB Library
 
 Firmware/SimGateway/
@@ -737,3 +740,28 @@ SimGateway has no boot handshake with the CAN cluster. It is stateless with resp
 | Adafruit TinyUSB Library | `adafruit/Adafruit TinyUSB Library` | Custom HID descriptor; 8 axes, 128 buttons, 4 hats; embedded in SimGateway.cpp |
 | HIDControls | `Firmware/Libraries/HIDControls` | Standalone platform-agnostic library; CTRL_* constants for sketch declarations |
 | EEPROM | framework-arduinopico (bundled) | Flash-sector-backed emulation for the calibration blob. Resolved by PlatformIO's LDF from a plain `#include <EEPROM.h>` — no `lib_deps` entry needed, unlike Adafruit TinyUSB. Production builds only. |
+
+
+## Uploader (#366)
+
+`namespace Uploader` — library-internal; contract in FirmwarePlan `07` § Uploader and `03` § Firmware
+upload.
+
+```cpp
+struct Io { void (*send)(type, seq, payload, len); void (*ack)(type, seq);
+            void (*nack)(type, seq, reason, detail); void (*writeUart)(p, n); };
+void begin(const Io&);                               // SimGateway::begin()
+bool handles(uint8_t type);                          // CAL_T_UPL_* requests
+void onFrame(type, seq, payload, len, now);          // a verified client frame of those types
+void onClientFrame(uint32_t now);                    // any verified client frame — the client is there
+bool onBridgeLine(const char* line, uint16_t len, uint32_t now);   // true = don't relay (own _BOOT_RSP)
+void tick(uint32_t now);                             // every loop(), after the HID send
+bool busy();                                         // an upload session or a flash → calibration BUSY
+bool ownsUart();                                     // flashing → drop the client's export bytes
+```
+
+SimGateway wiring: `_calRx` grows to `CAL_MAX_INBOUND_FRAME` (270, `UPL_DATA`); `calLenValidForType()`
+knows the `UPL_*` lengths; `_calHandleFrame()` hands `UPL_*` to `onFrame()` (BUSY during a calibration
+session) and NACKs `SESSION_OPEN` with BUSY while `busy()`; the CDC → UART path and `_calFlushHeld()`
+drop bytes while `ownsUart()`; `_relayByte()` offers every complete line to `onBridgeLine()`; `loop()`
+step 3c calls `tick()`. RAM: 146 KB of 256 KB with the staging buffer.

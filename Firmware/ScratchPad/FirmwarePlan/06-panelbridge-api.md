@@ -48,12 +48,16 @@ to "app running".
 
 The bridge is a dumb relay between the host and the boards' bootloaders (`12-bootloader.md`):
 
-- **Down:** `BootRelayListener` (an `ExportStreamListener` on `0xFF10`–`0xFF23`) collects one export
-  record per CAN frame and sends it once the last word arrives — only `BOOT_CMD_1`–`63` and `0x7C0`.
-  `handleDcsBiosExport()` drops the window, so it never reaches `CTRL_BCAST`.
+- **Down:** `BootRelayListener` (an `ExportStreamListener` on `0xFF10`–`0xFF4F`) decodes each record as a
+  stream of whole frames (`04`: mark + len, id, data, `0x55` / `0x56` escaped; a record starts on a frame
+  boundary, so the decoder resets at the window's first word) and sends each frame as it completes —
+  only `BOOT_CMD_1`–`63` and `0x7C0`. `handleDcsBiosExport()` drops the window, so it never reaches
+  `CTRL_BCAST`.
 - **Up:** every `BOOT_RSP_n` / `0x7C1` frame goes to the host as `_BOOT_RSP <id><len><data>`.
-- **UPDATING:** relayed traffic for node n in either direction sets bit 7 of its `bootState` for 3 s
-  (pushed as a delta when it starts and when it lapses).
+- **UPDATING:** relayed traffic for node n sets bit 7 of its `bootState` for 3 s (pushed as a delta when
+  it starts and when it lapses) — replies from its bootloader always; commands to it only once a
+  bootloader has been seen for it, so a CONNECT to a board without one (which ignores it) never shows
+  it as updating.
 - **Not the bridge itself:** it never acts on `BOOT_CMD_0`; updating the bridge is #367 (USART2).
 
 **Timeout clock (elapsed is signed):** `checkNodeTimeouts` samples `now` **after** `CANProtocol::drain()` (which stamps each node's `lastSeenMs` from `onCanRx`) and compares `(int32_t)(now - lastSeenMs) > HB_TIMEOUT_MS`. Both guard the same hazard — a millisecond ticking between the loop's `now` and the in-drain `lastSeenMs` would make the *unsigned* difference wrap to ~4.29e9 and declare a live node dead for one loop (a split-second false `present=00`→`present=01` flicker). Signed elapsed reads a small negative as "not yet elapsed" (#225).

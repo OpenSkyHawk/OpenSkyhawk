@@ -78,6 +78,10 @@ class Bus:
     def send(self, can_id, data):
         self.bus.send(self.can.Message(arbitration_id=can_id, data=bytes(data), is_extended_id=False))
 
+    def send_many(self, frames):
+        for can_id, data in frames:
+            self.send(can_id, data)
+
     def recv(self, timeout):
         m = self.bus.recv(max(timeout, 0))
         return (m.arbitration_id, bytes(m.data)) if m else None
@@ -86,21 +90,48 @@ class Bus:
         self.bus.shutdown()
 
 
+def relay_frame(can_id, data):
+    """One CAN frame in the relay's stream encoding (BootProtocol.h): mark|len, id, data, 0x55/0x56 escaped."""
+    out = bytearray([P["RELAY_FRAME_MARK"] | len(data)])
+    for b in bytes([can_id & 0xFF, can_id >> 8]) + bytes(data):
+        if b == 0x55:
+            out += bytes([P["RELAY_ESCAPE"], P["RELAY_ESC_55"]])
+        elif b == 0x56:
+            out += bytes([P["RELAY_ESCAPE"], P["RELAY_ESC_56"]])
+        else:
+            out.append(b)
+    return bytes(out)
+
+
 class GatewayBus:
-    """The same send / recv through the Gateway's USB port (#365): a frame goes down as a DCS-BIOS
-    export record at RELAY_EXPORT_ADDRESS (id, length, one data byte per word), a bootloader frame
-    comes back as a `_BOOT_RSP <id><len><data>` line. Close the client first — it owns the port."""
+    """The same send / recv through the Gateway's USB port (#365, #366): frames go down packed into
+    DCS-BIOS export records at RELAY_EXPORT_ADDRESS (whole frames per record, stream-encoded), a
+    bootloader frame comes back as a `_BOOT_RSP <id><len><data>` line. Close the client first — it
+    owns the port."""
     def __init__(self, port):
         import serial
         self.s = serial.Serial(port, 250000, timeout=0.02)
         self.buf = b""
 
     def send(self, can_id, data):
-        data = bytes(data)
-        words = [can_id, len(data)] + [data[i] if i < len(data) else 0 for i in range(8)]
-        record = struct.pack("<HH", P["RELAY_EXPORT_ADDRESS"], 2 * P["RELAY_EXPORT_WORDS"])
-        record += b"".join(struct.pack("<H", w) for w in words)
-        self.s.write(b"\x55\x55\x55\x55" + record)   # sync first: the record parses from a clean state
+        self.send_many([(can_id, data)])
+
+    def send_many(self, frames):
+        cap = 2 * P["RELAY_EXPORT_WORDS"]
+        out, rec = bytearray(b"\x55\x55\x55\x55"), bytearray()   # sync first: parse from a clean state
+
+        def flush():
+            if rec:
+                body = rec + b"\x00" * (len(rec) % 2)   # whole words; 0x00 is padding
+                out.extend(struct.pack("<HH", P["RELAY_EXPORT_ADDRESS"], len(body)) + body)
+                rec.clear()
+        for can_id, data in frames:
+            f = relay_frame(can_id, data)
+            if len(rec) + len(f) > cap:
+                flush()                                    # a record starts on a frame boundary
+            rec.extend(f)
+        flush()
+        self.s.write(bytes(out))
 
     def recv(self, timeout):
         end = time.monotonic() + max(timeout, 0)
@@ -174,7 +205,7 @@ def set_node_id(bus, node, new_id):
     print(f"node {node} is now node {new_id} — its app is invalid until an image for node {new_id} is flashed")
 
 
-def flash(bus, img, node, stop_after, no_go, delay_ms=0, uid=None):
+def flash(bus, img, node, stop_after, no_go, delay_ms=0, uid=None, window=None):
     length, image_crc, img_node, img_kind, version = identity(img)
     print(f"image: node {img_node} · kind {img_kind} · v{version} · {length} B · CRC {image_crc:08X}")
     img = img[:length]
@@ -182,41 +213,61 @@ def flash(bus, img, node, stop_after, no_go, delay_ms=0, uid=None):
     ask, cmd, rsp = connect(bus, node, uid)
 
     t0 = time.monotonic()
-    r = ask([P["BEGIN"], *struct.pack("<I", length)], P["BEGUN"], timeout=1.0)
+    # BEGIN erases every page the image needs before it answers (#366): ~25 ms per KB.
+    r = ask([P["BEGIN"], *struct.pack("<I", length)], P["BEGUN"], timeout=6.0, tries=1)
     if not r or r[1]:
         sys.exit(f"BEGIN refused: {STATUS.get(r[1], r[1]) if r else 'no reply'}")
+    t_erase = time.monotonic() - t0
     blocks = len(padded) // BLK
-    retries = 0
-    for b in range(blocks):
-        if stop_after is not None and b >= stop_after:
-            print(f"\nstopped after {b} blocks — the board must stay in its bootloader, flashable")
-            return
+    limit = blocks if stop_after is None else min(blocks, stop_after)
+
+    def block_frames(b):
         chunk = padded[b * BLK:(b + 1) * BLK]
-        for _ in range(3):
-            bus.send(cmd, [P["BLOCK"], *struct.pack("<HH", b, crc16(chunk))])
-            for k in range(DATA_FRAMES):
-                bus.send(cmd, [P["DATA_0"] + k, *chunk[k * DATA_BYTES:(k + 1) * DATA_BYTES]])
-            r = None
-            end = time.monotonic() + 0.3
-            while time.monotonic() < end:
-                x = bus.recv(end - time.monotonic())
-                if x and x[0] == rsp and x[1] and x[1][0] == P["BLOCK_ACK"] and (x[1][1] | (x[1][2] << 8)) == b:
-                    r = x[1]
-                    break
-            if r and r[3] == P["OK"]:
-                break
-            retries += 1
+        return [(cmd, [P["BLOCK"], *struct.pack("<HH", b, crc16(chunk))])] + \
+               [(cmd, [P["DATA_0"] + k, *chunk[k * DATA_BYTES:(k + 1) * DATA_BYTES]]) for k in range(DATA_FRAMES)]
+
+    # Windowed (#366): up to WINDOW_BLOCKS ahead of the board's `next`; a loss is resent from `next`.
+    window = 1 if delay_ms else window or P["WINDOW_BLOCKS"]
+    acked, sent, goback, retries, stalls = 0, 0, -1, 0, 0
+    deadline = time.monotonic() + 0.5
+    while acked < limit:
+        while sent < limit and sent - acked < window:
+            bus.send_many(block_frames(sent))
+            sent += 1
+        x = bus.recv(max(0.0, deadline - time.monotonic()))
+        if time.monotonic() >= deadline:                # no ack for 0.5 s (other traffic doesn't count)
+            stalls += 1
+            if stalls > 6:
+                sys.exit(f"\nno ack — the board stopped answering at block {acked}")
+            sent, retries = acked, retries + 1          # resend from the first unacknowledged block
+            deadline = time.monotonic() + 0.5
+            continue
+        if not x or x[0] != rsp or not x[1] or x[1][0] != P["BLOCK_ACK"] or len(x[1]) < 6:
+            continue
+        st, nxt = x[1][3], x[1][4] | (x[1][5] << 8)
+        if nxt < acked:                                 # the board reset and lost the session
+            sys.exit(f"\nthe board lost the session at block {acked} (it restarted) — flash it again")
+        stalls, deadline = 0, time.monotonic() + 0.5
+        if st == P["OK"]:
+            acked = max(acked, nxt)
+        elif st in (P["OUT_OF_ORDER"], P["BAD_CRC"]):
+            if nxt != goback:                           # one go-back per loss, not one per stale ack
+                goback, sent, retries = nxt, nxt, retries + 1
+            acked = max(acked, nxt)
         else:
-            sys.exit(f"\nblock {b} failed: {STATUS.get(r[3], r[3]) if r else 'no ack'}")
+            sys.exit(f"\nblock {x[1][1] | (x[1][2] << 8)} failed: {STATUS.get(st, st)}")
         if delay_ms:
             time.sleep(delay_ms / 1000)
-        if b % 32 == 0 or delay_ms:
-            print(f"  block {b}/{blocks}", end="\r", flush=True)
+        if acked % 32 == 0 or delay_ms:
+            print(f"  block {acked}/{blocks}", end="\r", flush=True)
+    if stop_after is not None and limit < blocks:
+        print(f"\nstopped after {limit} blocks — the board must stay in its bootloader, flashable")
+        return
     r = ask([P["END"], *struct.pack("<I", image_crc)], P["ENDED"], timeout=2.0)
     dt = time.monotonic() - t0
     if not r or r[1]:
         sys.exit(f"\nEND refused: {STATUS.get(r[1], r[1]) if r else 'no reply'}" + (f" · board CRC {r[2:6][::-1].hex()}" if r else ""))
-    print(f"written {length} B in {dt:.2f} s = {length / dt / 1024:.1f} KB/s · {retries} block retries")
+    print(f"written {length} B in {dt:.2f} s = {length / dt / 1024:.1f} KB/s (erase {t_erase:.2f} s) · {retries} resends")
     if not no_go:
         r = ask([P["GO"]], P["GOING"], timeout=0.5)
         print("GO — the board resets into the new app" if r and r[1] == P["OK"] else f"GO refused: {r and STATUS.get(r[1])}")
@@ -232,6 +283,7 @@ def main():
     ap.add_argument("--stop-after", type=int, help="stop after N blocks (simulated power loss)")
     ap.add_argument("--no-go", action="store_true", help="don't start the app after a good END")
     ap.add_argument("--delay-ms", type=int, default=0, help="pause after each block — stretches the write for a power-pull test")
+    ap.add_argument("--window", type=int, help=f"blocks in flight (default {P['WINDOW_BLOCKS']}; 1 = stop-and-wait)")
     ap.add_argument("--unconfigured", action="store_true", help="flash the one unconfigured board on the bus (no NODE_ID yet)")
     ap.add_argument("--set-node-id", type=int, metavar="M", help="move --node N to NODE_ID M (invalidates its app)")
     a = ap.parse_args()
@@ -255,9 +307,10 @@ def main():
         else:
             img = pathlib.Path(a.image).read_bytes()
             if a.unconfigured:
-                flash(bus, img, None, a.stop_after, a.no_go, a.delay_ms, unconfigured_uid(bus))
+                flash(bus, img, None, a.stop_after, a.no_go, a.delay_ms, unconfigured_uid(bus), a.window)
             else:
-                flash(bus, img, a.node if a.node is not None else identity(img)[2], a.stop_after, a.no_go, a.delay_ms)
+                flash(bus, img, a.node if a.node is not None else identity(img)[2], a.stop_after, a.no_go, a.delay_ms,
+                      window=a.window)
     except KeyboardInterrupt:
         pass  # Ctrl-C is how --listen (or a stuck wait) ends — close the bus quietly, no traceback
     finally:
