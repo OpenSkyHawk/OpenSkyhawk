@@ -1,14 +1,19 @@
 /**
  * @file main.cpp
- * @brief OpenSkyhawk CAN bootloader — core (#363). STM32F103, bare-metal CMSIS, no Arduino / HAL.
+ * @brief OpenSkyhawk CAN bootloader (#363 core, #364 safety). STM32F103, bare-metal CMSIS, no
+ *        Arduino / HAL.
  *
  * Lives in the first 4 KB of flash; every app starts at 0x08001000. At each reset:
- *   1. NODE_ID / NodeKind copy — if a valid app's identity block disagrees with option bytes
- *      Data0 / Data1, rewrite them (all other option bytes kept) and reset.
+ *   1. Option bytes — Data0 / Data1 = the valid app's NODE_ID / NodeKind, and the bootloader's own
+ *      4 KB write-protected (WRP0 bit 0). Any difference: rewrite them (all others kept) and reset.
  *   2. Entry flag in backup register DR1 (set by the app, cleared here) → stay.
- *   3. Valid app (identity block magic + hardware CRC over imageLength) → jump to it.
- *   4. Otherwise stay: announce every second on BOOT_RSP_n (n = Data0) — or, with no NODE_ID yet,
- *      on UNCONFIGURED_RSP_ID — and take an image over CAN.
+ *   3. No valid app (identity block magic + hardware CRC over imageLength) → stay.
+ *   4. Crash-loop counter (DR2) at ATTEMPT_LIMIT → stay: the app keeps resetting before it reports
+ *      healthy.
+ *   5. Catch at boot: a CONNECT within CATCH_WINDOW_MS → stay. Otherwise count the attempt and jump.
+ * Staying: announce every second on BOOT_RSP_n (n = Data0) — or, with no NODE_ID yet, on
+ * UNCONFIGURED_RSP_ID — and take an image over CAN. Entered on request or caught with the app still
+ * valid, IDLE_TIMEOUT_MS without a command goes back to the app.
  *
  * Transfer (BootProtocol.h): CONNECT → BEGIN → BLOCK + 10×DATA per 64-byte block → END → GO.
  * BEGIN erases the app's first page, so the old app is invalid from then on. Block 0 (the vector
@@ -48,6 +53,12 @@ volatile uint32_t g_ms;
 uint8_t g_node = UNSET;   // Data0 at boot
 uint8_t g_kind = UNSET;   // Data1 at boot
 Boot::BootState g_state;  // what the announcements say; APP_INVALID once BEGIN erases the app
+uint16_t g_uid16;         // AnnounceField::UID16
+bool     g_connected;     // a CONNECT opened the session (on UNCONFIGURED_CMD_ID: with our UID16)
+uint32_t g_last_cmd;      // for IDLE_TIMEOUT_MS
+
+// Backup registers DR1..DR10 (16 bits each, 32 bits apart).
+volatile uint32_t* bkp(uint8_t n) { return &BKP->DR1 + (n - 1); }
 
 uint32_t u32(uint32_t a) { return *reinterpret_cast<volatile uint32_t*>(a); }
 uint32_t le32(const uint8_t* p) { return p[0] | (p[1] << 8) | (p[2] << 16) | (uint32_t(p[3]) << 24); }
@@ -116,7 +127,7 @@ void can_init() {
     CAN1->FM1R = 0; CAN1->FS1R = 1; CAN1->FFA1R = 0;
     CAN1->sFilterRegister[0].FR1 = uint32_t(g_cmd_id) << 21;
     CAN1->sFilterRegister[0].FR2 = (0x7FFu << 21) | CAN_RI0R_IDE | CAN_RI0R_RTR;
-    CAN1->FA1R = g_node == UNSET ? 0 : 1;                       // unconfigured: announce only (#364 adds commands)
+    CAN1->FA1R = 1;
     CAN1->FMR &= ~CAN_FMR_FINIT;
     CAN1->MCR &= ~CAN_MCR_INRQ;
     uint32_t t = g_ms;
@@ -145,8 +156,9 @@ void reply(Reply code, uint8_t a = 0, uint8_t b = 0, uint8_t c = 0, uint8_t len 
     uint8_t d[4] = {uint8_t(code), a, b, c};
     can_send(d, len);
 }
-void announce(Reply code, BootState state) {
-    uint8_t d[Boot::ANNOUNCE_LEN] = {uint8_t(code), Boot::PROTOCOL_VERSION, g_node, g_kind, uint8_t(state), flash_kb()};
+void announce(Reply code) {
+    uint8_t d[Boot::ANNOUNCE_LEN] = {uint8_t(code), Boot::PROTOCOL_VERSION, g_node, g_kind, uint8_t(g_state), flash_kb(),
+                                     uint8_t(g_uid16), uint8_t(g_uid16 >> 8)};
     can_send(d, sizeof d);
 }
 
@@ -170,7 +182,8 @@ bool flash_program(volatile uint16_t* at, uint16_t v, uint32_t mode) {   // mode
     FLASH->CR |= mode; *at = v;
     bool ok = flash_wait();
     FLASH->CR &= ~mode;
-    return ok && *at == v;
+    // An option byte reads back as complement << 8 | value — compare the value only.
+    return ok && (mode == FLASH_CR_OPTPG ? uint8_t(*at) == uint8_t(v) : *at == v);
 }
 bool flash_write(uint32_t addr, const uint8_t* d, uint32_t n) {
     for (uint32_t i = 0; i < n; i += 2)
@@ -178,15 +191,18 @@ bool flash_write(uint32_t addr, const uint8_t* d, uint32_t n) {
     return true;
 }
 
-// ── Option bytes: the NODE_ID / NodeKind copy ─────────────────────────────────
+// ── Option bytes: NODE_ID / NodeKind copy and the bootloader's write protection ──
 // Erasing the option bytes also erases RDP, and an erased RDP means read protection — so the window
 // between erase and the RDP rewrite is the one place a power cut costs an ST-Link unlock (mass
-// erase). It is a few milliseconds, and only on a new board or after an ST-Link repurpose.
-bool option_bytes_write(uint8_t data0, uint8_t data1) {
+// erase). It is a few milliseconds, and only on a new board, an ST-Link repurpose or SET_NODE_ID.
+// Everything reads the *stored* option bytes, not FLASH_OBR: those take effect only once loaded, and
+// a stale OBR must not make the bootloader rewrite them on every boot.
+bool option_bytes_set(uint8_t data0, uint8_t data1, uint8_t wrp0) {
     uint8_t v[OB_COUNT];
     for (int i = 0; i < OB_COUNT; i++) v[i] = uint8_t(OPT[i]);
     v[OB_DATA0] = data0;
     v[OB_DATA1] = data1;
+    v[OB_WRP0]  = wrp0;
     flash_unlock();
     FLASH->OPTKEYR = 0x45670123u; FLASH->OPTKEYR = 0xCDEF89ABu;
     FLASH->CR |= FLASH_CR_OPTER; FLASH->CR |= FLASH_CR_STRT;
@@ -195,8 +211,12 @@ bool option_bytes_write(uint8_t data0, uint8_t data1) {
     for (int i = 0; i < OB_COUNT; i++)          // RDP first: it is the byte an erase leaves dangerous
         if (v[i] != UNSET && !flash_program(&OPT[i], v[i], FLASH_CR_OPTPG)) ok = false;
     FLASH->CR &= ~FLASH_CR_OPTWRE;
+    for (int i = 0; i < OB_COUNT; i++)
+        if (uint8_t(OPT[i]) != v[i]) ok = false;
     return ok;
 }
+uint8_t wrp0() { return uint8_t(OPT[OB_WRP0]); }
+constexpr uint8_t WRP_BOOTLOADER = 0x01;        // WRP0 bit 0 = pages 0-3: protected when 0
 
 // ── Image checks ──────────────────────────────────────────────────────────────
 // Hardware CRC-32/MPEG-2 over 32-bit little-endian words — the identity block's imageCrc.
@@ -222,6 +242,12 @@ bool identity_ok(uint32_t vec_sp, uint32_t vec_pc) {
 }
 
 constexpr uint32_t CRC_WORD = FirmwareImage::IDENTITY_OFFSET + FirmwareImage::OFF_CRC;
+
+uint16_t uid16() {
+    crc_reset();
+    for (uint32_t i = 0; i < 12; i += 4) CRC->DR = u32(Boot::UID_ADDRESS + i);
+    return uint16_t(CRC->DR);
+}
 
 bool app_valid() {
     if (!identity_ok(u32(APP_ADDR), u32(APP_ADDR + 4))) return false;
@@ -300,14 +326,36 @@ Status end(uint32_t want, uint32_t* got) {
     crc_feed(reinterpret_cast<const uint8_t*>(APP_ADDR + BLK), id->imageLength - BLK, BLK, CRC_WORD);
     *got = CRC->DR;
     if (*got != want) return Status::BAD_CRC;
+    // NODE_ID rule (#364): an upload never changes a board's identity — SET_NODE_ID does that,
+    // separately. A board with no NODE_ID yet takes its first image's.
+    if (g_node != UNSET && id->nodeId != g_node) return Status::WRONG_NODE;
+    if (g_node != UNSET && id->nodeKind != g_kind) return Status::WRONG_KIND;
     if (!flash_write(APP_ADDR, s.blk0, BLK)) return Status::FLASH_ERROR;   // commit: valid only now
+    *bkp(Boot::ATTEMPTS_BKP_REGISTER) = 0;        // a new image starts with a clean crash-loop count
+    return Status::OK;
+}
+
+// SET_NODE_ID: invalidate the app first — a valid app would put its own ID back at the next boot —
+// then Data0 in one option-byte write, and reset so the board answers on its new BOOT_RSP_n.
+Status set_node_id(uint8_t id) {
+    if (!g_connected || g_node == UNSET) return Status::OUT_OF_ORDER;
+    if (id == 0 || id > 63 || g_kind == uint8_t(::NodeKind::BRIDGE)) return Status::OUT_OF_RANGE;
+    if (!flash_erase(APP_ADDR)) return Status::FLASH_ERROR;
+    if (!option_bytes_set(id, g_kind, wrp0())) return Status::FLASH_ERROR;
     return Status::OK;
 }
 
 void handle(const uint8_t* m, uint8_t n) {
+    if (Cmd(m[0]) == Cmd::CONNECT) {
+        // Unconfigured boards share one command ID: only the one whose UID16 is named binds.
+        if (g_node == UNSET && (n < 3 || (m[1] | (m[2] << 8)) != g_uid16)) return;
+        g_connected = true;
+    }
+    if (g_node == UNSET && !g_connected) return;
+    g_last_cmd = g_ms;
     switch (Cmd(m[0])) {
     case Cmd::CONNECT:
-        announce(Reply::CONNECTED, g_state);
+        announce(Reply::CONNECTED);
         break;
     case Cmd::BEGIN:
         if (n >= 5) {
@@ -330,8 +378,15 @@ void handle(const uint8_t* m, uint8_t n) {
     case Cmd::GO:
         if (!app_valid()) { reply(Reply::GOING, uint8_t(Status::NO_APP)); break; }
         reply(Reply::GOING, uint8_t(Status::OK));
+        *bkp(Boot::ATTEMPTS_BKP_REGISTER) = 0;    // the host asked to start it: an unstable app gets new tries
         wait_ms(5);
         NVIC_SystemReset();                       // boot again: the app passes the check and starts
+    case Cmd::SET_NODE_ID: {
+        Status st = n >= 2 ? set_node_id(m[1]) : Status::OUT_OF_RANGE;
+        reply(Reply::NODE_SET, uint8_t(st));
+        if (st == Status::OK) { wait_ms(5); NVIC_SystemReset(); }
+        break;
+    }
     default:
         if (m[0] >= uint8_t(Cmd::DATA_0) && m[0] <= uint8_t(Cmd::DATA_9)) {
             uint8_t k = m[0] - uint8_t(Cmd::DATA_0);
@@ -349,11 +404,12 @@ void handle(const uint8_t* m, uint8_t n) {
 }  // namespace
 
 int main() {
-    // Entry flag — read and clear before anything else.
+    // Entry flag and crash-loop count — read before anything else; the flag is one-shot.
     RCC->APB1ENR |= RCC_APB1ENR_PWREN | RCC_APB1ENR_BKPEN;
     PWR->CR |= PWR_CR_DBP;
-    bool requested = BKP->DR1 == Boot::ENTRY_MAGIC;
-    BKP->DR1 = 0;
+    bool requested = *bkp(Boot::ENTRY_BKP_REGISTER) == Boot::ENTRY_MAGIC;
+    *bkp(Boot::ENTRY_BKP_REGISTER) = 0;
+    uint32_t attempts = *bkp(Boot::ATTEMPTS_BKP_REGISTER);
 
     SysTick_Config(clock_init() / 1000);
     led_init();
@@ -361,29 +417,46 @@ int main() {
     g_node = uint8_t(OPT[OB_DATA0]);
     g_kind = uint8_t(OPT[OB_DATA1]);
     bool valid = app_valid();
+    g_uid16 = uid16();
 
-    // Keep Data0 / Data1 = the valid app's NODE_ID / kind, so a board whose app breaks later still
-    // answers as its node. Rewritten only when they differ (a new board, or an ST-Link repurpose);
-    // a failed write leaves them as they were and the app still starts.
-    if (valid && (identity()->nodeId != g_node || identity()->nodeKind != g_kind)) {
-        if (option_bytes_write(identity()->nodeId, identity()->nodeKind)
-            && uint8_t(OPT[OB_DATA0]) == identity()->nodeId && uint8_t(OPT[OB_DATA1]) == identity()->nodeKind)
-            NVIC_SystemReset();                   // option bytes load at reset
-    }
+    // Data0 / Data1 = the valid app's NODE_ID / kind, so a board whose app breaks later still answers
+    // as its node; and our own 4 KB write-protected. Rewritten only when something differs (a new
+    // board, an ST-Link repurpose); a failed write leaves them as they were and boot carries on.
+    uint8_t d0 = valid ? identity()->nodeId : g_node, d1 = valid ? identity()->nodeKind : g_kind;
+    if ((d0 != g_node || d1 != g_kind || (wrp0() & WRP_BOOTLOADER)) && option_bytes_set(d0, d1, wrp0() & ~WRP_BOOTLOADER))
+        NVIC_SystemReset();
 
-    if (valid && !requested) jump_to_app();
-
-    g_state = valid ? BootState::REQUESTED : g_node == UNSET ? BootState::UNCONFIGURED : BootState::APP_INVALID;
-    g_cmd_id = Boot::canIdBootCmd(g_node);
+    g_cmd_id = g_node == UNSET ? Boot::UNCONFIGURED_CMD_ID : Boot::canIdBootCmd(g_node);
     g_rsp_id = g_node == UNSET ? Boot::UNCONFIGURED_RSP_ID : Boot::canIdBootRsp(g_node);
+    g_state = requested ? BootState::REQUESTED : !valid ? (g_node == UNSET ? BootState::UNCONFIGURED : BootState::APP_INVALID)
+            : attempts >= Boot::ATTEMPT_LIMIT ? BootState::APP_UNSTABLE : BootState::CAUGHT;
     can_init();
+
+    if (valid && !requested && g_state == BootState::CAUGHT) {
+        // Catch at boot: a CONNECT now keeps us here — rescues an app that never takes the request.
+        bool caught = false;
+        uint8_t m[8], n;
+        for (uint32_t t0 = g_ms; !caught && g_ms - t0 < Boot::CATCH_WINDOW_MS; )
+            caught = can_recv(m, &n) && n && m[0] == uint8_t(Cmd::CONNECT);
+        if (!caught) {
+            *bkp(Boot::ATTEMPTS_BKP_REGISTER) = attempts + 1;   // the app sets it back to 0 once healthy
+            jump_to_app();
+        }
+        g_connected = true;
+        announce(Reply::CONNECTED);
+    }
     flash_unlock();
 
     uint32_t last = g_ms - Boot::ANNOUNCE_INTERVAL_MS;
+    g_last_cmd = g_ms;
     for (;;) {
-        // red: slow blink waiting, fast while an image arrives; green on too when unconfigured
-        led((g_ms >> (s.active ? 6 : 9)) & 1, g_state == BootState::UNCONFIGURED);
-        if (!s.active && g_ms - last >= Boot::ANNOUNCE_INTERVAL_MS) { last = g_ms; announce(Reply::ANNOUNCE, g_state); }
+        // red: slow blink waiting, fast while an image arrives, on when the app is unstable;
+        // green on too when unconfigured
+        led(g_state == BootState::APP_UNSTABLE || ((g_ms >> (s.active ? 6 : 9)) & 1), g_state == BootState::UNCONFIGURED);
+        if (!s.active && g_ms - last >= Boot::ANNOUNCE_INTERVAL_MS) { last = g_ms; announce(Reply::ANNOUNCE); }
+        // Entered on request or caught, the old app is still valid until BEGIN: nobody came → back to it.
+        if ((g_state == BootState::REQUESTED || g_state == BootState::CAUGHT) && g_ms - g_last_cmd >= Boot::IDLE_TIMEOUT_MS)
+            NVIC_SystemReset();
         uint8_t m[8], n;
         if (can_recv(m, &n) && n) handle(m, n);
     }

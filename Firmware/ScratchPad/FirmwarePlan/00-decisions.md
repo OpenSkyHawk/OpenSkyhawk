@@ -703,3 +703,35 @@ release's `-full.hex`). Protocol and boot flow: `12-bootloader.md`.
 the release workflow + READMEs, `docs/firmware/bootloader.md`, `docs/firmware/platformio-setup.md`,
 `docs/guides/flashing.md`, `docs/architecture/can-bus.md`. Follow-ups: #364 (safety), #365 (app +
 bridge), #366 (uploader).
+
+---
+
+## D27 — The bootloader guards itself and its board's identity (#364)
+
+**Decision:** The bootloader write-protects its own 4 KB on first boot; refuses an upload whose NODE_ID
+or kind differs from the board's (`SET_NODE_ID` is the separate, explicit way to change it); stays in
+charge after `ATTEMPT_LIMIT` (3) app boots that never report healthy (backup-register counter, cleared by
+`STM32Board::markBootHealthy()`); listens 200 ms after every reset for a `CONNECT` (catch at boot);
+returns to a still-valid app after 30 s idle; and lets a board with no NODE_ID take its first image over
+CAN, addressed by a hash of its chip UID. Details: `12-bootloader.md`.
+
+**Rationale:**
+- *Self-protection, not a flashing step.* A field board can't be bricked by a stray write to the first
+  4 KB, and nobody has to remember to set WRP — the bootloader does it on its first boot, through the
+  option-byte routine it already has for the NODE_ID copy. The cost is a documented unprotect line
+  before replacing the bootloader or flashing a per-library test at `0x08000000`.
+- *NODE_ID is enforced where it can't be skipped.* The client checks too, but the bootloader is the
+  last word: a mis-picked file can't turn node 3 into node 5's twin. An ST-Link flash stays the
+  exception — physical access is the authority (repurpose).
+- *Crash loop before catch at boot.* An app that resets before it is healthy is caught by count, with
+  no host involved; an app that runs but ignores the bus (CAN dead, hung) needs a host sending CONNECT
+  across a reset — the 200 ms window, the price of which is 200 ms on every boot.
+- *The app-side clear ships with the counter.* Planned for #365, it moved here: a counter without its
+  clear would stop every board after three resets.
+- *UID hash in every announcement.* Two spare bytes identify an unconfigured board (one on the bus at a
+  time) and expose two boards claiming one NODE_ID, without a second frame type.
+
+**Affects:** `12-bootloader.md`, `02-can-protocol.md`, `BootProtocol.h`, `Firmware/Bootloader`,
+`STM32Board` (`markBootHealthy()`), PanelGroup / PduNode / PanelBridge, TechSpec `Bootloader` +
+`BootProtocol` + `STM32Board`, `docs/firmware/bootloader.md`, `docs/guides/flashing.md`. Client half:
+SkyHawkClient#175 (stuck / unstable states), #177 (From file…, change-node-ID-first).

@@ -78,6 +78,18 @@ namespace STM32Board {
     void tick();
 
     /**
+     * @brief Tell the bootloader this boot made it — clears its crash-loop counter (#364).
+     *
+     * The bootloader counts every jump to the app in a backup register and stays in charge
+     * (APP_UNSTABLE) once the count reaches BootProtocol's ATTEMPT_LIMIT. Call once the node has
+     * finished booting: PanelGroup / PduNode after READY, PanelBridge at the end of setup().
+     * Harmless on a board without the bootloader.
+     * @note Library-internal: the node libraries call it. Not sketch API — not covered by the
+     *       compatibility policy (#295).
+     */
+    void markBootHealthy();
+
+    /**
      * @brief CAN bus status event handler — maps CanStatus to LED state.
      *
      * Register with CANProtocol::onStatusChange(STM32Board::onCanStatus) in setup().

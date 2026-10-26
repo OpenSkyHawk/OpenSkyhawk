@@ -34,19 +34,22 @@ constexpr uint16_t canIdBootRsp(uint8_t n) { return RSP_ID_BASE + n; }
 
 /// A bootloader with no NODE_ID yet (option byte Data0 = 0xFF, no valid app) announces here.
 constexpr uint16_t UNCONFIGURED_RSP_ID = 0x7C1;
-/// Commands to an unconfigured bootloader, addressed by chip UID — reserved for #364, unused in #363.
+/// Commands to an unconfigured bootloader (#364). CONNECT names the board's UID hash
+/// (AnnounceField::UID16); only that board binds the session and answers on UNCONFIGURED_RSP_ID.
+/// One unconfigured board on the bus at a time.
 constexpr uint16_t UNCONFIGURED_CMD_ID = 0x7C0;
 
 // ── Host → bootloader (BOOT_CMD_n), byte 0 ───────────────────────────────────
 
 enum class Cmd : uint8_t {
-    CONNECT = 0x01,  ///< open a session → Reply::CONNECTED
+    CONNECT = 0x01,  ///< open a session → Reply::CONNECTED. On UNCONFIGURED_CMD_ID: [uid16:u16]
     BEGIN   = 0x02,  ///< [len:u32] image length; checks capacity, erases the app's first page → Reply::BEGUN
     BLOCK   = 0x10,  ///< [index:u16, crc16:u16] header of a 64-byte block; DATA_0..DATA_9 follow
     DATA_0  = 0x20,  ///< 7 data bytes of the current block; DATA_k = DATA_0 + k carries bytes 7k..7k+6
     DATA_9  = 0x29,  ///< the last DATA frame of a block (bytes 63..69; only byte 63 is used)
     END     = 0x30,  ///< [crc:u32] image CRC; verifies, then commits block 0 → Reply::ENDED
     GO      = 0x40,  ///< leave the bootloader: reset into the app → Reply::GOING
+    SET_NODE_ID = 0x50,  ///< [id] after CONNECT: invalidate the app, set NODE_ID (1-63), reset → Reply::NODE_SET (#364)
 };
 
 // ── Bootloader → host (BOOT_RSP_n), byte 0 ───────────────────────────────────
@@ -58,25 +61,30 @@ enum class Reply : uint8_t {
     ANNOUNCE    = 0xA0,  ///< every ANNOUNCE_INTERVAL_MS while no session: [AnnounceField bytes 1-5]
     ENDED       = 0xB0,  ///< [status, crc:u32 computed]
     GOING       = 0xC0,  ///< [status]; on OK the board resets into the app
+    NODE_SET    = 0xD0,  ///< [status]; on OK the board resets and answers on its new BOOT_RSP_n
 };
 
 /// Byte offsets in ANNOUNCE / CONNECTED.
 enum class AnnounceField : uint8_t {
     CODE     = 0,  ///< Reply::ANNOUNCE or Reply::CONNECTED
     PROTOCOL = 1,  ///< PROTOCOL_VERSION
-    NODE_ID  = 2,  ///< option byte Data0 (0xFF = unconfigured)
+    ID       = 2,  ///< NODE_ID — option byte Data0 (0xFF = unconfigured). Not "NODE_ID": every node build defines that macro
     KIND     = 3,  ///< option byte Data1 — NodeKind (0xFF = unconfigured)
     STATE    = 4,  ///< BootState
     FLASH_KB = 5,  ///< the chip's flash size in KB (64 / 128) — capacity = FLASH_KB × 1024 − BOOTLOADER_SIZE
+    UID16    = 6,  ///< u16: low half of CRC-32/MPEG-2 over the chip's 96-bit UID — tells boards apart (#364)
 };
-constexpr uint8_t ANNOUNCE_LEN = 6;
+constexpr uint8_t  ANNOUNCE_LEN = 8;
+constexpr uint32_t UID_ADDRESS  = 0x1FFFF7E8;  ///< the F103's 96-bit unique ID
 
 /// Why the board is in its bootloader (AnnounceField::STATE).
 enum class BootState : uint8_t {
     REQUESTED    = 0x01,  ///< the app asked (entry flag) — the app may still be valid
     APP_INVALID  = 0x02,  ///< no app, or its identity block / CRC check failed
     UNCONFIGURED = 0x03,  ///< no NODE_ID yet (Data0 = 0xFF) and no valid app
-    // 0x04-0xFF reserved (#364: app unstable, caught at boot)
+    APP_UNSTABLE = 0x04,  ///< the app reset ATTEMPT_LIMIT times without reporting healthy (#364)
+    CAUGHT       = 0x05,  ///< a CONNECT arrived in the CATCH_WINDOW_MS after reset (#364) — the app may be valid
+    // 0x06-0xFF reserved
 };
 
 /// Result byte of BEGUN / BLOCK_ACK / ENDED / GOING.
@@ -88,6 +96,8 @@ enum class Status : uint8_t {
     OUT_OF_ORDER = 0x04,  ///< no BEGIN, a block skipped, or END before the last block
     NO_APP       = 0x05,  ///< GO without a valid app
     BAD_IMAGE    = 0x06,  ///< no identity block, or its length / CRC disagree with the transfer
+    WRONG_NODE   = 0x07,  ///< the image's nodeId isn't this board's NODE_ID — SET_NODE_ID first (#364)
+    WRONG_KIND   = 0x08,  ///< the image's nodeKind isn't this board's kind — never accepted (#364)
 };
 
 // ── Transfer shape ────────────────────────────────────────────────────────────
@@ -108,6 +118,15 @@ constexpr uint32_t APP_OFFSET      = BOOTLOADER_SIZE;
 /// bootloader clears it on read. The backup domain survives a reset, not a power cycle.
 constexpr uint8_t  ENTRY_BKP_REGISTER = 1;
 constexpr uint16_t ENTRY_MAGIC        = 0xB007;
+
+/// Crash-loop counter (#364): the bootloader adds one before every jump to the app; the app sets it
+/// back to 0 once it is healthy (STM32Board::markBootHealthy()). At ATTEMPT_LIMIT the bootloader stays
+/// (BootState::APP_UNSTABLE). Cleared by a committed image; lost on a power cycle.
+constexpr uint8_t ATTEMPTS_BKP_REGISTER = 2;
+constexpr uint8_t ATTEMPT_LIMIT         = 3;
+
+constexpr uint16_t CATCH_WINDOW_MS  = 200;    ///< after every reset, a CONNECT on BOOT_CMD_n keeps the board here (#364)
+constexpr uint16_t IDLE_TIMEOUT_MS  = 30000;  ///< REQUESTED / CAUGHT with no command this long → back to the app (#364)
 
 }  // namespace Boot
 }  // namespace OpenSkyhawk

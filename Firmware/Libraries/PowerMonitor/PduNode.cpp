@@ -229,6 +229,7 @@ void setup() {
     d.print(F("[PDU] NODE_ID=")); d.println((int)NODE_ID);
     printCal();
     CANProtocol::sendReady();
+    STM32Board::markBootHealthy();   // the bootloader's crash-loop counter back to 0 (#364)
 }
 
 void loop() {
