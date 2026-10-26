@@ -22,7 +22,7 @@ The single UART carries two distinct byte streams in the **PanelBridge → SimGa
 
 In the **SimGateway → PanelBridge** direction, the UART carries only the raw DCS-BIOS binary
 export stream forwarded from USB CDC. The host's requests to the bridge ride inside it as writes to
-reserved export addresses — the roster request (`0xFF00`) and the bootloader relay (`0xFF10`–`0xFF23`,
+reserved export addresses — the roster request (`0xFF00`) and the bootloader relay (`0xFF10`–`0xFF4F`,
 #365) — see `04-dcs-bios-integration.md`. Their replies come back as ordinary DCS-BIOS text lines
 (`_NODE_STATUS`, `_BOOT_RSP`).
 
@@ -217,8 +217,10 @@ whatever the noise said. That is not hypothetical here — the whole reason this
 
 So `LEN` is not merely bounded, it is **fixed by `TYPE`**: every type has exactly one legal
 length, listed in the payload table. Anything else is not a frame. There are no
-variable-length types and therefore no exception to this rule. The largest legal payload of
-any type is **82** (`CAL_DATA`).
+variable-length types and therefore no exception to this rule. The largest payload the device
+**sends** is **82** (`CAL_DATA`), so the client's buffering is bounded by that. The one larger type,
+`UPL_DATA` (260, #366), travels **client → device only** — the device's inbound buffer is sized for it
+(`CAL_MAX_INBOUND_FRAME`, 270); nothing larger than 82 ever comes back.
 
 A receiver checks `LEN` against the type **before buffering the payload**. A mismatch means the
 candidate was never a frame: emit the consumed bytes into the line assembler and resume scanning
@@ -263,9 +265,18 @@ High bit of `TYPE` set = device→client, so direction is readable at a glance i
 | `0x08` | `STREAM_SELECT` | `0x87` | `DIAG` |
 | `0x09` | `GET_DIAG` | | |
 
-**Reserved for firmware update (#295), not yet assigned:** types `0x10`–`0x1F` (client → device) and
-`0x90`–`0x9F` (device → client), and NACK reasons `0x09`–`0x0E`. Nothing else may claim them; when
-assigned they follow § Compatibility (new types are a minor change).
+**Firmware update (#295 reservation, assigned by #366):** types `0x10`–`0x1F` (client → device) and
+`0x90`–`0x9F` (device → client), NACK reasons `0x09`–`0x0E` — see § Firmware upload below. `0x16`–`0x1F`
+and `0x93`–`0x9F` are still free for it; nothing else may claim them.
+
+| Client → device | | Device → client | |
+|---|---|---|---|
+| `0x10` | `UPL_INFO` | `0x90` | `UPL_INFO_ACK` |
+| `0x11` | `UPL_BEGIN` | `0x91` | `UPL_STATUS` |
+| `0x12` | `UPL_DATA` | `0x92` | `UPL_RESULT` |
+| `0x13` | `UPL_END` | | |
+| `0x14` | `UPL_FLASH` | | |
+| `0x15` | `UPL_ABORT` | | |
 
 These are numeric type codes, not strings. Contrast `_NODE_STATUS`, which *is* text because it
 must imitate a DCS-BIOS message riding the ASCII stream; this channel is quiet during exchanges,
@@ -296,6 +307,15 @@ the mapping — but that is data in the message, not the message's identity.
 | `RAW` | 5 | `idx`:u8, `raw`:u16, `cal`:u16 |
 | `GET_DIAG` | 0 | — |
 | `DIAG` | 64 | link-health counters and event times — see below; bytes 47–63 reserved |
+| `UPL_INFO` | 0 | — |
+| `UPL_INFO_ACK` | 16 | `proto`:u8, `maxImageKB`:u8 (124), `chunk`:u16 (256), `state`:u8, `lastTarget`:u8, `lastResult`:u8, `lastFw`:u8×3, `bridgeFw`:u8×3 (bundled bridge image, #367; 0.0.0 = none), 3 reserved |
+| `UPL_BEGIN` | 8 | `imageLength`:u32, `imageCrc`:u32 — both from the image's identity block |
+| `UPL_DATA` | 260 | `offset`:u32 (a multiple of 256), `data`:u8×256 (last chunk `0xFF`-padded) — **client → device only** |
+| `UPL_END` | 0 | — |
+| `UPL_FLASH` | 2 | `target`:u8 (NODE_ID 1–63, `0xFE` = the unconfigured board, `0` = the bridge), `newNodeId`:u8 (`0xFF` = keep) |
+| `UPL_ABORT` | 0 | — |
+| `UPL_STATUS` | 8 | `phase`:u8, `target`:u8, `attempt`:u8, `block`:u16, `blocks`:u16, 1 reserved |
+| `UPL_RESULT` | 8 | `result`:u8, `target`:u8, `fw`:u8×3, `attempts`:u8, `seconds`:u16 |
 
 Field offsets are named in `AxisCal.h` — one enum per type with a payload (`CalHelloAckField`,
 `CalDataField` + `CalDataRecField` and `CAL_DATA_REC_BYTES`, `CalSessionOpenField`,
@@ -382,6 +402,35 @@ an older reader. From v1.0 it follows its own rule:
    falls back (as `GET_DIAG` does). `CAL_PROTO_VERSION` stays.
 3. **Any change to an existing type's `LEN`, field layout or meaning bumps `CAL_PROTO_VERSION`**,
    and is a major: a client refuses calibration against a `proto` it doesn't know.
+### Firmware upload (#366)
+
+The Gateway is the uploader: the client streams an image, the Gateway stages and verifies it, then
+flashes a board's bootloader over CAN through PanelBridge (`12-bootloader.md`) — and finishes on its
+own. Values: `UploadProtocol.h` (states, phases, results, field offsets) and `AxisCal.h` (type codes,
+NACKs). Behaviour: `07-simgateway-api.md` § Uploader.
+
+- **Session.** `UPL_BEGIN` opens it (`NACK BUSY` while calibrating or flashing; `TOO_LARGE` over 124 KB
+  or not a whole number of words); `UPL_DATA` chunks at any offset, in any order, resendable
+  (`BAD_OFFSET`); `UPL_END` checks the staged bytes against `UPL_BEGIN`'s CRC (`IMAGE_CRC`) and the
+  identity block against both (`BAD_IMAGE`). `UPL_FLASH` needs a verified image (`NOT_STAGED`, or
+  `NO_SESSION` with none open). Idle 30 s without a frame (staging / staged) → the session and the
+  image are dropped. `UPL_ABORT` drops them (`BUSY` while flashing). `UPL_INFO` works any time.
+- **One session at a time:** calibration `SESSION_OPEN` answers `BUSY` while an upload session is open
+  or a flash runs, and `UPL_BEGIN` answers `BUSY` during a calibration session.
+- **During a flash** the client sends `KEEPALIVE` (~1 s) and gets `UPL_STATUS` (each phase change, and
+  every 250 ms while writing) then one `UPL_RESULT`. No client frame for 5 s → the Gateway stops sending
+  them, finishes anyway, and keeps the result for the next `UPL_INFO_ACK` (`lastTarget`, `lastResult`,
+  `lastFw`). The staged image stays staged after a result, so it can be flashed again.
+- **The Gateway owns the UART while flashing:** export bytes from the client are dropped (the client
+  should have paused its relay anyway), and the bootloader's `_BOOT_RSP` lines are kept from the
+  client. Idle, `_BOOT_RSP` lines are relayed as before.
+- **Results:** `OK` (the app runs and reports the image's version), `NO_RESPONSE`, `NO_BOOTLOADER`,
+  `ID_MISMATCH`, `KIND_MISMATCH`, `TOO_BIG_FOR_BOARD` (all decided before anything is erased),
+  `WRITE_FAILED`, `VERIFY_FAILED` (after `UPL_RETRIES` = 2 whole-flash retries), `VERSION_MISMATCH`,
+  `TIMEOUT`, `UNSUPPORTED` (the bridge, until #367). For an unconfigured board, `target` in the result
+  is the NODE_ID it adopted.
+- Older Gateway firmware relays unknown types, so a `UPL_INFO` timeout reads as "updates not supported".
+
 ### Session model
 
 `HELLO`, `GET_CAL` and `GET_DIAG` work **outside** a session. This is what lets the client show

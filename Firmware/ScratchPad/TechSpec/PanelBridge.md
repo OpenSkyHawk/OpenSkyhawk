@@ -397,11 +397,14 @@ branch and the READY branch (which also caches READY byte 3) reset `bootState` t
 `checkNodeTimeouts()` lapses UPDATING after `NODE_BOOT_UPDATING_MS`. Each change on an alive node is a
 delta. `emitSelf()` reports `STM32Board::bootloaderVersion()`.
 
-**Relay down (#365).** `BootRelayListener` (`ExportStreamListener` on `RELAY_EXPORT_ADDRESS` …
-+ 2 × (`RELAY_EXPORT_WORDS` − 1)) collects the ten words of one record (id, length, one data byte per
-word) and `CANProtocol::send()`s the frame when the last word lands with all ten seen — only
-`BOOT_CMD_1`–`63` (also noting UPDATING) and `UNCONFIGURED_CMD_ID`. `handleDcsBiosExport()` drops the
-window.
+**Relay down (#365, stream encoding #366).** `BootRelayListener` (`ExportStreamListener` on
+`RELAY_EXPORT_ADDRESS` … + 2 × (`RELAY_EXPORT_WORDS` − 1)) feeds both bytes of every word into a small
+decoder: `RELAY_FRAME_MARK | len` opens a frame of 2 + len bytes (id lo, id hi, data), `RELAY_ESCAPE`
++ `RELAY_ESC_55` / `RELAY_ESC_56` decode to `0x55` / `0x56`, other bytes between frames are padding; a
+write to the window's first word resets the decoder (records start on a frame boundary). Each complete
+frame goes to `CANProtocol::send()` — only `BOOT_CMD_1`–`63` and `UNCONFIGURED_CMD_ID` — and a command
+to a node notes UPDATING only when that node's bootloader has been seen (`bootloader` ≠ 0).
+`handleDcsBiosExport()` drops the window.
 
 Test hooks (`PANELBRIDGE_TEST`): `testFeedHeartbeat`, `testFeedHealth(nodeId, dieTempC, hFlags,
 faultMask, faultId, nodeKind)` (mirrors the `HEALTH_n` branch, incl. the kind delta),

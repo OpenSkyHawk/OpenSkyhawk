@@ -1,6 +1,6 @@
 # Bootloader — Technical Specification
 
-**Status:** Done (core #363, safety #364, info block + LEDs #365)
+**Status:** Done (core #363, safety #364, info block + LEDs #365, streaming #366)
 **FirmwarePlan ref:** `FirmwarePlan/12-bootloader.md`, `FirmwarePlan/08-hardware-firmware-contracts.md#image-layout--identity-block-362`, `FirmwarePlan/00-decisions.md#d26`, `#d27`
 **Depends on:** `BootProtocol`, `FirmwareImage` (headers only); CMSIS device headers
 
@@ -50,7 +50,14 @@ Production projects reach it through `Firmware/shared/`: `stm32.ini` sets the ap
 
 ## Implementation Notes
 
-- **Size:** 3,560 B after #365 (incl. the 16-byte info block; 3,428 B after #364, 2,876 B after #363).
+- **Size:** 3,716 B after #366 (incl. the 16-byte info block; 3,560 B after #365, 3,428 B after #364,
+  2,876 B after #363). RAM ~640 B — the 48-frame RX ring is 432 of it.
+- **Streaming (#366):** `poll_can()` moves frames from the 3-deep CAN FIFO into the ring — called from
+  the main loop, between every halfword `flash_write()` programs, and while `can_send()` waits for a free
+  transmit mailbox (any of the three; TXFP keeps request order). That last one matters: replies on
+  `0x780+n` lose arbitration to a host streaming `0x740+n`, and a 20 ms wait without draining overran the
+  FIFO on the bench. `begin()` erases all the image's pages before replying, calling `service()` (LEDs +
+  announce) between pages; `block()` acks any index below `next` and never erases.
   Code ends at `0x08000EF0`; the hard limit for code is `0x08000FF0`. RAM ~196 B (`Session` holds two
   64-byte buffers).
 - **Idle announce (#365):** the stay loop also announces during a transfer quiet for over 1 s, so the

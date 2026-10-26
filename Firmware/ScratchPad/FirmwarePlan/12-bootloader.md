@@ -144,7 +144,7 @@ command (host → bootloader, `BOOT_CMD_n` `0x740+n`) or the reply (bootloader �
 | `CONNECT` `0x01` | — (unconfigured: `uid16:u16`) | `CONNECTED` `0x81` + the announce fields |
 | `BEGIN` `0x02` | `len:u32` | `BEGUN` `0x82` `[status]` |
 | `BLOCK` `0x10` | `index:u16, crc16:u16` | — (the 10 DATA frames follow) |
-| `DATA_k` `0x20+k` (k = 0–9) | 7 bytes of the block, bytes 7k…7k+6 | after `DATA_9`: `BLOCK_ACK` `0x90` `[index:u16, status]` |
+| `DATA_k` `0x20+k` (k = 0–9) | 7 bytes of the block, bytes 7k…7k+6 | after `DATA_9`: `BLOCK_ACK` `0x90` `[index:u16, status, next:u16]` |
 | `END` `0x30` | `crc:u32` (the identity block's `imageCrc`) | `ENDED` `0xB0` `[status, crc:u32 computed]` |
 | `GO` `0x40` | — | `GOING` `0xC0` `[status]`, then the board resets into the app |
 | `SET_NODE_ID` `0x50` | `id` (1–63) | `NODE_SET` `0xD0` `[status]`, then the board resets as node `id` |
@@ -161,13 +161,20 @@ NODE_ID).
 
 ### Transfer rules
 
-- **BEGIN** checks `0 < len` and that the image, padded to whole blocks, fits; then **erases the app's
-  first page — the old app is invalid from here on**, and the announced state becomes `APP_INVALID`.
-- **Blocks** are 64 bytes, sent in order from 0; the image is padded with `0xFF`. CRC-16/CCITT-FALSE
-  over the 64 bytes (the CDC frames' CRC). A page is erased when its first block arrives — pages past
-  the image are never touched.
-- **A resent block** (the host missed the ack) equal to the last one written is acked `OK` without
-  rewriting. Any other index out of order → `OUT_OF_ORDER`.
+- **BEGIN** checks `0 < len` and that the image, padded to whole blocks, fits; then **erases every page
+  the image needs — page 0 first, so the old app is invalid from here on** — and only then replies
+  (~25 ms per KB: ~0.6 s for 27 KB, ~3 s for 124 KB; it keeps announcing meanwhile). The announced
+  state becomes `APP_INVALID`. Pages past the image are never touched.
+- **Blocks** are 64 bytes, in order from 0; the image is padded with `0xFF`. CRC-16/CCITT-FALSE over the
+  64 bytes (the CDC frames' CRC).
+- **Streaming (#366):** a host may send up to `WINDOW_BLOCKS` (4) blocks ahead of the last ack. The
+  bootloader polls CAN between its flash writes (and while a reply waits for a transmit mailbox — its
+  replies lose arbitration to the host's stream) into a 48-frame RAM ring, so nothing overruns the
+  3-frame CAN FIFO. Every block is still acked; `BLOCK_ACK` carries **`next`**, the first block not yet
+  written.
+- **Losses (go-back-N):** a block already written is acked `OK` (a resend after a lost ack); a block past
+  `next` → `OUT_OF_ORDER`, and the host resends from `next`. A `next` lower than one already acked means
+  the board restarted and lost the session — the host starts the flash over.
 - **Block 0** (the vector table) is held in RAM, not written.
 - **END** needs every block. It checks the identity block (in flash, block 8) — magic, `imageLength`
   ≤ the transfer, `imageCrc` = END's CRC, a plausible vector table — then computes the CRC over
@@ -209,7 +216,10 @@ time** — the host says so; two announcing at once collide rarely and only lose
 
 `Firmware/Bootloader/tools/flash_can.py` drives the protocol through a CANable (slcan, python-can), or
 `--gateway PORT` through the Gateway's USB and the bridge relay (`04`: export records down,
-`_BOOT_RSP` lines up), before the Gateway uploader exists. It reads the frame IDs and codes from `BootProtocol.h`, takes the
+`_BOOT_RSP` lines up), with `--window N` (default 4; 1 = stop-and-wait). The Gateway's own uploader
+(#366, `07` § Uploader) runs the same protocol from the RP2040; `upload_gateway.py` is its bench
+client. Measured (27–33 KB images): CAN direct 9.5 KB/s stop-and-wait → **15.3 KB/s** with the window;
+through the Gateway **12.5 KB/s** writing (≈3.2 s for a whole 27.7 KB update, entering to confirmed). It reads the frame IDs and codes from `BootProtocol.h`, takes the
 length and CRC from the image's identity block, sends `CONNECT` every 100 ms while it waits (so
 resetting the board catches it), and has `--listen`, `--unconfigured`, `--set-node-id M`,
 `--stop-after N` and `--delay-ms` (power-pull tests). Without #365, request the bootloader over

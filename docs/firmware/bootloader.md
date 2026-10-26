@@ -28,10 +28,16 @@ halfway through, and the board comes back in its bootloader, ready to try again.
 ## Updating through the cockpit
 
 A board doesn't need its own connection for an update. The firmware updater reaches it the way the
-simulator does: from the PC through the Gateway's USB, and across the CAN bus. A running board that
-is asked for an update restarts into its bootloader by itself, and the Gateway's PanelBridge carries
-the update to it and reports each board's state — running, waiting in its bootloader, or being
-updated — along with the bootloader version it has.
+simulator does: from the PC through the Gateway's USB, and across the CAN bus. The PC hands the whole
+image to the Gateway, and the Gateway does the rest on its own: it asks the board to restart into its
+bootloader, checks that the image is for that node and that kind of board before erasing anything,
+writes it, and confirms the board comes back running the new version. If the PC goes to sleep or the
+cable comes out halfway, the Gateway still finishes and keeps the result for when the PC is back; if
+the transfer itself fails, it tries again.
+
+An update of a typical board takes about three seconds — around six for one with a full 60 KB of
+firmware. The Gateway's PanelBridge reports each board's state as it goes — running, waiting in its
+bootloader, or being updated — along with the bootloader version it has.
 
 ## How a board knows its node number
 

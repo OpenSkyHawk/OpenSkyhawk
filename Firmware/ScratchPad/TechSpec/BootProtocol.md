@@ -39,6 +39,7 @@ constexpr uint16_t UNCONFIGURED_CMD_ID = 0x7C0;   // CONNECT [uid16] binds the o
 
 enum class Cmd : uint8_t   { CONNECT = 0x01, BEGIN = 0x02, BLOCK = 0x10, DATA_0 = 0x20, DATA_9 = 0x29, END = 0x30, GO = 0x40,
                              SET_NODE_ID = 0x50 };
+// BLOCK_ACK = [index:u16, status, next:u16] — next = the first block not yet written (#366)
 enum class Reply : uint8_t { CONNECTED = 0x81, BEGUN = 0x82, BLOCK_ACK = 0x90, ANNOUNCE = 0xA0, ENDED = 0xB0, GOING = 0xC0,
                              NODE_SET = 0xD0 };
 enum class AnnounceField : uint8_t { CODE, PROTOCOL, ID, KIND, STATE, FLASH_KB, UID16 };   // byte offsets; UID16 is u16
@@ -57,7 +58,9 @@ constexpr uint16_t CATCH_WINDOW_MS = 200, IDLE_TIMEOUT_MS = 30000;
 // #365
 constexpr uint32_t INFO_ADDRESS = 0x08000FF0, INFO_MAGIC = 0x4C42534F;   // "OSBL"
 struct BootloaderInfo { uint32_t magic; uint8_t protocolVersion; uint8_t reserved[11]; };   // 16 B
-constexpr uint16_t RELAY_EXPORT_ADDRESS = 0xFF10;  constexpr uint8_t RELAY_EXPORT_WORDS = 10;
+constexpr uint16_t RELAY_EXPORT_ADDRESS = 0xFF10;  constexpr uint8_t RELAY_EXPORT_WORDS = 32;   // #366: a byte stream
+constexpr uint8_t  RELAY_FRAME_MARK = 0xE0, RELAY_ESCAPE = 0x56, RELAY_ESC_55 = 0x01, RELAY_ESC_56 = 0x02;
+constexpr uint8_t  WINDOW_BLOCKS = 4;   // blocks a host may send ahead of the last ack (#366)
 #define BOOT_RSP_MSG_NAME "_BOOT_RSP"
 }
 ```
@@ -70,6 +73,8 @@ constexpr uint16_t RELAY_EXPORT_ADDRESS = 0xFF10;  constexpr uint8_t RELAY_EXPOR
 - **Bump `PROTOCOL_VERSION`** on any change to a frame's layout or meaning. New commands, replies,
   states and statuses are appends.
 - `APP_OFFSET` must equal `board_build.flash_offset` in `Firmware/shared/stm32.ini`.
+- **No `NAME = value` text in comments.** The bench host's regex — and the client sync — read that form;
+  a comment like "RELAY_ESC_55 = 0x55" overwrote the real value once (#366). Say "decodes to 0x55".
 - **No field may be called `NODE_ID`** — every node build defines that macro (the announce field is
   `ID`, as in #346's row fields).
 - `PROTOCOL_VERSION` stayed 1 through #364: no board shipped #363's 6-byte announce.
