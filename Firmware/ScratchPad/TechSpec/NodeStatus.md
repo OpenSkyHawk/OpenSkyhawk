@@ -72,12 +72,16 @@ Firmware/Libraries/NodeStatus/
 #define NODE_TELEM_MSG_NAME       "_NODE_TELEM"
 
 constexpr uint8_t GATEWAY_NODE_ID       = 0;   // the bridge: HB_0 / HEALTH_0, first roster row
-constexpr uint8_t NODE_STATUS_ROW_BYTES = 17;  // 34 hex
+constexpr uint8_t NODE_STATUS_ROW_BYTES = 19;  // 38 hex (v4 grew before it shipped, #365)
 enum class NodeStatusField : uint8_t {         // row byte offsets; multi-byte fields MSB-first
     ID = 0, PRESENT = 1, HB_FLAGS = 2, UPTIME = 3, RX_COUNT = 5, ESR = 7,
     DIE_TEMP_C = 9, HEALTH_FLAGS = 10, FAULT_MASK = 11, FAULT_ID = 12, NODE_KIND = 13,
     FW_MAJOR = 14, FW_MINOR = 15, FW_PATCH = 16,  // from READY_n; 00 00 00 = not reported (#295)
+    BOOTLOADER = 17, BOOT_STATE = 18,             // bootloader protocol version; app / BootState | UPDATING (#365)
 };
+constexpr uint8_t  NODE_BOOT_STATE_APP      = 0x00;   // BOOT_STATE: the app is running
+constexpr uint8_t  NODE_BOOT_STATE_UPDATING = 0x80;   // BOOT_STATE bit: update traffic in the last ...
+constexpr uint16_t NODE_BOOT_UPDATING_MS    = 3000;   // ... 3 s
 constexpr uint8_t NODE_TELEM_ROW_BYTES  = 9;   // 18 hex
 enum class NodeTelemField : uint8_t { ID = 0, FRAME = 1 };
 

@@ -289,8 +289,9 @@ static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN
 struct __attribute__((packed)) ReadyPayload {
     uint8_t fwMajor;  ///< 0: OPENSKYHAWK_FW_MAJOR
     uint8_t fwMinor;  ///< 1
-    uint8_t fwPatch;  ///< 2
-    uint8_t rsvd[5];  ///< 3-7: reserved, transmit 0
+    uint8_t fwPatch;     ///< 2
+    uint8_t bootloader;  ///< 3: STM32Board::bootloaderVersion() — 0 = none (#365)
+    uint8_t rsvd[4];     ///< 4-7: reserved, transmit 0
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 
@@ -889,3 +890,12 @@ frame. This keeps the bus saturated without stalling the main loop.
 | STM32Board | `Firmware/Libraries/STM32Board` | `begin()` must be called first to configure the peripheral |
 | HIDControls | `Firmware/Libraries/HIDControls` | Platform-agnostic library; `CANProtocol.h` includes it so CTRL_* constants are available transitively |
 | `NODE_ID` define | `platformio.ini` `build_flags` | Used in `canIdHb(NODE_ID)` etc. |
+
+
+### Entering the bootloader (#365)
+
+A non-bridge node adds its own `BOOT_CMD_n` (`Boot::canIdBootCmd(NODE_ID)`, BootProtocol.h) to the
+mandatory filter list (`ids[MAX_FILTER_IDS + 6]`). `drain()` handles it before the generic callback: a
+`CONNECT` calls `STM32Board::enterBootloader()` (resets into the bootloader when one is installed,
+else returns) and the frame is never forwarded. `makeReadyPayload()` fills byte 3 from
+`STM32Board::bootloaderVersion()`. Depends on `BootProtocol` (header-only).

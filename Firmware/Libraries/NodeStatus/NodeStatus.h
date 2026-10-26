@@ -51,8 +51,16 @@
  */
 constexpr uint8_t GATEWAY_NODE_ID = 0;
 
-/// `_NODE_STATUS` row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex).
-constexpr uint8_t NODE_STATUS_ROW_BYTES = 17;
+/// `_NODE_STATUS` row length in bytes, sent as twice as many hex chars (proto v4: 19 → 38 hex; the
+/// two bootloader fields joined v4 before it shipped, #365).
+constexpr uint8_t NODE_STATUS_ROW_BYTES = 19;
+
+/// `BOOT_STATE` values (#365): the app is running; any other value is the bootloader's BootState.
+constexpr uint8_t NODE_BOOT_STATE_APP      = 0x00;
+/// `BOOT_STATE` bit: update traffic for this node in the last NODE_BOOT_UPDATING_MS. A board in its
+/// bootloader without it is waiting — "stuck" when its state is APP_INVALID or APP_UNSTABLE.
+constexpr uint8_t  NODE_BOOT_STATE_UPDATING = 0x80;
+constexpr uint16_t NODE_BOOT_UPDATING_MS    = 3000;
 
 /**
  * @brief `_NODE_STATUS` row field offsets, in bytes of the decoded row (hex index = 2 × offset).
@@ -60,7 +68,8 @@ constexpr uint8_t NODE_STATUS_ROW_BYTES = 17;
  * Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so
  * the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the
  * next offset; the last runs to NODE_STATUS_ROW_BYTES. The first six come from the node's HB_n
- * (plus `present`), the next five from its HEALTH_n, the last three from its READY_n (v4, #295).
+ * (plus `present`), the next five from its HEALTH_n, the next three from its READY_n (v4, #295), the last
+ * two its bootloader state (#365).
  * Fields are only ever appended: a reader parses the fields it knows from a longer row and ignores
  * the rest. (Not `NODE_ID`: every node build defines that as a macro.)
  */
@@ -79,6 +88,10 @@ enum class NodeStatusField : uint8_t {
     FW_MAJOR     = 14,  // u8: firmware release version from the node's READY_n; 00 00 00 = not reported
     FW_MINOR     = 15,  // u8
     FW_PATCH     = 16,  // u8
+    BOOTLOADER   = 17,  // u8: the node's bootloader protocol version (READY_n byte 3, or its own
+                        //     announcement); 00 = no bootloader / not reported (#365)
+    BOOT_STATE   = 18,  // u8: NODE_BOOT_STATE_APP, else the bootloader's BootState (BootProtocol.h),
+                        //     | NODE_BOOT_STATE_UPDATING while update traffic flows (#365)
 };
 
 // ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────

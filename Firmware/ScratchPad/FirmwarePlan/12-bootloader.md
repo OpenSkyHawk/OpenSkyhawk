@@ -5,11 +5,12 @@ the NODE_ID / kind copy in the option bytes, the crash-loop counter, and the upd
 `BOOT_CMD_n` / `BOOT_RSP_n` (and the unconfigured pair).
 **Does not own:** the CAN ID map (`02-can-protocol.md` — the IDs are listed there), the image
 identity block (`08-hardware-firmware-contracts.md#image-layout--identity-block-362`), the app side
-of entering the bootloader on request and the bridge relay (#365), the Gateway uploader (#366).
+of entering the bootloader (`STM32Board::enterBootloader()`) and the bridge relay (`06`, #365), the
+Gateway uploader (#366).
 
 Code: `Firmware/Bootloader/` (the bootloader), `Firmware/Libraries/BootProtocol/BootProtocol.h` (every
 wire value below — the one source the bootloader, STM32Board, CANProtocol, the uploader and the
-client sync read). Rationale: D26 (core, #363), D27 (safety, #364).
+client sync read). Rationale: D26 (core, #363), D27 (safety, #364), D28 (relay + entering, #365).
 
 ---
 
@@ -18,6 +19,7 @@ client sync read). Rationale: D26 (core, #363), D27 (safety, #364).
 | Region | Address | Size | Owner |
 |---|---|---|---|
 | Bootloader | `0x08000000` | 4 KB (one write-protect block — protected by the bootloader itself) | `Firmware/Bootloader` — replaced only over ST-Link |
+| Bootloader info block | `0x08000FF0` | 16 B: magic `"OSBL"` (`0x4C42534F`), protocol version, 11 × `0xFF` | the bootloader (`--section-start`); read by the app (#365) |
 | App | `0x08001000` | flash − 4 KB (60 KB C8, 124 KB CB) | every production project (`Firmware/shared/stm32.ini`: `board_build.flash_offset = 0x1000`) |
 | App identity block | `0x08001200` | 32 B | inside the app (`08`) |
 | PDU calibration page | `0x0800FC00` | 1 KB | PDU builds stop short of it (`board_upload.maximum_size = 64512`); the bootloader erases only the pages an image covers |
@@ -71,8 +73,25 @@ power-cycled or the board reset.
 `IDLE_TIMEOUT_MS` (30 s): reset into the app. Never after a BEGIN (the app is gone) and never for
 `APP_UNSTABLE` (it would only crash again).
 
-Status LED while waiting: red slow blink (≈1 Hz); fast while an image arrives; red on when the app is
-unstable; green also on when unconfigured.
+**Status LEDs — red and green together = "in the bootloader"** (#365). The app never lights both at
+once (`docs/firmware/debugging.md`):
+
+| State | LEDs |
+|---|---|
+| waiting (`REQUESTED`, `CAUGHT`, `APP_INVALID`) | red + green blink together, 1 Hz |
+| image arriving | red + green flicker together, ~8 Hz |
+| `APP_UNSTABLE` | red + green, alternating with red alone (500 ms) |
+| `UNCONFIGURED` | red + green, alternating with green alone (500 ms) |
+
+### Entering from a running app (#365)
+
+A running PanelGroup or PDU listens on its own `BOOT_CMD_n`. A `CONNECT` there calls
+`STM32Board::enterBootloader()`: when the info block says a bootloader is installed (and the app runs
+behind it, `VTOR` = `0x08001000`) it sets the entry flag (`DR1` = `0xB007`) and resets; without one it
+does nothing — a reset would only restart the app. The host simply keeps sending `CONNECT`: the
+running app enters, the bootloader answers (`REQUESTED`), and a board being reset is caught the same
+way. READY_n byte 3 carries `STM32Board::bootloaderVersion()` (0 = none). The bridge never enters on
+`BOOT_CMD_0` — its own update is #367.
 
 ### Crash-loop counter (`DR2`)
 
@@ -130,7 +149,8 @@ command (host → bootloader, `BOOT_CMD_n` `0x740+n`) or the reply (bootloader �
 | `GO` `0x40` | — | `GOING` `0xC0` `[status]`, then the board resets into the app |
 | `SET_NODE_ID` `0x50` | `id` (1–63) | `NODE_SET` `0xD0` `[status]`, then the board resets as node `id` |
 
-**Announce** (`ANNOUNCE` `0xA0`, every 1 s while no image is arriving; `CONNECTED` carries the same),
+**Announce** (`ANNOUNCE` `0xA0`, every 1 s while no image is arriving — and during a transfer idle for
+over 1 s, so the bridge still sees the node alive; `CONNECTED` carries the same),
 8 bytes: `[code, PROTOCOL_VERSION, ID (Data0), kind (Data1), BootState, flash KB, uid16:u16]`.
 Capacity = flash KB × 1024 − 4 KB. `uid16` = the low half of CRC-32/MPEG-2 over the chip's 96-bit
 unique ID (`0x1FFFF7E8`) — tells boards apart (an unconfigured board, or two boards claiming one
@@ -187,8 +207,9 @@ time** — the host says so; two announcing at once collide rarely and only lose
 
 ## Bench Host
 
-`Firmware/Bootloader/tools/flash_can.py` drives the protocol through a CANable (slcan, python-can)
-before the Gateway uploader exists. It reads the frame IDs and codes from `BootProtocol.h`, takes the
+`Firmware/Bootloader/tools/flash_can.py` drives the protocol through a CANable (slcan, python-can), or
+`--gateway PORT` through the Gateway's USB and the bridge relay (`04`: export records down,
+`_BOOT_RSP` lines up), before the Gateway uploader exists. It reads the frame IDs and codes from `BootProtocol.h`, takes the
 length and CRC from the image's identity block, sends `CONNECT` every 100 ms while it waits (so
 resetting the board catches it), and has `--listen`, `--unconfigured`, `--set-node-id M`,
 `--stop-after N` and `--delay-ms` (power-pull tests). Without #365, request the bootloader over

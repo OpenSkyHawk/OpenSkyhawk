@@ -92,7 +92,9 @@ This "dumb relay" is also why **node-status reporting** ([#86](https://github.co
 needs no SimGateway change: PanelBridge reports connected PanelGroup nodes to the host over
 DCS-BIOS itself — `_NODE_STATUS` ASCII command messages downstream, and a roster request as a
 DCS-BIOS export write to reserved address `0xFF00` upstream (an address no aircraft module uses). Both ride the existing streams and
-transit SimGateway transparently; PanelBridge owns the feature.
+transit SimGateway transparently; PanelBridge owns the feature. Firmware updates for the boards on
+the bus travel the same way: commands for a board's [bootloader](../firmware/bootloader.md) go down
+as writes to a reserved block of export addresses, and its answers come back as `_BOOT_RSP` messages.
 
 ## controlId routing logic
 

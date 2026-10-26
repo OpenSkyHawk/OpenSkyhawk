@@ -70,6 +70,12 @@ void wait_ms(uint32_t ms) { uint32_t t = g_ms; while (g_ms - t < ms) {} }
 
 extern "C" void SysTick_Handler(void) { g_ms++; }
 
+// The info block at Boot::INFO_ADDRESS (#365): placed by `--section-start` and kept by `-u` in
+// platformio.ini. A running app reads it to know a bootloader is here and which protocol it speaks.
+extern "C" __attribute__((section(".osh_bootinfo"), used))
+const Boot::BootloaderInfo osh_bootloader_info = {
+    Boot::INFO_MAGIC, Boot::PROTOCOL_VERSION, {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}};
+
 namespace {
 
 // ── Clocks ────────────────────────────────────────────────────────────────────
@@ -450,10 +456,20 @@ int main() {
     uint32_t last = g_ms - Boot::ANNOUNCE_INTERVAL_MS;
     g_last_cmd = g_ms;
     for (;;) {
-        // red: slow blink waiting, fast while an image arrives, on when the app is unstable;
-        // green on too when unconfigured
-        led(g_state == BootState::APP_UNSTABLE || ((g_ms >> (s.active ? 6 : 9)) & 1), g_state == BootState::UNCONFIGURED);
-        if (!s.active && g_ms - last >= Boot::ANNOUNCE_INTERVAL_MS) { last = g_ms; announce(Reply::ANNOUNCE); }
+        // Red + green together = "in the bootloader" — the app never lights both (#365):
+        // waiting: both blink 1 Hz · image arriving: both flicker ~8 Hz · app unstable: both, then
+        // red alone · unconfigured: both, then green alone (500 ms each).
+        bool half = (g_ms >> 9) & 1;
+        if (s.active)                                led((g_ms >> 6) & 1, (g_ms >> 6) & 1);
+        else if (g_state == BootState::APP_UNSTABLE) led(true, half);
+        else if (g_state == BootState::UNCONFIGURED) led(half, true);
+        else                                         led(half, half);
+        // Announce while waiting — and during a transfer that has gone quiet, so the bridge still
+        // sees the node alive in its bootloader (#365).
+        if (g_ms - last >= Boot::ANNOUNCE_INTERVAL_MS && (!s.active || g_ms - g_last_cmd >= Boot::ANNOUNCE_INTERVAL_MS)) {
+            last = g_ms;
+            announce(Reply::ANNOUNCE);
+        }
         // Entered on request or caught, the old app is still valid until BEGIN: nobody came → back to it.
         if ((g_state == BootState::REQUESTED || g_state == BootState::CAUGHT) && g_ms - g_last_cmd >= Boot::IDLE_TIMEOUT_MS)
             NVIC_SystemReset();

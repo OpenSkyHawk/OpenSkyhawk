@@ -26,6 +26,7 @@ namespace DcsBios {
 #include <STM32Board.h>
 #include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the bridge's own node-0 row version (#295)
 #include <FirmwareImage.h>    // the image identity block (#362)
+#include <BootProtocol.h>     // relaying bootloader frames to and from the Gateway (#365)
 #include <A4EC_InputMap.h>
 #include <string.h>
 
@@ -56,6 +57,13 @@ struct NodeState {
     uint8_t  fwMajor     = 0;
     uint8_t  fwMinor     = 0;
     uint8_t  fwPatch     = 0;
+    // Bootloader (#365): its protocol version (READY_n byte 3, or its own announcement; 0 = none),
+    // NODE_BOOT_STATE_APP while the app runs or the BootState it announces, and when update traffic
+    // for the node last passed through here (→ NODE_BOOT_STATE_UPDATING).
+    uint8_t  bootloader  = 0;
+    uint8_t  bootState   = NODE_BOOT_STATE_APP;
+    bool     updating    = false;
+    uint32_t lastBootMs  = 0;
 #endif
 };
 
@@ -70,11 +78,11 @@ static uint8_t        _deadCount          = 0;    // tracked nodes currently tim
 // command messages on a reserved control name. Owned entirely by PanelBridge;
 // SimGateway relays the ASCII verbatim. See NodeStatus.h for the wire format.
 
-// Emit one status row (proto v4, NODE_STATUS_ROW_BYTES = 17 bytes as 34 hex chars):
+// Emit one status row (proto v4, NODE_STATUS_ROW_BYTES = 19 bytes as 38 hex chars):
 //   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId nodeKind
-//                 fwMajor fwMinor fwPatch>
-// The next five come from the node's HEALTH_n frame (#221 contract), the last three from its READY_n
-// (#295; 000000 = not reported). DIE_TEMP_UNAVAILABLE + nodeKind
+//                 fwMajor fwMinor fwPatch bootloader bootState>
+// The next five come from the node's HEALTH_n frame (#221 contract), the next three from its READY_n
+// (#295; 000000 = not reported), the last two from its bootloader (#365). DIE_TEMP_UNAVAILABLE + nodeKind
 // 00 = not-yet-seen; hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163);
 // faultMask stays 0 (reserved for future fault-domain bits); nodeKind is the board kind (#344).
 // The format string is the row layout: each field's width must match NodeStatusField (NodeStatus.h).
@@ -85,18 +93,21 @@ static_assert((uint8_t)NSF::ID == 0 && (uint8_t)NSF::PRESENT == 1 && (uint8_t)NS
               && (uint8_t)NSF::FAULT_MASK == 11 && (uint8_t)NSF::FAULT_ID == 12
               && (uint8_t)NSF::NODE_KIND == 13 && (uint8_t)NSF::FW_MAJOR == 14
               && (uint8_t)NSF::FW_MINOR == 15 && (uint8_t)NSF::FW_PATCH == 16
-              && NODE_STATUS_ROW_BYTES == 17,
+              && (uint8_t)NSF::BOOTLOADER == 17 && (uint8_t)NSF::BOOT_STATE == 18
+              && NODE_STATUS_ROW_BYTES == 19,
               "NodeStatusField moved: update emitRow's snprintf format to match");
 static void emitRow(uint8_t nodeId, bool present, const HeartbeatPayload& hb,
                     int8_t dieTempC, uint8_t hFlags, uint8_t faultMask, uint8_t faultId,
-                    uint8_t nodeKind, uint8_t fwMajor, uint8_t fwMinor, uint8_t fwPatch) {
+                    uint8_t nodeKind, uint8_t fwMajor, uint8_t fwMinor, uint8_t fwPatch,
+                    uint8_t bootloader, uint8_t bootState) {
     char hex[2 * NODE_STATUS_ROW_BYTES + 1];
-    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X%02X%02X%02X%02X",
+    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
              (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
              (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr,
              (unsigned)(uint8_t)dieTempC, (unsigned)hFlags, (unsigned)faultMask,
              (unsigned)faultId, (unsigned)nodeKind,
-             (unsigned)fwMajor, (unsigned)fwMinor, (unsigned)fwPatch);
+             (unsigned)fwMajor, (unsigned)fwMinor, (unsigned)fwPatch,
+             (unsigned)bootloader, (unsigned)bootState);
     DcsBios::sendDcsBiosMessage(NODE_STATUS_MSG_NAME, hex);
 }
 
@@ -104,7 +115,8 @@ static void emitRow(uint8_t nodeId, bool present, const HeartbeatPayload& hb,
 static void emitNode(uint8_t nodeId, bool present) {
     const NodeState& ns = _nodes[nodeId - 1];
     emitRow(nodeId, present, ns.last, ns.dieTempC, ns.healthFlags, ns.faultMask, ns.faultId,
-            ns.nodeKind, ns.fwMajor, ns.fwMinor, ns.fwPatch);
+            ns.nodeKind, ns.fwMajor, ns.fwMinor, ns.fwPatch, ns.bootloader,
+            ns.bootState | (ns.updating ? NODE_BOOT_STATE_UPDATING : 0));
 }
 
 // The bridge's own row, GATEWAY_NODE_ID (#344): its heartbeat state now, and the HEALTH_0 it last
@@ -114,7 +126,8 @@ static void emitSelf() {
     const HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(GATEWAY_NODE_ID, 0);
     const NodeHealthPayload& h = CANProtocol::lastNodeHealth();
     emitRow(GATEWAY_NODE_ID, true, hb, h.dieTempC, h.flags, h.faultMask, h.faultId, h.nodeKind,
-            OPENSKYHAWK_FW_MAJOR, OPENSKYHAWK_FW_MINOR, OPENSKYHAWK_FW_PATCH);
+            OPENSKYHAWK_FW_MAJOR, OPENSKYHAWK_FW_MINOR, OPENSKYHAWK_FW_PATCH,
+            STM32Board::bootloaderVersion(), NODE_BOOT_STATE_APP);
 }
 
 // Emit the full roster (request response / boot seed): the bridge's own node-0 row, one
@@ -181,6 +194,9 @@ void handleDcsBiosExport(uint16_t address, uint16_t value) {
     // never broadcast onto CAN.
     if (address == NODE_STATUS_REQ_ADDR) return;
 #endif
+    // Reserved: the bootloader relay window (#365) — handled by BootRelayListener.
+    if (address >= OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS
+        && address < OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS + 2 * OpenSkyhawk::Boot::RELAY_EXPORT_WORDS) return;
     // A real DCS-BIOS export → data is flowing → CONNECTED (green solid). The reserved
     // node-status poll above is excluded so it does not masquerade as live DCS data.
     STM32Board::setLinkActive(true);
@@ -344,16 +360,83 @@ static bool markNodeAlive(uint8_t nodeId, uint32_t now) {
     return false;
 }
 
+// ── Bootloader relay (#365) ───────────────────────────────────────────────────
+
+// Update traffic for node n passed through here: UPDATING on, pushed as a delta when it starts.
+static void noteBootTraffic(uint8_t nodeId, uint32_t now) {
+#if PANELBRIDGE_NODE_STATUS
+    NodeState& ns = _nodes[nodeId - 1];
+    ns.lastBootMs = now;
+    if (!ns.updating) {
+        ns.updating = true;
+        if (ns.alive) emitNode(nodeId, true);
+    }
+#else
+    (void)nodeId; (void)now;
+#endif
+}
+
+// A bootloader frame from the bus → the host, as `_BOOT_RSP <id(3)><len(1)><data hex>`.
+static void emitBootRsp(uint32_t canId, const uint8_t* data, uint8_t len) {
+    char hex[3 + 1 + 16 + 1];
+    int n = snprintf(hex, sizeof(hex), "%03X%X", (unsigned)canId, (unsigned)len);
+    for (uint8_t i = 0; i < len && i < 8; i++) n += snprintf(hex + n, sizeof(hex) - n, "%02X", data[i]);
+    DcsBios::sendDcsBiosMessage(BOOT_RSP_MSG_NAME, hex);
+}
+
+// A node's bootloader spoke: relay it, and keep the node alive in its bootloader state — no
+// false-offline, no WARNING while it is being flashed. No SYNC_REQ: a bootloader takes none.
+static void onBootRsp(uint32_t canId, const uint8_t* data, uint8_t len, uint32_t now) {
+    using namespace OpenSkyhawk::Boot;
+    emitBootRsp(canId, data, len);
+    if (canId == UNCONFIGURED_RSP_ID) return;   // no NODE_ID yet: nothing to track
+    const uint8_t nodeId = (uint8_t)(canId - RSP_ID_BASE);
+#if PANELBRIDGE_NODE_STATUS
+    NodeState& ns = _nodes[nodeId - 1];
+    bool changed = false;
+    if (len > (uint8_t)AnnounceField::STATE
+        && (data[0] == (uint8_t)Reply::ANNOUNCE || data[0] == (uint8_t)Reply::CONNECTED)) {
+        changed = data[(uint8_t)AnnounceField::PROTOCOL] != ns.bootloader
+               || data[(uint8_t)AnnounceField::STATE] != ns.bootState;
+        ns.bootloader = data[(uint8_t)AnnounceField::PROTOCOL];
+        ns.bootState  = data[(uint8_t)AnnounceField::STATE];
+    } else if (len >= 2 && data[0] == (uint8_t)Reply::BEGUN && data[1] == (uint8_t)Status::OK) {
+        // BEGIN erased the old app — say so now, not at the next announcement.
+        changed = ns.bootState != (uint8_t)BootState::APP_INVALID;
+        ns.bootState = (uint8_t)BootState::APP_INVALID;
+    }
+    if (data[0] != (uint8_t)Reply::ANNOUNCE) noteBootTraffic(nodeId, now);   // a reply: a session is on
+    if (!markNodeAlive(nodeId, now) && changed) emitNode(nodeId, true);
+#else
+    markNodeAlive(nodeId, now);
+#endif
+}
+
 static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
     uint32_t now = millis();
+
+    // BOOT_RSP_1 – BOOT_RSP_63 + the unconfigured announce: a bootloader talking (#365).
+    if ((canId >= OpenSkyhawk::Boot::canIdBootRsp(1) && canId <= OpenSkyhawk::Boot::canIdBootRsp(MAX_NODE_ID))
+        || canId == OpenSkyhawk::Boot::UNCONFIGURED_RSP_ID) {
+        onBootRsp(canId, data, len, now);
+        return;
+    }
 
     // HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition
     if (canId >= canIdHb(1) && canId <= canIdHb(MAX_NODE_ID)) {
         uint8_t nodeId = (uint8_t)(canId - canIdHb(0));
 #if PANELBRIDGE_NODE_STATUS
-        if (len >= 8) memcpy(&_nodes[nodeId - 1].last, data, 8);  // cache health for #86 reporting
-#endif
+        NodeState& ns = _nodes[nodeId - 1];
+        if (len >= 8) memcpy(&ns.last, data, 8);  // cache health for #86 reporting
+        // A heartbeat comes from the app: the node has left its bootloader (#365).
+        const bool leftBoot = ns.bootState != NODE_BOOT_STATE_APP || ns.updating;
+        ns.bootState = NODE_BOOT_STATE_APP;
+        ns.updating  = false;
         if (markNodeAlive(nodeId, now)) broadcastSyncReq();
+        else if (leftBoot) emitNode(nodeId, true);
+#else
+        if (markNodeAlive(nodeId, now)) broadcastSyncReq();
+#endif
         return;
     }
 
@@ -465,10 +548,14 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         ReadyPayload r = {};
         if (len >= 3) memcpy(&r, data, len < sizeof(r) ? len : sizeof(r));
         const bool fwChanged = r.fwMajor != ns.fwMajor || r.fwMinor != ns.fwMinor
-                             || r.fwPatch != ns.fwPatch;
+                             || r.fwPatch != ns.fwPatch || r.bootloader != ns.bootloader
+                             || ns.bootState != NODE_BOOT_STATE_APP;
         ns.fwMajor = r.fwMajor;
         ns.fwMinor = r.fwMinor;
         ns.fwPatch = r.fwPatch;
+        ns.bootloader = r.bootloader;   // READY byte 3 (#365); 0 from firmware without it
+        ns.bootState  = NODE_BOOT_STATE_APP;
+        ns.updating   = false;
         if (!markNodeAlive(nodeId, now) && fwChanged) emitNode(nodeId, true);
 #else
         markNodeAlive(nodeId, now);
@@ -481,6 +568,14 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
 
 static void checkNodeTimeouts(uint32_t now) {
     for (uint8_t i = 0; i < MAX_NODE_ID; i++) {
+#if PANELBRIDGE_NODE_STATUS
+        // Update traffic stopped (#365): UPDATING off — a board left in its bootloader now reads as
+        // waiting, which the host shows as stuck when it is APP_INVALID / APP_UNSTABLE.
+        if (_nodes[i].updating && (int32_t)(now - _nodes[i].lastBootMs) > (int32_t)NODE_BOOT_UPDATING_MS) {
+            _nodes[i].updating = false;
+            if (_nodes[i].alive) emitNode(i + 1, true);
+        }
+#endif
         if (!_nodes[i].alive) continue;
         // Signed elapsed: if `now` is (slightly) behind lastSeenMs — e.g. a millisecond ticked
         // between sampling `now` and onCanRx stamping lastSeenMs during the same loop — the unsigned
@@ -493,7 +588,7 @@ static void checkNodeTimeouts(uint32_t now) {
                 auto& d = STM32Board::diagSerial();
                 d.print(F("[BRIDGE] node=")); d.print(nodeId); d.println(F(" dead"));
             }
-            _deadCount++;                   // a tracked node died → WARNING (amber)
+            _deadCount++;                   // a tracked node died → WARNING (red/green alternating)
             STM32Board::setWarning(true);
             if (_cbDead) _cbDead(nodeId);
 #if PANELBRIDGE_NODE_STATUS
@@ -553,6 +648,37 @@ public:
 };
 static NodeStatusReqListener _nodeStatusReqListener;
 #endif
+
+// Host → bootloader relay (#365): one export record per CAN frame in the reserved window — id,
+// length, then one data byte per word (BootProtocol.h says why) — put on the bus once the record's
+// last word arrives. Only BOOT_CMD_1-63 and
+// the unconfigured command ID pass: the host can't inject anything else onto CAN.
+class BootRelayListener : public DcsBios::ExportStreamListener {
+public:
+    BootRelayListener()
+        : DcsBios::ExportStreamListener(OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS,
+                                        OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS + 2 * (OpenSkyhawk::Boot::RELAY_EXPORT_WORDS - 1)) {}
+    void onDcsBiosWrite(unsigned int address, unsigned int data) override {
+        using namespace OpenSkyhawk::Boot;
+        const uint8_t w = (uint8_t)((address - RELAY_EXPORT_ADDRESS) / 2);
+        if (w == 0) _have = 0;
+        _words[w] = (uint16_t)data;
+        _have |= 1u << w;
+        if (w != RELAY_EXPORT_WORDS - 1 || _have != (1u << RELAY_EXPORT_WORDS) - 1) return;
+        const uint16_t id  = _words[0];
+        const uint8_t  len = _words[1] < 8 ? (uint8_t)_words[1] : 8;
+        const bool toNode  = id >= canIdBootCmd(1) && id <= canIdBootCmd(MAX_NODE_ID);
+        if (!toNode && id != UNCONFIGURED_CMD_ID) return;
+        uint8_t bytes[8];
+        for (uint8_t i = 0; i < 8; i++) bytes[i] = (uint8_t)_words[2 + i];
+        CANProtocol::send(id, bytes, len);
+        if (toNode) noteBootTraffic((uint8_t)(id - CMD_ID_BASE), millis());
+    }
+private:
+    uint16_t _words[OpenSkyhawk::Boot::RELAY_EXPORT_WORDS] = {};
+    uint16_t _have = 0;
+};
+static BootRelayListener _bootRelayListener;
 
 } // anonymous namespace
 

@@ -37,6 +37,25 @@ PanelBridge::onNodeDead(onNodeDead);
 
 Node alive/dead callbacks are optional; PanelBridge continues to function without them.
 
+**A node in its bootloader stays alive (#365).** Its `BOOT_RSP_n` frames — the bootloader announces
+every second, also during a stalled transfer — refresh liveness like a heartbeat (without the
+SYNC_REQ a revived node gets: a bootloader takes none), so it never times out, never drops
+`present`, and never drives WARNING while it is being flashed. The bridge caches its bootloader
+version and `BootState` for `_NODE_STATUS` (`04`); a heartbeat or READY from the app clears them back
+to "app running".
+
+## Bootloader Relay (#365)
+
+The bridge is a dumb relay between the host and the boards' bootloaders (`12-bootloader.md`):
+
+- **Down:** `BootRelayListener` (an `ExportStreamListener` on `0xFF10`–`0xFF23`) collects one export
+  record per CAN frame and sends it once the last word arrives — only `BOOT_CMD_1`–`63` and `0x7C0`.
+  `handleDcsBiosExport()` drops the window, so it never reaches `CTRL_BCAST`.
+- **Up:** every `BOOT_RSP_n` / `0x7C1` frame goes to the host as `_BOOT_RSP <id><len><data>`.
+- **UPDATING:** relayed traffic for node n in either direction sets bit 7 of its `bootState` for 3 s
+  (pushed as a delta when it starts and when it lapses).
+- **Not the bridge itself:** it never acts on `BOOT_CMD_0`; updating the bridge is #367 (USART2).
+
 **Timeout clock (elapsed is signed):** `checkNodeTimeouts` samples `now` **after** `CANProtocol::drain()` (which stamps each node's `lastSeenMs` from `onCanRx`) and compares `(int32_t)(now - lastSeenMs) > HB_TIMEOUT_MS`. Both guard the same hazard — a millisecond ticking between the loop's `now` and the in-drain `lastSeenMs` would make the *unsigned* difference wrap to ~4.29e9 and declare a live node dead for one loop (a split-second false `present=00`→`present=01` flicker). Signed elapsed reads a small negative as "not yet elapsed" (#225).
 
 **Heartbeat recovery handling:** When PanelBridge receives `HB_n` from a node that was

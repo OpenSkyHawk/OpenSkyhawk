@@ -10,7 +10,9 @@ assignments (→ 08), HID frame format (→ 03).
 ## Before Any App — the Bootloader
 
 Every STM32 board (PanelGroup, PDU, PanelBridge) starts in its bootloader, which checks the app and
-jumps to it within a few milliseconds — the boot sequences below begin there. It stays instead when the
+jumps to it after a 200 ms catch window — the boot sequences below begin there. A running PanelGroup
+or PDU that receives a CONNECT on its `BOOT_CMD_n` resets back into the bootloader when one is
+installed (`STM32Board::enterBootloader()`, #365); READY_n byte 3 reports the bootloader's version. It stays instead when the
 app asked for it or the app fails its check, and announces on `BOOT_RSP_n`. See `12-bootloader.md`.
 
 ## PanelGroup Boot Sequence

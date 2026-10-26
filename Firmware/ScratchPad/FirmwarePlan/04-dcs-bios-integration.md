@@ -33,16 +33,19 @@ forwards host→device; the response is ASCII it forwards device→host). PanelB
 | Export address `0xFF00` (`NODE_STATUS_REQ_ADDR`, v4) | host→device | Client writes it (value ignored) to request the roster. No DCS-BIOS module exports it — every aircraft ends by `0xB2FB` and `MetadataEnd` is `0xFFFE` (DCS-BIOS v0.11.8) — so DCS never triggers it, whatever aircraft is flown. (v3 used `0x86FE`, a live AH-64D and Mirage F1 address, #295.) Outside the bridge's CAN-broadcast window, and excluded in `handleDcsBiosExport()` regardless. |
 | Command name `_NODE_STATUS` (`NODE_STATUS_MSG_NAME`) | device→host | One DCS-BIOS command message per node (the bridge's own node-0 row included). Leading underscore — no A-4E-C control collides; DCS-BIOS ignores it as an unknown control if a copy leaks. |
 | Command name `_NODE_STATUS_END` (`NODE_STATUS_END_MSG_NAME`) | device→host | Burst terminator for request/boot replies; argument = row count, node 0 included. Lets the client know a roster reply is complete and reconcile/prune. |
+| Export addresses `0xFF10`–`0xFF23` (`Boot::RELAY_EXPORT_ADDRESS`, 10 words, #365) | host→device | One bootloader CAN frame per export record: id, length, then one data byte per word (high half 0 — four `0x55` in a row would resync the DCS-BIOS parser). PanelBridge puts it on CAN — only `BOOT_CMD_1`–`63` and `0x7C0` — and keeps the window out of `CTRL_BCAST`. |
+| Command name `_BOOT_RSP` (`BOOT_RSP_MSG_NAME`, #365) | device→host | Every `BOOT_RSP_n` / `0x7C1` frame, unread: `_BOOT_RSP <id(3 hex)><length(1 hex)><data(2 hex per byte)>`. Pushed as frames arrive. Protocol: `12-bootloader.md`. |
 
 **Request** — client writes a DCS-BIOS export frame to `0xFF00`. PanelBridge's
 `NodeStatusReqListener` (an `ExportStreamListener`) fires → emits the full roster.
 
-**Response** — `_NODE_STATUS <hex>` where `<hex>` is **34 chars** (proto **v4**, #295; v3 was 28 chars
-without the version, v2 26 without `nodeKind`) — a `NODE_STATUS_ROW_BYTES` (17) byte row, **each field
-its numeric value as fixed-width uppercase hex (most-significant nibble first)**:
-`nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2) faultMask(2) faultId(2) nodeKind(2) fwMajor(2) fwMinor(2) fwPatch(2)`
+**Response** — `_NODE_STATUS <hex>` where `<hex>` is **38 chars** (proto **v4**, #295 + #365 — the two
+bootloader fields joined v4 before it shipped; v3 was 28 chars without the version, v2 26 without
+`nodeKind`) — a `NODE_STATUS_ROW_BYTES` (19) byte row, **each field its numeric value as fixed-width
+uppercase hex (most-significant nibble first)**:
+`nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2) faultMask(2) faultId(2) nodeKind(2) fwMajor(2) fwMinor(2) fwPatch(2) bootloader(2) bootState(2)`
 (the 8-byte `HeartbeatPayload` plus `present`, then the node's cached `HEALTH_n` fields, then the
-firmware version from its last `READY_n`). Fields are only ever appended: a reader parses the fields
+firmware version from its last `READY_n`, then its bootloader). Fields are only ever appended: a reader parses the fields
 it knows from a longer row and ignores the rest. Each field's
 byte offset in the row is named by `NodeStatusField` in `NodeStatus.h` (hex index = 2 × offset).
 `present`: `01` alive, `00` removed. `flags`: `HeartbeatFlag` — bit0 BOFF, bit1 EPVF. `esr`: low byte
@@ -75,6 +78,15 @@ The last five fields come from the node's `HEALTH_n` frame (see `02-can-protocol
   the bridge booted, or an empty READY from older firmware. Kept when the node times out. Nodes on
   one bus must share a major version; the client warns when a node's major differs from the
   node-0 row's.
+- `bootloader` (#365): the node's bootloader protocol version — from `READY_n` byte 3, or from its
+  bootloader's own announcement. `00` = no bootloader (manual update only), or not reported yet.
+  Node 0: the bridge's own.
+- `bootState` (#365): `00` = the app is running; otherwise the `BootState` its bootloader announces
+  (`12-bootloader.md`: `01` requested, `02` app invalid, `04` app unstable, `05` caught at boot), with
+  bit 7 (`NODE_BOOT_STATE_UPDATING`) set while update traffic for the node passed the bridge in the
+  last 3 s. A successful `BEGUN` sets `02` at once. A heartbeat or READY from the app sets `00`. A
+  board in its bootloader stays `present` — its announcements count as liveness — so it never reads
+  as offline. The client shows "stuck" for `02` / `04` without bit 7.
 
 **Emission semantics:**
 - A single bare `_NODE_STATUS` is a **live delta** — emitted on each node alive/dead transition
