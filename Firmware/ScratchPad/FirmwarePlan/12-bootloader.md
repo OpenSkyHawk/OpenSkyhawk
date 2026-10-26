@@ -1,8 +1,9 @@
-# 12 — CAN Bootloader
+# 12 — Bootloader
 
-**Owns:** the bootloader every STM32 board carries — flash layout, boot flow, its self-protection,
-the NODE_ID / kind copy in the option bytes, the crash-loop counter, and the update protocol on
-`BOOT_CMD_n` / `BOOT_RSP_n` (and the unconfigured pair).
+**Owns:** the bootloader every STM32 board carries — its two builds (CAN for the nodes, USART2 for the
+Gateway's PanelBridge), flash layout, boot flow, its self-protection, the NODE_ID / kind copy in the
+option bytes, the crash-loop counter, the update protocol on `BOOT_CMD_n` / `BOOT_RSP_n` (and the
+unconfigured pair, and the bridge's serial framing), and the freeze.
 **Does not own:** the CAN ID map (`02-can-protocol.md` — the IDs are listed there), the image
 identity block (`08-hardware-firmware-contracts.md#image-layout--identity-block-362`), the app side
 of entering the bootloader (`STM32Board::enterBootloader()`) and the bridge relay (`06`, #365), the
@@ -10,7 +11,8 @@ Gateway uploader (#366).
 
 Code: `Firmware/Bootloader/` (the bootloader), `Firmware/Libraries/BootProtocol/BootProtocol.h` (every
 wire value below — the one source the bootloader, STM32Board, CANProtocol, the uploader and the
-client sync read). Rationale: D26 (core, #363), D27 (safety, #364), D28 (relay + entering, #365).
+client sync read). Rationale: D26 (core, #363), D27 (safety, #364), D28 (relay + entering, #365), D29 (streaming, #366),
+D30 (two builds + freeze, #367).
 
 ---
 
@@ -19,14 +21,21 @@ client sync read). Rationale: D26 (core, #363), D27 (safety, #364), D28 (relay +
 | Region | Address | Size | Owner |
 |---|---|---|---|
 | Bootloader | `0x08000000` | 4 KB (one write-protect block — protected by the bootloader itself) | `Firmware/Bootloader` — replaced only over ST-Link |
-| Bootloader info block | `0x08000FF0` | 16 B: magic `"OSBL"` (`0x4C42534F`), protocol version, 11 × `0xFF` | the bootloader (`--section-start`); read by the app (#365) |
+| Bootloader info block | `0x08000FF0` | 16 B: magic `"OSBL"` (`0x4C42534F`), protocol version, `transports` (`TRANSPORT_CAN` `0x01` / `TRANSPORT_SERIAL` `0x02`, #367), 10 × `0xFF` | the bootloader (`--section-start`); read by the app (#365) |
 | App | `0x08001000` | flash − 4 KB (60 KB C8, 124 KB CB) | every production project (`Firmware/shared/stm32.ini`: `board_build.flash_offset = 0x1000`) |
 | App identity block | `0x08001200` | 32 B | inside the app (`08`) |
 | PDU calibration page | `0x0800FC00` | 1 KB | PDU builds stop short of it (`board_upload.maximum_size = 64512`); the bootloader erases only the pages an image covers |
 
 The core sets `VTOR` from the offset, so apps need no code change. An ST-Link upload (`pio run -t
-upload`) writes the app only and keeps the bootloader. One bootloader image serves the C8 and the CB:
-it reads the flash size from `0x1FFFF7E0`.
+upload`) writes the app only and keeps the bootloader. Each build serves the C8 and the CB alike: it
+reads the flash size from `0x1FFFF7E0`.
+
+**Two builds, one source (#367, D30).** `Firmware/Bootloader` builds `bootloader` (CAN — every node:
+PanelGroup, PDU) and `bridge` (`-DOSH_BOOT_BRIDGE`, USART2 — only the Gateway's PanelBridge, the CAN
+master that nothing on the bus can update). Everything but the transport is the same code: the boot
+flow, the checks, commit-last, the option bytes, the crash counter, catch-at-boot, the protocol. Both
+transports in one image came out ~60 B over 4 KB. The info block's `transports` byte says which one is
+installed; a #365 / #366 bootloader has `0xFF` there, which reads as both.
 
 **Blank boards.** A board without the bootloader has nothing at `0x08000000` to start the app, so its
 first flash carries both: `pio run -t bootstrap` (dev), or the release's `<board>-<v>-full.hex`. The
@@ -60,7 +69,7 @@ At every reset:
 | `APP_UNSTABLE` | `DR2` ≥ `ATTEMPT_LIMIT` (3): the app reset that many times without reporting healthy | `BOOT_RSP_n` |
 | `CAUGHT` | a `CONNECT` on `BOOT_CMD_n` within `CATCH_WINDOW_MS` (200 ms) after the reset | `BOOT_RSP_n` |
 
-   With none of these, `DR2` goes up by one and the bootloader **jumps**: SysTick off, CAN reset,
+   With none of these, `DR2` goes up by one and the bootloader **jumps**: SysTick off, CAN / USART2 reset (and its DMA),
    clocks back to the reset state (HSI, PLL and HSE off, zero wait states), NVIC cleared, `VTOR` = app;
    then the stack switch and the branch in **one** inline-asm block (a compiler `pop` between them read
    the app's stack and bus-faulted on the #361 bench).
@@ -90,8 +99,10 @@ A running PanelGroup or PDU listens on its own `BOOT_CMD_n`. A `CONNECT` there c
 behind it, `VTOR` = `0x08001000`) it sets the entry flag (`DR1` = `0xB007`) and resets; without one it
 does nothing — a reset would only restart the app. The host simply keeps sending `CONNECT`: the
 running app enters, the bootloader answers (`REQUESTED`), and a board being reset is caught the same
-way. READY_n byte 3 carries `STM32Board::bootloaderVersion()` (0 = none). The bridge never enters on
-`BOOT_CMD_0` — its own update is #367.
+way. READY_n byte 3 carries `STM32Board::bootloaderVersion()` (0 = none). `enterBootloader(via)` also
+needs the installed bootloader to speak the transport the request came on (`transports`), so a board
+with the wrong build ignores the request and keeps running instead of stranding itself. The bridge
+never enters on `BOOT_CMD_0`; it has its own path (below).
 
 ### Crash-loop counter (`DR2`)
 
@@ -130,6 +141,23 @@ then `pio run -t upload` (a test) or `pio run -d Firmware/Bootloader -t upload`.
 Data0 / Data1 are kept. `pio run -t bootstrap` afterwards puts bootloader + app back, and the
 bootloader re-protects itself on its first boot. (OpenOCD's `stm32f1x unlock` also clears WRP but
 keeps Data0 / Data1; `stm32f1x options_write` re-applies the WRP it read.)
+
+### The Gateway's cockpit side — the `bridge` build (#367)
+
+- **Transport:** USART2 at 250 kbit/s (PA2 TX / PA3 RX, the Gateway's RP2040 link), RX by circular
+  DMA so bytes keep landing while flash is written. Each CAN frame of the protocol below travels as
+  `0xAA, id lo, id hi, len (0–8), data, sum` (`sum` = the bytes after `0xAA`, mod 256), with the id it
+  would have had on CAN: commands on `BOOT_CMD_0` (`0x740`), replies and announcements on `BOOT_RSP_0`
+  (`0x780`). Commands, replies, the window and the transfer rules are unchanged.
+- **Entering:** the host (the Gateway's uploader) writes `BRIDGE_ENTER_EXPORT_ADDRESS` (`0xFF02`) on the
+  export stream. PanelBridge calls `enterBootloader(TRANSPORT_SERIAL)` and resets; the bootloader
+  announces on USART2 and the uploader sends `CONNECT`.
+- **Catch at boot:** while it waits, the uploader sends `CONNECT` every 100 ms, so pressing the
+  Gateway's reset button catches a bridge app that never takes the request.
+- **The jump** leaves TX idle-high (PA2 input, pull-up) for the app: with USART2 in reset an
+  alternate-function pin pulls the line low — a break on the Gateway's UART at every boot.
+- **Updated by:** only the Gateway's uploader (`07` § Uploader, target `0`) — the bridge app it carries
+  in its own firmware, or one the client staged.
 
 ---
 
@@ -218,10 +246,44 @@ time** — the host says so; two announcing at once collide rarely and only lose
 `--gateway PORT` through the Gateway's USB and the bridge relay (`04`: export records down,
 `_BOOT_RSP` lines up), with `--window N` (default 4; 1 = stop-and-wait). The Gateway's own uploader
 (#366, `07` § Uploader) runs the same protocol from the RP2040; `upload_gateway.py` is its bench
-client. Measured (27–33 KB images): CAN direct 9.5 KB/s stop-and-wait → **15.3 KB/s** with the window;
+client (`--bridge` updates the Gateway's own cockpit side, #367). Measured (27–33 KB images): CAN direct 9.5 KB/s stop-and-wait → **15.3 KB/s** with the window;
 through the Gateway **12.5 KB/s** writing (≈3.2 s for a whole 27.7 KB update, entering to confirmed). It reads the frame IDs and codes from `BootProtocol.h`, takes the
 length and CRC from the image's identity block, sends `CONNECT` every 100 ms while it waits (so
 resetting the board catches it), and has `--listen`, `--unconfigured`, `--set-node-id M`,
 `--stop-after N` and `--delay-ms` (power-pull tests). Without #365, request the bootloader over
 ST-Link instead: write `0xB007` to `DR1` (`0x40006C04`, with the PWR / BKP clocks and `PWR_CR.DBP` on)
 and reset.
+
+---
+
+## Freeze (#367, D30)
+
+From firmware 1.0.0 the bootloader is **frozen**: field boards never get a new one over the bus — it is
+replaced only over ST-Link — so every later feature lives in the app or the Gateway.
+
+- **Protocol `PROTOCOL_VERSION` 1 is frozen.** The commands, replies, payloads, framing, IDs, info block
+  and identity-block checks above don't change. A change to them is a new protocol version, and every
+  host must keep speaking version 1 to the boards already out there.
+- **The build is pinned:** exact platform, toolchain and CMSIS in `Firmware/Bootloader/platformio.ini`,
+  so the same source always builds the same bytes — a newer compiler can move the size by ±100 B.
+  Changing any of them is a bootloader change.
+- **Budget: 4 KB, never more.** Real footprints at the freeze (vectors, code, `.data` copy, info block):
+  `bootloader` 3,684 B (412 free), `bridge` 3,668 B (428 free). The release workflow's summary reports
+  both; code that grows into the info block fails the link.
+- **A bootloader change** (bug fix only) ships in the release where it changed (`bootloader/` in the
+  zip, and every `-full.hex`); `manifest.json` names the release that holds the current one.
+
+**If it ever has to shrink** — least valuable first. Growing past 4 KB is last because it costs app
+space on every board.
+
+| Order | Cut | Saves | Lost |
+|---|---|---|---|
+| 1 | One LED pattern for every state | ~60–80 B | telling the states apart by eye (the client still knows) |
+| 2 | The HSI fallback when the crystal is dead | ~40 B | reflashing a board with a dead crystal over the bus |
+| 3 | The idle timeout | ~30 B | an abandoned request returns to the app only on `GO` or a power cycle |
+| 4 | First image for an unconfigured board | ~100 B | bare boards need ST-Link or come preloaded |
+| 5 | Grow to 8 KB | +4 KB | 4 KB of app space on every board |
+
+**Never cut** — these are what keep a bad update from bricking a board: commit-last, the full-image CRC
+at boot and at END, the per-block CRC, the NODE_ID / kind rule, the self-protection, the option-byte
+verify, the crash-loop counter, and catch-at-boot.

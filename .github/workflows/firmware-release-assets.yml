@@ -4,9 +4,12 @@ name: Firmware release assets
 #   - flat files for the client: manifest.json, one .bin per STM32 board, the Gateway .uf2;
 #   - one zip for people: a folder per board with its README; for STM32 the app .elf (the flash
 #     address is built in) and <board>-<v>-full.hex (bootloader + app, for a blank board, #363);
-#     the Gateway .uf2; plus the top README, CHANGES, LICENSE and manifest.json.
-# The bootloader on its own (bootloader/bootloader-<v>.elf) ships only in a release where it changed;
-# manifest.json's "bootloader" names the release that holds the current one.
+#     the Gateway .uf2 (which carries the cockpit side's app, so it can update it, #367); plus the
+#     top README, CHANGES, LICENSE and manifest.json.
+# The bootloader has two builds from one source (#367): the CAN one for the nodes and the USART2 one
+# for the Gateway's cockpit side; each board's -full.hex holds its own. On their own
+# (bootloader/bootloader-<v>.elf, bootloader/bootloader-bridge-<v>.elf) they ship only in a release
+# where they changed; manifest.json's "bootloader" names the release that holds the current ones.
 #
 # Called, never triggered directly — it only builds (read-only), recording the flash/RAM size of
 # every board in the job summary and uploading the package as an Actions artifact
@@ -108,12 +111,16 @@ jobs:
             "Firmware/Panels/PDU_Center|PDU_Center|pdu-center|pdu-center|5|PDU Center"
           )
 
-          # The bootloader (#363) — every STM32 board's -full.hex includes it.
-          bl_log="$RUNNER_TEMP/bootloader.log"
-          platformio run -d Firmware/Bootloader -e bootloader | tee "$bl_log"
-          bl_elf="Firmware/Bootloader/.pio/build/bootloader/firmware.elf"
-          objcopy="$HOME/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-objcopy"
-          "$objcopy" -O ihex "$bl_elf" "$RUNNER_TEMP/bootloader.hex"
+          # The bootloader (#363), both builds (#367): `bootloader` (CAN) for the nodes, `bridge`
+          # (USART2) for the Gateway's cockpit side. Every STM32 board's -full.hex includes its own.
+          # Its frozen toolchain (Firmware/Bootloader/platformio.ini) — the apps use a newer one.
+          bl_tools="$HOME/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin"
+          [[ -d "$bl_tools" ]] || bl_tools="$HOME/.platformio/packages/toolchain-gccarmnoneeabi/bin"
+          objcopy="$bl_tools/arm-none-eabi-objcopy"
+          for bl_env in bootloader bridge; do
+            platformio run -d Firmware/Bootloader -e "$bl_env"
+            "$objcopy" -O ihex "Firmware/Bootloader/.pio/build/$bl_env/firmware.elf" "$RUNNER_TEMP/$bl_env.hex"
+          done
 
           # The release that holds the current bootloader: the first firmware-v* tag containing the
           # last change to its sources. None yet (or this one) → this release ships it on its own.
@@ -126,11 +133,11 @@ jobs:
           if [[ -z "$bl_holder" || "$bl_holder" == "$TAG" ]]; then bl_ship=1; bl_holder="$TAG"; fi
           bl_protocol="$(sed -n -E 's/.*PROTOCOL_VERSION = ([0-9]+);.*/\1/p' Firmware/Libraries/BootProtocol/BootProtocol.h)"
 
-          # full_hex app.elf out.hex — bootloader + app in one Intel HEX file. The bootloader's
-          # end-of-file and start-address records are dropped; the app's close the file.
+          # full_hex app.elf out.hex bootloader.hex — bootloader + app in one Intel HEX file. The
+          # bootloader's end-of-file and start-address records are dropped; the app's close the file.
           full_hex() {
             "$objcopy" -O ihex "$1" "$RUNNER_TEMP/app.hex"
-            { grep -v -E '^:(00000001FF|04000005)' "$RUNNER_TEMP/bootloader.hex"; cat "$RUNNER_TEMP/app.hex"; } > "$2"
+            { grep -v -E '^:(00000001FF|04000005)' "$3"; cat "$RUNNER_TEMP/app.hex"; } > "$2"
           }
 
           pkg="openskyhawk-firmware-$VERSION"
@@ -146,12 +153,21 @@ jobs:
             echo "| Board | Flash | RAM |"
             echo "|---|---|---|"
           } >> "$GITHUB_STEP_SUMMARY"
-          echo "| Bootloader | $(usage Flash "$bl_log") | $(usage RAM "$bl_log") |" >> "$GITHUB_STEP_SUMMARY"
 
           # usage "Flash" log → "31348 / 65536 B (47.8%)"
           usage() {
             sed -n -E "s/^$1: *\[[^]]*\] *([0-9.]+)% \(used ([0-9]+) bytes from ([0-9]+) bytes\).*/\2 \/ \3 B (\1%)/p" "$2" | tail -1
           }
+
+          # The bootloaders' real footprint: PlatformIO's "Flash used" leaves out the vector table, so
+          # add up what the .elf puts in flash — vectors, code, the .data load copy, the info block.
+          bl_footprint() {
+            "$bl_tools/arm-none-eabi-size" -A "$1" | awk '
+              $1 == ".isr_vector" || $1 == ".text" || $1 == ".rodata" || $1 == ".data" || $1 == ".osh_bootinfo" { n += $2 }
+              END { printf "%d / 4096 B (%d B free)", n, 4096 - n }'
+          }
+          echo "| Bootloader, CAN (nodes) | $(bl_footprint Firmware/Bootloader/.pio/build/bootloader/firmware.elf) | — |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Bootloader, USART2 (Gateway cockpit side) | $(bl_footprint Firmware/Bootloader/.pio/build/bridge/firmware.elf) | — |" >> "$GITHUB_STEP_SUMMARY"
 
           # add_entry file folder node format → one manifest line (node: a NODE_ID, "usb" for the
           # Gateway's RP2040 half, "-" for none)
@@ -178,7 +194,9 @@ jobs:
             else
               cp "$out/firmware.bin" "$dist/$base-$VERSION.bin"
               cp "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION.elf"
-              full_hex "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION-full.hex"
+              bl_hex="$RUNNER_TEMP/bootloader.hex"
+              [[ "$node" == 0 ]] && bl_hex="$RUNNER_TEMP/bridge.hex"   # the cockpit side: USART2 (#367)
+              full_hex "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION-full.hex" "$bl_hex"
               add_entry "$dist/$base-$VERSION.bin" "$folder" "$node" bin
               add_entry "$zipdir/$folder/$base-$VERSION.elf" "$folder" "$node" elf
               add_entry "$zipdir/$folder/$base-$VERSION-full.hex" "$folder" "$node" hex
@@ -187,11 +205,13 @@ jobs:
 
           if [[ "$bl_ship" == 1 ]]; then
             mkdir -p "$zipdir/bootloader"
-            cp "$bl_elf" "$zipdir/bootloader/bootloader-$VERSION.elf"
+            cp Firmware/Bootloader/.pio/build/bootloader/firmware.elf "$zipdir/bootloader/bootloader-$VERSION.elf"
+            cp Firmware/Bootloader/.pio/build/bridge/firmware.elf "$zipdir/bootloader/bootloader-bridge-$VERSION.elf"
             add_entry "$zipdir/bootloader/bootloader-$VERSION.elf" bootloader - elf
-            BOOTLOADER_NOTE="\`bootloader/\` holds the bootloader on its own, because it changed in this release. You only need it to replace a board's bootloader — the \`-full.hex\` files already include it."
+            add_entry "$zipdir/bootloader/bootloader-bridge-$VERSION.elf" bootloader 0 elf
+            BOOTLOADER_NOTE="\`bootloader/\` holds the bootloader on its own, because it changed in this release: \`bootloader-$VERSION.elf\` for the nodes, \`bootloader-bridge-$VERSION.elf\` for the Gateway's cockpit side. You only need them to replace a board's bootloader — the \`-full.hex\` files already include the right one."
           else
-            BOOTLOADER_NOTE="The bootloader didn't change in this release; the \`-full.hex\` files include it. On its own it is in release $bl_holder."
+            BOOTLOADER_NOTE="The bootloader didn't change in this release; the \`-full.hex\` files include it. On its own (both builds) it is in release $bl_holder."
           fi
 
           jq -s --arg version "$VERSION" --arg tag "$TAG" --arg bl_tag "$bl_holder" --argjson bl_protocol "$bl_protocol" \

@@ -207,8 +207,11 @@ namespace STM32Board {
     uint8_t bootloaderVersion();
 
     /// Entry flag (DR1 = ENTRY_MAGIC) + reset into the bootloader; returns without doing anything
-    /// when bootloaderVersion() is 0 (#365). Called by CANProtocol on a CONNECT to BOOT_CMD_n.
-    void enterBootloader();
+    /// when bootloaderVersion() is 0 (#365), or when the installed bootloader doesn't speak `via`
+    /// (its info block's `transports`, #367) — a board never strands itself in a bootloader nothing
+    /// can talk to. CANProtocol calls it with TRANSPORT_CAN on a CONNECT to BOOT_CMD_n; PanelBridge
+    /// with TRANSPORT_SERIAL on the host's BRIDGE_ENTER_EXPORT_ADDRESS.
+    void enterBootloader(uint8_t via);
 
     /**
      * @brief CAN bus status event handler.

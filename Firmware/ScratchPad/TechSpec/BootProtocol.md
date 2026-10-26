@@ -1,16 +1,16 @@
 # BootProtocol — Technical Specification
 
 **Status:** Done
-**FirmwarePlan ref:** `FirmwarePlan/12-bootloader.md#update-protocol`, `FirmwarePlan/02-can-protocol.md#frame-type-table`, `FirmwarePlan/00-decisions.md#d26`, `#d27`
+**FirmwarePlan ref:** `FirmwarePlan/12-bootloader.md#update-protocol`, `FirmwarePlan/02-can-protocol.md#frame-type-table`, `FirmwarePlan/00-decisions.md#d26`, `#d27`, `#d30`
 **Depends on:** `<stdint.h>` only — header-only, no Arduino, no HAL
 
 ---
 
 ## Responsibility
 
-The CAN bootloader's wire contract: frame IDs, command and reply codes, the announce layout,
+The bootloader's wire contract (frozen at protocol 1, #367): frame IDs, command and reply codes, the announce layout,
 `BootState`, `Status`, the transfer shape, the flash layout constants and the backup-register entry
-flag and crash-loop counter. The one source for every side of an update — the bootloader
+flag and crash-loop counter, the bridge build's serial framing and enter request. The one source for every side of an update — the bootloader
 (`Firmware/Bootloader`), STM32Board (`markBootHealthy()` clears the counter, #364), CANProtocol
 (entering the bootloader, READY_n byte 3 — #365), the Gateway uploader (#366), the client sync
 (SkyHawkClient#175/#177) and the bench host (`Firmware/Bootloader/tools/flash_can.py`, which parses it).
@@ -57,11 +57,17 @@ constexpr uint16_t CATCH_WINDOW_MS = 200, IDLE_TIMEOUT_MS = 30000;
 
 // #365
 constexpr uint32_t INFO_ADDRESS = 0x08000FF0, INFO_MAGIC = 0x4C42534F;   // "OSBL"
-struct BootloaderInfo { uint32_t magic; uint8_t protocolVersion; uint8_t reserved[11]; };   // 16 B
+struct BootloaderInfo { uint32_t magic; uint8_t protocolVersion; uint8_t transports; uint8_t reserved[10]; };   // 16 B
+constexpr uint8_t  TRANSPORT_CAN = 0x01, TRANSPORT_SERIAL = 0x02;   // #367: `transports` bits; 0xFF (#365/#366) = both
 constexpr uint16_t RELAY_EXPORT_ADDRESS = 0xFF10;  constexpr uint8_t RELAY_EXPORT_WORDS = 32;   // #366: a byte stream
 constexpr uint8_t  RELAY_FRAME_MARK = 0xE0, RELAY_ESCAPE = 0x56, RELAY_ESC_55 = 0x01, RELAY_ESC_56 = 0x02;
 constexpr uint8_t  WINDOW_BLOCKS = 4;   // blocks a host may send ahead of the last ack (#366)
 #define BOOT_RSP_MSG_NAME "_BOOT_RSP"
+
+// #367 — the bridge build: each frame on USART2 as 0xAA, id lo, id hi, len, data, sum (mod 256)
+constexpr uint8_t  SERIAL_FRAME_START = 0xAA;
+constexpr uint32_t SERIAL_BAUD = 250000;
+constexpr uint16_t BRIDGE_ENTER_EXPORT_ADDRESS = 0xFF02;   // export write → PanelBridge resets into its bootloader
 }
 ```
 

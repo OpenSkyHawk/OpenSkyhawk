@@ -384,7 +384,8 @@ feeds it from the cache and `emitSelf()` from the bridge's own state — `makeHe
 plus `CANProtocol::lastNodeHealth()` (its last `HEALTH_0`, kind `BRIDGE`) and its own
 `OPENSKYHAWK_FW_*` version. `emitAllNodes()` (boot
 seed + host request) sends the node-0 row, every alive node, then `_NODE_STATUS_END <count>` with
-node 0 counted. Live deltas: alive/dead transitions, a `nodeKind` change on an alive node, and a
+node 0 counted; `setup()` then `Serial.flush()`es it, because the sketch's `DcsBios::setup()` calls
+`Serial.begin()` again and a restart mid-send stranded all but the first write (#367). Live deltas: alive/dead transitions, a `nodeKind` change on an alive node, and a
 `READY_n` that changes an alive node's version (a reflash inside the heartbeat timeout — the READY
 branch caches the version before `markNodeAlive()`, so an alive delta already carries it).
 Contract: FirmwarePlan `04-dcs-bios-integration.md`.
@@ -405,6 +406,13 @@ write to the window's first word resets the decoder (records start on a frame bo
 frame goes to `CANProtocol::send()` — only `BOOT_CMD_1`–`63` and `UNCONFIGURED_CMD_ID` — and a command
 to a node notes UPDATING only when that node's bootloader has been seen (`bootloader` ≠ 0).
 `handleDcsBiosExport()` drops the window.
+
+**Its own update (#367).** `BridgeEnterListener` (`ExportStreamListener` on
+`BRIDGE_ENTER_EXPORT_ADDRESS`, `0xFF02`) calls `STM32Board::enterBootloader(TRANSPORT_SERIAL)`: with
+the `bridge` bootloader installed the board resets into it and the Gateway's uploader talks to it on
+USART2; with the CAN build (or none) nothing happens. `handleDcsBiosExport()` drops the address. The
+PanelBridge projects set `[osh] bootloader_env = bridge`, so `pio run -t bootstrap` flashes the right
+build.
 
 Test hooks (`PANELBRIDGE_TEST`): `testFeedHeartbeat`, `testFeedHealth(nodeId, dieTempC, hFlags,
 faultMask, faultId, nodeKind)` (mirrors the `HEALTH_n` branch, incl. the kind delta),

@@ -22,8 +22,10 @@ The single UART carries two distinct byte streams in the **PanelBridge → SimGa
 
 In the **SimGateway → PanelBridge** direction, the UART carries only the raw DCS-BIOS binary
 export stream forwarded from USB CDC. The host's requests to the bridge ride inside it as writes to
-reserved export addresses — the roster request (`0xFF00`) and the bootloader relay (`0xFF10`–`0xFF4F`,
-#365) — see `04-dcs-bios-integration.md`. Their replies come back as ordinary DCS-BIOS text lines
+reserved export addresses — the roster request (`0xFF00`), the bridge's enter-bootloader request
+(`0xFF02`, #367) and the bootloader relay (`0xFF10`–`0xFF4F`, #365) — see `04-dcs-bios-integration.md`.
+While the Gateway's uploader updates the bridge itself (#367), the UART instead carries the bridge
+bootloader's own `0xAA` frames, both ways (`12-bootloader.md`); nothing else crosses it then. Their replies come back as ordinary DCS-BIOS text lines
 (`_NODE_STATUS`, `_BOOT_RSP`).
 
 ---
@@ -64,6 +66,9 @@ SimGateway demultiplexes the incoming UART byte stream as follows:
   - If it is `0x55` → HID frame: read 4 more bytes, parse `controlId` + `value`, dispatch.
   - If it is not `0x55` → not a valid frame header: append `0xAA` + the mismatched byte to the
     line and resume scanning. `0xAA` is not ASCII, so that line is dropped as corrupt.
+- A non-ASCII byte **before a line starts** is dropped on its own (#367): PanelBridge's UART coming
+  up after every reset clocks one stray byte just ahead of its boot roster, and a line never starts
+  with one. Inside a line it still condemns the line (a failed `0xAA` always does).
 
 This ensures any framing error is self-healing at the next byte boundary.
 
@@ -421,13 +426,17 @@ NACKs). Behaviour: `07-simgateway-api.md` § Uploader.
   every 250 ms while writing) then one `UPL_RESULT`. No client frame for 5 s → the Gateway stops sending
   them, finishes anyway, and keeps the result for the next `UPL_INFO_ACK` (`lastTarget`, `lastResult`,
   `lastFw`). The staged image stays staged after a result, so it can be flashed again.
+- **Target `0`, the Gateway's own cockpit side (#367):** flashes the staged image, or — nothing staged —
+  the bridge image the Gateway firmware carries (`bridgeFw`); neither → `NOT_STAGED`. A client that
+  wants the bundled image sends `UPL_ABORT` first to drop a staged one. Behind when the node-0 row's
+  version ≠ `bridgeFw`.
 - **The Gateway owns the UART while flashing:** export bytes from the client are dropped (the client
   should have paused its relay anyway), and the bootloader's `_BOOT_RSP` lines are kept from the
   client. Idle, `_BOOT_RSP` lines are relayed as before.
 - **Results:** `OK` (the app runs and reports the image's version), `NO_RESPONSE`, `NO_BOOTLOADER`,
   `ID_MISMATCH`, `KIND_MISMATCH`, `TOO_BIG_FOR_BOARD` (all decided before anything is erased),
   `WRITE_FAILED`, `VERIFY_FAILED` (after `UPL_RETRIES` = 2 whole-flash retries), `VERSION_MISMATCH`,
-  `TIMEOUT`, `UNSUPPORTED` (the bridge, until #367). For an unconfigured board, `target` in the result
+  `TIMEOUT`. (`UNSUPPORTED` is no longer sent since #367.) For an unconfigured board, `target` in the result
   is the NODE_ID it adopted.
 - Older Gateway firmware relays unknown types, so a `UPL_INFO` timeout reads as "updates not supported".
 

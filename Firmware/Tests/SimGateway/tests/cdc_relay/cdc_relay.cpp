@@ -8,7 +8,8 @@
 //   - nothing is written until the line's '\n'
 //   - a line that exactly fits is written; one byte short and it is dropped whole, not truncated
 //   - a dropped line leaves no residue: the next line forwards untouched
-//   - non-ASCII (control bytes, '\r', >0x7E) makes the line corrupt — dropped, counted
+//   - non-ASCII (control bytes, '\r', >0x7E) makes the line corrupt — dropped, counted;
+//     before a line starts it is dropped on its own (#367)
 //   - a line longer than RELAY_LINE_MAX is dropped as overlong; RELAY_LINE_MAX itself fits
 //   - a HID frame inside a line is consumed and the line still assembles around it
 //   - a calibration frame emitted mid-line goes out whole, ahead of the line — never inside it
@@ -122,6 +123,14 @@ static void testCorruptAndOverlong() {
     feed(hi, sizeof(hi));
     checkEq(F("[B4] byte > 0x7E: corrupt"), SimGateway::diagnostics().linesCorrupt, 3);
     checkEq(F("[B5] none of them reached the host"), SimGateway::cdcCaptureCount(), 0);
+
+    // Noise before a line starts — PanelBridge's UART coming up after a reset (#367) — is dropped
+    // on its own; the line after it is relayed whole.
+    fresh();
+    const uint8_t lead[] = { 0xF8, 0x00, '_', 'X', ' ', '1', '\n' };
+    feed(lead, sizeof(lead));
+    check(F("[B11] leading noise dropped, the line relayed"), captureIs("_X 1\n"));
+    checkEq(F("[B12] and not counted as corrupt"), SimGateway::diagnostics().linesCorrupt, 0);
 
     fresh();
     for (uint16_t i = 0; i < SimGateway::RELAY_LINE_MAX + 5; ++i) SimGateway::feedByte('X');

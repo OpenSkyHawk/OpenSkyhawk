@@ -11,6 +11,12 @@
 using namespace OpenSkyhawk;
 namespace B = OpenSkyhawk::Boot;
 
+// The bridge image this Gateway firmware carries (#367) — a generated, strong definition when the build
+// bundles one (Firmware/shared/bundle_bridge.py), else unresolved (address 0). Weak *declarations*, not
+// weak defaults: GCC folds a weak const definition's value, so a bundle would never be read.
+extern "C" __attribute__((weak)) const uint8_t  osh_bundled_bridge[];
+extern "C" __attribute__((weak)) const uint32_t osh_bundled_bridge_len;
+
 namespace {
 
 Uploader::Io _io = {};
@@ -43,6 +49,9 @@ UplPhase _phase;
 uint8_t  _target, _newId, _attempt, _stalls;
 uint16_t _cmdId, _rspId, _uid;
 bool     _unconfigured, _uidKnown, _sentOnce;
+bool     _bridge, _bridgeHeard;   // target 0: the bridge's bootloader, straight on the UART (#367)
+uint32_t _lastEnterMs;
+uint8_t  _sf[5 + 8], _sn;         // a serial bootloader frame being received
 uint32_t _phaseMs, _flashMs, _lastSendMs, _lastStatusMs, _ackDeadline, _confirmFromMs;
 uint16_t _blocks, _acked, _sent, _goback;
 uint8_t  _lastTarget = 0, _lastResult = UPL_RESULT_NONE, _lastFw[3] = {0, 0, 0};
@@ -89,9 +98,25 @@ void recFlush() {
     if (_outLen > sizeof(_out) - (4 + sizeof(_rec))) { _io.writeUart(_out, _outLen); _outLen = 0; }
 }
 
-void beginFrames() { _outLen = 0; _recLen = 0; for (int i = 0; i < 4; i++) _out[_outLen++] = 0x55; }   // sync
+void beginFrames() {
+    _outLen = _recLen = 0;
+    if (!_bridge) for (int i = 0; i < 4; i++) _out[_outLen++] = 0x55;   // relay: sync the export parser first
+}
+
+// The bridge's bootloader takes frames straight on the UART (BootProtocol.h, #367): no relay.
+void addSerialFrame(uint16_t id, const uint8_t* d, uint8_t n) {
+    if (_outLen + 5 + n > sizeof _out) { _io.writeUart(_out, _outLen); _outLen = 0; }
+    uint8_t sum = (uint8_t)id + (uint8_t)(id >> 8) + n;
+    _out[_outLen++] = B::SERIAL_FRAME_START;
+    _out[_outLen++] = (uint8_t)id;
+    _out[_outLen++] = (uint8_t)(id >> 8);
+    _out[_outLen++] = n;
+    for (uint8_t i = 0; i < n; i++) { _out[_outLen++] = d[i]; sum += d[i]; }
+    _out[_outLen++] = sum;
+}
 
 void addFrame(uint16_t id, const uint8_t* d, uint8_t n) {
+    if (_bridge) { addSerialFrame(id, d, n); return; }
     uint8_t f[1 + 2 * (2 + 8)];
     if (n > 8) n = 8;
     const uint8_t total = (uint8_t)(2 + n);   // id lo, id hi, data
@@ -109,7 +134,21 @@ void addFrame(uint16_t id, const uint8_t* d, uint8_t n) {
     _recLen += k;
 }
 
-void endFrames() { recFlush(); if (_outLen) _io.writeUart(_out, _outLen); _outLen = 0; }
+void endFrames() { if (!_bridge) recFlush(); if (_outLen) _io.writeUart(_out, _outLen); _outLen = 0; }
+
+// A one-word write on the export stream the bridge app parses (#367) — BRIDGE_ENTER_EXPORT_ADDRESS
+// ("enter your bootloader") or NODE_STATUS_REQ_ADDR (the roster). Well-formed, so the app never sees junk.
+void sendBridgeExport(uint16_t address) {
+    const uint8_t r[] = {0x55, 0x55, 0x55, 0x55, (uint8_t)address, (uint8_t)(address >> 8), 2, 0, 1, 0};
+    _io.writeUart(r, sizeof r);
+}
+
+// The bundled bridge image's identity block, or nullptr.
+const FirmwareImage::Identity* bundledIdentity() {
+    if (&osh_bundled_bridge_len == nullptr || osh_bundled_bridge_len <= FirmwareImage::IDENTITY_OFFSET + sizeof(FirmwareImage::Identity)) return nullptr;
+    const auto* id = reinterpret_cast<const FirmwareImage::Identity*>(osh_bundled_bridge + FirmwareImage::IDENTITY_OFFSET);
+    return id->magic == FirmwareImage::MAGIC && id->imageLength <= osh_bundled_bridge_len ? id : nullptr;
+}
 
 void sendCmd(const uint8_t* d, uint8_t n) { beginFrames(); addFrame(_cmdId, d, n); endFrames(); }
 
@@ -185,6 +224,7 @@ void onBootReply(uint16_t id, const uint8_t* d, uint8_t n, uint32_t now) {
     }
     if (id != _rspId) return;
     const B::Reply code = (B::Reply)d[0];
+    if (code == B::Reply::ANNOUNCE) _bridgeHeard = true;   // the bridge's bootloader is up: CONNECT now
 
     switch (_phase) {
     case UPL_PHASE_ENTERING_BOOT: {
@@ -290,6 +330,21 @@ bool handles(uint8_t type) {
 bool busy()     { return _state != UPL_STATE_IDLE; }
 bool ownsUart() { return _state == UPL_STATE_FLASHING; }
 
+bool ownsUartRx() { return _state == UPL_STATE_FLASHING && _bridge && _phase != UPL_PHASE_CONFIRMING; }
+
+void onUartByte(uint8_t c, uint32_t now) {
+    if (!_sn && c != B::SERIAL_FRAME_START) return;
+    _sf[_sn++] = c;
+    if (_sn < 4) return;
+    if (_sf[3] > 8) { _sn = 0; return; }
+    if (_sn < 5u + _sf[3]) return;
+    _sn = 0;
+    uint8_t sum = 0;
+    const uint8_t last = (uint8_t)(4 + _sf[3]);   // header + data: at most 12
+    for (uint8_t i = 1; i < last; i++) sum += _sf[i];
+    if (sum == _sf[4 + _sf[3]]) onBootReply((uint16_t)(_sf[1] | (_sf[2] << 8)), _sf + 4, _sf[3], now);
+}
+
 void onClientFrame(uint32_t now) { _lastClientMs = now; }
 
 void onFrame(uint8_t type, uint8_t seq, const uint8_t* p, uint16_t len, uint32_t now) {
@@ -305,7 +360,12 @@ void onFrame(uint8_t type, uint8_t seq, const uint8_t* p, uint16_t len, uint32_t
         a[UPL_INFO_ACK_LAST_TARGET]  = _lastTarget;
         a[UPL_INFO_ACK_LAST_RESULT]  = _lastResult;
         memcpy(a + UPL_INFO_ACK_LAST_MAJOR, _lastFw, 3);
-        _io.send(CAL_T_UPL_INFO_ACK, seq, a, sizeof a);   // bundled bridge version: 0.0.0 until #367
+        if (const FirmwareImage::Identity* b = bundledIdentity()) {
+            a[UPL_INFO_ACK_BRIDGE_MAJOR] = b->fwMajor;
+            a[UPL_INFO_ACK_BRIDGE_MINOR] = b->fwMinor;
+            a[UPL_INFO_ACK_BRIDGE_PATCH] = b->fwPatch;
+        }
+        _io.send(CAL_T_UPL_INFO_ACK, seq, a, sizeof a);
         return;
     }
     case CAL_T_UPL_BEGIN: {
@@ -340,12 +400,22 @@ void onFrame(uint8_t type, uint8_t seq, const uint8_t* p, uint16_t len, uint32_t
         return;
     }
     case CAL_T_UPL_FLASH: {
+        const uint8_t t = p[UPL_FLASH_TARGET];
+        // The bridge with nothing staged: flash the image this Gateway firmware carries (#367).
+        if (t == UPL_TARGET_BRIDGE && _state == UPL_STATE_IDLE) {
+            const FirmwareImage::Identity* b = bundledIdentity();
+            if (!b) { _io.nack(type, seq, CAL_NACK_NOT_STAGED, 0xFF); return; }
+            memset(_img, 0xFF, sizeof _img);
+            memcpy(_img, osh_bundled_bridge, b->imageLength);
+            _len   = b->imageLength;
+            _crc   = b->imageCrc;
+            _state = UPL_STATE_STAGED;
+        }
         if (_state == UPL_STATE_IDLE || _state == UPL_STATE_FLASHING) {
             _io.nack(type, seq, _state == UPL_STATE_IDLE ? CAL_NACK_NO_SESSION : CAL_NACK_BUSY, 0xFF);
             return;
         }
         if (_state != UPL_STATE_STAGED) { _io.nack(type, seq, CAL_NACK_NOT_STAGED, 0xFF); return; }
-        const uint8_t t = p[UPL_FLASH_TARGET];
         if (t != UPL_TARGET_UNCONFIGURED && (t > 63)) { _io.nack(type, seq, CAL_NACK_BAD_INDEX, t); return; }
         _io.ack(type, seq);
         _state        = UPL_STATE_FLASHING;
@@ -354,9 +424,11 @@ void onFrame(uint8_t type, uint8_t seq, const uint8_t* p, uint16_t len, uint32_t
         _newId        = p[UPL_FLASH_NEW_NODE_ID];
         _unconfigured = t == UPL_TARGET_UNCONFIGURED;
         _uidKnown     = false;
+        _bridge       = t == UPL_TARGET_BRIDGE;
+        _bridgeHeard  = false;
+        _sn           = 0;
         _blocks       = (uint16_t)((_len + B::BLOCK_SIZE - 1) / B::BLOCK_SIZE);
         _acked        = 0;
-        if (t == UPL_TARGET_BRIDGE) { _target = 0; finish(UPL_RESULT_UNSUPPORTED, now); return; }   // #367
         if (_unconfigured) { _target = 0xFF; _cmdId = B::UNCONFIGURED_CMD_ID; _rspId = B::UNCONFIGURED_RSP_ID; }
         else address(t);
         enter(UPL_PHASE_ENTERING_BOOT, now);
@@ -415,6 +487,13 @@ void tick(uint32_t now) {
             return;
         }
         if (_unconfigured && !_uidKnown) return;   // wait for its announcement
+        // The bridge: first ask its app (BRIDGE_ENTER_EXPORT_ADDRESS) and wait for its bootloader to
+        // announce — a healthy app must not parse raw frames as export data. After 2 s with nothing,
+        // CONNECT anyway: a hung app is being reset by hand and its bootloader is catching at boot.
+        if (_bridge && !_bridgeHeard && now - _phaseMs < 2000) {
+            if (now - _lastEnterMs >= 500) { _lastEnterMs = now; sendBridgeExport(B::BRIDGE_ENTER_EXPORT_ADDRESS); }
+            return;
+        }
         if (now - _lastSendMs >= CONNECT_EVERY_MS) {
             _lastSendMs = now;
             uint8_t c[3] = {(uint8_t)B::Cmd::CONNECT, (uint8_t)_uid, (uint8_t)(_uid >> 8)};
@@ -457,6 +536,9 @@ void tick(uint32_t now) {
     case UPL_PHASE_CONFIRMING: {
         // The app reports itself through PanelBridge: a row for the image's NODE_ID, app running,
         // newer than GO.
+        // The bridge's boot row can be lost in the hand-over from its bootloader, so ask for the
+        // roster until its row comes (#367); the client's own export bytes are dropped meanwhile.
+        if (_bridge && now - _lastEnterMs >= 500) { _lastEnterMs = now; sendBridgeExport(NODE_STATUS_REQ_ADDR); }
         const Seen& s = _seen[_id->nodeId & 63];
         const bool fresh = s.ms && (int32_t)(s.ms - _confirmFromMs) >= 0;
         if (fresh && s.present && s.bootState == NODE_BOOT_STATE_APP) {

@@ -131,10 +131,17 @@ constexpr uint16_t ENTRY_MAGIC        = 0xB007;
 constexpr uint32_t INFO_ADDRESS = 0x08000FF0;
 constexpr uint32_t INFO_MAGIC   = 0x4C42534Fu;   ///< "OSBL" in memory order
 
+/// BootloaderInfo `transports` bits (#367): how the installed bootloader can be reached. An app only
+/// resets into it on a request that arrived the same way, so a board can't strand itself in a bootloader
+/// nothing can talk to. (0xFF from a #365 / #366 bootloader reads as both.)
+constexpr uint8_t TRANSPORT_CAN    = 0x01;   ///< BOOT_CMD_n / BOOT_RSP_n — the node build
+constexpr uint8_t TRANSPORT_SERIAL = 0x02;   ///< USART2 to the Gateway's RP2040 — the bridge build
+
 struct BootloaderInfo {
     uint32_t magic;            ///< INFO_MAGIC
     uint8_t  protocolVersion;  ///< PROTOCOL_VERSION of the bootloader that is installed
-    uint8_t  reserved[11];     ///< 0xFF
+    uint8_t  transports;       ///< TRANSPORT_* bits
+    uint8_t  reserved[10];     ///< 0xFF
 };
 static_assert(sizeof(BootloaderInfo) == 16, "the bootloader info block is 16 bytes");
 
@@ -157,6 +164,19 @@ constexpr uint8_t  RELAY_ESCAPE         = 0x56;
 constexpr uint8_t  RELAY_ESC_55         = 0x01;   ///< after RELAY_ESCAPE: decodes to 0x55
 constexpr uint8_t  RELAY_ESC_56         = 0x02;   ///< after RELAY_ESCAPE: decodes to 0x56
 #define BOOT_RSP_MSG_NAME "_BOOT_RSP"
+
+// ── The bridge's serial transport (#367) ──────────────────────────────────────
+// The Gateway's PanelBridge is the CAN master: nothing on the bus can update it. Its bootloader is the
+// `bridge` build of the same source (Firmware/Bootloader), which takes the same commands and answers
+// with the same replies, as frames on USART2 (PA2 / PA3, the link to the Gateway's RP2040) instead of
+// CAN — both transports don't fit 4 KB. The id is the CAN id the frame would have had (BOOT_CMD_0 /
+// BOOT_RSP_0). One frame on the wire:
+//   SERIAL_FRAME_START, id lo, id hi, len (0-8), data, sum   (sum = id lo + id hi + len + data, mod 256)
+constexpr uint8_t  SERIAL_FRAME_START = 0xAA;
+constexpr uint32_t SERIAL_BAUD        = 250000;   ///< the Gateway link's rate (FirmwarePlan/03)
+/// A host writes this export address (any value) to ask the bridge's app to reset into its bootloader
+/// — the bridge's counterpart of a node's CONNECT on BOOT_CMD_n. Honoured only with a bootloader installed.
+constexpr uint16_t BRIDGE_ENTER_EXPORT_ADDRESS = 0xFF02;
 
 /// Crash-loop counter (#364): the bootloader adds one before every jump to the app; the app sets it
 /// back to 0 once it is healthy (STM32Board::markBootHealthy()). At ATTEMPT_LIMIT the bootloader stays
