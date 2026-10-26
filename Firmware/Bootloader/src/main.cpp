@@ -219,7 +219,9 @@ void uart_send(const uint8_t* d, uint8_t len) {
     uart_put(sum);
 }
 void uart_poll() {
-    const uint16_t end = sizeof g_ubuf - DMA1_Channel6->CNDTR;
+    // Where DMA writes next. CNDTR counts down and reloads at the wrap; read as 0 in that instant it
+    // would give 256, which g_upos never reaches — replaying stale bytes. Free: it's a byte truncate.
+    const uint16_t end = (sizeof g_ubuf - DMA1_Channel6->CNDTR) % sizeof g_ubuf;
     while (g_upos != end && !ring_full()) {
         const uint8_t c = g_ubuf[g_upos];
         g_upos = uint16_t((g_upos + 1) % sizeof g_ubuf);
