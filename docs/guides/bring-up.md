@@ -26,7 +26,8 @@ Before flashing anything, power the board from the bench supply (or bus) and con
 | Green blinking | Normal — CAN bus healthy |
 | Red fast blink | TEC > 0 — transmit errors |
 | Red solid | Bus-off |
-| Amber flicker | Warning / degraded |
+| Red / green alternating | Warning / degraded |
+| Red + green together | In the bootloader, not running the firmware — see [The status LED](../firmware/debugging.md#in-the-bootloader-red-and-green-together) |
 
 Red-solid or red-fast on a single board usually means **no other node / no termination** — CAN
 needs 120 Ω at the two end nodes. Confirm bus wiring before chasing firmware.

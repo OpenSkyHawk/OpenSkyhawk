@@ -2,8 +2,11 @@ name: Firmware release assets
 
 # Builds the stock firmware images and packages them for a firmware release (#360):
 #   - flat files for the client: manifest.json, one .bin per STM32 board, the Gateway .uf2;
-#   - one zip for people: a folder per board with its README, .elf for STM32 (the flash address
-#     is built in), the Gateway .uf2, plus the top README, CHANGES, LICENSE and manifest.json.
+#   - one zip for people: a folder per board with its README; for STM32 the app .elf (the flash
+#     address is built in) and <board>-<v>-full.hex (bootloader + app, for a blank board, #363);
+#     the Gateway .uf2; plus the top README, CHANGES, LICENSE and manifest.json.
+# The bootloader on its own (bootloader/bootloader-<v>.elf) ships only in a release where it changed;
+# manifest.json's "bootloader" names the release that holds the current one.
 #
 # Called, never triggered directly — it only builds (read-only), recording the flash/RAM size of
 # every board in the job summary and uploading the package as an Actions artifact
@@ -44,6 +47,9 @@ jobs:
       # merged the release PR, which is exactly the commit release-please tags.
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          # Full history + tags: the bootloader ships only in the release where it last changed.
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -102,6 +108,31 @@ jobs:
             "Firmware/Panels/PDU_Center|PDU_Center|pdu-center|pdu-center|5|PDU Center"
           )
 
+          # The bootloader (#363) — every STM32 board's -full.hex includes it.
+          bl_log="$RUNNER_TEMP/bootloader.log"
+          platformio run -d Firmware/Bootloader -e bootloader | tee "$bl_log"
+          bl_elf="Firmware/Bootloader/.pio/build/bootloader/firmware.elf"
+          objcopy="$HOME/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-objcopy"
+          "$objcopy" -O ihex "$bl_elf" "$RUNNER_TEMP/bootloader.hex"
+
+          # The release that holds the current bootloader: the first firmware-v* tag containing the
+          # last change to its sources. None yet (or this one) → this release ships it on its own.
+          # library.json files are left out: release-please rewrites their versions every release.
+          bl_sources=(Firmware/Bootloader/src Firmware/Bootloader/platformio.ini
+                      Firmware/Libraries/BootProtocol/BootProtocol.h Firmware/Libraries/FirmwareImage/FirmwareImage.h)
+          bl_last="$(git log -1 --format=%H -- "${bl_sources[@]}")"
+          bl_holder="$(git tag --contains "$bl_last" --list 'firmware-v*' --sort=v:refname | head -1)"
+          bl_ship=0
+          if [[ -z "$bl_holder" || "$bl_holder" == "$TAG" ]]; then bl_ship=1; bl_holder="$TAG"; fi
+          bl_protocol="$(sed -n -E 's/.*PROTOCOL_VERSION = ([0-9]+);.*/\1/p' Firmware/Libraries/BootProtocol/BootProtocol.h)"
+
+          # full_hex app.elf out.hex — bootloader + app in one Intel HEX file. The bootloader's
+          # end-of-file and start-address records are dropped; the app's close the file.
+          full_hex() {
+            "$objcopy" -O ihex "$1" "$RUNNER_TEMP/app.hex"
+            { grep -v -E '^:(00000001FF|04000005)' "$RUNNER_TEMP/bootloader.hex"; cat "$RUNNER_TEMP/app.hex"; } > "$2"
+          }
+
           pkg="openskyhawk-firmware-$VERSION"
           dist="$RUNNER_TEMP/dist"            # flat release files
           zipdir="$RUNNER_TEMP/zip/$pkg"      # the zip's contents
@@ -115,18 +146,20 @@ jobs:
             echo "| Board | Flash | RAM |"
             echo "|---|---|---|"
           } >> "$GITHUB_STEP_SUMMARY"
+          echo "| Bootloader | $(usage Flash "$bl_log") | $(usage RAM "$bl_log") |" >> "$GITHUB_STEP_SUMMARY"
 
           # usage "Flash" log → "31348 / 65536 B (47.8%)"
           usage() {
             sed -n -E "s/^$1: *\[[^]]*\] *([0-9.]+)% \(used ([0-9]+) bytes from ([0-9]+) bytes\).*/\2 \/ \3 B (\1%)/p" "$2" | tail -1
           }
 
-          # add_entry file folder node format → one manifest line
+          # add_entry file folder node format → one manifest line (node: a NODE_ID, "usb" for the
+          # Gateway's RP2040 half, "-" for none)
           add_entry() {
             jq -cn --arg name "$(basename "$1")" --arg board "$2" --arg node "$3" --arg format "$4" \
               --argjson size "$(stat -c %s "$1")" --arg sha256 "$(sha256sum "$1" | cut -d' ' -f1)" \
               '{name: $name, board: $board, format: $format, size: $size, sha256: $sha256}
-               + (if $node == "usb" then {side: "usb"} else {nodeId: ($node | tonumber)} end)' \
+               + (if $node == "usb" then {side: "usb"} elif $node == "-" then {} else {nodeId: ($node | tonumber)} end)' \
               >> "$entries"
           }
 
@@ -145,34 +178,48 @@ jobs:
             else
               cp "$out/firmware.bin" "$dist/$base-$VERSION.bin"
               cp "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION.elf"
+              full_hex "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION-full.hex"
               add_entry "$dist/$base-$VERSION.bin" "$folder" "$node" bin
               add_entry "$zipdir/$folder/$base-$VERSION.elf" "$folder" "$node" elf
+              add_entry "$zipdir/$folder/$base-$VERSION-full.hex" "$folder" "$node" hex
             fi
           done
 
-          jq -s --arg version "$VERSION" --arg tag "$TAG" \
-            '{schema: 1, version: $version, tag: $tag, files: .}' "$entries" > "$dist/manifest.json"
+          if [[ "$bl_ship" == 1 ]]; then
+            mkdir -p "$zipdir/bootloader"
+            cp "$bl_elf" "$zipdir/bootloader/bootloader-$VERSION.elf"
+            add_entry "$zipdir/bootloader/bootloader-$VERSION.elf" bootloader - elf
+            BOOTLOADER_NOTE="\`bootloader/\` holds the bootloader on its own, because it changed in this release. You only need it to replace a board's bootloader — the \`-full.hex\` files already include it."
+          else
+            BOOTLOADER_NOTE="The bootloader didn't change in this release; the \`-full.hex\` files include it. On its own it is in release $bl_holder."
+          fi
+
+          jq -s --arg version "$VERSION" --arg tag "$TAG" --arg bl_tag "$bl_holder" --argjson bl_protocol "$bl_protocol" \
+            '{schema: 1, version: $version, tag: $tag, bootloader: {protocol: $bl_protocol, tag: $bl_tag}, files: .}' \
+            "$entries" > "$dist/manifest.json"
           cp "$dist/manifest.json" "$zipdir/manifest.json"
 
           # READMEs: the templates in Firmware/release, filled in with envsubst. Only the named
           # variables are replaced, so any other "$" in a template stays as written.
-          export VERSION TAG
-          export BOARD_TABLE="| \`gateway/\` | Gateway — RP2040 (USB side) + STM32F103C8 (cockpit side) | \`gateway-$VERSION.uf2\`, \`gateway-bridge-$VERSION.elf\` |
-          | \`pdu-left/\` | PDU Left — node 3 | \`pdu-left-$VERSION.elf\` |
-          | \`pdu-right/\` | PDU Right — node 4 | \`pdu-right-$VERSION.elf\` |
-          | \`pdu-center/\` | PDU Center — node 5 | \`pdu-center-$VERSION.elf\` |"
+          export VERSION TAG BOOTLOADER_NOTE
+          export BOARD_TABLE="| \`gateway/\` | Gateway — RP2040 (USB side) + STM32F103C8 (cockpit side) | \`gateway-$VERSION.uf2\`, \`gateway-bridge-$VERSION-full.hex\`, \`gateway-bridge-$VERSION.elf\` |
+          | \`pdu-left/\` | PDU Left — node 3 | \`pdu-left-$VERSION-full.hex\`, \`pdu-left-$VERSION.elf\` |
+          | \`pdu-right/\` | PDU Right — node 4 | \`pdu-right-$VERSION-full.hex\`, \`pdu-right-$VERSION.elf\` |
+          | \`pdu-center/\` | PDU Center — node 5 | \`pdu-center-$VERSION-full.hex\`, \`pdu-center-$VERSION.elf\` |"
           BOARD_TABLE="$(sed -E 's/^[[:space:]]+//' <<< "$BOARD_TABLE")"
-          envsubst '$VERSION $TAG $BOARD_TABLE' < Firmware/release/README.md > "$zipdir/README.md"
+          envsubst '$VERSION $TAG $BOARD_TABLE $BOOTLOADER_NOTE' < Firmware/release/README.md > "$zipdir/README.md"
 
           USB_FILE="gateway-$VERSION.uf2" COCKPIT_FILE="gateway-bridge-$VERSION.elf" \
-            envsubst '$VERSION $USB_FILE $COCKPIT_FILE' \
+            COCKPIT_FULL_FILE="gateway-bridge-$VERSION-full.hex" \
+            envsubst '$VERSION $USB_FILE $COCKPIT_FILE $COCKPIT_FULL_FILE' \
             < Firmware/release/README-gateway.md > "$zipdir/gateway/README.md"
 
           pdu_notes="The PDU's calibration is stored on the board and survives a firmware update. A full chip erase removes it — recalibrate afterwards: https://openskyhawk.github.io/OpenSkyhawk/hardware/pdu/#bring-up-and-calibration"
           for p in "pdu-left|PDU Left|3" "pdu-right|PDU Right|4" "pdu-center|PDU Center|5"; do
             IFS='|' read -r folder title node <<< "$p"
-            FILE="$folder-$VERSION.elf" BOARD_TITLE="$title" NODE_ID="$node" BOARD_NOTES="$pdu_notes" \
-              envsubst '$VERSION $FILE $BOARD_TITLE $NODE_ID $BOARD_NOTES' \
+            FILE="$folder-$VERSION.elf" FULL_FILE="$folder-$VERSION-full.hex" BOARD_TITLE="$title" \
+              NODE_ID="$node" BOARD_NOTES="$pdu_notes" \
+              envsubst '$VERSION $FILE $FULL_FILE $BOARD_TITLE $NODE_ID $BOARD_NOTES' \
               < Firmware/release/README-node.md > "$zipdir/$folder/README.md"
           done
 

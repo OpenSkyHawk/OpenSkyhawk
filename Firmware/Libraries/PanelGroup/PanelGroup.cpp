@@ -2,6 +2,10 @@
 
 #include "PanelGroup.h"   // pulls in Helpers/ShiftBus/ShiftBus.h
 #include <STM32Board.h>
+#include <FirmwareImage.h>   // the image identity block (#362)
+
+// This image's identity block — the bootloader and the uploader check it (#362).
+OSH_FIRMWARE_IDENTITY(NodeKind::PANEL_GROUP);
 
 // ── Internal state ────────────────────────────────────────────────────────────
 
@@ -303,6 +307,7 @@ void setup() {
     // timers arm on the first serviceNodeStatus() call in loop(); the master-loss watchdog stays
     // disarmed until the first HB_0 is seen.
     CANProtocol::sendReady();
+    STM32Board::markBootHealthy();   // the bootloader's crash-loop counter back to 0 (#364)
 }
 
 // ── PanelGroup::loop ──────────────────────────────────────────────────────────

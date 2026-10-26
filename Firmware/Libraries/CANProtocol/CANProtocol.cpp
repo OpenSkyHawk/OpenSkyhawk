@@ -3,6 +3,7 @@
 #include "CANProtocol.h"
 #include <STM32Board.h>
 #include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the release version READY_n carries (#295)
+#include <BootProtocol.h>     // BOOT_CMD_n / CONNECT — entering the bootloader (#365)
 #include <Arduino.h>
 #include <string.h>
 
@@ -128,13 +129,14 @@ static void _applyFilters() {
     }
 
     // Build combined ID list: mandatory + caller-registered
-    uint32_t ids[MAX_FILTER_IDS + 5];
+    uint32_t ids[MAX_FILTER_IDS + 6];
     uint8_t  count = 0;
     ids[count++] = CAN_ID_CTRL_BCAST;
     ids[count++] = CAN_ID_TEST_SEQ;
     ids[count++] = CAN_ID_SYNC_REQ;
     if (NODE_ID != GATEWAY_NODE_ID) ids[count++] = canIdHb(GATEWAY_NODE_ID);  // master heartbeat → serviceNodeStatus watchdog
     ids[count++] = canIdHb(NODE_ID);  // own heartbeat ID → duplicate NODE_ID check (#344)
+    if (NODE_ID != GATEWAY_NODE_ID) ids[count++] = OpenSkyhawk::Boot::canIdBootCmd(NODE_ID);  // enter request (#365)
     for (uint8_t i = 0; i < _filterCount; i++) {
         ids[count++] = _filterIds[i];
     }
@@ -292,6 +294,11 @@ void drain() {
             if (_syncReqCb) _syncReqCb();
         } else if (frame.canId == CAN_ID_TEST_SEQ) {
             send(canIdEcho(NODE_ID), frame.data, frame.len);
+        } else if (NODE_ID != GATEWAY_NODE_ID && frame.canId == OpenSkyhawk::Boot::canIdBootCmd(NODE_ID)) {
+            // A host asking for this node's bootloader (#365): reset into it. Without one installed
+            // enterBootloader() returns and the request is ignored — a reset would only restart us.
+            if (frame.len && frame.data[0] == uint8_t(OpenSkyhawk::Boot::Cmd::CONNECT))
+                STM32Board::enterBootloader();
         } else {
             if (frame.canId == canIdHb(NODE_ID)) {
                 // Our own heartbeat ID. A node never receives its own frames, so another board has
@@ -470,6 +477,7 @@ ReadyPayload makeReadyPayload() {
     p.fwMajor = OPENSKYHAWK_FW_MAJOR;
     p.fwMinor = OPENSKYHAWK_FW_MINOR;
     p.fwPatch = OPENSKYHAWK_FW_PATCH;
+    p.bootloader = STM32Board::bootloaderVersion();
     return p;
 }
 

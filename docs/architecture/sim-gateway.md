@@ -94,6 +94,14 @@ DCS-BIOS itself — `_NODE_STATUS` ASCII command messages downstream, and a rost
 DCS-BIOS export write to reserved address `0xFF00` upstream (an address no aircraft module uses). Both ride the existing streams and
 transit SimGateway transparently; PanelBridge owns the feature.
 
+**Firmware updates are the one job SimGateway does more than relay** (#366). The client streams an
+image to it over the USB serial channel, and SimGateway flashes the board itself: it talks to the
+board's [bootloader](../firmware/bootloader.md) through PanelBridge — commands down as writes to a
+reserved block of export addresses, answers back as `_BOOT_RSP` messages — checks the board before
+erasing anything, retries a failed transfer, confirms the new version from the node-status roster, and
+finishes even if the PC goes away. While it flashes it owns the UART: export data from the PC is set
+aside until it's done.
+
 ## controlId routing logic
 
 Incoming HID frames (PanelBridge → SimGateway) are fixed 6-byte little-endian:

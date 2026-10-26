@@ -635,3 +635,166 @@ state when its queue is full.
 
 **Affects:** `PanelBridge.cpp`, `02-can-protocol.md`, `06-panelbridge-api.md`, `10-implementation-plan.md`,
 TechSpec `PanelBridge`, PanelBridge README, `docs/architecture/can-bus.md`.
+
+---
+
+## D25 — Every production image carries a stamped identity block (#362)
+
+**Decision:** Each production STM32 image has a 32-byte identity block at image start + `0x200`:
+magic, layout version, size, image length, image CRC, NODE_ID, NodeKind and the firmware version.
+The role library defines it; a post-build step stamps the length and CRC (CRC-32/MPEG-2 over 32-bit
+words, gaps filled 0xFF). The block carries the version only — no commit id. Layout in `08`.
+
+**Rationale:**
+- *The image must say what it is before it is sent.* The uploader and the client refuse a file for
+  the wrong board kind or the wrong NODE_ID, and show the version it holds, without flashing it or
+  asking the board. A raw `.bin` has no metadata of its own.
+- *The bootloader needs a cheap "is the app whole?" check.* Length + CRC in the image lets it reject
+  an interrupted write at every boot. CRC-32/MPEG-2 over words is what the F103's CRC unit computes,
+  so the bootloader verifies 60 KB in hardware without a table.
+- *Fixed offset, not a symbol.* Readers (bootloader, uploader, client) find it without an ELF, from
+  the flat image or flash. `0x200` clears the F103 vector table (`0x10C`) with room to spare and
+  moves with the image when the bootloader shifts the app.
+- *0xFF gaps.* An ST-Link flash leaves gaps erased (0xFF) while `objcopy` fills them with 0x00, so
+  without the fill the `.bin`, the `.elf` and the board would give three answers for one image.
+- *Version only.* A release build is cut from its tag, so the version names the commit; dev builds
+  keep the last release's version (accepted). A commit id would only be known after the commit.
+- *Per-role, not per-sketch.* NODE_ID is already a build flag and the role fixes the NodeKind, so a
+  sketch author writes nothing. `Tests/` builds keep the default linker script — the block is
+  dropped there.
+
+**Affects:** `08-hardware-firmware-contracts.md`, TechSpec `FirmwareImage` + `README`,
+`Firmware/shared/` (linker script, `stm32.ini`, `osh_image.py`), the role libraries, every
+production `platformio.ini`, `docs/firmware/platformio-setup.md`. Consumers: #363 (bootloader),
+#366 (uploader), SkyHawkClient#177.
+
+---
+
+## D26 — Our own 4 KB CAN bootloader on every STM32 board (#363)
+
+**Decision:** Every STM32 board carries our own bare-metal bootloader in its first 4 KB; apps start at
+`0x08001000`. It starts only an app whose identity block and CRC check out, takes an image over CAN on
+`BOOT_CMD_n` / `BOOT_RSP_n` with block 0 committed last, and keeps the last valid app's NODE_ID and kind
+in option bytes Data0 / Data1. Blank boards get bootloader + app in one first flash (`-t bootstrap`, the
+release's `-full.hex`). Protocol and boot flow: `12-bootloader.md`.
+
+**Rationale:**
+- *Updates without an ST-Link.* The client updates boards over the cockpit bus (#366,
+  SkyHawkClient#175); every board must be able to take an image, so the bootloader is on all of them —
+  the Arduino model, not an option.
+- *Our own, not Katapult.* Katapult (#361 spike) checks only the first word of the app, writes the vector
+  table first (a half-written image passes), has no timeout, uses CAN IDs that collide with
+  `HB_n` / `HEALTH_n` / `TELEM_n`, and is GPLv3 with a make/Kconfig build. Ours is ~3.1 KB bare-metal
+  CMSIS, in PlatformIO, on the IDs #295 reserved.
+- *4 KB, not less.* The F103 write-protects in 4 KB blocks and #364 protects the bootloader; a smaller
+  bootloader would leave the rest of its block unusable anyway.
+- *Commit last + CRC at every boot.* With block 0 held back, an interrupted transfer — power pulled at
+  any block — leaves no valid vector table; the identity-block CRC catches everything else. The
+  hardware CRC unit checks 60 KB in well under a millisecond.
+- *NODE_ID in the option bytes.* The bootloader must answer as its node when the app is broken —
+  exactly when it is needed. The build stays the source (D10); the option bytes mirror the last valid
+  app, so an ST-Link repurpose follows automatically. Written only when they differ, because the
+  option-byte erase is the one moment a power cut costs an ST-Link unlock.
+- *One wire contract.* `BootProtocol.h` is the single source for the bootloader, CANProtocol, the
+  uploader and the client sync (#346 named values).
+
+**Affects:** `02-can-protocol.md`, `08-hardware-firmware-contracts.md`, `09-startup-resync-diagnostics.md`,
+`12-bootloader.md`, TechSpec `Bootloader` + `BootProtocol`, `Firmware/shared/` (layout, `bootstrap`),
+the release workflow + READMEs, `docs/firmware/bootloader.md`, `docs/firmware/platformio-setup.md`,
+`docs/guides/flashing.md`, `docs/architecture/can-bus.md`. Follow-ups: #364 (safety), #365 (app +
+bridge), #366 (uploader).
+
+---
+
+## D27 — The bootloader guards itself and its board's identity (#364)
+
+**Decision:** The bootloader write-protects its own 4 KB on first boot; refuses an upload whose NODE_ID
+or kind differs from the board's (`SET_NODE_ID` is the separate, explicit way to change it); stays in
+charge after `ATTEMPT_LIMIT` (3) app boots that never report healthy (backup-register counter, cleared by
+`STM32Board::markBootHealthy()`); listens 200 ms after every reset for a `CONNECT` (catch at boot);
+returns to a still-valid app after 30 s idle; and lets a board with no NODE_ID take its first image over
+CAN, addressed by a hash of its chip UID. Details: `12-bootloader.md`.
+
+**Rationale:**
+- *Self-protection, not a flashing step.* A field board can't be bricked by a stray write to the first
+  4 KB, and nobody has to remember to set WRP — the bootloader does it on its first boot, through the
+  option-byte routine it already has for the NODE_ID copy. The cost is a documented unprotect line
+  before replacing the bootloader or flashing a per-library test at `0x08000000`.
+- *NODE_ID is enforced where it can't be skipped.* The client checks too, but the bootloader is the
+  last word: a mis-picked file can't turn node 3 into node 5's twin. An ST-Link flash stays the
+  exception — physical access is the authority (repurpose).
+- *Crash loop before catch at boot.* An app that resets before it is healthy is caught by count, with
+  no host involved; an app that runs but ignores the bus (CAN dead, hung) needs a host sending CONNECT
+  across a reset — the 200 ms window, the price of which is 200 ms on every boot.
+- *The app-side clear ships with the counter.* Planned for #365, it moved here: a counter without its
+  clear would stop every board after three resets.
+- *UID hash in every announcement.* Two spare bytes identify an unconfigured board (one on the bus at a
+  time) and expose two boards claiming one NODE_ID, without a second frame type.
+
+**Affects:** `12-bootloader.md`, `02-can-protocol.md`, `BootProtocol.h`, `Firmware/Bootloader`,
+`STM32Board` (`markBootHealthy()`), PanelGroup / PduNode / PanelBridge, TechSpec `Bootloader` +
+`BootProtocol` + `STM32Board`, `docs/firmware/bootloader.md`, `docs/guides/flashing.md`. Client half:
+SkyHawkClient#175 (stuck / unstable states), #177 (From file…, change-node-ID-first).
+
+---
+
+## D28 — Updates ride the existing host link: export records down, `_BOOT_RSP` up (#365)
+
+**Decision:** The host reaches a board's bootloader through the Gateway and PanelBridge with no new
+framing on either link. Down, each bootloader CAN frame is a DCS-BIOS export record at the reserved
+window (`0xFF10`, stream-encoded since #366 — D29); up, each bootloader frame is a `_BOOT_RSP` DCS-BIOS
+message. A running app enters its bootloader on a CONNECT, only when the bootloader's info block
+(`0x08000FF0`) says one is installed. `_NODE_STATUS` gains `bootloader` and `bootState` inside v4.
+
+**Rationale:**
+- *The Gateway → bridge UART is the raw export stream.* Any byte can appear in it, so a magic-byte
+  frame can't be told apart — but reserved export addresses already work for the roster request
+  (D23). One byte per word because the DCS-BIOS parser resyncs on four `0x55` in a row, which image
+  data could contain.
+- *Today's Gateway carries it unchanged.* It relays export bytes down and whole printable lines up,
+  so #365 was benched from a PC before the Gateway uploader (#366) existed, and #366 drives the same
+  format from the RP2040.
+- *The bridge stays dumb.* It relays frames and reports state; the uploader owns sessions, retries
+  and checks. It passes only the boot command IDs, so the host can't inject other CAN traffic.
+- *CONNECT means "enter".* The host's loop is the same whether the board runs its app, is in its
+  bootloader, or is being caught at reset.
+- *Detect, don't assume.* An app linked behind the bootloader could still sit on a board whose
+  bootloader is older or absent (bench); reading the info block makes "ignore the request" exact, and
+  gives READY_n byte 3 the installed version, not the one the app was built against.
+- *Inside v4.* v4 hadn't shipped and the client wasn't on it yet, so appending the two fields needed no
+  bump.
+
+**Affects:** `BootProtocol.h`, `NodeStatus.h`, `CANProtocol` (filter, drain, READY), `STM32Board`
+(`bootloaderVersion()`, `enterBootloader()`), `PanelBridge`, the bootloader (info block, LEDs, idle
+announce), `02`, `04`, `06`, `09`, `12`, TechSpec, `docs/firmware/debugging.md`,
+`docs/firmware/bootloader.md`. Client half: SkyHawkClient#175.
+
+---
+
+## D29 — The Gateway is the uploader, and the transfer streams (#366)
+
+**Decision:** The Gateway's RP2040 stages an image the client streams over USB (`UPL_*` on the calibration
+envelope, `03`), then flashes the board itself through PanelBridge and finishes on its own: it checks NODE_ID,
+kind and size from the bootloader's answer before anything is erased, retries the whole flash twice after a
+transport failure, and confirms success by the board's `_NODE_STATUS` row reporting the image's version. The
+transfer streams: the bootloader erases the image's pages at BEGIN and buffers 4 blocks in flight (go-back-N
+on `BLOCK_ACK.next`), and the relay packs whole frames per export record with `0x55` / `0x56` escaped.
+
+**Rationale:**
+- *The client may go away.* A laptop sleeping or a USB cable pulled mid-flash must not leave a board half
+  written with nobody to finish it — the Gateway holds the image and the state, and reports the result when
+  the client comes back (`UPL_INFO_ACK`).
+- *No USB round trip per block.* Driving the protocol from the RP2040 takes the PC out of the per-block loop;
+  the client's own staging is a plain bulk copy.
+- *Speed had to be settled before the freeze (#367).* Stop-and-wait over the relay ran ~2.7 KB/s — bounded
+  by four UART bytes per data byte and one block in flight. Streaming lives in the bootloader, so it went in
+  now: ~0.25 KB more code, protocol version unchanged (nothing had shipped). With the denser relay
+  (~2 UART bytes per data byte, bridge firmware — still changeable later) the Gateway writes at ~12.5 KB/s:
+  a 60 KB board in ~6 s, a full cockpit in about a minute.
+- *Decide before erasing.* ID / kind / size checks use the bootloader's CONNECTED answer, so a wrong file
+  never costs a board its app.
+
+**Affects:** `BootProtocol.h` (window, `BLOCK_ACK.next`, relay encoding), `Firmware/Bootloader`
+(erase-at-BEGIN, RX ring, mailbox wait), `PanelBridge` (stream decoder), `SimGateway` (`Uploader`,
+`UploadProtocol.h`, `AxisCal.h` types / NACKs / inbound size), `03`, `04`, `06`, `07`, `12`, TechSpec,
+`docs/architecture/sim-gateway.md`, `docs/firmware/bootloader.md`. Client half: SkyHawkClient#175–#177.

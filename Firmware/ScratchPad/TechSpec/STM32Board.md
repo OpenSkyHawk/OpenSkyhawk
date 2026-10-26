@@ -196,6 +196,21 @@ namespace STM32Board {
     void tick();
 
     /**
+     * @brief Tell the bootloader this boot made it — clears its crash-loop counter (#364).
+     * Backup register DR2 (BootProtocol's ATTEMPTS_BKP_REGISTER). Called by PanelGroup / PduNode
+     * after READY and by PanelBridge at the end of setup(). Harmless without the bootloader.
+     */
+    void markBootHealthy();
+
+    /// The installed bootloader's protocol version from its info block (BootProtocol.h
+    /// INFO_ADDRESS), or 0 — also 0 unless VTOR is the app offset (#365).
+    uint8_t bootloaderVersion();
+
+    /// Entry flag (DR1 = ENTRY_MAGIC) + reset into the bootloader; returns without doing anything
+    /// when bootloaderVersion() is 0 (#365). Called by CANProtocol on a CONNECT to BOOT_CMD_n.
+    void enterBootloader();
+
+    /**
      * @brief CAN bus status event handler.
      *
      * Called when CANProtocol fires a status change.

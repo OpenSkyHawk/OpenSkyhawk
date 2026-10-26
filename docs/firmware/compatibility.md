@@ -18,7 +18,7 @@ format, so a mixed set has no meaning. Every board reports the version it runs (
 | **Build flags** | The flags [Build Flags](build-flags.md) tells you to set or opt out of (`NODE_ID`, `NODE_HEALTH_TELEM=0`, `PANELBRIDGE_NODE_STATUS=0`, …), and their meaning. |
 | **CAN bus** | Every frame ID and its payload layout, so the [arbitration order](../architecture/can-bus.md) too, and the values those payloads carry (board kinds, fault codes, telemetry pages, flag bits). |
 | **Gateway link** | The HID frame between the Gateway's two chips. |
-| **PC side** | The `_NODE_STATUS`, `_NODE_STATUS_END` and `_NODE_TELEM` messages and the roster request (`0xFF00`); the USB calibration channel; the Gateway's USB identity (VID, PID, product and serial-port names), because DCS binds your controls to it. |
+| **PC side** | The `_NODE_STATUS`, `_NODE_STATUS_END`, `_NODE_TELEM` and `_BOOT_RSP` messages, the roster request (`0xFF00`) and the bootloader relay addresses (`0xFF10`–`0xFF4F`); the USB calibration channel; the Gateway's USB identity (VID, PID, product and serial-port names), because DCS binds your controls to it. |
 | **Control IDs** | `DCSIN_*` and `CTRL_*` ids never change. `A_4E_C_*` output addresses follow DCS-BIOS (see below). |
 
 ## What isn't covered
@@ -69,8 +69,9 @@ Inside one major version, the wire format only **grows**, and every reader toler
 - **The calibration channel grows by new message types.** Each type has one fixed length, so an
   existing type never grows; `DIAG` keeps spare bytes for new counters.
 
-Two ranges are set aside for a future firmware updater: CAN IDs `0x740`–`0x7BF`, and calibration
-message types `0x10`–`0x1F` / `0x90`–`0x9F`.
+The [bootloader](bootloader.md) uses CAN IDs `0x740`–`0x7C1`. Message types `0x10`–`0x1F` /
+`0x90`–`0x9F` on the Gateway's USB channel are the firmware updater's (`0x10`–`0x15` and `0x90`–`0x92` in
+use).
 
 **Byte order:** multi-byte fields in CAN payloads, the Gateway's HID frame and calibration frames
 are little-endian. The

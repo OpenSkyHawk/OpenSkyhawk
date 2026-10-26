@@ -2,6 +2,7 @@
 
 #include "STM32Board.h"
 #include <CANProtocol.h>  // for CanStatus enum values
+#include <BootProtocol.h> // ATTEMPTS_BKP_REGISTER — the bootloader's crash-loop counter (#364)
 
 // ── Private types ─────────────────────────────────────────────────────────────
 
@@ -377,6 +378,30 @@ void logNodeFaultEdge(const char* tag, NodeFaultCode fault, const char* detail) 
         }
     }
     _prevFault = fault;
+}
+
+static volatile uint32_t* backupRegister(uint8_t n) {
+    __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_RCC_BKP_CLK_ENABLE();
+    HAL_PWR_EnableBkUpAccess();
+    return &BKP->DR1 + (n - 1);   // DR1..DR10 sit 32 bits apart
+}
+
+void markBootHealthy() {
+    *backupRegister(OpenSkyhawk::Boot::ATTEMPTS_BKP_REGISTER) = 0;
+}
+
+uint8_t bootloaderVersion() {
+    using namespace OpenSkyhawk::Boot;
+    if (SCB->VTOR != FLASH_BASE + APP_OFFSET) return 0;   // not running behind a bootloader
+    const auto* info = reinterpret_cast<const BootloaderInfo*>(INFO_ADDRESS);
+    return info->magic == INFO_MAGIC ? info->protocolVersion : 0;
+}
+
+void enterBootloader() {
+    if (!bootloaderVersion()) return;   // no bootloader: a reset would only restart this app
+    *backupRegister(OpenSkyhawk::Boot::ENTRY_BKP_REGISTER) = OpenSkyhawk::Boot::ENTRY_MAGIC;
+    NVIC_SystemReset();
 }
 
 #ifdef STM32BOARD_TEST

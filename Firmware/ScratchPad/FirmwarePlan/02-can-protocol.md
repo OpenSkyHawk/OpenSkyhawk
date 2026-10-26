@@ -107,7 +107,10 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
-| *reserved* | `0x740`–`0x7BF` | — | — | Future boot/update family (#295): `BOOT_CMD_n` = `0x740+n` (bridge → node n), `BOOT_RSP_n` = `0x780+n` (node n → bridge). Lowest priority on the bus, so update traffic never delays a control. Not assigned yet; nothing else may claim it. |
+| `BOOT_CMD_n` | `0x740+n` | PanelBridge → Node_n's bootloader | ≤8 | Bootloader commands (#363, #364) — CONNECT / BEGIN / BLOCK + DATA / END / GO / SET_NODE_ID; a CONNECT in the 200 ms after a reset also catches a running board, and a running app with a bootloader installed takes a CONNECT as "enter the bootloader" (#365). PanelBridge relays it from the host (`04`); it never acts on `BOOT_CMD_0`. Lowest priority on the bus, so update traffic never delays a control. Values in `BootProtocol.h`; protocol in `12-bootloader.md` |
+| `BOOT_RSP_n` | `0x780+n` | Node_n's bootloader → PanelBridge | ≤8 | Bootloader replies and the 1 s announcement (8 bytes, with the chip's UID hash) while a board waits in its bootloader (#363, #364) |
+| `BOOT_UNCONF_CMD` | `0x7C0` | PanelBridge → unconfigured bootloader | ≤8 | Commands to a bootloader with no NODE_ID yet; CONNECT names its UID hash and binds that board alone (#364) |
+| `BOOT_UNCONF_RSP` | `0x7C1` | unconfigured bootloader → PanelBridge | 8 | Announcement and replies of a bootloader with no NODE_ID (option byte Data0 = `0xFF`) and no valid app (#363, #364) |
 
 ---
 
@@ -299,7 +302,8 @@ struct ReadyPayload {          // 8 bytes, DLC 8
     uint8_t fwMajor;           // 0: firmware release version (FirmwareVersion.h, OPENSKYHAWK_FW_*)
     uint8_t fwMinor;           // 1
     uint8_t fwPatch;           // 2
-    uint8_t rsvd[5];           // 3-7: reserved, transmit 0
+    uint8_t bootloader;        // 3: installed bootloader's protocol version, 0 = none (#365)
+    uint8_t rsvd[4];           // 4-7: reserved, transmit 0
 };
 ```
 
@@ -391,8 +395,8 @@ From v1.0 the frame IDs and payloads are frozen: a change that breaks an existin
   - node-specific telemetry → a new `TelemPage` on `TELEM_n` (append-only, forwarded unread);
   - identity or anything else → `READY_n`'s reserved bytes (3–7), or a new frame family in a
     free ID range (`0x013`–`0x0FF`, `0x1C0`–`0x1FF`, `0x240`–`0x2FF`, `0x340`–`0x3FF`,
-    `0x440`–`0x4FF`, `0x540`–`0x5FF`, `0x640`–`0x6FF`, `0x7C0`–`0x7FF`; `0x740`–`0x7BF` is
-    reserved for boot/update, see the frame table). Its position in the map sets its arbitration
+    `0x440`–`0x4FF`, `0x540`–`0x5FF`, `0x640`–`0x6FF`, `0x7C2`–`0x7FF`; `0x740`–`0x7C1` is the
+    bootloader's, see the frame table). Its position in the map sets its arbitration
     priority (lower ID wins), which is frozen with it.
 - `TELEM_n` never carries generic health, and `HEALTH_n` never carries node-specific telemetry.
 

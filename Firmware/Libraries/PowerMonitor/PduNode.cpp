@@ -7,6 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <FirmwareImage.h>   // the image identity block (#362)
+
+// This image's identity block — the bootloader and the uploader check it (#362).
+OSH_FIRMWARE_IDENTITY(NodeKind::PDU);
 
 using namespace OpenSkyhawk;
 using namespace OpenSkyhawk::Pdu;
@@ -225,6 +229,7 @@ void setup() {
     d.print(F("[PDU] NODE_ID=")); d.println((int)NODE_ID);
     printCal();
     CANProtocol::sendReady();
+    STM32Board::markBootHealthy();   // the bootloader's crash-loop counter back to 0 (#364)
 }
 
 void loop() {

@@ -189,6 +189,45 @@ netlist; overridable as `PDU_PIN_*`:
 
 ---
 
+## Image Layout & Identity Block (#362)
+
+Every production STM32 image — the Templates, `Panels/`, and the `Examples/` nodes; not the
+per-library `Tests/` — carries a 32-byte **identity block** at a fixed offset from the image's start.
+The bootloader (#363) checks it at every boot and before it commits an update; the uploader (#366)
+and the client read it from the file before anything is sent. Struct, constants and CRC test
+vectors: `Libraries/FirmwareImage/FirmwareImage.h` (TechSpec `FirmwareImage`). Rationale: D25.
+
+| Offset in block | Size | Field | Value |
+|---|---|---|---|
+| 0 | 4 | `magic` | `0x594B534F` ("OSKY" in memory order) |
+| 4 | 2 | `layoutVersion` | 1 |
+| 6 | 2 | `blockSize` | 32 — a newer layout may grow; readers parse the prefix they know |
+| 8 | 4 | `imageLength` | bytes from the image's start, padded to 4 — stamped after linking |
+| 12 | 4 | `imageCrc` | CRC-32/MPEG-2 over `imageLength` bytes, this word skipped — stamped after linking |
+| 16 | 1 | `nodeId` | `NODE_ID` (D10) |
+| 17 | 1 | `nodeKind` | `NodeKind` of the role library (PANEL_GROUP / PDU / BRIDGE) |
+| 18–20 | 3 | `fwMajor/Minor/Patch` | `FirmwareVersion.h` — the version `READY_n` reports |
+| 21 | 11 | reserved | 0 |
+
+- **Where.** Image start + `0x200`, after the vector table (0x10C bytes on the F103). The shared
+  linker script `Firmware/shared/stm32f103.ld` places it, so it moves with the image: `0x08001200`,
+  since the bootloader owns the first 4 KB (`board_build.flash_offset = 0x1000` in
+  `Firmware/shared/stm32.ini`, #363; flash layout in `12-bootloader.md`).
+- **CRC.** Poly `0x04C11DB7`, init `0xFFFFFFFF`, no reflection, no final XOR, over 32-bit
+  little-endian words — what the F103's hardware CRC unit computes. The stamped `imageLength` is
+  inside the CRC; only the `imageCrc` word is skipped.
+- **Gaps are 0xFF.** Erased flash reads 0xFF and an ST-Link upload leaves gaps erased, so the linker
+  fills the gap before the block with 0xFF and the post-build step (`Firmware/shared/osh_image.py`)
+  writes `firmware.bin` with `--gap-fill 0xFF`. The `.bin`, the `.elf` and a board's flash read back
+  over `imageLength` all give the same CRC (bench-checked on a Gateway's bridge, 2026-10-25).
+- **Outside the image.** Flash past `imageLength` is not covered — the PDU calibration page
+  (`0x0800FC00`, below) keeps its own record CRCs.
+- **Who defines it.** The role library (`PanelGroup.cpp`, `PduNode.cpp`, `PanelBridge.cpp`) through
+  `OSH_FIRMWARE_IDENTITY(kind)`. A sketch without a role library has no block, and the post-build
+  step says so instead of stamping.
+
+---
+
 ## Status LED — Bi-Color (Red/Green)
 
 Each custom OpenSkyhawk STM32 board has a bi-color red/green status LED driven by two dedicated

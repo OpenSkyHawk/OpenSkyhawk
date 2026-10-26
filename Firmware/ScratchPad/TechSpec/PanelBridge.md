@@ -377,7 +377,8 @@ Behind `PANELBRIDGE_NODE_STATUS`, which `PanelBridge.h` defaults to `1` (#295; `
 `HEALTH_n` fields (`dieTempC`, `healthFlags`, `faultMask`, `faultId`, `nodeKind` — not-yet-seen:
 `DIE_TEMP_UNAVAILABLE` / `0`) and the firmware version from its last `READY_n` (`fwMajor`,
 `fwMinor`, `fwPatch` — `0.0.0` = not reported; an empty READY from older firmware also reads 0.0.0;
-kept across a timeout). One `emitRow()` formats a 34-hex `_NODE_STATUS` row — its `snprintf`
+kept across a timeout), plus its bootloader (#365: `bootloader` version, `bootState`, `updating` +
+`lastBootMs`). One `emitRow()` formats a 38-hex `_NODE_STATUS` row — its `snprintf`
 format is the `NodeStatusField` layout, held to it by a `static_assert`; `emitNode(id, present)`
 feeds it from the cache and `emitSelf()` from the bridge's own state — `makeHeartbeatPayload(GATEWAY_NODE_ID, 0)`
 plus `CANProtocol::lastNodeHealth()` (its last `HEALTH_0`, kind `BRIDGE`) and its own
@@ -387,6 +388,23 @@ node 0 counted. Live deltas: alive/dead transitions, a `nodeKind` change on an a
 `READY_n` that changes an alive node's version (a reflash inside the heartbeat timeout — the READY
 branch caches the version before `markNodeAlive()`, so an alive delta already carries it).
 Contract: FirmwarePlan `04-dcs-bios-integration.md`.
+
+**Bootloader state (#365).** `onBootRsp()` (every `BOOT_RSP_n` / `0x7C1` frame) relays the frame as
+`_BOOT_RSP` (`emitBootRsp()`), and for a node: caches `bootloader` / `bootState` from an
+`ANNOUNCE` / `CONNECTED`, sets `bootState` = `APP_INVALID` on a successful `BEGUN`, marks UPDATING
+for any reply (`noteBootTraffic()`), and calls `markNodeAlive()` — liveness without SYNC_REQ. The HB
+branch and the READY branch (which also caches READY byte 3) reset `bootState` to app running.
+`checkNodeTimeouts()` lapses UPDATING after `NODE_BOOT_UPDATING_MS`. Each change on an alive node is a
+delta. `emitSelf()` reports `STM32Board::bootloaderVersion()`.
+
+**Relay down (#365, stream encoding #366).** `BootRelayListener` (`ExportStreamListener` on
+`RELAY_EXPORT_ADDRESS` … + 2 × (`RELAY_EXPORT_WORDS` − 1)) feeds both bytes of every word into a small
+decoder: `RELAY_FRAME_MARK | len` opens a frame of 2 + len bytes (id lo, id hi, data), `RELAY_ESCAPE`
++ `RELAY_ESC_55` / `RELAY_ESC_56` decode to `0x55` / `0x56`, other bytes between frames are padding; a
+write to the window's first word resets the decoder (records start on a frame boundary). Each complete
+frame goes to `CANProtocol::send()` — only `BOOT_CMD_1`–`63` and `UNCONFIGURED_CMD_ID` — and a command
+to a node notes UPDATING only when that node's bootloader has been seen (`bootloader` ≠ 0).
+`handleDcsBiosExport()` drops the window.
 
 Test hooks (`PANELBRIDGE_TEST`): `testFeedHeartbeat`, `testFeedHealth(nodeId, dieTempC, hFlags,
 faultMask, faultId, nodeKind)` (mirrors the `HEALTH_n` branch, incl. the kind delta),

@@ -61,11 +61,11 @@ actually does.
 
 | Flag | Default | Set where | Read at |
 |---|---|---|---|
-| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:226`, `PanelGroup.cpp:300`, `STM32Board.h:29` |
-| `PANELBRIDGE_NODE_STATUS` | **on** | `=0` in `Tests/PanelBridge` `test_input_dispatch_dcs` / `_hid` | `PanelBridge.h:38` (default), `PanelBridge.cpp:42` + ~10 more |
-| `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:511` (`serviceNodeStatus`, every node) |
-| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:452`, `CANProtocol.cpp:528` |
-| `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:179` |
+| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:228`, `PanelGroup.cpp:304`, `STM32Board.h:29`, `FirmwareImage.h:61` (the image identity block) |
+| `PANELBRIDGE_NODE_STATUS` | **on** | `=0` in `Tests/PanelBridge` `test_input_dispatch_dcs` / `_hid` | `PanelBridge.h:38` (default), `PanelBridge.cpp:47` + ~10 more |
+| `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:519` (`serviceNodeStatus`, every node) |
+| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:459`, `CANProtocol.cpp:536` |
+| `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:180` |
 | `PINREF_DEBUG` | off | never set | `PinRef.cpp:8` + ~9 more |
 | `SHIFTBUS_SCK` | `PB3` | never set | `ShiftBus.cpp:13` |
 | `SHIFTBUS_MISO` | `PB4` | never set | `ShiftBus.cpp:16` |
@@ -73,7 +73,7 @@ actually does.
 | `SHIFTBUS_LOAD` | `PB8` | never set | `ShiftBus.cpp:22` |
 | `SHIFTBUS_LATCH` | `PB9` | never set | `ShiftBus.cpp:25` |
 | `SHIFTBUS_ISR_HZ` | unset → polled sampling | `Tests/ShiftBus`, `=1000` | `PanelGroup.cpp:112,227` |
-| `SHIFTBUS_ISR_TIM` | `TIM2` | never set | `PanelGroup.cpp:228` |
+| `SHIFTBUS_ISR_TIM` | `TIM2` | never set | `PanelGroup.cpp:232` |
 
 **What they do, briefly.** `NODE_ID` is the board's CAN address — see
 [NODE_ID & CAN Addressing](node-id.md). `PANELBRIDGE_NODE_STATUS` makes PanelBridge report which
@@ -177,7 +177,7 @@ HAL module list, so without our `-D` there is no bxCAN driver to link against.
     `-DHSE_VALUE=8000000` tells HAL what the crystal is. It does **not** switch the clock tree to
     it, and `8000000U` is already what STM32duino defaults the F1 to, so the flag changes nothing
     on its own. What actually selects HSE is `STM32Board`'s strong override of
-    `SystemClock_Config` (`STM32Board.cpp:164`), which every OpenSkyhawk STM32 node links.
+    `SystemClock_Config` (`STM32Board.cpp:165`), which every OpenSkyhawk STM32 node links.
     Without it, the variant runs HSI-PLL at 64 MHz → APB1 32 MHz → CAN at 444 kbps against a
     500 kbps bus.
 
@@ -218,7 +218,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 | `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:92` |
 | `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:108` |
 | `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:141` |
-| `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:12` (no-op HID stubs) |
+| `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:13` (no-op HID stubs) |
 | `STEPPERMOTOR_TEST` | StepperMotor | `Drivers/StepperMotor/StepperMotor.h:151` |
 | `STM32BOARD_TEST` | STM32Board | `STM32Board/STM32Board.h:31` |
 

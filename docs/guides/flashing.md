@@ -17,6 +17,21 @@ pio run -e PanelGroup -t upload   # a specific env
 PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
 [PlatformIO Setup](../firmware/platformio-setup.md).
 
+**A new board needs the [bootloader](../firmware/bootloader.md) first.** The firmware starts at
+`0x08001000`, behind the bootloader, so a board that has never been flashed gets both at once:
+
+```bash
+pio run -t bootstrap       # bootloader + firmware, once per new board
+```
+
+After that, `pio run -t upload` flashes the firmware alone and keeps the bootloader. From a release,
+use the board's `-full.hex` file on a new board and its `.elf` file on one that already has the
+bootloader.
+
+The bootloader write-protects itself, so anything that writes from address 0 — the per-library test
+sketches, or a new bootloader — needs the protection lifted first. The one-line command is on the
+[Bootloader](../firmware/bootloader.md#the-bootloader-protects-itself) page.
+
 ### ST-Link troubleshooting
 
 !!! warning "Upload fails with 'only supports deprecated HLA'?"

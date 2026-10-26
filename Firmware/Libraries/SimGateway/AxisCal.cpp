@@ -81,6 +81,16 @@ bool calLenValidForType(uint8_t type, uint16_t len) {
         case CAL_T_CAL_DATA:         return len == 82;
         case CAL_T_DIAG:             return len == CAL_DIAG_BYTES;
 
+        case CAL_T_UPL_INFO:
+        case CAL_T_UPL_END:
+        case CAL_T_UPL_ABORT:        return len == 0;
+        case CAL_T_UPL_FLASH:        return len == 2;
+        case CAL_T_UPL_BEGIN:        return len == 8;
+        case CAL_T_UPL_STATUS:
+        case CAL_T_UPL_RESULT:       return len == 8;
+        case CAL_T_UPL_INFO_ACK:     return len == 16;
+        case CAL_T_UPL_DATA:         return len == 260;   // inbound only — see CAL_MAX_INBOUND_PAYLOAD
+
         default:                     return false;   // unknown type is an error, not a skip
     }
 }

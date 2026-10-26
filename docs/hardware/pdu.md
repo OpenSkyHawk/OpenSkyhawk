@@ -63,8 +63,10 @@ if the whole cockpit drops off at once, check the PDU fuses first.
 Each PDU is calibrated once, at bring-up. The values are stored on the board and survive firmware
 updates.
 
-1. **Flash** the PDU for its console, e.g. `pio run -d Firmware/Panels/PDU_Left -t upload`
-   (`PDU_Right` / `PDU_Center` for the others — the code is identical, only the node ID differs).
+1. **Flash** the PDU for its console, e.g. `pio run -d Firmware/Panels/PDU_Left -t bootstrap` on a
+   new board — it puts the [bootloader](../firmware/bootloader.md) on too — or `-t upload` on one that
+   already has it (`PDU_Right` / `PDU_Center` for the others — the code is identical, only the node ID
+   differs).
 2. **Open the debug serial console** at 115200 baud. The PDU prints its node ID and calibration
    state at boot; `CAL SHOW` prints it again.
 3. **Supply reference:** measure the board's 3.3 V rail with a multimeter and enter it, in
