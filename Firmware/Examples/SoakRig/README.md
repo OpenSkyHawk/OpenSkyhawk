@@ -15,7 +15,7 @@ verified through) and is not changed by this.
 | `NODE_ID` | 1 | 2 |
 | Base revision | 0.1.0 **or** 0.2.0 | **0.2.0** — it holds the ShiftBus stations |
 | MCU | `genericSTM32F103C8` | `genericSTM32F103C8` — tight, see below |
-| Flash | 73.6 % of 64 KB | **96.9 %** of 64 KB (63,488 B) |
+| Flash | 74.0 % of 64 KB | **97.3 %** of 64 KB (63,756 B) |
 | RAM | 18.6 % | 28.1 % |
 
 Board A deliberately uses only `J11` pins that exist on **both** base revisions — positions 7
@@ -42,15 +42,21 @@ need calibrating against real hardware.
 ### If you redistribute stations, watch the flash
 
 Both nodes are C8s, and the flash budget follows the *grouping*, not the board letter. Board A
-links at **73.6 % with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
+links at **74.0 % with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
 one node, and keep that node's other stations light. It cannot also carry the full MCP + ADS
 input stack. Re-measure after any move; both projects build in a few seconds.
 
 ## Board B is a C8 — at ~97 % of flash
 
-The assembled 0.2.0 base carries an STM32F103**C8**, so board B builds for it: **96.9 %** of flash
-(63,488 of 65,536 bytes), and the `StepPattern::FULL_4STATE` alternate build the same, since its
-config is optimised out until you swap it in. U8g2
+The assembled 0.2.0 base carries an STM32F103**C8**, so board B builds for it: **97.3 %** of flash
+(63,756 of 65,536 bytes), and the `StepPattern::FULL_4STATE` alternate build the same, since its
+config is optimised out until you swap it in.
+
+**That figure is drifting upward, and the drift is not this sketch's.** It was 96.6 % when board B
+moved to the C8, 96.9 % after merging the #295 freeze, 97.3 % after the next merge from `main` —
+roughly 230 bytes of library growth per merge, with **1,780 bytes left**. Nothing here changed to
+cause it. Re-measure after every merge rather than at the end, and if a merge overflows, take the
+fallback order below instead of trying to trim the sketch. U8g2
 plus three `StepperMotor` instances fills a C8, but the soak adds no code, so ~2 KB is enough to
 run it.
 
