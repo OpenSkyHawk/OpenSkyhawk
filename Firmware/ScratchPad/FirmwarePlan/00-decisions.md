@@ -667,3 +667,39 @@ words, gaps filled 0xFF). The block carries the version only — no commit id. L
 `Firmware/shared/` (linker script, `stm32.ini`, `osh_image.py`), the role libraries, every
 production `platformio.ini`, `docs/firmware/platformio-setup.md`. Consumers: #363 (bootloader),
 #366 (uploader), SkyHawkClient#177.
+
+---
+
+## D26 — Our own 4 KB CAN bootloader on every STM32 board (#363)
+
+**Decision:** Every STM32 board carries our own bare-metal bootloader in its first 4 KB; apps start at
+`0x08001000`. It starts only an app whose identity block and CRC check out, takes an image over CAN on
+`BOOT_CMD_n` / `BOOT_RSP_n` with block 0 committed last, and keeps the last valid app's NODE_ID and kind
+in option bytes Data0 / Data1. Blank boards get bootloader + app in one first flash (`-t bootstrap`, the
+release's `-full.hex`). Protocol and boot flow: `12-bootloader.md`.
+
+**Rationale:**
+- *Updates without an ST-Link.* The client updates boards over the cockpit bus (#366,
+  SkyHawkClient#175); every board must be able to take an image, so the bootloader is on all of them —
+  the Arduino model, not an option.
+- *Our own, not Katapult.* Katapult (#361 spike) checks only the first word of the app, writes the vector
+  table first (a half-written image passes), has no timeout, uses CAN IDs that collide with
+  `HB_n` / `HEALTH_n` / `TELEM_n`, and is GPLv3 with a make/Kconfig build. Ours is ~2.9 KB bare-metal
+  CMSIS, in PlatformIO, on the IDs #295 reserved.
+- *4 KB, not less.* The F103 write-protects in 4 KB blocks and #364 protects the bootloader; a smaller
+  bootloader would leave the rest of its block unusable anyway.
+- *Commit last + CRC at every boot.* With block 0 held back, an interrupted transfer — power pulled at
+  any block — leaves no valid vector table; the identity-block CRC catches everything else. The
+  hardware CRC unit checks 60 KB in well under a millisecond.
+- *NODE_ID in the option bytes.* The bootloader must answer as its node when the app is broken —
+  exactly when it is needed. The build stays the source (D10); the option bytes mirror the last valid
+  app, so an ST-Link repurpose follows automatically. Written only when they differ, because the
+  option-byte erase is the one moment a power cut costs an ST-Link unlock.
+- *One wire contract.* `BootProtocol.h` is the single source for the bootloader, CANProtocol, the
+  uploader and the client sync (#346 named values).
+
+**Affects:** `02-can-protocol.md`, `08-hardware-firmware-contracts.md`, `09-startup-resync-diagnostics.md`,
+`12-bootloader.md`, TechSpec `Bootloader` + `BootProtocol`, `Firmware/shared/` (layout, `bootstrap`),
+the release workflow + READMEs, `docs/firmware/bootloader.md`, `docs/firmware/platformio-setup.md`,
+`docs/guides/flashing.md`, `docs/architecture/can-bus.md`. Follow-ups: #364 (safety), #365 (app +
+bridge), #366 (uploader).

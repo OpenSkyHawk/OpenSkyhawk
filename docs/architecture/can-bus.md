@@ -39,12 +39,16 @@ helper functions — **never hard-code these values**, always use the helper.
 | `EVT_REL_n` | `0x500 + n` | `canIdEvtRel(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_DIR_n` | `0x600 + n` | `canIdEvtDir(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_ACTION_n` | `0x700 + n` | `canIdEvtAction(n)` | Node *n* → PanelBridge | 8 |
-| *reserved* | `0x740`–`0x7BF` | — | — | — |
+| `BOOT_CMD_n` | `0x740 + n` | `Boot::canIdBootCmd(n)` | PanelBridge → node *n*'s bootloader | ≤8 |
+| `BOOT_RSP_n` | `0x780 + n` | `Boot::canIdBootRsp(n)` | Node *n*'s bootloader → PanelBridge | ≤8 |
+| `BOOT_UNCONF_*` | `0x7C0` / `0x7C1` | `Boot::UNCONFIGURED_CMD_ID` / `_RSP_ID` | PanelBridge ↔ a bootloader with no NODE_ID | ≤8 |
 
 - `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node — the whole export
   stream, whatever aircraft is flying; each output picks out its own address.
-- `0x740`–`0x7BF` is reserved for a future firmware-update frame family, at the lowest priority
-  on the bus so update traffic never delays a control.
+- `BOOT_CMD_n` / `BOOT_RSP_n` are the [bootloader](../firmware/bootloader.md)'s frames: a board
+  waiting in its bootloader announces itself once a second and takes a new firmware image in 64-byte
+  blocks. They sit at the lowest priority on the bus, so update traffic never delays a control. The
+  `0x7C0`/`0x7C1` pair is for a board that has no NODE_ID yet.
 - `EVT_n` carries input events from a node back up to PanelBridge.
 - `HB_n` is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
   Every node — PanelBridge included, as `HB_0` — sends `HB_n` and `HEALTH_n` from one shared

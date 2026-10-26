@@ -7,6 +7,12 @@ assignments (→ 08), HID frame format (→ 03).
 
 ---
 
+## Before Any App — the Bootloader
+
+Every STM32 board (PanelGroup, PDU, PanelBridge) starts in its bootloader, which checks the app and
+jumps to it within a few milliseconds — the boot sequences below begin there. It stays instead when the
+app asked for it or the app fails its check, and announces on `BOOT_RSP_n`. See `12-bootloader.md`.
+
 ## PanelGroup Boot Sequence
 
 1. `STM32Board::begin()` — release JTAG (SWD kept), init status LED (PB14/PB15), DiagSerial (USART1 115200), CAN HAL.

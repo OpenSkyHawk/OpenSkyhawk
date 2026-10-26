@@ -1,7 +1,8 @@
 name: Firmware release assets (validation)
 
 # Builds and packages the release firmware without publishing anything (#360), on pull requests
-# that touch the release workflow or its README templates. The flash/RAM table lands in the job
+# that touch the release workflow, its README templates or the bootloader (whose 4 KB budget this
+# build enforces, #363). The flash/RAM table lands in the job
 # summary and the package is uploaded as an Actions artifact. Publishing happens only from
 # release-please.yml.
 
@@ -11,6 +12,8 @@ on:
       - .github/workflows/firmware-release-assets.yml
       - .github/workflows/firmware-release-assets-check.yml
       - Firmware/release/**
+      - Firmware/Bootloader/**
+      - Firmware/Libraries/BootProtocol/**
 
 permissions:
   contents: read

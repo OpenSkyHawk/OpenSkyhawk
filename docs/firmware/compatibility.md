@@ -69,8 +69,8 @@ Inside one major version, the wire format only **grows**, and every reader toler
 - **The calibration channel grows by new message types.** Each type has one fixed length, so an
   existing type never grows; `DIAG` keeps spare bytes for new counters.
 
-Two ranges are set aside for a future firmware updater: CAN IDs `0x740`–`0x7BF`, and calibration
-message types `0x10`–`0x1F` / `0x90`–`0x9F`.
+The [bootloader](bootloader.md) uses CAN IDs `0x740`–`0x7C1`. Calibration message types
+`0x10`–`0x1F` / `0x90`–`0x9F` are set aside for the firmware updater on the Gateway.
 
 **Byte order:** multi-byte fields in CAN payloads, the Gateway's HID frame and calibration frames
 are little-endian. The

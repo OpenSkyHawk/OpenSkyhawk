@@ -24,7 +24,7 @@ Firmware/Libraries/FirmwareImage/
 └── library.json        version rewritten by release-please
 Firmware/shared/
 ├── stm32f103.ld        STM32 core 4.30000.0 F103C8/CB script + .osh_identity at +0x200, 0xFF fill
-├── stm32.ini           [env] ldscript + post script; the bootloader offset (#363) lands here
+├── stm32.ini           [env] ldscript + post script + the bootloader offset (#363)
 ├── osh_image.py        post-build: stamp imageLength/imageCrc into the .elf, write the .bin 0xFF-filled
 └── tests/test_osh_image.py   CRC vectors + offsets read from FirmwareImage.h; runs in Firmware CI
 ```
@@ -82,7 +82,7 @@ Used by `PanelGroup.cpp` (`NodeKind::PANEL_GROUP`), `PduNode.cpp` (`NodeKind::PD
 - **No block, no stamp.** An image without the magic at `0x200` builds normally; the step prints
   "no identity block in this image — not stamped".
 - **Bootloader offset.** The script takes the app's start from `LD_FLASH_OFFSET`
-  (`board_build.flash_offset`), so the block moves to `0x08001200` when #363 enables the 4 KB offset.
+  (`board_build.flash_offset`), so the block sits at `0x08001200` behind the 4 KB bootloader (#363).
 
 ## Dependencies
 

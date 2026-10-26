@@ -65,7 +65,9 @@ extra_configs = ../../shared/stm32.ini   ; path from your project to Firmware/sh
 firmware = ${PROJECT_DIR}/../..          ; the same path, to Firmware/
 ```
 
-They pull in `Firmware/shared/stm32.ini`, which gives the image an **identity block**: 32 bytes
+They pull in `Firmware/shared/stm32.ini`, which places the firmware behind the
+[bootloader](bootloader.md) (from `0x08001000`), adds the `pio run -t bootstrap` target for new
+boards, and gives the image an **identity block**: 32 bytes
 naming the board's NODE_ID, its kind (PanelGroup, PDU or PanelBridge), the firmware version, and
 the image's length and checksum. A post-build step fills in the length and checksum, so
 `firmware.bin`, `firmware.elf` and the flashed board all give the same checksum. The firmware
@@ -106,7 +108,8 @@ they stay as shown.
 ## Flashing
 
 STM32 boards flash over **SWD with an ST-Link** (`upload_protocol = stlink`). PlatformIO drives
-the probe directly — `pio run -t upload`. SimGateway (RP2040) flashes over USB by UF2 or
+the probe directly — `pio run -t upload`. A new board takes `pio run -t bootstrap` once instead,
+which puts the [bootloader](bootloader.md) on first. SimGateway (RP2040) flashes over USB by UF2 or
 straight from PlatformIO; no ST-Link.
 
 If an upload fails — old ST-Link firmware, or a clone's non-standard tap ID — see

@@ -210,9 +210,9 @@ vectors: `Libraries/FirmwareImage/FirmwareImage.h` (TechSpec `FirmwareImage`). R
 | 21 | 11 | reserved | 0 |
 
 - **Where.** Image start + `0x200`, after the vector table (0x10C bytes on the F103). The shared
-  linker script `Firmware/shared/stm32f103.ld` places it, so it moves with the image: `0x08000200`
-  today, `0x08001200` once the bootloader takes the first 4 KB (`board_build.flash_offset = 0x1000`,
-  enabled by #363 in `Firmware/shared/stm32.ini`).
+  linker script `Firmware/shared/stm32f103.ld` places it, so it moves with the image: `0x08001200`,
+  since the bootloader owns the first 4 KB (`board_build.flash_offset = 0x1000` in
+  `Firmware/shared/stm32.ini`, #363; flash layout in `12-bootloader.md`).
 - **CRC.** Poly `0x04C11DB7`, init `0xFFFFFFFF`, no reflection, no final XOR, over 32-bit
   little-endian words — what the F103's hardware CRC unit computes. The stamped `imageLength` is
   inside the CRC; only the `imageCrc` word is skipped.
