@@ -31,7 +31,12 @@ struct BatchState {
 
 // ── Private state ─────────────────────────────────────────────────────────────
 
-static constexpr uint8_t TX_RING_SIZE    = 16;
+// The bridge sends the whole sim export stream as CTRL_BCAST, in bursts (one per DCS-BIOS frame):
+// it gets the deep TX ring (#389). Override with -DCAN_TX_RING_SIZE=N (2-255).
+#ifndef CAN_TX_RING_SIZE
+#define CAN_TX_RING_SIZE ((NODE_ID) == GATEWAY_NODE_ID ? 64 : 16)
+#endif
+static constexpr uint8_t TX_RING_SIZE    = CAN_TX_RING_SIZE;
 // The bridge hears every node, so it gets the deep ring; a node hears only the bridge (#387).
 // Override with -DCAN_RX_RING_SIZE=N (2-255).
 #ifndef CAN_RX_RING_SIZE
@@ -388,19 +393,9 @@ void send(uint32_t canId, const uint8_t* data, uint8_t len) {
     uint32_t primask = __get_PRIMASK();
     __disable_irq();
 
-    if (canId == CAN_ID_CTRL_BCAST) {
-        // Coalesce: replace existing CTRL_BCAST in ring rather than appending stale state
-        uint8_t i = _txHead;
-        while (i != _txTail) {
-            if (_txRing[i].canId == CAN_ID_CTRL_BCAST) {
-                memcpy(_txRing[i].data, data, len);
-                _txRing[i].len = len;
-                if (!primask) __enable_irq();
-                return;
-            }
-            i = (i + 1) % TX_RING_SIZE;
-        }
-    }
+    // No CTRL_BCAST coalescing (#389): a frame carries two of ~250 controls, not the whole state, so
+    // replacing a queued one with the next dropped two other controls' updates — ~22% of the sim's
+    // output under a real export stream. Every frame queues; the bridge's ring is deep enough.
 
     uint8_t next = (_txTail + 1) % TX_RING_SIZE;
     if (next == _txHead) {
