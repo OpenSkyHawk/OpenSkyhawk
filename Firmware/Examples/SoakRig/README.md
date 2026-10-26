@@ -14,9 +14,14 @@ verified through) and is not changed by this.
 |---|---|---|
 | `NODE_ID` | 1 | 2 |
 | Base revision | 0.1.0 **or** 0.2.0 | **0.2.0** — it holds the ShiftBus stations |
-| MCU | `genericSTM32F103C8` | `genericSTM32F103C8` — tight, see below |
-| Flash | 74.0 % of 64 KB | **97.3 %** of 64 KB (63,756 B) |
-| RAM | 18.6 % | 28.1 % |
+| MCU | `genericSTM32F103C8` | `genericSTM32F103C8` — `-flto`, see below |
+| Flash | 48,568 B — 79.0 % | 55,020 B — **89.6 %** |
+| RAM | 18.6 % | 27.1 % |
+
+Flash is measured against the **61,440 B app region**, not the chip's 64 KB: the 4 KB bootloader
+(#362–#367) owns `0x08000000` and apps start at `0x08001000`. PlatformIO still prints a
+percentage of 65,536, so ignore its bar and use the byte count — the linker script is what
+actually enforces the limit.
 
 Board A deliberately uses only `J11` pins that exist on **both** base revisions — positions 7
 and 11 (`PB5`/`PA8` on 0.1.0, `PB2`/`PC14` on 0.2.0) are left alone — so it runs on the
@@ -42,23 +47,61 @@ need calibrating against real hardware.
 ### If you redistribute stations, watch the flash
 
 Both nodes are C8s, and the flash budget follows the *grouping*, not the board letter. Board A
-links at **74.0 % with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
+links at **48.5 KB with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
 one node, and keep that node's other stations light. It cannot also carry the full MCP + ADS
 input stack. Re-measure after any move; both projects build in a few seconds.
 
-## Board B is a C8 — at ~97 % of flash
+## Board B is a C8 with `-flto`
 
-The assembled 0.2.0 base carries an STM32F103**C8**, so board B builds for it: **97.3 %** of flash
-(63,756 of 65,536 bytes), and the `StepPattern::FULL_4STATE` alternate build the same, since its
-config is optimised out until you swap it in.
+The assembled 0.2.0 base carries an STM32F103**C8**, and once the bootloader took the app region
+to 61,440 B this image no longer fit: it was **2,316 B over**. `-flto` links it at **55,020 B**,
+89.6 % of the region, with 6,420 B spare. The `StepPattern::FULL_4STATE` alternate measures the
+same, since its config is optimised out until you swap it in.
 
-**That figure is drifting upward, and the drift is not this sketch's.** It was 96.6 % when board B
-moved to the C8, 96.9 % after merging the #295 freeze, 97.3 % after the next merge from `main` —
-roughly 230 bytes of library growth per merge, with **1,780 bytes left**. Nothing here changed to
-cause it. Re-measure after every merge rather than at the end, and if a merge overflows, take the
-fallback order below instead of trying to trim the sketch. U8g2
-plus three `StepperMotor` instances fills a C8, but the soak adds no code, so ~2 KB is enough to
-run it.
+**LTO was chosen to buy margin, not to clear 2.3 KB once.** Board B's flash grew ~230 bytes per
+merge from `main` — 96.6 % → 96.9 % → 97.3 % of a C8 over two merges — and none of that is this
+sketch's own code. LTO buys roughly 28 merges of headroom. The alternatives were measured and
+rejected: an F103CB means reworking an assembled board, and trimming the unused DrumDisplay font
+(≈2.3 KB) leaves **39 bytes**, which a single merge erases — that one is only ever valid stacked
+on top of something else, never on its own.
+
+> **Bench this deliberately.** LTO can expose latent undefined behaviour that a non-LTO build
+> hides. Board B carries the ShiftBus ISR (`SHIFTBUS_ISR_HZ` on TIM2) and U8g2's shared statics,
+> so give the `'165` encoder capture and the drum rendering a real pass during the soak rather
+> than a glance. It compiles and links clean, which is not the same as running.
+
+Re-measure after every merge from `main`, not at the end.
+
+## Flashing
+
+Both projects pull `Firmware/shared/stm32.ini`, which supplies the identity-block linker script,
+the post-build stamp, the app offset and the `bootstrap` target. A **blank** board needs the
+bootloader first:
+
+```
+pio run -d Firmware/Examples/SoakRig/BoardA -t bootstrap   # bootloader + app, once
+pio run -d Firmware/Examples/SoakRig/BoardA -t upload      # app only, thereafter
+```
+
+The bootloader write-protects itself, so a sketch that writes from address 0 — anything under
+`Firmware/Tests/` — needs the protection cleared first:
+
+```
+openocd ... -c "init; reset halt; flash protect 0 0 0 off; reset halt; shutdown"
+```
+
+CAN IDs **0x740–0x7FF** are bootloader traffic (`BOOT_CMD_n` / `BOOT_RSP_n`, and 0x7C0/0x7C1 for
+an unconfigured node). Nothing here uses a raw CAN ID, but keep them out of any traffic generator
+or filter you point at the rig.
+
+## Soak traffic — what to expect on the bus
+
+Beyond the per-station events, the bus carries: `HB_n` heartbeats, `HEALTH_n` (0x140+n),
+`CTRL_BCAST` — which since the PanelBridge change now relays the **whole** DCS-BIOS export stream,
+not a filtered subset — and, since #383, one extra **8-byte `READY_n` (0x400+n) per node per
+`SYNC_REQ`**, with `ReadyPayload` byte 4 = `ReadyFlag::RESYNC`. The bridge does not answer those
+with another `SYNC_REQ`, so nothing loops. Two nodes means two such frames per request. Count
+them in any bus-load figure taken from this rig.
 
 If a fix or another alternate build overflows, in order:
 
