@@ -9,6 +9,7 @@
 #   custom_bridge_env     = PanelBridge        ; its env
 Import("env")  # noqa: F821 — provided by PlatformIO
 import os
+import pathlib
 import subprocess
 
 project = env.GetProjectOption("custom_bridge_project", "")
@@ -18,7 +19,7 @@ if project:
     cmd = [env.subst("$PYTHONEXE"), "-m", "platformio", "run", "-d", project] + (["-e", bridge_env] if bridge_env else [])
     if subprocess.call(cmd, stdout=subprocess.DEVNULL) != 0:
         env.Exit(f"bundle_bridge: building {project} failed — run it on its own to see why")
-    image = open(os.path.join(project, ".pio", "build", bridge_env or "", "firmware.bin"), "rb").read()
+    image = pathlib.Path(project, ".pio", "build", bridge_env, "firmware.bin").read_bytes()
 
     out_dir = os.path.join(env.subst("$BUILD_DIR"), "bundle_src")
     os.makedirs(out_dir, exist_ok=True)
@@ -27,8 +28,8 @@ if project:
            "#include <stdint.h>\n"
            f'extern "C" __attribute__((used)) const uint8_t osh_bundled_bridge[{len(image)}] = {{{body}}};\n'
            f'extern "C" __attribute__((used)) const uint32_t osh_bundled_bridge_len = {len(image)};\n')
-    path = os.path.join(out_dir, "bundled_bridge.cpp")
-    if not os.path.exists(path) or open(path).read() != src:   # unchanged → no rebuild
-        open(path, "w").write(src)
+    path = pathlib.Path(out_dir, "bundled_bridge.cpp")
+    if not path.exists() or path.read_text() != src:   # unchanged → no rebuild
+        path.write_text(src)
     env.BuildSources(os.path.join("$BUILD_DIR", "bundle_obj"), out_dir)
     print(f"bundle_bridge: {os.path.relpath(project)} · {len(image)} B")
