@@ -134,14 +134,39 @@ static void emitSelf() {
 // _NODE_STATUS per alive node, then _NODE_STATUS_END <count> so the host knows the burst is
 // complete and can reconcile (prune nodes absent from it). count includes the node-0 row, so
 // count=1 = bridge only, no other nodes connected.
+//
+// Written a row at a time (#388, in #389): one call wrote every row, and Serial.write() blocks once
+// the 64-byte UART TX buffer is full — ~130 ms with 63 nodes, every 5 s (the client's poll), while
+// the 256-byte RX buffer overflowed and lost ~100 sim updates. emitAllNodes() only arms the reply;
+// serviceRoster() writes the next row when the TX buffer has room for a whole line, so loop() never
+// waits. A request while a reply is going out restarts it.
+static bool    _rosterPending = false;
+static int16_t _rosterNext    = -1;   // -1: the node-0 row next; 0..MAX_NODE_ID-1: next node; MAX_NODE_ID: END
+static uint8_t _rosterCount   = 0;
+static constexpr int ROSTER_LINE_BYTES = sizeof(NODE_STATUS_MSG_NAME) + 2 * NODE_STATUS_ROW_BYTES + 1;   // "name " + hex + '\n'
+
 static void emitAllNodes() {
-    emitSelf();
-    uint8_t count = 1;
-    for (uint8_t i = 0; i < MAX_NODE_ID; i++)
-        if (_nodes[i].alive) { emitNode(i + 1, true); count++; }
-    char arg[4];
-    snprintf(arg, sizeof(arg), "%u", (unsigned)count);
-    DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
+    _rosterPending = true;
+    _rosterNext    = -1;
+    _rosterCount   = 0;
+}
+
+// @param drain true: write the whole reply now, blocking (tests only).
+static void serviceRoster(bool drain = false) {
+    while (_rosterPending && (drain || Serial.availableForWrite() >= ROSTER_LINE_BYTES)) {
+        if (_rosterNext < 0) { emitSelf(); _rosterCount = 1; _rosterNext = 0; continue; }
+        while (_rosterNext < MAX_NODE_ID && !_nodes[_rosterNext].alive) _rosterNext++;
+        if (_rosterNext < MAX_NODE_ID) {
+            emitNode((uint8_t)(_rosterNext + 1), true);
+            _rosterCount++;
+            _rosterNext++;
+            continue;
+        }
+        char arg[4];
+        snprintf(arg, sizeof(arg), "%u", (unsigned)_rosterCount);
+        DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
+        _rosterPending = false;
+    }
 }
 
 // Forward one TELEM_n frame to the host, unread (#216):
@@ -820,10 +845,8 @@ void setup() {
     // No SYNC_REQ here (#387): each node is queued for a sync as its first heartbeat arrives.
 #if PANELBRIDGE_NODE_STATUS
     emitAllNodes();   // seed the host with the current roster (node-0 row only at cold boot) (#86)
-    // Let it finish going out: the sketch calls DcsBios::setup() next, whose Serial.begin() restarts
-    // the UART and stranded all but the first write in the TX buffer (#367 bench) — the host lost
-    // the boot row on every bridge reset.
-    Serial.flush();
+    // It goes out from loop() (serviceRoster), after the sketch's DcsBios::setup() — whose
+    // Serial.begin() restart once stranded a boot row written here (#367 bench).
 #endif
     STM32Board::markBootHealthy();   // the bootloader's crash-loop counter back to 0 (#364)
 }
@@ -839,6 +862,9 @@ void loop() {
     uint32_t now = millis();
     checkNodeTimeouts(now);
     serviceSync(now);
+#if PANELBRIDGE_NODE_STATUS
+    serviceRoster();
+#endif
 
     // Node status (#340): HB_0 every 500 ms and HEALTH_0 every 1 s. HB_0 is an unconditional
     // liveness beacon — unlike CTRL_BCAST, which only moves when a DCS export changes — so nodes
@@ -923,7 +949,7 @@ void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
     }
 }
 
-void testRequestNodeStatus() { emitAllNodes(); }
+void testRequestNodeStatus() { emitAllNodes(); serviceRoster(true); }
 
 void testCheckTimeouts(uint32_t now) { checkNodeTimeouts(now); }
 #endif // PANELBRIDGE_NODE_STATUS
