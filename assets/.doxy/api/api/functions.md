@@ -30,6 +30,11 @@
 * **kShiftBusSettings** ([**ShiftBus.cpp**](ShiftBus_8cpp.md))
 
 
+## o
+
+* **OSH\_FIRMWARE\_IDENTITY** ([**PanelBridge.cpp**](PanelBridge_8cpp.md), [**PanelGroup.cpp**](PanelGroup_8cpp.md), [**PduNode.cpp**](PduNode_8cpp.md))
+
+
 ## s
 
 * **SystemClock\_Config** ([**STM32Board.cpp**](STM32Board_8cpp.md))

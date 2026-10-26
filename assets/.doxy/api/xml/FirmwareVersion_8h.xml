@@ -3,12 +3,23 @@
   <compounddef id="FirmwareVersion_8h" kind="file" language="C++">
     <compoundname>FirmwareVersion.h</compoundname>
     <includedby refid="CANProtocol_8cpp" local="no">Firmware/Libraries/CANProtocol/CANProtocol.cpp</includedby>
+    <includedby refid="FirmwareImage_8h" local="no">Firmware/Libraries/FirmwareImage/FirmwareImage.h</includedby>
     <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
     <includedby refid="SimGateway_8cpp" local="no">Firmware/Libraries/SimGateway/SimGateway.cpp</includedby>
     <invincdepgraph>
       <node id="2">
         <label>Firmware/Libraries/CANProtocol/CANProtocol.cpp</label>
         <link refid="CANProtocol_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/FirmwareImage/FirmwareImage.h</label>
+        <link refid="FirmwareImage_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
       </node>
       <node id="1">
         <label>Firmware/Libraries/FirmwareVersion/FirmwareVersion.h</label>
@@ -19,12 +30,22 @@
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
       </node>
-      <node id="3">
+      <node id="4">
         <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
         <link refid="PanelBridge_8cpp"/>
       </node>
-      <node id="4">
+      <node id="5">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
+        <link refid="PanelGroup_8cpp"/>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
+      <node id="7">
         <label>Firmware/Libraries/SimGateway/SimGateway.cpp</label>
         <link refid="SimGateway_8cpp"/>
       </node>

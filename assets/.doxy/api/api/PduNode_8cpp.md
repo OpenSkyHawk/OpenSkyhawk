@@ -17,6 +17,7 @@
 * `#include <stdlib.h>`
 * `#include <string.h>`
 * `#include <ctype.h>`
+* `#include <FirmwareImage.h>`
 
 
 
@@ -59,6 +60,11 @@
 
 
 
+## Public Functions
+
+| Type | Name |
+| ---: | :--- |
+|   | [**OSH\_FIRMWARE\_IDENTITY**](#function-osh_firmware_identity) (NodeKind::PDU) <br> |
 
 
 
@@ -87,6 +93,23 @@
 
 
 
+## Public Functions Documentation
+
+
+
+
+### function OSH\_FIRMWARE\_IDENTITY 
+
+```C++
+OSH_FIRMWARE_IDENTITY (
+    NodeKind::PDU
+) 
+```
+
+
+
+
+<hr>
 
 ------------------------------
 The documentation for this class was generated from the following file `Firmware/Libraries/PowerMonitor/PduNode.cpp`

@@ -5151,13 +5151,13 @@ actually does.</p>
 <td><code>NODE_ID</code></td>
 <td>none — omitting it fails to compile</td>
 <td>every STM32 env that links our libraries; <code>WiringCheck</code> omits it deliberately</td>
-<td><code>CANProtocol.cpp:226</code>, <code>PanelGroup.cpp:300</code>, <code>STM32Board.h:29</code></td>
+<td><code>CANProtocol.cpp:226</code>, <code>PanelGroup.cpp:304</code>, <code>STM32Board.h:29</code>, <code>FirmwareImage.h:61</code> (the image identity block)</td>
 </tr>
 <tr>
 <td><code>PANELBRIDGE_NODE_STATUS</code></td>
 <td><strong>on</strong></td>
 <td><code>=0</code> in <code>Tests/PanelBridge</code> <code>test_input_dispatch_dcs</code> / <code>_hid</code></td>
-<td><code>PanelBridge.h:38</code> (default), <code>PanelBridge.cpp:42</code> + ~10 more</td>
+<td><code>PanelBridge.h:38</code> (default), <code>PanelBridge.cpp:46</code> + ~10 more</td>
 </tr>
 <tr>
 <td><code>NODE_HEALTH_TELEM</code></td>
@@ -5223,7 +5223,7 @@ actually does.</p>
 <td><code>SHIFTBUS_ISR_TIM</code></td>
 <td><code>TIM2</code></td>
 <td>never set</td>
-<td><code>PanelGroup.cpp:228</code></td>
+<td><code>PanelGroup.cpp:232</code></td>
 </tr>
 </tbody>
 </table>

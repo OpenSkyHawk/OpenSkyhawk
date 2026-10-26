@@ -50,6 +50,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **struct** [**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md) _A fixed (non-rolling) glyph painted between digit columns — '.', ' ', ':' etc._ 
 * **struct** [**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) _Complete description of one rolling readout: its sources, geometry, glyphs, flag._ 
 * **struct** [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md) _One DCS-BIOS digit source feeding a_ [_**DrumReadout**_](structOpenSkyhawk_1_1DrumReadout.md) _._
+* **struct** [**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md) 
 * **struct** [**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md) _Value → position calibration for one gauge._ 
 * **struct** [**OpenSkyhawk::HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) _Home-sensor parameters (_ HomeMode::SENSOR _only)._
 * **struct** [**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md) _Ladder state. Zero-initialised = healthy, no backoff._ 

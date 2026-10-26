@@ -12,6 +12,7 @@
 
 * `#include "PanelGroup.h"`
 * `#include <STM32Board.h>`
+* `#include <FirmwareImage.h>`
 
 
 
@@ -54,6 +55,11 @@
 
 
 
+## Public Functions
+
+| Type | Name |
+| ---: | :--- |
+|   | [**OSH\_FIRMWARE\_IDENTITY**](#function-osh_firmware_identity) (NodeKind::PANEL\_GROUP) <br> |
 
 
 
@@ -82,6 +88,23 @@
 
 
 
+## Public Functions Documentation
+
+
+
+
+### function OSH\_FIRMWARE\_IDENTITY 
+
+```C++
+OSH_FIRMWARE_IDENTITY (
+    NodeKind::PANEL_GROUP
+) 
+```
+
+
+
+
+<hr>
 
 ------------------------------
 The documentation for this class was generated from the following file `Firmware/Libraries/PanelGroup/PanelGroup.cpp`

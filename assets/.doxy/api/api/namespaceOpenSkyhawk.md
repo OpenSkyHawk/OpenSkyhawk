@@ -27,6 +27,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 | Type | Name |
 | ---: | :--- |
+| namespace | [**FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md) <br> |
 | namespace | [**Pdu**](namespaceOpenSkyhawk_1_1Pdu.md) <br> |
 
 

@@ -28,6 +28,8 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **struct** [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) _Complete description of one rolling readout: its sources, geometry, glyphs, flag._     
     * **struct** [**DrumSource**](structOpenSkyhawk_1_1DrumSource.md) _One DCS-BIOS digit source feeding a_ [_**DrumReadout**_](structOpenSkyhawk_1_1DrumReadout.md) _._    
     * **class** [**FaultSource**](classOpenSkyhawk_1_1FaultSource.md) _A source of node faults — implemented by any object that can fault (#163)._     
+    * **namespace** [**FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md)     
+        * **struct** [**Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md)     
     * **struct** [**GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md) _Value → position calibration for one gauge._     
     * **class** [**HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md) _HID axis handler. Declared at sketch scope for each joystick axis._     
     * **class** [**HIDButton**](classOpenSkyhawk_1_1HIDButton.md) _HID button handler. Declared at sketch scope for each button._     
@@ -59,10 +61,10 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md) _Three-position switch (ON-OFF-ON / spring-centred) on two pins. Emits 0 / 1 / 2 over CAN (MULTIPOS dispatch)._     
     * **class** [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md) _Multi-position rotary selector — N discrete pins, exactly one active at a time. Emits the active position index 0..N-1 over CAN (MULTIPOS dispatch)._     
     * **class** [**SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md) _Guarded switch — the DcsBios::SwitchWithCover2Pos equivalent. One physical switch pin drives two sim controls: the guard cover and the switch it protects._     
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d15.md) 
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d24.md) 
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d28.md) 
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d73.md)     
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d16.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d25.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d29.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d74.md)     
 * **struct** [**IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md)     
 * **namespace** [**PanelBridge**](namespacePanelBridge.md)     
 * **namespace** [**PanelGroup**](namespacePanelGroup.md) _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._    
@@ -73,9 +75,9 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
 * **struct** [**GatewayDiag**](structSimGateway_1_1GatewayDiag.md) _Link-health counters and event times (#355). Reported to the host as_ `DIAG` _._    
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d11.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d54.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d56.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d65.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d75.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d12.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d55.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d57.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d66.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d76.md)     
 

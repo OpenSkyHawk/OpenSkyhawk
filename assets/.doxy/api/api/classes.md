@@ -92,6 +92,8 @@
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md)
+([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * [**InputBase**](classOpenSkyhawk_1_1InputBase.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md)

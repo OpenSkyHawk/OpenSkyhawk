@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespaceOpenSkyhawk_1_1FirmwareImage" kind="namespace" language="C++">
+    <compoundname>OpenSkyhawk::FirmwareImage</compoundname>
+    <innerclass refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" prot="public">OpenSkyhawk::FirmwareImage::Identity</innerclass>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1a213a91467bba0079ad880443798edb0e" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::IDENTITY_OFFSET</definition>
+        <argsstring></argsstring>
+        <name>IDENTITY_OFFSET</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::IDENTITY_OFFSET</qualifiedname>
+        <initializer>= 0x200</initializer>
+        <briefdescription>
+<para>from the app&apos;s start (the vector table&apos;s address) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="22" column="20" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1a8642a350f33ca3b5a9c88882b515f8c5" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::MAGIC</definition>
+        <argsstring></argsstring>
+        <name>MAGIC</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::MAGIC</qualifiedname>
+        <initializer>= 0x594B534Fu</initializer>
+        <briefdescription>
+<para>&quot;OSKY&quot; in memory order </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="23" column="20" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1ac8b1a89fa3fb809ee8f927497a58f33a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::FirmwareImage::LAYOUT_VERSION</definition>
+        <argsstring></argsstring>
+        <name>LAYOUT_VERSION</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::LAYOUT_VERSION</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="24" column="20" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1ac0a156274191afc6249aaae0c5bdcb63" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::UNSTAMPED</definition>
+        <argsstring></argsstring>
+        <name>UNSTAMPED</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::UNSTAMPED</qualifiedname>
+        <initializer>= 0xFFFFFFFFu</initializer>
+        <briefdescription>
+<para>imageLength / imageCrc before osh_image.py runs </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="25" column="20" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1ae67f86fed5921c5f1f8912020a7e010c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_MAGIC</definition>
+        <argsstring></argsstring>
+        <name>OFF_MAGIC</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_MAGIC</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="43" column="20" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1aefb98af7a05b2a81b8202ed671245465" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_LAYOUT</definition>
+        <argsstring></argsstring>
+        <name>OFF_LAYOUT</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_LAYOUT</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="43" column="31" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1a713f12850f6265c023ecd6da68df5267" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_SIZE</definition>
+        <argsstring></argsstring>
+        <name>OFF_SIZE</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_SIZE</qualifiedname>
+        <initializer>= 6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="43" column="43" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1a5c19b90b5fcd18dedff9827a16920396" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_LENGTH</definition>
+        <argsstring></argsstring>
+        <name>OFF_LENGTH</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_LENGTH</qualifiedname>
+        <initializer>= 8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="43" column="53" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1abed82c46ee7e2e0ec599ec12e11b304a" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_CRC</definition>
+        <argsstring></argsstring>
+        <name>OFF_CRC</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_CRC</qualifiedname>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="43" column="65" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1a3ac7ad54ea8bd78de56928ba54264809" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_NODE_ID</definition>
+        <argsstring></argsstring>
+        <name>OFF_NODE_ID</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_NODE_ID</qualifiedname>
+        <initializer>= 16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="44" column="20" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1a6ba87a116abfac778bd0328fd6c70c6c" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_NODE_KIND</definition>
+        <argsstring></argsstring>
+        <name>OFF_NODE_KIND</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_NODE_KIND</qualifiedname>
+        <initializer>= 17</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="44" column="33" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1ae88716f8a1577ab6724552486fa07a0e" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_FW_MAJOR</definition>
+        <argsstring></argsstring>
+        <name>OFF_FW_MAJOR</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_FW_MAJOR</qualifiedname>
+        <initializer>= 18</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="44" column="48" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1aae3cca07c2d79d3f4f635c1c4c15d1a2" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_FW_MINOR</definition>
+        <argsstring></argsstring>
+        <name>OFF_FW_MINOR</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_FW_MINOR</qualifiedname>
+        <initializer>= 19</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="44" column="62" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1ad30bad047b6437c11ba4372246692867" prot="public" static="no" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::OFF_FW_PATCH</definition>
+        <argsstring></argsstring>
+        <name>OFF_FW_PATCH</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::OFF_FW_PATCH</qualifiedname>
+        <initializer>= 20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="44" column="76" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1aec045529dc6bc73cade0a1c851e9d548" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::CRC_VECTOR_WORD_12345678</definition>
+        <argsstring></argsstring>
+        <name>CRC_VECTOR_WORD_12345678</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::CRC_VECTOR_WORD_12345678</qualifiedname>
+        <initializer>= 0xDF8A8A2Bu</initializer>
+        <briefdescription>
+<para>one word, 0x12345678 </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="48" column="20" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1FirmwareImage_1a7aac9621e827d8ebbc6e625353f8c12a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::FirmwareImage::CRC_VECTOR_BYTES_00_0F</definition>
+        <argsstring></argsstring>
+        <name>CRC_VECTOR_BYTES_00_0F</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::CRC_VECTOR_BYTES_00_0F</qualifiedname>
+        <initializer>= 0x081B46CAu</initializer>
+        <briefdescription>
+<para>bytes 0x00..0x0F (four words) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="49" column="20" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="20" column="1"/>
+  </compounddef>
+</doxygen>

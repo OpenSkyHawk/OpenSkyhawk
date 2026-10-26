@@ -814,6 +814,7 @@
 
 ## o
 
+* **OSH\_FIRMWARE\_IDENTITY** ([**FirmwareImage.h**](FirmwareImage_8h.md))
 * **OPENSKYHAWK\_FW\_MAJOR** ([**FirmwareVersion.h**](FirmwareVersion_8h.md))
 * **OPENSKYHAWK\_FW\_MINOR** ([**FirmwareVersion.h**](FirmwareVersion_8h.md))
 * **OPENSKYHAWK\_FW\_PATCH** ([**FirmwareVersion.h**](FirmwareVersion_8h.md))

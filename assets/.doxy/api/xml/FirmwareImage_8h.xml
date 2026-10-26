@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="FirmwareImage_8h" kind="file" language="C++">
+    <compoundname>FirmwareImage.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes refid="FirmwareVersion_8h" local="no">FirmwareVersion.h</includes>
+    <includes refid="NodeStatus_8h" local="no">NodeStatus.h</includes>
+    <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
+    <includedby refid="PanelGroup_8cpp" local="no">Firmware/Libraries/PanelGroup/PanelGroup.cpp</includedby>
+    <includedby refid="PduNode_8cpp" local="no">Firmware/Libraries/PowerMonitor/PduNode.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/FirmwareImage/FirmwareImage.h</label>
+        <link refid="FirmwareImage_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>FirmwareVersion.h</label>
+        <link refid="FirmwareVersion_8h"/>
+      </node>
+      <node id="4">
+        <label>NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/FirmwareImage/FirmwareImage.h</label>
+        <link refid="FirmwareImage_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
+        <link refid="PanelBridge_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
+        <link refid="PanelGroup_8cpp"/>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" prot="public">OpenSkyhawk::FirmwareImage::Identity</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1FirmwareImage">OpenSkyhawk::FirmwareImage</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="FirmwareImage_8h_1af12054619552aca4fabb7187c07aaa65" prot="public" static="no">
+        <name>OSH_FIRMWARE_IDENTITY</name>
+        <param><defname>kind</defname></param>
+        <initializer>    extern &quot;C&quot; <ref refid="CANProtocol_8h_1a67126b6bd393981156eacf9a47da539b" kindref="member">__attribute__</ref>((section(&quot;.osh_identity&quot;), used))                                       \
+    const <ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" kindref="compound">::OpenSkyhawk::FirmwareImage::Identity</ref> osh_identity = {                                    \
+        <ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a8642a350f33ca3b5a9c88882b515f8c5" kindref="member">::OpenSkyhawk::FirmwareImage::MAGIC</ref>, <ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ac8b1a89fa3fb809ee8f927497a58f33a" kindref="member">::OpenSkyhawk::FirmwareImage::LAYOUT_VERSION</ref>,            \
+        (uint16_t)sizeof(<ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" kindref="compound">::OpenSkyhawk::FirmwareImage::Identity</ref>),                                     \
+        <ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ac0a156274191afc6249aaae0c5bdcb63" kindref="member">::OpenSkyhawk::FirmwareImage::UNSTAMPED</ref>, <ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ac0a156274191afc6249aaae0c5bdcb63" kindref="member">::OpenSkyhawk::FirmwareImage::UNSTAMPED</ref>,             \
+        (uint8_t)(NODE_ID), (uint8_t)(kind),                                                          \
+        <ref refid="FirmwareVersion_8h_1a4857b6675d886f53768388cc56e08a33" kindref="member">OPENSKYHAWK_FW_MAJOR</ref>, <ref refid="FirmwareVersion_8h_1aafbbbeb44395027937d93e06f38b6ddc" kindref="member">OPENSKYHAWK_FW_MINOR</ref>, <ref refid="FirmwareVersion_8h_1a8c0111c6c8fca560f370fd06d81927ad" kindref="member">OPENSKYHAWK_FW_PATCH</ref>, {0}                         \
+    }</initializer>
+        <briefdescription>
+<para>Define this image&apos;s identity block. Exactly one per image — in the role library. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="55" column="9" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="55" bodyend="63"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The image identity block every production STM32 image carries (#362). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>32 bytes, little-endian, at a fixed offset from the app&apos;s start (IDENTITY_OFFSET). The bootloader (#363) checks it at every boot and before it commits an update; the Gateway uploader (#366) and the client (SkyHawkClient#177) read it from an image file before anything is sent. The shared linker script (Firmware/shared/stm32f103.ld) places the block; Firmware/shared/osh_image.py fills in imageLength and imageCrc after linking. Everything else is set at compile time.</para>
+<para>The block is defined by the role library — <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>, <ref refid="namespacePduNode" kindref="compound">PduNode</ref>, <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> — with its NodeKind, through <ref refid="FirmwareImage_8h_1af12054619552aca4fabb7187c07aaa65" kindref="member">OSH_FIRMWARE_IDENTITY()</ref>. A sketch without a role has no block. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="FirmwareVersion_8h" kindref="compound">FirmwareVersion.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>NodeKind</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="20" refid="namespaceOpenSkyhawk_1_1FirmwareImage" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">FirmwareImage<sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a213a91467bba0079ad880443798edb0e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a213a91467bba0079ad880443798edb0e" kindref="member">IDENTITY_OFFSET</ref><sp/>=<sp/>0x200;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="23" refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a8642a350f33ca3b5a9c88882b515f8c5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a8642a350f33ca3b5a9c88882b515f8c5" kindref="member">MAGIC</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x594B534Fu;<sp/></highlight></codeline>
+<codeline lineno="24" refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ac8b1a89fa3fb809ee8f927497a58f33a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ac8b1a89fa3fb809ee8f927497a58f33a" kindref="member">LAYOUT_VERSION</ref><sp/><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="25" refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ac0a156274191afc6249aaae0c5bdcb63" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ac0a156274191afc6249aaae0c5bdcb63" kindref="member">UNSTAMPED</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0xFFFFFFFFu;<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" kindref="compound">Identity</ref><sp/>{</highlight></codeline>
+<codeline lineno="28" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a3fd47ac51a8d40960ad5db61304f1c1b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a3fd47ac51a8d40960ad5db61304f1c1b" kindref="member">magic</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="29" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a9a1c770885bf5c123c3a8088213d7a2a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a9a1c770885bf5c123c3a8088213d7a2a" kindref="member">layoutVersion</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="30" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a8598a753395d4fab2a7e644829413a87" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a8598a753395d4fab2a7e644829413a87" kindref="member">blockSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="31" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a059c034afb1df84182a5bc37baa9baf3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a059c034afb1df84182a5bc37baa9baf3" kindref="member">imageLength</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="32" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1af204c7dc0c5a425d707d4f5e9670e1d8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1af204c7dc0c5a425d707d4f5e9670e1d8" kindref="member">imageCrc</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="33" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1ad482b1fa3ee73b9e1b81cb9f07881918" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1ad482b1fa3ee73b9e1b81cb9f07881918" kindref="member">nodeId</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="34" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a2c67c195ee56642c49cf82d3061646a4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a2c67c195ee56642c49cf82d3061646a4" kindref="member">nodeKind</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="35" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a5b40de4661f8a4c928531789fc39882e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a5b40de4661f8a4c928531789fc39882e" kindref="member">fwMajor</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="36" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a150e0b2788a91c6790702545b93a1afa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a150e0b2788a91c6790702545b93a1afa" kindref="member">fwMinor</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="37" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a70f8ea54ce0cf5c95b45e890d16930d5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a70f8ea54ce0cf5c95b45e890d16930d5" kindref="member">fwPatch</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="38" refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a83109fdfb77355a2265512266a1189dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a83109fdfb77355a2265512266a1189dc" kindref="member">reserved</ref>[11];<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" kindref="compound">Identity</ref>)<sp/>==<sp/>32,<sp/></highlight><highlight class="stringliteral">&quot;the<sp/>identity<sp/>block<sp/>is<sp/>32<sp/>bytes&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Field<sp/>offsets<sp/>inside<sp/>the<sp/>block<sp/>—<sp/>for<sp/>readers<sp/>that<sp/>work<sp/>on<sp/>raw<sp/>bytes<sp/>(client<sp/>sync,<sp/>uploader,<sp/>tests).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="namespaceOpenSkyhawk_1_1FirmwareImage_1abed82c46ee7e2e0ec599ec12e11b304a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ae67f86fed5921c5f1f8912020a7e010c" kindref="member">OFF_MAGIC</ref><sp/>=<sp/>0,<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1aefb98af7a05b2a81b8202ed671245465" kindref="member">OFF_LAYOUT</ref><sp/>=<sp/>4,<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a713f12850f6265c023ecd6da68df5267" kindref="member">OFF_SIZE</ref><sp/>=<sp/>6,<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a5c19b90b5fcd18dedff9827a16920396" kindref="member">OFF_LENGTH</ref><sp/>=<sp/>8,<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1abed82c46ee7e2e0ec599ec12e11b304a" kindref="member">OFF_CRC</ref><sp/>=<sp/>12,</highlight></codeline>
+<codeline lineno="44" refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ae88716f8a1577ab6724552486fa07a0e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a3ac7ad54ea8bd78de56928ba54264809" kindref="member">OFF_NODE_ID</ref><sp/>=<sp/>16,<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a6ba87a116abfac778bd0328fd6c70c6c" kindref="member">OFF_NODE_KIND</ref><sp/>=<sp/>17,<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ae88716f8a1577ab6724552486fa07a0e" kindref="member">OFF_FW_MAJOR</ref><sp/>=<sp/>18,<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1aae3cca07c2d79d3f4f635c1c4c15d1a2" kindref="member">OFF_FW_MINOR</ref><sp/>=<sp/>19,<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1ad30bad047b6437c11ba4372246692867" kindref="member">OFF_FW_PATCH</ref><sp/>=<sp/>20;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="comment">//<sp/>imageCrc<sp/>algorithm:<sp/>CRC-32/MPEG-2<sp/>—<sp/>poly<sp/>0x04C11DB7,<sp/>init<sp/>0xFFFFFFFF,<sp/>no<sp/>reflection,<sp/>no<sp/>final<sp/>XOR<sp/>—</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="comment">//<sp/>over<sp/>32-bit<sp/>little-endian<sp/>words<sp/>(what<sp/>the<sp/>F103&apos;s<sp/>hardware<sp/>CRC<sp/>unit<sp/>computes).<sp/>Test<sp/>vectors:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="namespaceOpenSkyhawk_1_1FirmwareImage_1aec045529dc6bc73cade0a1c851e9d548" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1aec045529dc6bc73cade0a1c851e9d548" kindref="member">CRC_VECTOR_WORD_12345678</ref><sp/>=<sp/>0xDF8A8A2Bu;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="49" refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a7aac9621e827d8ebbc6e625353f8c12a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1FirmwareImage_1a7aac9621e827d8ebbc6e625353f8c12a" kindref="member">CRC_VECTOR_BYTES_00_0F</ref><sp/><sp/><sp/>=<sp/>0x081B46CAu;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>FirmwareImage</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="FirmwareImage_8h_1af12054619552aca4fabb7187c07aaa65" refkind="member"><highlight class="preprocessor">#define<sp/>OSH_FIRMWARE_IDENTITY(kind)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="56"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>extern<sp/>&quot;C&quot;<sp/>__attribute__((section(&quot;.osh_identity&quot;),<sp/>used))<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="57"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>const<sp/>::OpenSkyhawk::FirmwareImage::Identity<sp/>osh_identity<sp/>=<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="58"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>::OpenSkyhawk::FirmwareImage::MAGIC,<sp/>::OpenSkyhawk::FirmwareImage::LAYOUT_VERSION,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="59"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(uint16_t)sizeof(::OpenSkyhawk::FirmwareImage::Identity),<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="60"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>::OpenSkyhawk::FirmwareImage::UNSTAMPED,<sp/>::OpenSkyhawk::FirmwareImage::UNSTAMPED,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="61"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(uint8_t)(NODE_ID),<sp/>(uint8_t)(kind),<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="62"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>OPENSKYHAWK_FW_MAJOR,<sp/>OPENSKYHAWK_FW_MINOR,<sp/>OPENSKYHAWK_FW_PATCH,<sp/>{0}<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="63"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h"/>
+  </compounddef>
+</doxygen>

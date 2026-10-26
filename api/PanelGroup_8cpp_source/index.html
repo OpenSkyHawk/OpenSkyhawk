@@ -4692,6 +4692,10 @@
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"PanelGroup.h"</span><span class="w">   </span><span class="c1">// pulls in Helpers/ShiftBus/ShiftBus.h</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;STM32Board.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;FirmwareImage.h&gt;</span><span class="w">   </span><span class="c1">// the image identity block (#362)</span>
+
+<span class="c1">// This image's identity block — the bootloader and the uploader check it (#362).</span>
+<span class="n">OSH_FIRMWARE_IDENTITY</span><span class="p">(</span><span class="n">NodeKind</span><span class="o">::</span><span class="n">PANEL_GROUP</span><span class="p">);</span>
 
 <span class="c1">// ── Internal state ────────────────────────────────────────────────────────────</span>
 

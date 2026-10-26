@@ -16,6 +16,7 @@
 * `#include <NodeStatus.h>`
 * `#include <STM32Board.h>`
 * `#include <FirmwareVersion.h>`
+* `#include <FirmwareImage.h>`
 * `#include <A4EC_InputMap.h>`
 * `#include <string.h>`
 
@@ -61,6 +62,11 @@
 
 
 
+## Public Functions
+
+| Type | Name |
+| ---: | :--- |
+|   | [**OSH\_FIRMWARE\_IDENTITY**](#function-osh_firmware_identity) (NodeKind::BRIDGE) <br> |
 
 
 
@@ -89,6 +95,23 @@
 
 
 
+## Public Functions Documentation
+
+
+
+
+### function OSH\_FIRMWARE\_IDENTITY 
+
+```C++
+OSH_FIRMWARE_IDENTITY (
+    NodeKind::BRIDGE
+) 
+```
+
+
+
+
+<hr>
 
 ------------------------------
 The documentation for this class was generated from the following file `Firmware/Libraries/PanelBridge/PanelBridge.cpp`

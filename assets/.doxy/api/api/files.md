@@ -16,6 +16,8 @@ Here is a list of all files with brief descriptions:
         * **dir** [**DrumDisplay**](dir_b8ac8c4bf654b399fff34fe5003d7d6c.md)     
             * **file** [**DrumDisplay.cpp**](DrumDisplay_8cpp.md)     
             * **file** [**DrumDisplay.h**](DrumDisplay_8h.md) _Rolling mechanical-drum OLED readout output for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
+        * **dir** [**FirmwareImage**](dir_3451fbe5395677fadb73167fe1a855e6.md)     
+            * **file** [**FirmwareImage.h**](FirmwareImage_8h.md) _The image identity block every production STM32 image carries (#362)._     
         * **dir** [**FirmwareVersion**](dir_cb5acd30e4dc0e08f694c9971e69b791.md)     
             * **file** [**FirmwareVersion.h**](FirmwareVersion_8h.md) _The firmware release version — one source for every board that reports it._     
         * **dir** [**HIDControls**](dir_8de7ffd664ed88ad14416481a318893f.md)     

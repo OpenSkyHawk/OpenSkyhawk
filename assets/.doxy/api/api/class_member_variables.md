@@ -22,6 +22,7 @@
 ## b
 
 * **BAND\_EPS** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
+* **blockSize** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **backoff** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **bit** ([**PinRef**](classPinRef.md))
 * **bus** ([**PinRef**](classPinRef.md))
@@ -73,6 +74,9 @@
 
 * **faces** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
 * **flag** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **fwMajor** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
+* **fwMinor** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
+* **fwPatch** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **fuseOpenCheck** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
 * **FAST\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **firstUartErrMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
@@ -103,6 +107,8 @@
 ## i
 
 * **interDigitGapMm** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **imageCrc** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
+* **imageLength** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **I2C\_RETRY\_MS** ([**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md))
 * **iGain12** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
 * **iGain5** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
@@ -113,6 +119,7 @@
 
 * **loopsWaited** ([**BatchState**](structBatchState.md))
 * **leadingZero** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **layoutVersion** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **len** ([**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
 * **lastUartErrMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 * **lastUsbLossMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
@@ -128,7 +135,7 @@
 * **minRaw** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
 * **max** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **min** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
-* **magic** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md))
+* **magic** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md), [**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **MAX\_CELLS** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **mask** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **mul** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
@@ -150,6 +157,8 @@
 * **nDigits** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **nGlyphs** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **nSources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **nodeId** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
+* **nodeKind** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **NO\_POSITION** ([**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md))
 * **ntcOffsetDC** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
 
@@ -180,6 +189,7 @@
 ## r
 
 * **reverse** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
+* **reserved** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **rangeSteps** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **recalDebounceMs** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **recoveryReboots** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))

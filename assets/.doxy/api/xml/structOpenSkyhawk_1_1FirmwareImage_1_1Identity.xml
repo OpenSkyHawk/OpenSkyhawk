@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" kind="struct" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::FirmwareImage::Identity</compoundname>
+    <includes refid="FirmwareImage_8h" local="no">FirmwareImage.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a3fd47ac51a8d40960ad5db61304f1c1b" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::FirmwareImage::Identity::magic</definition>
+        <argsstring></argsstring>
+        <name>magic</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::magic</qualifiedname>
+        <briefdescription>
+<para>0 MAGIC </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="28" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a9a1c770885bf5c123c3a8088213d7a2a" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::FirmwareImage::Identity::layoutVersion</definition>
+        <argsstring></argsstring>
+        <name>layoutVersion</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::layoutVersion</qualifiedname>
+        <briefdescription>
+<para>4 LAYOUT_VERSION </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="29" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a8598a753395d4fab2a7e644829413a87" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::FirmwareImage::Identity::blockSize</definition>
+        <argsstring></argsstring>
+        <name>blockSize</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::blockSize</qualifiedname>
+        <briefdescription>
+<para>6 sizeof(Identity); a newer layout may grow — readers parse the prefix they know </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="30" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a059c034afb1df84182a5bc37baa9baf3" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::FirmwareImage::Identity::imageLength</definition>
+        <argsstring></argsstring>
+        <name>imageLength</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::imageLength</qualifiedname>
+        <briefdescription>
+<para>8 bytes from the app&apos;s start, padded to 4 — stamped after linking </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="31" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1af204c7dc0c5a425d707d4f5e9670e1d8" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::FirmwareImage::Identity::imageCrc</definition>
+        <argsstring></argsstring>
+        <name>imageCrc</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::imageCrc</qualifiedname>
+        <briefdescription>
+<para>12 CRC-32/MPEG-2 over imageLength bytes, this word skipped — stamped after linking </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="32" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1ad482b1fa3ee73b9e1b81cb9f07881918" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::FirmwareImage::Identity::nodeId</definition>
+        <argsstring></argsstring>
+        <name>nodeId</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::nodeId</qualifiedname>
+        <briefdescription>
+<para>16 NODE_ID (the build flag, D10) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="33" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a2c67c195ee56642c49cf82d3061646a4" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::FirmwareImage::Identity::nodeKind</definition>
+        <argsstring></argsstring>
+        <name>nodeKind</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::nodeKind</qualifiedname>
+        <briefdescription>
+<para>17 NodeKind of the role </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="34" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a5b40de4661f8a4c928531789fc39882e" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::FirmwareImage::Identity::fwMajor</definition>
+        <argsstring></argsstring>
+        <name>fwMajor</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::fwMajor</qualifiedname>
+        <briefdescription>
+<para>18 <ref refid="FirmwareVersion_8h" kindref="compound">FirmwareVersion.h</ref> — the same version READY_n reports </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="35" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a150e0b2788a91c6790702545b93a1afa" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::FirmwareImage::Identity::fwMinor</definition>
+        <argsstring></argsstring>
+        <name>fwMinor</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::fwMinor</qualifiedname>
+        <briefdescription>
+<para>19 </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="36" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a70f8ea54ce0cf5c95b45e890d16930d5" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::FirmwareImage::Identity::fwPatch</definition>
+        <argsstring></argsstring>
+        <name>fwPatch</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::fwPatch</qualifiedname>
+        <briefdescription>
+<para>20 </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="37" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a83109fdfb77355a2265512266a1189dc" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::FirmwareImage::Identity::reserved[11]</definition>
+        <argsstring>[11]</argsstring>
+        <name>reserved</name>
+        <qualifiedname>OpenSkyhawk::FirmwareImage::Identity::reserved</qualifiedname>
+        <briefdescription>
+<para>21 0 </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="38" column="14" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Firmware/Libraries/FirmwareImage/FirmwareImage.h" line="27" column="1" bodyfile="Firmware/Libraries/FirmwareImage/FirmwareImage.h" bodystart="27" bodyend="39"/>
+    <listofallmembers>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a8598a753395d4fab2a7e644829413a87" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>blockSize</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a5b40de4661f8a4c928531789fc39882e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>fwMajor</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a150e0b2788a91c6790702545b93a1afa" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>fwMinor</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a70f8ea54ce0cf5c95b45e890d16930d5" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>fwPatch</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1af204c7dc0c5a425d707d4f5e9670e1d8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>imageCrc</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a059c034afb1df84182a5bc37baa9baf3" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>imageLength</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a9a1c770885bf5c123c3a8088213d7a2a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>layoutVersion</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a3fd47ac51a8d40960ad5db61304f1c1b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>magic</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1ad482b1fa3ee73b9e1b81cb9f07881918" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>nodeId</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a2c67c195ee56642c49cf82d3061646a4" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>nodeKind</name></member>
+      <member refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity_1a83109fdfb77355a2265512266a1189dc" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FirmwareImage::Identity</scope><name>reserved</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
