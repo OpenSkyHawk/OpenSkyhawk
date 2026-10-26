@@ -65,7 +65,7 @@ actually does.
 | `PANELBRIDGE_NODE_STATUS` | **on** | `=0` in `Tests/PanelBridge` `test_input_dispatch_dcs` / `_hid` | `PanelBridge.h:38` (default), `PanelBridge.cpp:46` + ~10 more |
 | `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:511` (`serviceNodeStatus`, every node) |
 | `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:452`, `CANProtocol.cpp:528` |
-| `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:179` |
+| `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:180` |
 | `PINREF_DEBUG` | off | never set | `PinRef.cpp:8` + ~9 more |
 | `SHIFTBUS_SCK` | `PB3` | never set | `ShiftBus.cpp:13` |
 | `SHIFTBUS_MISO` | `PB4` | never set | `ShiftBus.cpp:16` |
@@ -177,7 +177,7 @@ HAL module list, so without our `-D` there is no bxCAN driver to link against.
     `-DHSE_VALUE=8000000` tells HAL what the crystal is. It does **not** switch the clock tree to
     it, and `8000000U` is already what STM32duino defaults the F1 to, so the flag changes nothing
     on its own. What actually selects HSE is `STM32Board`'s strong override of
-    `SystemClock_Config` (`STM32Board.cpp:164`), which every OpenSkyhawk STM32 node links.
+    `SystemClock_Config` (`STM32Board.cpp:165`), which every OpenSkyhawk STM32 node links.
     Without it, the variant runs HSI-PLL at 64 MHz → APB1 32 MHz → CAN at 444 kbps against a
     500 kbps bus.
 

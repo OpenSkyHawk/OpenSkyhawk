@@ -6,14 +6,18 @@ CANable (slcan, python-can), before the Gateway uploader (#366) exists.
   python3 flash_can.py PORT --listen                       # print bootloader announcements
   python3 flash_can.py PORT firmware.bin --node N --stop-after 40   # stop mid-image, as if power went
   python3 flash_can.py PORT firmware.bin --delay-ms 100   # stretch the write for a power-pull test
+  python3 flash_can.py PORT firmware.bin --unconfigured   # a board with no NODE_ID yet (one on the bus)
+  python3 flash_can.py PORT --node N --set-node-id M      # move node N to NODE_ID M (invalidates its app)
 
 The image is a production firmware.bin (app at 0x08001000, identity block stamped by
 Firmware/shared/osh_image.py). Its identity block gives the length BEGIN announces and the CRC END
 checks. Frame IDs and codes are read from Firmware/Libraries/BootProtocol/BootProtocol.h, so this
 script can't drift from the bootloader. Protocol: Firmware/ScratchPad/FirmwarePlan/12-bootloader.md.
 
-A board enters its bootloader when it has no valid app, or on request (#365). On the bench without
-#365, request it over ST-Link: write 0xB007 to backup register DR1 (0x40006C04) and reset.
+A board enters its bootloader when it has no valid app, on request (#365), when its app keeps
+resetting, or when a CONNECT arrives in the 200 ms after a reset — this script sends CONNECT every
+100 ms while it waits, so resetting the board catches it. On the bench without #365, request it over
+ST-Link instead: write 0xB007 to backup register DR1 (0x40006C04) and reset.
 """
 import argparse
 import pathlib
@@ -33,8 +37,10 @@ def protocol():
 
 P = protocol()
 BLK, DATA_BYTES, DATA_FRAMES = P["BLOCK_SIZE"], P["DATA_BYTES"], P["DATA_FRAMES"]
-STATES = {P["REQUESTED"]: "requested", P["APP_INVALID"]: "app invalid", P["UNCONFIGURED"]: "unconfigured"}
-STATUS = {v: k for k, v in P.items() if k in ("OK", "BAD_CRC", "FLASH_ERROR", "OUT_OF_RANGE", "OUT_OF_ORDER", "NO_APP", "BAD_IMAGE")}
+STATES = {P["REQUESTED"]: "requested", P["APP_INVALID"]: "app invalid", P["UNCONFIGURED"]: "unconfigured",
+          P["APP_UNSTABLE"]: "app unstable", P["CAUGHT"]: "caught at boot"}
+STATUS = {v: k for k, v in P.items() if k in ("OK", "BAD_CRC", "FLASH_ERROR", "OUT_OF_RANGE", "OUT_OF_ORDER", "NO_APP",
+                                               "BAD_IMAGE", "WRONG_NODE", "WRONG_KIND")}
 
 
 def crc16(d):  # CRC-16/CCITT-FALSE — the block check
@@ -55,8 +61,9 @@ def identity(img):
 
 
 def describe(d):
+    uid = f" · uid {d[6] | (d[7] << 8):04X}" if len(d) >= 8 else ""
     return (f"bootloader v{d[1]} · node {d[2] if d[2] != 0xFF else '—'} · kind {d[3] if d[3] != 0xFF else '—'} · "
-            f"{STATES.get(d[4], hex(d[4]))} · flash {d[5]} KB")
+            f"{STATES.get(d[4], hex(d[4]))} · flash {d[5]} KB{uid}")
 
 
 class Bus:
@@ -85,12 +92,21 @@ def listen(bus):
             print(f"{time.strftime('%H:%M:%S')}  0x{r[0]:03X}  {describe(r[1])}")
 
 
-def flash(bus, img, node, stop_after, no_go, delay_ms=0):
-    length, image_crc, img_node, img_kind, version = identity(img)
-    print(f"image: node {img_node} · kind {img_kind} · v{version} · {length} B · CRC {image_crc:08X}")
-    img = img[:length]
-    padded = img + b"\xFF" * (-len(img) % BLK)
-    cmd, rsp = P["CMD_ID_BASE"] + node, P["RSP_ID_BASE"] + node
+def unconfigured_uid(bus):
+    """The UID16 of the (one) unconfigured bootloader on the bus, from its announcement."""
+    print("waiting for an unconfigured bootloader's announcement …")
+    while True:
+        r = bus.recv(1.0)
+        if r and r[0] == P["UNCONFIGURED_RSP_ID"] and len(r[1]) >= 8 and r[1][0] == P["ANNOUNCE"]:
+            return r[1][6] | (r[1][7] << 8)
+
+
+def connect(bus, node, uid=None):
+    """Open a session: (ask, info). node=None → the unconfigured board named by uid."""
+    if node is None:
+        cmd, rsp, hello = P["UNCONFIGURED_CMD_ID"], P["UNCONFIGURED_RSP_ID"], [P["CONNECT"], uid & 0xFF, uid >> 8]
+    else:
+        cmd, rsp, hello = P["CMD_ID_BASE"] + node, P["RSP_ID_BASE"] + node, [P["CONNECT"]]
 
     def ask(data, want, timeout=0.5, tries=3):
         for _ in range(tries):
@@ -102,11 +118,28 @@ def flash(bus, img, node, stop_after, no_go, delay_ms=0):
                     return r[1]
         return None
 
-    print(f"waiting for node {node}'s bootloader …")
+    print(f"waiting for {'the unconfigured board' if node is None else f'node {node}'}'s bootloader …")
     info = None
-    while not info:
-        info = ask([P["CONNECT"]], P["CONNECTED"], timeout=0.1, tries=1)
+    while not info:              # every 100 ms — also catches a board in its 200 ms window after a reset
+        info = ask(hello, P["CONNECTED"], timeout=0.1, tries=1)
     print(describe(info))
+    return ask, cmd, rsp
+
+
+def set_node_id(bus, node, new_id):
+    ask, _, _ = connect(bus, node)
+    r = ask([P["SET_NODE_ID"], new_id], P["NODE_SET"], timeout=1.0)
+    if not r or r[1]:
+        sys.exit(f"SET_NODE_ID refused: {STATUS.get(r[1], r[1]) if r else 'no reply'}")
+    print(f"node {node} is now node {new_id} — its app is invalid until an image for node {new_id} is flashed")
+
+
+def flash(bus, img, node, stop_after, no_go, delay_ms=0, uid=None):
+    length, image_crc, img_node, img_kind, version = identity(img)
+    print(f"image: node {img_node} · kind {img_kind} · v{version} · {length} B · CRC {image_crc:08X}")
+    img = img[:length]
+    padded = img + b"\xFF" * (-len(img) % BLK)
+    ask, cmd, rsp = connect(bus, node, uid)
 
     t0 = time.monotonic()
     r = ask([P["BEGIN"], *struct.pack("<I", length)], P["BEGUN"], timeout=1.0)
@@ -158,16 +191,25 @@ def main():
     ap.add_argument("--stop-after", type=int, help="stop after N blocks (simulated power loss)")
     ap.add_argument("--no-go", action="store_true", help="don't start the app after a good END")
     ap.add_argument("--delay-ms", type=int, default=0, help="pause after each block — stretches the write for a power-pull test")
+    ap.add_argument("--unconfigured", action="store_true", help="flash the one unconfigured board on the bus (no NODE_ID yet)")
+    ap.add_argument("--set-node-id", type=int, metavar="M", help="move --node N to NODE_ID M (invalidates its app)")
     a = ap.parse_args()
     bus = Bus(a.port)
     try:
         if a.listen:
             listen(bus)
+        elif a.set_node_id is not None:
+            if a.node is None:
+                ap.error("--set-node-id needs --node")
+            set_node_id(bus, a.node, a.set_node_id)
         elif not a.image:
-            ap.error("an image is needed unless --listen")
+            ap.error("an image is needed unless --listen or --set-node-id")
         else:
             img = pathlib.Path(a.image).read_bytes()
-            flash(bus, img, a.node if a.node is not None else identity(img)[2], a.stop_after, a.no_go, a.delay_ms)
+            if a.unconfigured:
+                flash(bus, img, None, a.stop_after, a.no_go, a.delay_ms, unconfigured_uid(bus))
+            else:
+                flash(bus, img, a.node if a.node is not None else identity(img)[2], a.stop_after, a.no_go, a.delay_ms)
     except KeyboardInterrupt:
         pass  # Ctrl-C is how --listen (or a stuck wait) ends — close the bus quietly, no traceback
     finally:

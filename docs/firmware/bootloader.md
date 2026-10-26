@@ -13,6 +13,12 @@ has. If it doesn't — an update was interrupted, or the board was never flashed
 in charge, blinks the status LED red, and announces itself on the bus once a second, ready for a new
 image.
 
+If the firmware passes the check but keeps resetting before it finishes booting, the bootloader
+counts the attempts. After three, it stops starting it and announces the board as unstable, with the
+red LED on, until a new image arrives. And for 200 ms after every reset it listens for an update tool
+asking it to stay — so even firmware that never answers on the bus can be replaced: power-cycle the
+cockpit while the update is waiting.
+
 An update is written so that a failure at any point is safe. The first block of the new firmware is
 held back and written only after the whole image has arrived and its checksum matches. Pull the power
 halfway through, and the board comes back in its bootloader, ready to try again.
@@ -23,6 +29,12 @@ A board's NODE_ID still comes from the firmware you build (`-DNODE_ID` in `platf
 [NODE_ID & CAN Addressing](node-id.md)). The bootloader keeps a copy of it, so a board whose firmware
 is broken still answers as its own node. Flash a different node's firmware over ST-Link, and the copy
 follows on the next boot.
+
+An update over the bus never changes a board's node number. Firmware built for node 5 is refused by
+node 3; changing the number is a separate step the update tool offers, and firmware for a different
+kind of board (a PDU image on a panel board) is always refused. A board that came with the bootloader
+alone has no node number yet: it takes its first firmware over the bus — one such board on the bus at
+a time — and becomes that firmware's node.
 
 ## Getting the bootloader onto a board
 
@@ -45,6 +57,17 @@ From a release, flash the board's `-full.hex` file (bootloader plus firmware) on
     PanelGroup library gets one automatically. A bare sketch that uses none of the OpenSkyhawk node
     libraries has no identity block, and the bootloader won't start it.
 
-!!! warning "A full chip erase removes the bootloader"
-    So do the per-library test sketches under `Firmware/Tests/`, which flash from address 0. Put it
-    back with `pio run -d Firmware/Bootloader -t upload`, or `pio run -t bootstrap` from a project.
+## The bootloader protects itself
+
+On its first boot the bootloader write-protects its own 4 KB, so nothing — not a stray write, not a
+mistaken upload — can damage it. Flashing anything at address 0 therefore needs the protection lifted
+first: replacing the bootloader, or running one of the per-library test sketches under
+`Firmware/Tests/`, which flash from address 0. With the ST-Link connected:
+
+```bash
+openocd -f interface/stlink.cfg -c "set CPUTAPID 0" -f target/stm32f1x.cfg -c "init; reset halt; flash protect 0 0 0 off; reset halt; shutdown"
+```
+
+Then upload as usual (`pio run -t upload` in the test project). The board's node number is kept.
+To go back, run `pio run -t bootstrap` from the board's project: the bootloader returns and protects
+itself again on its first boot.

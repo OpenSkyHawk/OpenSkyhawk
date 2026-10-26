@@ -107,10 +107,10 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
-| `BOOT_CMD_n` | `0x740+n` | PanelBridge → Node_n's bootloader | ≤8 | Bootloader commands (#363) — CONNECT / BEGIN / BLOCK + DATA / END / GO. Lowest priority on the bus, so update traffic never delays a control. Values in `BootProtocol.h`; protocol in `12-bootloader.md` |
-| `BOOT_RSP_n` | `0x780+n` | Node_n's bootloader → PanelBridge | ≤8 | Bootloader replies and the 1 s announcement while a board waits in its bootloader (#363) |
-| `BOOT_UNCONF_CMD` | `0x7C0` | PanelBridge → unconfigured bootloader | ≤8 | Reserved for #364 — commands to a bootloader with no NODE_ID yet, addressed by chip UID |
-| `BOOT_UNCONF_RSP` | `0x7C1` | unconfigured bootloader → PanelBridge | 6 | Announcement of a bootloader with no NODE_ID (option byte Data0 = `0xFF`) and no valid app (#363) |
+| `BOOT_CMD_n` | `0x740+n` | PanelBridge → Node_n's bootloader | ≤8 | Bootloader commands (#363, #364) — CONNECT / BEGIN / BLOCK + DATA / END / GO / SET_NODE_ID; a CONNECT in the 200 ms after a reset also catches a running board. Lowest priority on the bus, so update traffic never delays a control. Values in `BootProtocol.h`; protocol in `12-bootloader.md` |
+| `BOOT_RSP_n` | `0x780+n` | Node_n's bootloader → PanelBridge | ≤8 | Bootloader replies and the 1 s announcement (8 bytes, with the chip's UID hash) while a board waits in its bootloader (#363, #364) |
+| `BOOT_UNCONF_CMD` | `0x7C0` | PanelBridge → unconfigured bootloader | ≤8 | Commands to a bootloader with no NODE_ID yet; CONNECT names its UID hash and binds that board alone (#364) |
+| `BOOT_UNCONF_RSP` | `0x7C1` | unconfigured bootloader → PanelBridge | 8 | Announcement and replies of a bootloader with no NODE_ID (option byte Data0 = `0xFF`) and no valid app (#363, #364) |
 
 ---
 
