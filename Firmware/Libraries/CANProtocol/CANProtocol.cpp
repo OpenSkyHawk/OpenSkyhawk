@@ -32,7 +32,12 @@ struct BatchState {
 // ── Private state ─────────────────────────────────────────────────────────────
 
 static constexpr uint8_t TX_RING_SIZE    = 16;
-static constexpr uint8_t RX_RING_SIZE    = 8;
+// The bridge hears every node, so it gets the deep ring; a node hears only the bridge (#387).
+// Override with -DCAN_RX_RING_SIZE=N (2-255).
+#ifndef CAN_RX_RING_SIZE
+#define CAN_RX_RING_SIZE ((NODE_ID) == GATEWAY_NODE_ID ? 128 : 8)
+#endif
+static constexpr uint8_t RX_RING_SIZE    = CAN_RX_RING_SIZE;
 static constexpr uint8_t MAX_FILTER_IDS  = 16;
 static constexpr uint8_t MAX_TX_ATTEMPTS = 3;
 
@@ -52,6 +57,9 @@ static BatchState         _batches[5];
 static CanStatusCallback  _statusCb  = nullptr;
 static CanSyncReqCallback _syncReqCb = nullptr;
 static bool               _readySent = false;   // the boot READY is out: answer SYNC_REQ with READY (#383)
+static bool               _resyncPending = false;   // answered a SYNC_REQ: READY(RESYNC) once TX is idle (#387)
+static uint32_t           _resyncSinceMs = 0;
+static uint32_t           _rxDrops = 0;
 static CanRxCallback      _rxCb      = nullptr;
 
 static CanStatus          _status         = CanStatus::STARTING;
@@ -184,7 +192,7 @@ static void _updateStatus() {
 
 static void _enqueueRxFrame(uint32_t canId, uint8_t len, const uint8_t* data) {
     uint8_t next = (_rxTail + 1) % RX_RING_SIZE;
-    if (next == _rxHead) return;  // software RX ring full — drop
+    if (next == _rxHead) { _rxDrops++; return; }  // software RX ring full — drop, counted (#387)
 
     _rxRing[_rxTail].canId = canId;
     _rxRing[_rxTail].len   = len;
@@ -286,19 +294,32 @@ void drain() {
     _drainTxQueueFromMain();
     _pollRxFifo0();
 
+    // The end of our answer to a SYNC_REQ (#387): READY(RESYNC) once everything the answer queued
+    // has left — the transmit ring empty and all three mailboxes free, so it can't overtake a
+    // higher-priority frame of the burst. 50 ms cap: never hold it back for good.
+    if (_resyncPending) {
+        const bool idle = _txHead == _txTail
+                       && HAL_CAN_GetTxMailboxesFreeLevel(STM32Board::canHandle()) == 3;
+        if (idle || (uint32_t)(millis() - _resyncSinceMs) >= 50) {
+            _resyncPending = false;
+            const ReadyPayload p = makeReadyPayload(static_cast<uint8_t>(ReadyFlag::RESYNC));
+            send(canIdReady(NODE_ID), reinterpret_cast<const uint8_t*>(&p), sizeof(p));
+        }
+    }
+
     // Drain RX ring — copy out before advancing head so ISR can't clobber in-flight frame
     while (_rxHead != _rxTail) {
         RxQueueEntry frame = _rxRing[_rxHead];
         _rxHead = (_rxHead + 1) % RX_RING_SIZE;
 
         if (frame.canId == CAN_ID_SYNC_REQ) {
-            // Re-announce the version to a bridge that may have booted after us (#383) — flagged,
-            // so it doesn't broadcast SYNC_REQ back. Not before our own boot READY.
-            if (_readySent) {
-                const ReadyPayload p = makeReadyPayload(static_cast<uint8_t>(ReadyFlag::RESYNC));
-                send(canIdReady(NODE_ID), reinterpret_cast<const uint8_t*>(&p), sizeof(p));
-            }
+            // For another node (#387): not ours to answer.
+            if (frame.len >= SYNC_REQ_LEN_TARGETED && frame.data[0] != NODE_ID) continue;
             if (_syncReqCb) _syncReqCb();
+            // Then READY(RESYNC) once the answer has gone out (top of drain()): it re-announces our
+            // version to a bridge that booted after us (#383) and tells it we're done (#387). Not
+            // before our own boot READY.
+            if (_readySent) { _resyncPending = true; _resyncSinceMs = millis(); }
         } else if (frame.canId == CAN_ID_TEST_SEQ) {
             send(canIdEcho(NODE_ID), frame.data, frame.len);
         } else if (NODE_ID != GATEWAY_NODE_ID && frame.canId == OpenSkyhawk::Boot::canIdBootCmd(NODE_ID)) {
@@ -496,6 +517,12 @@ void sendReady() {
 }
 
 uint32_t txDropCount() { return _txDrops; }
+uint32_t rxDropCount() { return _rxDrops; }
+
+void sendSyncReq(uint8_t nodeId) {
+    const uint8_t d[SYNC_REQ_LEN_TARGETED] = {nodeId};
+    send(CAN_ID_SYNC_REQ, d, sizeof d);
+}
 
 const NodeHealthPayload& lastNodeHealth() { return _lastHealth; }
 

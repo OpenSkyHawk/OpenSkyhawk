@@ -143,7 +143,12 @@ enum class CanStatus {
 
 static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010;  ///< Broadcast ControlPacketPair to all panels
 static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  ///< RTT throughput test
-static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Request all nodes to re-poll inputs
+static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Request nodes to re-send their state (see below)
+
+/// SYNC_REQ payload (#387): byte 0 = the NODE_ID it is for — only that node answers. An empty
+/// SYNC_REQ (DLC 0) is for every node; PanelBridge no longer sends one (it syncs one node at a
+/// time), but nodes still honour it.
+static constexpr uint8_t SYNC_REQ_LEN_TARGETED = 1;
 
 // ── CAN ID functions (per-node IDs computed from NODE_ID) ─────────────────────
 
@@ -358,8 +363,10 @@ namespace CANProtocol {
     /**
      * @brief Register a SYNC_REQ handler.
      *
-     * Fired by drain() when SYNC_REQ (0x012) is received. PanelGroup registers this
-     * to trigger a re-poll of all registered input objects.
+     * Fired by drain() when a SYNC_REQ (0x012) for this node arrives — one naming its NODE_ID, or an
+     * untargeted one. PanelGroup registers this to re-send all its inputs. Once the node's transmit
+     * queue has emptied afterwards, drain() sends a READY flagged ReadyFlag::RESYNC: the end of the
+     * node's answer, which the bridge waits for before syncing the next node (#383, #387).
      *
      * @param cb Callback to invoke on SYNC_REQ receipt.
      */
@@ -428,14 +435,27 @@ namespace CANProtocol {
      * @brief Send this node's boot READY_n (`canIdReady(NODE_ID)`) carrying makeReadyPayload().
      *
      * Call once at the end of the node's setup(), after its boot EVT burst. PanelBridge marks the
-     * node alive, caches its version and broadcasts SYNC_REQ. Bounded retry like every other
-     * special frame (02-can-protocol.md). From then on drain() answers every SYNC_REQ with a READY
-     * flagged ReadyFlag::RESYNC (#383) — nothing for the caller to do.
+     * node alive, caches its version and queues the node for a sync. Bounded retry like every other
+     * special frame (02-can-protocol.md). From then on drain() ends every answer to a SYNC_REQ
+     * with a READY flagged ReadyFlag::RESYNC (#383, #387) — nothing for the caller to do.
      */
     void sendReady();
 
     /** @brief Return the cumulative TX queue drop count since startup. */
     uint32_t txDropCount();
+
+    /**
+     * @brief Return the cumulative RX drop count since startup (#387): frames lost because the
+     *        software RX ring was full when they arrived. Should stay 0; nonzero means loop() falls
+     *        behind the bus.
+     */
+    uint32_t rxDropCount();
+
+    /**
+     * @brief Ask one node to re-send its state: SYNC_REQ naming @p nodeId (#387). PanelBridge only.
+     * @param nodeId 1-63.
+     */
+    void sendSyncReq(uint8_t nodeId);
 
     // ── Node status service (every node) ──────────────────────────────────────
 

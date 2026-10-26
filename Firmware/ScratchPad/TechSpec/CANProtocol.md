@@ -611,10 +611,18 @@ namespace CANProtocol {
      *  @param flags ReadyFlag bits — 0 for the boot READY (#383). */
     ReadyPayload makeReadyPayload(uint8_t flags = 0);
 
+    /** @brief SYNC_REQ for one node (#387): byte 0 = @p nodeId. PanelBridge's sync queue only. */
+    void sendSyncReq(uint8_t nodeId);
+
+    /** @brief Frames lost to a full software RX ring since startup (#387). Should stay 0. */
+    uint32_t rxDropCount();
+
     /**
      * @brief Send this node's boot READY_n with makeReadyPayload(). Called once, at the end of the
      *        node library's setup() (PanelGroup step 8, PduNode) — never by sketches. From then on
-     *        drain() answers every SYNC_REQ with a READY flagged RESYNC before firing onSyncReq (#383).
+     *        drain() ends its answer to every SYNC_REQ for this node (byte 0 = NODE_ID, or DLC 0)
+     *        with a READY flagged RESYNC: onSyncReq fires first, and the READY goes once the TX ring
+     *        is empty and all mailboxes are free (50 ms cap), so it marks the end of the burst (#383, #387).
      */
     void sendReady();
 

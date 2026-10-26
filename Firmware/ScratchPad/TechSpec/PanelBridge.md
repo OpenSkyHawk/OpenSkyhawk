@@ -54,14 +54,14 @@ PanelGroup sketches include `A4EC_CmdIds.h`; they do not include `A4EC_InputMap.
 Firmware/Tests/PanelBridge/
 ├── platformio.ini
 └── tests/
-    ├── startup_sequence.cpp     — setup order, pass-all filter, CAN start, cold-boot SYNC_REQ
+    ├── startup_sequence.cpp     — setup order, pass-all filter, CAN start (no SYNC_REQ: nodes queue on first HB, #387)
     ├── node_tracking.cpp        — READY sync, alive/dead callbacks, heartbeat timeout/recovery
     ├── input_dispatch_dcs.cpp   — 0x8000-0x86FF routing; 0x8700 and 0xFFFF rejected;
     │                             SWITCH/ACTION/ENCODER/ACCEL_ENCODER/MULTIPOS formatting
     ├── input_dispatch_hid.cpp   — controlId < 0x8000 becomes exact 6-byte HID frame
     ├── output_submission.cpp    — DCS output listener submits ControlPackets to
     │                             CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, ...)
-    ├── model_time_resync.cpp    — first value seeds state; later decrease broadcasts SYNC_REQ
+    ├── model_time_resync.cpp    — first value seeds state; later decrease queues every alive node for a sync
     └── test_seq_diag.cpp        — DiagSerial 'T' sends exactly 8 TEST_SEQ bytes; ECHO consumed
 ```
 
@@ -413,6 +413,13 @@ the `bridge` bootloader installed the board resets into it and the Gateway's upl
 USART2; with the CAN build (or none) nothing happens. `handleDcsBiosExport()` drops the address. The
 PanelBridge projects set `[osh] bootloader_env = bridge`, so `pio run -t bootstrap` flashes the right
 build.
+
+**Sequential sync (#387).** `_syncQueue` (a bit per NODE_ID) fills from `queueSync()`: a node seen
+alive (`markNodeAlive()` true on HB / HEALTH) or a boot READY, and every alive node on a
+`model_time` rewind; `forgetNode()` clears its bit. `serviceSync(now)` runs every `loop()`: with no
+node outstanding (`_syncing` 0, or `SYNC_TIMEOUT_MS` = 150 ms elapsed) it sends
+`CANProtocol::sendSyncReq()` for the lowest queued node. A READY flagged RESYNC from `_syncing`
+clears it, so the next node goes on the next loop. No broadcast `SYNC_REQ` is sent anywhere.
 
 **Forgetting a node (#384).** `forgetNode(id)` resets the node's `NodeState` and, if it was dead,
 decrements `_deadCount` (clearing WARNING at 0). Called from `onBootRsp()` on `NODE_SET` OK (the old
