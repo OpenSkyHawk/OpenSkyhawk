@@ -363,6 +363,10 @@ void _lineReset() {
 }
 
 void _relayByte(uint8_t b) {
+    // Noise before a line starts is dropped on its own: PanelBridge's UART coming up (every reset)
+    // clocks a stray byte just ahead of its boot roster, and a line never starts with one, so
+    // nothing real is lost (#367). Inside a line it still condemns the line.
+    if (_lineLen == 0 && b != '\n' && (b < 0x20 || b > 0x7E)) return;
     if (_lineLen < SimGateway::RELAY_LINE_MAX) _line[_lineLen++] = b;
     else                                       _lineOverlong = true;
 
@@ -834,8 +838,10 @@ bool _processByte(uint8_t b) {
                 _framePos = 0;
                 _state    = ParserState::IN_FRAME;
             } else {
-                // Resync: 0xAA was not magic; both bytes go to the line and resume. 0xAA is not
-                // ASCII, so the line they land in is dropped as corrupt rather than relayed.
+                // Resync: 0xAA was not magic; both bytes go to the line and resume. The line they
+                // land in is dropped as corrupt rather than relayed — marked here, since an 0xAA at
+                // a line's start would otherwise be dropped as noise on its own (#367).
+                _lineCorrupt = true;
                 _relayByte(0xAA);
                 _relayByte(b);
                 _state = ParserState::IDLE;

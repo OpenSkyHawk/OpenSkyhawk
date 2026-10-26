@@ -154,6 +154,8 @@ keeps Data0 / Data1; `stm32f1x options_write` re-applies the WRP it read.)
   announces on USART2 and the uploader sends `CONNECT`.
 - **Catch at boot:** while it waits, the uploader sends `CONNECT` every 100 ms, so pressing the
   Gateway's reset button catches a bridge app that never takes the request.
+- **The jump** leaves TX idle-high (PA2 input, pull-up) for the app: with USART2 in reset an
+  alternate-function pin pulls the line low — a break on the Gateway's UART at every boot.
 - **Updated by:** only the Gateway's uploader (`07` § Uploader, target `0`) — the bridge app it carries
   in its own firmware, or one the client staged.
 
@@ -266,7 +268,7 @@ replaced only over ST-Link — so every later feature lives in the app or the Ga
   so the same source always builds the same bytes — a newer compiler can move the size by ±100 B.
   Changing any of them is a bootloader change.
 - **Budget: 4 KB, never more.** Real footprints at the freeze (vectors, code, `.data` copy, info block):
-  `bootloader` 3,684 B (412 free), `bridge` 3,624 B (472 free). The release workflow's summary reports
+  `bootloader` 3,684 B (412 free), `bridge` 3,656 B (440 free). The release workflow's summary reports
   both; code that grows into the info block fails the link.
 - **A bootloader change** (bug fix only) ships in the release where it changed (`bootloader/` in the
   zip, and every `-full.hex`); `manifest.json` names the release that holds the current one.

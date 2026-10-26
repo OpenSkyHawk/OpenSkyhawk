@@ -59,8 +59,8 @@ Production projects reach it through `Firmware/shared/`: `stm32.ini` sets the ap
 
 ## Implementation Notes
 
-- **Size — the real footprint (frozen, #367):** `bootloader` 3,684 B (412 free), `bridge` 3,624 B
-  (472 free), of 4,096 — vectors 64 + code + `.data` copy 4 + info block 16. History: ~3,144 after
+- **Size — the real footprint (frozen, #367):** `bootloader` 3,684 B (412 free), `bridge` 3,656 B
+  (440 free), of 4,096 — vectors 64 + code + `.data` copy 4 + info block 16. History: ~3,144 after
   #363, ~3,696 after #364, ~3,828 after #365, ~3,984 after #366; #367's own startup + LTO won back
   ~280 B. PlatformIO's "Flash used" leaves out `.isr_vector` — don't trust it here; the release
   workflow's summary adds the sections up. The info block at `0x08000FF0` is the hard guard (the link
@@ -68,6 +68,8 @@ Production projects reach it through `Firmware/shared/`: `stm32.ini` sets the ap
   DMA buffer.
 - **One image for both transports didn't fit** (~60 B over, #367), so the transport is a compile-time
   switch: never add a feature to one build only — the protocol and every check are shared.
+- **Bridge build — the jump** sets PA2 to input pull-up before resetting USART2: an AF pin with the
+  peripheral in reset drove the line low, one break per boot on the Gateway (#367 bench).
 - **Bridge build — GPIOA:** `uart_init()` enables the GPIOA clock itself; the CAN build got it from
   `can_init()`, and the first bridge build left USART2 dead on the bench (#367).
 - **Streaming (#366):** `poll_can()` moves frames from the 3-deep CAN FIFO into the ring — called from

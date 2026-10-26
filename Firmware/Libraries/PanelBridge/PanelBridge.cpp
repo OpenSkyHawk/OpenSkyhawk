@@ -735,6 +735,10 @@ void setup() {
     broadcastSyncReq();
 #if PANELBRIDGE_NODE_STATUS
     emitAllNodes();   // seed the host with the current roster (node-0 row only at cold boot) (#86)
+    // Let it finish going out: the sketch calls DcsBios::setup() next, whose Serial.begin() restarts
+    // the UART and stranded all but the first write in the TX buffer (#367 bench) — the host lost
+    // the boot row on every bridge reset.
+    Serial.flush();
 #endif
     STM32Board::markBootHealthy();   // the bootloader's crash-loop counter back to 0 (#364)
 }

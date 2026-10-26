@@ -384,7 +384,8 @@ feeds it from the cache and `emitSelf()` from the bridge's own state — `makeHe
 plus `CANProtocol::lastNodeHealth()` (its last `HEALTH_0`, kind `BRIDGE`) and its own
 `OPENSKYHAWK_FW_*` version. `emitAllNodes()` (boot
 seed + host request) sends the node-0 row, every alive node, then `_NODE_STATUS_END <count>` with
-node 0 counted. Live deltas: alive/dead transitions, a `nodeKind` change on an alive node, and a
+node 0 counted; `setup()` then `Serial.flush()`es it, because the sketch's `DcsBios::setup()` calls
+`Serial.begin()` again and a restart mid-send stranded all but the first write (#367). Live deltas: alive/dead transitions, a `nodeKind` change on an alive node, and a
 `READY_n` that changes an alive node's version (a reflash inside the heartbeat timeout — the READY
 branch caches the version before `markNodeAlive()`, so an alive delta already carries it).
 Contract: FirmwarePlan `04-dcs-bios-integration.md`.

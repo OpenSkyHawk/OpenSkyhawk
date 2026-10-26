@@ -369,6 +369,9 @@ bool app_valid() {
     uint32_t sp = u32(APP_ADDR), pc = u32(APP_ADDR + 4);
     led(false, false);
     SysTick->CTRL = 0;
+    // Bridge: hold TX idle-high (input, pull-up) until the app takes it — an alternate-function pin
+    // with USART2 in reset pulls the line low, a break that cost the app's first line (#367 bench).
+    if (SERIAL) { GPIOA->ODR |= 1u << 2; GPIOA->CRL = (GPIOA->CRL & ~(0xFu << 8)) | (0x8u << 8); }
     RCC->APB1RSTR |= RCC_APB1RSTR_CAN1RST | RCC_APB1RSTR_USART2RST;
     RCC->APB1RSTR &= ~(RCC_APB1RSTR_CAN1RST | RCC_APB1RSTR_USART2RST);
     DMA1_Channel6->CCR = 0;

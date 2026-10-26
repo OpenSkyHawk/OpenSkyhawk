@@ -66,6 +66,9 @@ SimGateway demultiplexes the incoming UART byte stream as follows:
   - If it is `0x55` → HID frame: read 4 more bytes, parse `controlId` + `value`, dispatch.
   - If it is not `0x55` → not a valid frame header: append `0xAA` + the mismatched byte to the
     line and resume scanning. `0xAA` is not ASCII, so that line is dropped as corrupt.
+- A non-ASCII byte **before a line starts** is dropped on its own (#367): PanelBridge's UART coming
+  up after every reset clocks one stray byte just ahead of its boot roster, and a line never starts
+  with one. Inside a line it still condemns the line (a failed `0xAA` always does).
 
 This ensures any framing error is self-healing at the next byte boundary.
 

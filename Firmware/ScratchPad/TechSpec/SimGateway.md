@@ -141,7 +141,8 @@ CDC forwarding tests must cover:
 2. A valid HID frame beginning with `0xAA 0x55` is consumed by HID dispatch and contributes no bytes
    to the CDC forwarding capture.
 3. A bad magic prefix such as `0xAA 0x42` returns to `IDLE`; the line it lands in is dropped as
-   corrupt (`linesCorrupt`), and the next ordinary line forwards normally.
+   corrupt (`linesCorrupt`), and the next ordinary line forwards normally — even at a line's start,
+   where a lone non-ASCII byte is otherwise dropped as noise (#367; `cdc_relay` B11–B12).
 4. Ordinary DCS-BIOS bytes after a valid HID frame still forward normally, proving the parser returns
    to `IDLE` after frame dispatch.
 
