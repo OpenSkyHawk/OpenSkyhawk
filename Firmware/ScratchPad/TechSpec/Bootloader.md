@@ -42,12 +42,12 @@ Production projects reach it through `Firmware/shared/`: `stm32.ini` sets the ap
 | Option bytes | `option_bytes_write(data0, data1)` | read all 8 → OPTER → program back (RDP first), skip `0xFF` |
 | Checks | `crc_reset/feed()`, `identity()`, `identity_ok()`, `app_valid()` | hardware CRC-32/MPEG-2, the `imageCrc` word skipped |
 | Jump | `jump_to_app()` | peripherals + clocks to reset state, NVIC cleared, `VTOR`, one asm `msr msp; bx` |
-| Session | `Session`, `begin()`, `block()`, `end()`, `handle()` | block 0 in RAM until END; page erase on a page's first block; resend of the last block acked |
+| Session | `Session`, `begin()`, `block()`, `end()`, `handle()` | block 0 in RAM until END; page erase on a page's first block; resend of the last block acked; a good BEGIN sets the announced state to `APP_INVALID` |
 | `main()` | entry flag → clocks → app check → Data0/Data1 copy → jump or stay | the stay loop announces every 1 s |
 
 ## Implementation Notes
 
-- **Size:** 2,868 B of 4,096 (#363) — ~1.2 KB for #364. RAM ~184 B (`Session` holds two 64-byte buffers).
+- **Size:** 2,876 B of 4,096 (#363) — ~1.2 KB for #364. RAM ~184 B (`Session` holds two 64-byte buffers).
 - **The jump** must switch the stack and branch in one asm block — #361's bus fault came from a
   compiler `pop` after `__set_MSP()`.
 - **GO resets** rather than jumping, so the started app always went through the boot check.

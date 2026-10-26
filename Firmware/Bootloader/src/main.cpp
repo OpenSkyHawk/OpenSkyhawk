@@ -47,6 +47,7 @@ enum ObIndex { OB_RDP = 0, OB_USER = 1, OB_DATA0 = 2, OB_DATA1 = 3, OB_WRP0 = 4,
 volatile uint32_t g_ms;
 uint8_t g_node = UNSET;   // Data0 at boot
 uint8_t g_kind = UNSET;   // Data1 at boot
+Boot::BootState g_state;  // what the announcements say; APP_INVALID once BEGIN erases the app
 
 uint32_t u32(uint32_t a) { return *reinterpret_cast<volatile uint32_t*>(a); }
 uint32_t le32(const uint8_t* p) { return p[0] | (p[1] << 8) | (p[2] << 16) | (uint32_t(p[3]) << 24); }
@@ -303,13 +304,17 @@ Status end(uint32_t want, uint32_t* got) {
     return Status::OK;
 }
 
-void handle(const uint8_t* m, uint8_t n, BootState state) {
+void handle(const uint8_t* m, uint8_t n) {
     switch (Cmd(m[0])) {
     case Cmd::CONNECT:
-        announce(Reply::CONNECTED, state);
+        announce(Reply::CONNECTED, g_state);
         break;
     case Cmd::BEGIN:
-        if (n >= 5) reply(Reply::BEGUN, uint8_t(begin(le32(m + 1))));
+        if (n >= 5) {
+            Status st = begin(le32(m + 1));
+            if (st == Status::OK) g_state = BootState::APP_INVALID;   // the old app's first page is gone
+            reply(Reply::BEGUN, uint8_t(st));
+        }
         break;
     case Cmd::BLOCK:
         if (n >= 5) { s.index = m[1] | (m[2] << 8); s.want = m[3] | (m[4] << 8); s.have = 0; memset(s.buf, 0xFF, BLK); }
@@ -368,7 +373,7 @@ int main() {
 
     if (valid && !requested) jump_to_app();
 
-    BootState state = valid ? BootState::REQUESTED : g_node == UNSET ? BootState::UNCONFIGURED : BootState::APP_INVALID;
+    g_state = valid ? BootState::REQUESTED : g_node == UNSET ? BootState::UNCONFIGURED : BootState::APP_INVALID;
     g_cmd_id = Boot::canIdBootCmd(g_node);
     g_rsp_id = g_node == UNSET ? Boot::UNCONFIGURED_RSP_ID : Boot::canIdBootRsp(g_node);
     can_init();
@@ -377,9 +382,9 @@ int main() {
     uint32_t last = g_ms - Boot::ANNOUNCE_INTERVAL_MS;
     for (;;) {
         // red: slow blink waiting, fast while an image arrives; green on too when unconfigured
-        led((g_ms >> (s.active ? 6 : 9)) & 1, state == BootState::UNCONFIGURED);
-        if (!s.active && g_ms - last >= Boot::ANNOUNCE_INTERVAL_MS) { last = g_ms; announce(Reply::ANNOUNCE, state); }
+        led((g_ms >> (s.active ? 6 : 9)) & 1, g_state == BootState::UNCONFIGURED);
+        if (!s.active && g_ms - last >= Boot::ANNOUNCE_INTERVAL_MS) { last = g_ms; announce(Reply::ANNOUNCE, g_state); }
         uint8_t m[8], n;
-        if (can_recv(m, &n) && n) handle(m, n, state);
+        if (can_recv(m, &n) && n) handle(m, n);
     }
 }

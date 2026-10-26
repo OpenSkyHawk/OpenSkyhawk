@@ -101,7 +101,7 @@ flash KB × 1024 − 4 KB.
 ### Transfer rules
 
 - **BEGIN** checks `0 < len` and that the image, padded to whole blocks, fits; then **erases the app's
-  first page — the old app is invalid from here on.**
+  first page — the old app is invalid from here on**, and the announced state becomes `APP_INVALID`.
 - **Blocks** are 64 bytes, sent in order from 0; the image is padded with `0xFF`. CRC-16/CCITT-FALSE
   over the 64 bytes (the CDC frames' CRC). A page is erased when its first block arrives — pages past
   the image are never touched.

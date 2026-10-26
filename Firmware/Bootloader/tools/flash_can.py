@@ -5,6 +5,7 @@ CANable (slcan, python-can), before the Gateway uploader (#366) exists.
   python3 flash_can.py PORT firmware.bin --node N          # flash node N (waits for its bootloader)
   python3 flash_can.py PORT --listen                       # print bootloader announcements
   python3 flash_can.py PORT firmware.bin --node N --stop-after 40   # stop mid-image, as if power went
+  python3 flash_can.py PORT firmware.bin --delay-ms 100   # stretch the write for a power-pull test
 
 The image is a production firmware.bin (app at 0x08001000, identity block stamped by
 Firmware/shared/osh_image.py). Its identity block gives the length BEGIN announces and the CRC END
@@ -84,7 +85,7 @@ def listen(bus):
             print(f"{time.strftime('%H:%M:%S')}  0x{r[0]:03X}  {describe(r[1])}")
 
 
-def flash(bus, img, node, stop_after, no_go):
+def flash(bus, img, node, stop_after, no_go, delay_ms=0):
     length, image_crc, img_node, img_kind, version = identity(img)
     print(f"image: node {img_node} · kind {img_kind} · v{version} · {length} B · CRC {image_crc:08X}")
     img = img[:length]
@@ -134,7 +135,9 @@ def flash(bus, img, node, stop_after, no_go):
             retries += 1
         else:
             sys.exit(f"\nblock {b} failed: {STATUS.get(r[3], r[3]) if r else 'no ack'}")
-        if b % 32 == 0:
+        if delay_ms:
+            time.sleep(delay_ms / 1000)
+        if b % 32 == 0 or delay_ms:
             print(f"  block {b}/{blocks}", end="\r", flush=True)
     r = ask([P["END"], *struct.pack("<I", image_crc)], P["ENDED"], timeout=2.0)
     dt = time.monotonic() - t0
@@ -154,6 +157,7 @@ def main():
     ap.add_argument("--listen", action="store_true", help="print bootloader announcements")
     ap.add_argument("--stop-after", type=int, help="stop after N blocks (simulated power loss)")
     ap.add_argument("--no-go", action="store_true", help="don't start the app after a good END")
+    ap.add_argument("--delay-ms", type=int, default=0, help="pause after each block — stretches the write for a power-pull test")
     a = ap.parse_args()
     bus = Bus(a.port)
     try:
@@ -163,7 +167,7 @@ def main():
             ap.error("an image is needed unless --listen")
         else:
             img = pathlib.Path(a.image).read_bytes()
-            flash(bus, img, a.node if a.node is not None else identity(img)[2], a.stop_after, a.no_go)
+            flash(bus, img, a.node if a.node is not None else identity(img)[2], a.stop_after, a.no_go, a.delay_ms)
     except KeyboardInterrupt:
         pass
     finally:
