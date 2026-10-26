@@ -398,7 +398,7 @@ branch and the READY branch (which also caches READY byte 3) reset `bootState` t
 `checkNodeTimeouts()` lapses UPDATING after `NODE_BOOT_UPDATING_MS`. Each change on an alive node is a
 delta. `emitSelf()` reports `STM32Board::bootloaderVersion()`.
 
-**Relay down (#365, stream encoding #366).** `BootRelayListener` (`ExportStreamListener` on
+**Relay down (#365, stream encoding #366).** `BootRelay` (fed by `ExportDispatcher` for
 `RELAY_EXPORT_ADDRESS` … + 2 × (`RELAY_EXPORT_WORDS` − 1)) feeds both bytes of every word into a small
 decoder: `RELAY_FRAME_MARK | len` opens a frame of 2 + len bytes (id lo, id hi, data), `RELAY_ESCAPE`
 + `RELAY_ESC_55` / `RELAY_ESC_56` decode to `0x55` / `0x56`, other bytes between frames are padding; a
@@ -407,7 +407,7 @@ frame goes to `CANProtocol::send()` — only `BOOT_CMD_1`–`63` and `UNCONFIGUR
 to a node notes UPDATING only when that node's bootloader has been seen (`bootloader` ≠ 0).
 `handleDcsBiosExport()` drops the window.
 
-**Its own update (#367).** `BridgeEnterListener` (`ExportStreamListener` on
+**Its own update (#367).** `ExportDispatcher`, on a write to
 `BRIDGE_ENTER_EXPORT_ADDRESS`, `0xFF02`) calls `STM32Board::enterBootloader(TRANSPORT_SERIAL)`: with
 the `bridge` bootloader installed the board resets into it and the Gateway's uploader talks to it on
 USART2; with the CAN build (or none) nothing happens. `handleDcsBiosExport()` drops the address. The
@@ -423,7 +423,7 @@ clears it, so the next node goes on the next loop. No broadcast `SYNC_REQ` is se
 
 **Forgetting a node (#384).** `forgetNode(id)` resets the node's `NodeState` and, if it was dead,
 decrements `_deadCount` (clearing WARNING at 0). Called from `onBootRsp()` on `NODE_SET` OK (the old
-ID after a `SET_NODE_ID`) and from `NodeForgetListener` (`NODE_FORGET_REQ_ADDR`, dead nodes only);
+ID after a `SET_NODE_ID`) and from `onForgetRequest()` (`NODE_FORGET_REQ_ADDR` via `ExportDispatcher`, dead nodes only);
 both then `emitAllNodes()`. `handleDcsBiosExport()` drops `NODE_FORGET_REQ_ADDR`.
 
 Test hooks (`PANELBRIDGE_TEST`): `testFeedHeartbeat`, `testFeedHealth(nodeId, dieTempC, hFlags,
@@ -447,16 +447,19 @@ idempotently by the normal input dispatch path.
 
 ### DCS-BIOS Output Listener
 
-PanelBridge owns an internal DCS-BIOS listener/adapter. The adapter is private to
-`PanelBridge.cpp`; no DCS-BIOS listener type appears in `PanelBridge.h`.
+PanelBridge owns **the one** DCS-BIOS listener, `ExportDispatcher` (#389), private to
+`PanelBridge.cpp`; no DCS-BIOS listener type appears in `PanelBridge.h`. The library assumes
+listener ranges never overlap (it stops at the first listener starting above an address), so every
+reserved address is routed inside it — never add another listener, `StringBuffer` or
+`IntegerBuffer` to PanelBridge.
 
 ```cpp
-class BridgeExportListener : public DcsBios::ExportStreamListener {
-public:
-    BridgeExportListener()
-        : DcsBios::ExportStreamListener(EXPORT_FIRST_ADDR, EXPORT_LAST_ADDR) {}   // 0x0002, 0xFFFE
-
+class ExportDispatcher : public DcsBios::ExportStreamListener {   // 0x0002 … 0xFFFE
     void onDcsBiosWrite(unsigned int address, unsigned int data) override;
+    // model time: 5 chars at CommonData_MOD_TIME_A, latched once a later address arrives
+    // 0xFF00 → emitAllNodes()        0xFF04 → onForgetRequest()
+    // 0xFF02 → enterBootloader(SERIAL)  0xFF10…0xFF4F → _bootRelay.onWrite()
+    // everything else → handleDcsBiosExport() → CTRL_BCAST
 };
 ```
 
@@ -483,13 +486,11 @@ The DCS-BIOS export stream includes a five-character model-time seconds string e
 CommonData as `CommonData_MOD_TIME_A` (`0x0440` in the current generated `Addresses.h`).
 PanelBridge uses the generated symbol, not a hard-coded number:
 
-```cpp
-DcsBios::StringBuffer<5> modelTimeBuffer(CommonData_MOD_TIME_A, onModelTimeChange);
-```
-
-`onModelTimeChange(char* value)` converts the string to seconds. The first valid value only
+`ExportDispatcher` assembles the 5 characters and latches them when the stream moves past them in
+the same frame (ascending addresses; MetadataEnd closes every frame), so a half-updated value never
+reads as a rewind. `onModelTimeChange(char* value)` converts the string to seconds. The first valid value only
 seeds the previous-value state. If a later value decreases, DCS has loaded a new mission or
-aircraft session and PanelBridge broadcasts `SYNC_REQ`.
+aircraft session and PanelBridge queues every alive node for a sync (#387).
 
 `SYNC_REQ` asks PanelGroup nodes to queue physical input states for reporting. DCS output
 values do not need an active refresh task in PanelBridge; they arrive on the next normal

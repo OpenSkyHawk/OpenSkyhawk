@@ -441,7 +441,7 @@ via the TX-complete interrupt — no explicit drain call is required from `loop(
 
 | Frame type | Policy |
 |------------|--------|
-| `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
+| `CTRL_BCAST` DCS output broadcasts | Queued in order like any frame — **never coalesced** (#389): a frame carries two of ~250 controls, not the whole state, so replacing a queued one lost two others' updates (~19 % of a real stream). The bridge's TX ring is 64 frames (`CAN_TX_RING_SIZE`); a lone packet waits ≤ 2 ms for its partner (1.98 packets per frame on a real stream). Highest priority ID on the bus. |
 | `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. No unbounded backlog. |
 | `HB_n`, `HEALTH_n`, `TELEM_n` periodic status | Same bounded retry as the event frames — up to 3 send attempts, then drop and increment the `DIAG_ERR` TX drop counter. Not coalesced: the next period's frame carries fresh state anyway. |
 | `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
