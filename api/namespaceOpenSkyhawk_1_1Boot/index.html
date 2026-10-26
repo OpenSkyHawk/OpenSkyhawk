@@ -4702,6 +4702,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4973,10 +4984,54 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-info_address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable INFO_ADDRESS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-info_magic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable INFO_MAGIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-protocol_version" class="md-nav__link">
     <span class="md-ellipsis">
       
         variable PROTOCOL_VERSION
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-relay_export_address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable RELAY_EXPORT_ADDRESS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-relay_export_words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable RELAY_EXPORT_WORDS
       
     </span>
   </a>
@@ -5093,6 +5148,21 @@
 
 <h1 id="namespace-openskyhawkboot">Namespace OpenSkyhawk::Boot</h1>
 <p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <strong>&gt;</strong> <a href="./"><strong>Boot</strong></a></p>
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1Boot_1_1BootloaderInfo/"><strong>BootloaderInfo</strong></a> <br></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-types">Public Types</h2>
 <table>
 <thead>
@@ -5190,8 +5260,24 @@
 <td style="text-align: left;"><a href="#variable-idle_timeout_ms"><strong>IDLE_TIMEOUT_MS</strong></a>   = <code>30000</code><br><em>REQUESTED / CAUGHT with no command this long → back to the app (#364)</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-info_address"><strong>INFO_ADDRESS</strong></a>   = <code>0x08000FF0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-info_magic"><strong>INFO_MAGIC</strong></a>   = <code>0x4C42534Fu</code><br><em>"OSBL" in memory order</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">constexpr uint8_t</td>
 <td style="text-align: left;"><a href="#variable-protocol_version"><strong>PROTOCOL_VERSION</strong></a>   = <code>1</code><br><em>Bumped on any change to the frames below. A board reports it in READY_n byte 3 (#365); 0 = no bootloader.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-relay_export_address"><strong>RELAY_EXPORT_ADDRESS</strong></a>   = <code>0xFF10</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-relay_export_words"><strong>RELAY_EXPORT_WORDS</strong></a>   = <code>10</code><br><em>0xFF10-0xFF23</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
@@ -5379,9 +5465,32 @@
 </code></pre></div></p>
 <hr>
 
+<h3 id="variable-info_address">variable INFO_ADDRESS</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">INFO_ADDRESS</span><span class="p">;</span>
+</code></pre></div>
+<p>The last 16 bytes of the bootloader's 4 KB. A running app reads it to know a bootloader is present (and so whether it may honour an enter request) and which protocol it speaks (READY_n byte 3). </p>
+<hr>
+
+<h3 id="variable-info_magic">variable INFO_MAGIC</h3>
+<p><em>"OSBL" in memory order</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">INFO_MAGIC</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
 <h3 id="variable-protocol_version">variable PROTOCOL_VERSION</h3>
 <p><em>Bumped on any change to the frames below. A board reports it in READY_n byte 3 (#365); 0 = no bootloader.</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">PROTOCOL_VERSION</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-relay_export_address">variable RELAY_EXPORT_ADDRESS</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_ADDRESS</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-relay_export_words">variable RELAY_EXPORT_WORDS</h3>
+<p><em>0xFF10-0xFF23</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_WORDS</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
 

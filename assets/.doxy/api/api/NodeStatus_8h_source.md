@@ -28,7 +28,11 @@
 
 constexpr uint8_t GATEWAY_NODE_ID = 0;
 
-constexpr uint8_t NODE_STATUS_ROW_BYTES = 17;
+constexpr uint8_t NODE_STATUS_ROW_BYTES = 19;
+
+constexpr uint8_t NODE_BOOT_STATE_APP      = 0x00;
+constexpr uint8_t  NODE_BOOT_STATE_UPDATING = 0x80;
+constexpr uint16_t NODE_BOOT_UPDATING_MS    = 3000;
 
 enum class NodeStatusField : uint8_t {
     ID           = 0,   // u8: node ID; GATEWAY_NODE_ID = the bridge's own row, 1-63 = CAN nodes
@@ -45,6 +49,10 @@ enum class NodeStatusField : uint8_t {
     FW_MAJOR     = 14,  // u8: firmware release version from the node's READY_n; 00 00 00 = not reported
     FW_MINOR     = 15,  // u8
     FW_PATCH     = 16,  // u8
+    BOOTLOADER   = 17,  // u8: the node's bootloader protocol version (READY_n byte 3, or its own
+                        //     announcement); 00 = no bootloader / not reported (#365)
+    BOOT_STATE   = 18,  // u8: NODE_BOOT_STATE_APP, else the bootloader's BootState (BootProtocol.h),
+                        //     | NODE_BOOT_STATE_UPDATING while update traffic flows (#365)
 };
 
 // ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────

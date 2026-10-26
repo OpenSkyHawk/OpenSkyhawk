@@ -5174,6 +5174,7 @@
 * TEST_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
 * HB_0 on a non-bridge node: stamped for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s watchdog, then <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
 * The node's own <code>HB_NODE_ID</code>: stamped for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s duplicate NODE_ID check (#344), then <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
+* The node's own <code>BOOT_CMD_n</code> (not on the bridge): a CONNECT resets into the bootloader when one is installed (<a href="../namespaceSTM32Board/#function-enterbootloader"><strong>STM32Board::enterBootloader()</strong></a>, #365); never forwarded.
 * All other frames: fires <a href="./#function-onreceive"><strong>onReceive()</strong></a>.</p>
 <p>Also services <a href="./#function-sendbatched"><strong>sendBatched()</strong></a> deadlines: a half-full ControlPacketPair that has waited two <a href="./#function-drain"><strong>drain()</strong></a> calls is flushed with slot B set to the null sentinel. </p>
 <hr>
@@ -5261,7 +5262,7 @@
 <div class="highlight"><pre><span></span><code><span class="n">ReadyPayload</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeReadyPayload</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
 <p><strong>Returns:</strong></p>
-<p>ReadyPayload with fwMajor/fwMinor/fwPatch from <a href="../FirmwareVersion_8h/"><strong>FirmwareVersion.h</strong></a>, reserved bytes 0. </p>
+<p>ReadyPayload with fwMajor/fwMinor/fwPatch from <a href="../FirmwareVersion_8h/"><strong>FirmwareVersion.h</strong></a>, the bootloader version (<a href="../namespaceSTM32Board/#function-bootloaderversion"><strong>STM32Board::bootloaderVersion()</strong></a>), reserved bytes 0. </p>
 <hr>
 
 <h3 id="function-onreceive">function onReceive</h3>

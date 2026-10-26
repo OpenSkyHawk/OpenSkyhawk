@@ -3,6 +3,8 @@
   <compounddef id="BootProtocol_8h" kind="file" language="C++">
     <compoundname>BootProtocol.h</compoundname>
     <includes local="no">stdint.h</includes>
+    <includedby refid="CANProtocol_8cpp" local="no">Firmware/Libraries/CANProtocol/CANProtocol.cpp</includedby>
+    <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
     <includedby refid="STM32Board_8cpp" local="no">Firmware/Libraries/STM32Board/STM32Board.cpp</includedby>
     <incdepgraph>
       <node id="1">
@@ -21,19 +23,45 @@
         <link refid="BootProtocol_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
       </node>
       <node id="2">
+        <label>Firmware/Libraries/CANProtocol/CANProtocol.cpp</label>
+        <link refid="CANProtocol_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
+        <link refid="PanelBridge_8cpp"/>
+      </node>
+      <node id="4">
         <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
         <link refid="STM32Board_8cpp"/>
       </node>
     </invincdepgraph>
+    <innerclass refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo" prot="public">OpenSkyhawk::Boot::BootloaderInfo</innerclass>
     <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
     <innernamespace refid="namespaceOpenSkyhawk_1_1Boot">OpenSkyhawk::Boot</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="BootProtocol_8h_1a6568eb06825dc3e1be7c56c86452935b" prot="public" static="no">
+        <name>BOOT_RSP_MSG_NAME</name>
+        <initializer>&quot;_BOOT_RSP&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="147" column="9" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
     <briefdescription>
 <para>The CAN bootloader&apos;s wire contract (#363) — frame IDs, commands, replies, status codes, the entry flag and the protocol version. </para>
     </briefdescription>
     <detaileddescription>
-<para>One source for every side of an update: the bootloader (Firmware/Bootloader), the running firmware that sends a node into it (<ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref>, #365), the Gateway uploader (#366) and the client sync. Header-only, no Arduino, no HAL — the bootloader builds bare-metal.</para>
+<para>One source for every side of an update: the bootloader (Firmware/Bootloader), the running firmware that sends a node into it (<ref refid="namespaceSTM32Board" kindref="compound">STM32Board</ref> / <ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref>, #365), the bridge relay (<ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>, #365), the Gateway uploader (#366) and the client sync. Header-only, no Arduino, no HAL — the bootloader builds bare-metal.</para>
 <para>Every wire value is a named <computeroutput>enum class X : T { NAME = literal }</computeroutput> or <computeroutput>constexpr T NAME = literal</computeroutput> so the client sync can read it (#346). Full protocol: FirmwarePlan/12-bootloader.md.</para>
 <para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
 </simplesect>
@@ -135,14 +163,39 @@
 <codeline lineno="119" refid="namespaceOpenSkyhawk_1_1Boot_1af2fd631255e6d5776bc0e58517fbff74" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1af2fd631255e6d5776bc0e58517fbff74" kindref="member">ENTRY_BKP_REGISTER</ref><sp/>=<sp/>1;</highlight></codeline>
 <codeline lineno="120" refid="namespaceOpenSkyhawk_1_1Boot_1a5ed6f975dba2d572132efb2143d399d1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a5ed6f975dba2d572132efb2143d399d1" kindref="member">ENTRY_MAGIC</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0xB007;</highlight></codeline>
 <codeline lineno="121"><highlight class="normal"></highlight></codeline>
-<codeline lineno="125" refid="namespaceOpenSkyhawk_1_1Boot_1a9b03ea27984f6b4d0eb23bb49da5b977" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a9b03ea27984f6b4d0eb23bb49da5b977" kindref="member">ATTEMPTS_BKP_REGISTER</ref><sp/>=<sp/>2;</highlight></codeline>
-<codeline lineno="126" refid="namespaceOpenSkyhawk_1_1Boot_1a2cd6e35c149a84f5b5ea71a023e6f313" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a2cd6e35c149a84f5b5ea71a023e6f313" kindref="member">ATTEMPT_LIMIT</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>3;</highlight></codeline>
-<codeline lineno="127"><highlight class="normal"></highlight></codeline>
-<codeline lineno="128" refid="namespaceOpenSkyhawk_1_1Boot_1ad890646b188a7f4fb94bd6d587cfee8f" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1ad890646b188a7f4fb94bd6d587cfee8f" kindref="member">CATCH_WINDOW_MS</ref><sp/><sp/>=<sp/>200;<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="129" refid="namespaceOpenSkyhawk_1_1Boot_1a4c5dc686e224bb00f694ed963d3935db" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a4c5dc686e224bb00f694ed963d3935db" kindref="member">IDLE_TIMEOUT_MS</ref><sp/><sp/>=<sp/>30000;<sp/><sp/></highlight></codeline>
-<codeline lineno="130"><highlight class="normal"></highlight></codeline>
-<codeline lineno="131"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Boot</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="132"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Bootloader<sp/>info<sp/>block<sp/>(#365)<sp/>──────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126" refid="namespaceOpenSkyhawk_1_1Boot_1a0a1445290c5875941be3cf1f6ec21a6d" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a0a1445290c5875941be3cf1f6ec21a6d" kindref="member">INFO_ADDRESS</ref><sp/>=<sp/>0x08000FF0;</highlight></codeline>
+<codeline lineno="127" refid="namespaceOpenSkyhawk_1_1Boot_1a3cc3f51f247a369c4504de7c1636a44c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a3cc3f51f247a369c4504de7c1636a44c" kindref="member">INFO_MAGIC</ref><sp/><sp/><sp/>=<sp/>0x4C42534Fu;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo" kindref="compound">BootloaderInfo</ref><sp/>{</highlight></codeline>
+<codeline lineno="130" refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1aea0465ff80329abec69e2b5b8b3515a2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1aea0465ff80329abec69e2b5b8b3515a2" kindref="member">magic</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="131" refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1ac8471a9e1444b2d1e0a9d4fb6fa62cb9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1ac8471a9e1444b2d1e0a9d4fb6fa62cb9" kindref="member">protocolVersion</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="132" refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1a81880bf1d762bec887c5cace25682cf8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1a81880bf1d762bec887c5cace25682cf8" kindref="member">reserved</ref>[11];<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="133"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo" kindref="compound">BootloaderInfo</ref>)<sp/>==<sp/>16,<sp/></highlight><highlight class="stringliteral">&quot;the<sp/>bootloader<sp/>info<sp/>block<sp/>is<sp/>16<sp/>bytes&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Relay<sp/>through<sp/>the<sp/>Gateway<sp/>(#365)<sp/>──────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>Gateway<sp/>→<sp/>PanelBridge<sp/>UART<sp/>carries<sp/>only<sp/>the<sp/>DCS-BIOS<sp/>export<sp/>stream,<sp/>so<sp/>a<sp/>host<sp/>sends<sp/>a<sp/>boot</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="comment">//<sp/>command<sp/>the<sp/>way<sp/>it<sp/>asks<sp/>for<sp/>the<sp/>roster:<sp/>by<sp/>writing<sp/>reserved<sp/>export<sp/>addresses.<sp/>One<sp/>export<sp/>record<sp/>per</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="comment">//<sp/>CAN<sp/>frame,<sp/>ten<sp/>words<sp/>at<sp/>RELAY_EXPORT_ADDRESS:<sp/>id,<sp/>length,<sp/>then<sp/>data<sp/>byte<sp/>i<sp/>in<sp/>the<sp/>low<sp/>half<sp/>of<sp/>word</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight><highlight class="comment">//<sp/>2<sp/>+<sp/>i<sp/>(high<sp/>half<sp/>0).<sp/>One<sp/>byte<sp/>per<sp/>word<sp/>because<sp/>the<sp/>DCS-BIOS<sp/>parser<sp/>resyncs<sp/>on<sp/>any<sp/>four<sp/>0x55<sp/>bytes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="comment">//<sp/>in<sp/>a<sp/>row<sp/>—<sp/>image<sp/>data<sp/>packed<sp/>two<sp/>to<sp/>a<sp/>word<sp/>could<sp/>contain<sp/>them;<sp/>a<sp/>0x00<sp/>between<sp/>every<sp/>data<sp/>byte</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="comment">//<sp/>can&apos;t.<sp/>PanelBridge<sp/>puts<sp/>the<sp/>frame<sp/>on<sp/>CAN<sp/>—<sp/>only<sp/>BOOT_CMD_n<sp/>for<sp/>n<sp/>=<sp/>1-63<sp/>and<sp/>UNCONFIGURED_CMD_ID<sp/>—</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="comment">//<sp/>and<sp/>never<sp/>broadcasts<sp/>the<sp/>window<sp/>as<sp/>CTRL_BCAST.<sp/>Every<sp/>BOOT_RSP_n<sp/>/<sp/>UNCONFIGURED_RSP_ID<sp/>frame<sp/>goes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight><highlight class="comment">//<sp/>the<sp/>other<sp/>way<sp/>as<sp/>one<sp/>DCS-BIOS<sp/>message:<sp/>`_BOOT_RSP<sp/>&lt;id(3<sp/>hex)&gt;&lt;length(1<sp/>hex)&gt;&lt;data(2<sp/>hex<sp/>per<sp/>byte)&gt;`.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145" refid="namespaceOpenSkyhawk_1_1Boot_1a5a63139664a3407d9fae5c3bf5770ffe" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a5a63139664a3407d9fae5c3bf5770ffe" kindref="member">RELAY_EXPORT_ADDRESS</ref><sp/>=<sp/>0xFF10;</highlight></codeline>
+<codeline lineno="146" refid="namespaceOpenSkyhawk_1_1Boot_1ab9559894139082f3673bd3a793f26465" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1ab9559894139082f3673bd3a793f26465" kindref="member">RELAY_EXPORT_WORDS</ref><sp/><sp/><sp/>=<sp/>10;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="147" refid="BootProtocol_8h_1a6568eb06825dc3e1be7c56c86452935b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BOOT_RSP_MSG_NAME<sp/>&quot;_BOOT_RSP&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152" refid="namespaceOpenSkyhawk_1_1Boot_1a9b03ea27984f6b4d0eb23bb49da5b977" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a9b03ea27984f6b4d0eb23bb49da5b977" kindref="member">ATTEMPTS_BKP_REGISTER</ref><sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="153" refid="namespaceOpenSkyhawk_1_1Boot_1a2cd6e35c149a84f5b5ea71a023e6f313" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a2cd6e35c149a84f5b5ea71a023e6f313" kindref="member">ATTEMPT_LIMIT</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>3;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155" refid="namespaceOpenSkyhawk_1_1Boot_1ad890646b188a7f4fb94bd6d587cfee8f" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1ad890646b188a7f4fb94bd6d587cfee8f" kindref="member">CATCH_WINDOW_MS</ref><sp/><sp/>=<sp/>200;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="156" refid="namespaceOpenSkyhawk_1_1Boot_1a4c5dc686e224bb00f694ed963d3935db" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Boot_1a4c5dc686e224bb00f694ed963d3935db" kindref="member">IDLE_TIMEOUT_MS</ref><sp/><sp/>=<sp/>30000;<sp/><sp/></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Boot</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/BootProtocol/BootProtocol.h"/>
   </compounddef>

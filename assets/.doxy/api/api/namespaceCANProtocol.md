@@ -169,6 +169,7 @@ Drains all frames received since the last call:
 * TEST\_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
 * HB\_0 on a non-bridge node: stamped for [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)'s watchdog, then [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
 * The node's own `HB_NODE_ID`: stamped for [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)'s duplicate NODE\_ID check (#344), then [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
+* The node's own `BOOT_CMD_n` (not on the bridge): a CONNECT resets into the bootloader when one is installed ([**STM32Board::enterBootloader()**](namespaceSTM32Board.md#function-enterbootloader), #365); never forwarded.
 * All other frames: fires [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
 
 
@@ -374,7 +375,7 @@ ReadyPayload CANProtocol::makeReadyPayload ()
 
 **Returns:**
 
-ReadyPayload with fwMajor/fwMinor/fwPatch from [**FirmwareVersion.h**](FirmwareVersion_8h.md), reserved bytes 0. 
+ReadyPayload with fwMajor/fwMinor/fwPatch from [**FirmwareVersion.h**](FirmwareVersion_8h.md), the bootloader version ([**STM32Board::bootloaderVersion()**](namespaceSTM32Board.md#function-bootloaderversion)), reserved bytes 0. 
 
 
 

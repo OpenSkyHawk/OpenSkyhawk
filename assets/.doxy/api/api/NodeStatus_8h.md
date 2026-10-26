@@ -65,7 +65,10 @@ _Neutral node-status contract for every_ [_**OpenSkyhawk**_](namespaceOpenSkyhaw
 |  constexpr uint8\_t | [**GATEWAY\_NODE\_ID**](#variable-gateway_node_id)   = `0`<br>_Node ID of the Gateway board's_ [_**PanelBridge**_](namespacePanelBridge.md) _MCU — the CAN master._ |
 |  constexpr uint8\_t | [**HB\_ESR\_REC\_SHIFT**](#variable-hb_esr_rec_shift)   = `8`<br>_HB\_n_ `esr` _field: bit position of the receive error counter (REC, high byte)._ |
 |  constexpr uint8\_t | [**HB\_ESR\_TEC\_SHIFT**](#variable-hb_esr_tec_shift)   = `0`<br>_HB\_n_ `esr` _field: bit position of the transmit error counter (TEC, low byte)._ |
-|  constexpr uint8\_t | [**NODE\_STATUS\_ROW\_BYTES**](#variable-node_status_row_bytes)   = `17`<br>`_NODE_STATUS` _row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex)._ |
+|  constexpr uint8\_t | [**NODE\_BOOT\_STATE\_APP**](#variable-node_boot_state_app)   = `0x00`<br>`BOOT_STATE` _values (#365): the app is running; any other value is the bootloader's BootState._ |
+|  constexpr uint8\_t | [**NODE\_BOOT\_STATE\_UPDATING**](#variable-node_boot_state_updating)   = `0x80`<br> |
+|  constexpr uint16\_t | [**NODE\_BOOT\_UPDATING\_MS**](#variable-node_boot_updating_ms)   = `3000`<br> |
+|  constexpr uint8\_t | [**NODE\_STATUS\_ROW\_BYTES**](#variable-node_status_row_bytes)   = `19`<br> |
 |  constexpr uint8\_t | [**NODE\_TELEM\_ROW\_BYTES**](#variable-node_telem_row_bytes)   = `9`<br>`_NODE_TELEM` _row length in bytes, sent as twice as many hex chars (9 → 18 hex)._ |
 |  constexpr int16\_t | [**NTC\_TEMP\_UNAVAILABLE**](#variable-ntc_temp_unavailable)   = `-32768`<br>_PDU\_STATUS_ `ntcTempDC` _meaning "unavailable" — no reading yet, or the NTC is open/shorted._ |
 
@@ -264,13 +267,15 @@ enum NodeStatusField {
     NODE_KIND = 13,
     FW_MAJOR = 14,
     FW_MINOR = 15,
-    FW_PATCH = 16
+    FW_PATCH = 16,
+    BOOTLOADER = 17,
+    BOOT_STATE = 18
 };
 ```
 
 
 
-Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE\_STATUS\_ROW\_BYTES. The first six come from the node's HB\_n (plus `present`), the next five from its HEALTH\_n, the last three from its READY\_n (v4, #295). Fields are only ever appended: a reader parses the fields it knows from a longer row and ignores the rest. (Not `NODE_ID`: every node build defines that as a macro.) 
+Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE\_STATUS\_ROW\_BYTES. The first six come from the node's HB\_n (plus `present`), the next five from its HEALTH\_n, the next three from its READY\_n (v4, #295), the last two its bootloader state (#365). Fields are only ever appended: a reader parses the fields it knows from a longer row and ignores the rest. (Not `NODE_ID`: every node build defines that as a macro.) 
 
 
         
@@ -471,15 +476,62 @@ constexpr uint8_t HB_ESR_TEC_SHIFT;
 
 
 
+### variable NODE\_BOOT\_STATE\_APP 
+
+`BOOT_STATE` _values (#365): the app is running; any other value is the bootloader's BootState._
+```C++
+constexpr uint8_t NODE_BOOT_STATE_APP;
+```
+
+
+
+
+<hr>
+
+
+
+### variable NODE\_BOOT\_STATE\_UPDATING 
+
+```C++
+constexpr uint8_t NODE_BOOT_STATE_UPDATING;
+```
+
+
+
+`BOOT_STATE` bit: update traffic for this node in the last NODE\_BOOT\_UPDATING\_MS. A board in its bootloader without it is waiting — "stuck" when its state is APP\_INVALID or APP\_UNSTABLE. 
+
+
+        
+
+<hr>
+
+
+
+### variable NODE\_BOOT\_UPDATING\_MS 
+
+```C++
+constexpr uint16_t NODE_BOOT_UPDATING_MS;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable NODE\_STATUS\_ROW\_BYTES 
 
-`_NODE_STATUS` _row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex)._
 ```C++
 constexpr uint8_t NODE_STATUS_ROW_BYTES;
 ```
 
 
 
+`_NODE_STATUS` row length in bytes, sent as twice as many hex chars (proto v4: 19 → 38 hex; the two bootloader fields joined v4 before it shipped, #365). 
+
+
+        
 
 <hr>
 

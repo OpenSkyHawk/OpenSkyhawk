@@ -5179,25 +5179,25 @@ actually does.</p>
 <td><code>NODE_ID</code></td>
 <td>none — omitting it fails to compile</td>
 <td>every STM32 env that links our libraries; <code>WiringCheck</code> omits it deliberately</td>
-<td><code>CANProtocol.cpp:226</code>, <code>PanelGroup.cpp:304</code>, <code>STM32Board.h:29</code>, <code>FirmwareImage.h:61</code> (the image identity block)</td>
+<td><code>CANProtocol.cpp:228</code>, <code>PanelGroup.cpp:304</code>, <code>STM32Board.h:29</code>, <code>FirmwareImage.h:61</code> (the image identity block)</td>
 </tr>
 <tr>
 <td><code>PANELBRIDGE_NODE_STATUS</code></td>
 <td><strong>on</strong></td>
 <td><code>=0</code> in <code>Tests/PanelBridge</code> <code>test_input_dispatch_dcs</code> / <code>_hid</code></td>
-<td><code>PanelBridge.h:38</code> (default), <code>PanelBridge.cpp:46</code> + ~10 more</td>
+<td><code>PanelBridge.h:38</code> (default), <code>PanelBridge.cpp:47</code> + ~10 more</td>
 </tr>
 <tr>
 <td><code>NODE_HEALTH_TELEM</code></td>
 <td><strong>on</strong></td>
 <td>never set</td>
-<td><code>CANProtocol.cpp:511</code> (<code>serviceNodeStatus</code>, every node)</td>
+<td><code>CANProtocol.cpp:519</code> (<code>serviceNodeStatus</code>, every node)</td>
 </tr>
 <tr>
 <td><code>NODE_OVERHEAT_C</code></td>
 <td><strong>unset — by design</strong></td>
 <td>bench envs only</td>
-<td><code>CANProtocol.cpp:452</code>, <code>CANProtocol.cpp:528</code></td>
+<td><code>CANProtocol.cpp:459</code>, <code>CANProtocol.cpp:536</code></td>
 </tr>
 <tr>
 <td><code>FORCE_CLOCK_FALLBACK</code></td>

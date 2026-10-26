@@ -21,6 +21,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **struct** [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) _Captured endpoints for one axis, unsigned 0–65535 throughout._     
     * **class** [**BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md)     
     * **namespace** [**Boot**](namespaceOpenSkyhawk_1_1Boot.md)     
+        * **struct** [**BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md)     
     * **struct** [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) _The whole persisted calibration set, written and erased as one unit._     
     * **class** [**Dimmer**](classOpenSkyhawk_1_1Dimmer.md) _PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin._     
     * **class** [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._     

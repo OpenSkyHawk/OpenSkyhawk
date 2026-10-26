@@ -4811,6 +4811,31 @@
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">ENTRY_BKP_REGISTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">ENTRY_MAGIC</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mh">0xB007</span><span class="p">;</span>
 
+<span class="c1">// ── Bootloader info block (#365) ──────────────────────────────────────────────</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">INFO_ADDRESS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08000FF0</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">INFO_MAGIC</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x4C42534Fu</span><span class="p">;</span><span class="w">   </span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">BootloaderInfo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">magic</span><span class="p">;</span><span class="w">            </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">protocolVersion</span><span class="p">;</span><span class="w">  </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">reserved</span><span class="p">[</span><span class="mi">11</span><span class="p">];</span><span class="w">     </span>
+<span class="p">};</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">BootloaderInfo</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="s">"the bootloader info block is 16 bytes"</span><span class="p">);</span>
+
+<span class="c1">// ── Relay through the Gateway (#365) ──────────────────────────────────────────</span>
+<span class="c1">// The Gateway → PanelBridge UART carries only the DCS-BIOS export stream, so a host sends a boot</span>
+<span class="c1">// command the way it asks for the roster: by writing reserved export addresses. One export record per</span>
+<span class="c1">// CAN frame, ten words at RELAY_EXPORT_ADDRESS: id, length, then data byte i in the low half of word</span>
+<span class="c1">// 2 + i (high half 0). One byte per word because the DCS-BIOS parser resyncs on any four 0x55 bytes</span>
+<span class="c1">// in a row — image data packed two to a word could contain them; a 0x00 between every data byte</span>
+<span class="c1">// can't. PanelBridge puts the frame on CAN — only BOOT_CMD_n for n = 1-63 and UNCONFIGURED_CMD_ID —</span>
+<span class="c1">// and never broadcasts the window as CTRL_BCAST. Every BOOT_RSP_n / UNCONFIGURED_RSP_ID frame goes</span>
+<span class="c1">// the other way as one DCS-BIOS message: `_BOOT_RSP &lt;id(3 hex)&gt;&lt;length(1 hex)&gt;&lt;data(2 hex per byte)&gt;`.</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">RELAY_EXPORT_ADDRESS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF10</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_EXPORT_WORDS</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">     </span>
+<span class="cp">#define BOOT_RSP_MSG_NAME "_BOOT_RSP"</span>
+
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ATTEMPTS_BKP_REGISTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ATTEMPT_LIMIT</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
 

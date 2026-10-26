@@ -32,6 +32,11 @@ _The CAN bootloader's wire contract (#363) — frame IDs, commands, replies, sta
 | namespace | [**Boot**](namespaceOpenSkyhawk_1_1Boot.md) <br> |
 
 
+## Classes
+
+| Type | Name |
+| ---: | :--- |
+| struct | [**BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md) <br> |
 
 
 
@@ -81,11 +86,16 @@ _The CAN bootloader's wire contract (#363) — frame IDs, commands, replies, sta
 
 
 
+## Macros
+
+| Type | Name |
+| ---: | :--- |
+| define  | [**BOOT\_RSP\_MSG\_NAME**](BootProtocol_8h.md#define-boot_rsp_msg_name)  `"\_BOOT\_RSP"`<br> |
 
 ## Detailed Description
 
 
-One source for every side of an update: the bootloader (Firmware/Bootloader), the running firmware that sends a node into it ([**CANProtocol**](namespaceCANProtocol.md), #365), the Gateway uploader (#366) and the client sync. Header-only, no Arduino, no HAL — the bootloader builds bare-metal.
+One source for every side of an update: the bootloader (Firmware/Bootloader), the running firmware that sends a node into it ([**STM32Board**](namespaceSTM32Board.md) / [**CANProtocol**](namespaceCANProtocol.md), #365), the bridge relay ([**PanelBridge**](namespacePanelBridge.md), #365), the Gateway uploader (#366) and the client sync. Header-only, no Arduino, no HAL — the bootloader builds bare-metal.
 
 
 Every wire value is a named `enum class X : T { NAME = literal }` or `constexpr T NAME = literal` so the client sync can read it (#346). Full protocol: FirmwarePlan/12-bootloader.md.
@@ -102,6 +112,22 @@ GPL-2.0-only — see Firmware/LICENSE
 
 
     
+## Macro Definition Documentation
+
+
+
+
+
+### define BOOT\_RSP\_MSG\_NAME 
+
+```C++
+#define BOOT_RSP_MSG_NAME `"_BOOT_RSP"`
+```
+
+
+
+
+<hr>
 
 ------------------------------
 The documentation for this class was generated from the following file `Firmware/Libraries/BootProtocol/BootProtocol.h`

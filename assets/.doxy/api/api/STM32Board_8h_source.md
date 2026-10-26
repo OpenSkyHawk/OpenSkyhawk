@@ -51,6 +51,10 @@ namespace STM32Board {
 
     void markBootHealthy();
 
+    uint8_t bootloaderVersion();
+
+    void enterBootloader();
+
     void onCanStatus(CanStatus status);
 
     void setWarning(bool on = true);

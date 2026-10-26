@@ -4994,7 +4994,8 @@ events (<code>EVT_n</code>) from the nodes and routes each one: DCS-BIOS inputs 
 over UART; HID inputs are wrapped in HID frames for SimGateway. It also tracks which nodes are
 alive (from their heartbeats) and reports that roster to the host over
 DCS-BIOS itself (<code>_NODE_STATUS</code> messages; request address <code>0xFF00</code>): each node's health, board
-kind and firmware version, plus a row for the bridge itself. The client can show connected boards without any
+kind, firmware version and bootloader state, plus a row for the bridge itself. It also relays
+firmware updates to the boards' <a href="../../firmware/bootloader/">bootloaders</a> the same way. The client can show connected boards without any
 SimGateway change
 (<a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/86">#86</a>).</p>
 <p><strong>What it does <em>not</em> do:</strong></p>

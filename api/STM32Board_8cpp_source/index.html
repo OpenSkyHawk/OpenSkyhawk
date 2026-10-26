@@ -5098,15 +5098,32 @@
 <span class="w">    </span><span class="n">_prevFault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fault</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">markBootHealthy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="k">static</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">*</span><span class="w"> </span><span class="nf">backupRegister</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">__HAL_RCC_PWR_CLK_ENABLE</span><span class="p">();</span>
 <span class="w">    </span><span class="n">__HAL_RCC_BKP_CLK_ENABLE</span><span class="p">();</span>
 <span class="w">    </span><span class="n">HAL_PWR_EnableBkUpAccess</span><span class="p">();</span>
-<span class="w">    </span><span class="p">(</span><span class="o">&amp;</span><span class="n">BKP</span><span class="o">-&gt;</span><span class="n">DR1</span><span class="p">)[</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">ATTEMPTS_BKP_REGISTER</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// DR1..DR10 sit 32 bits apart</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">BKP</span><span class="o">-&gt;</span><span class="n">DR1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// DR1..DR10 sit 32 bits apart</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">markBootHealthy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">*</span><span class="n">backupRegister</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">ATTEMPTS_BKP_REGISTER</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">bootloaderVersion</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="o">::</span><span class="nn">Boot</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SCB</span><span class="o">-&gt;</span><span class="n">VTOR</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">FLASH_BASE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">APP_OFFSET</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// not running behind a bootloader</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">BootloaderInfo</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">INFO_ADDRESS</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">info</span><span class="o">-&gt;</span><span class="n">magic</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">INFO_MAGIC</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">info</span><span class="o">-&gt;</span><span class="n">protocolVersion</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">enterBootloader</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bootloaderVersion</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">   </span><span class="c1">// no bootloader: a reset would only restart this app</span>
+<span class="w">    </span><span class="o">*</span><span class="n">backupRegister</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">ENTRY_BKP_REGISTER</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">ENTRY_MAGIC</span><span class="p">;</span>
+<span class="w">    </span><span class="n">NVIC_SystemReset</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="cp">#ifdef STM32BOARD_TEST</span>
-<span class="n">LedState</span><span class="w"> </span><span class="nf">currentState</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_state</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="n">LedState</span><span class="w"> </span><span class="n">currentState</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_state</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 <span class="cp">#endif</span>
 
 <span class="p">}</span><span class="w"> </span><span class="c1">// namespace STM32Board</span>

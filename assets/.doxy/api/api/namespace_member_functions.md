@@ -13,7 +13,9 @@
 ## b
 
 * **busOff** ([**CANProtocol**](namespaceCANProtocol.md))
+* **backupRegister** ([**STM32Board**](namespaceSTM32Board.md))
 * **begin** ([**STM32Board**](namespaceSTM32Board.md))
+* **bootloaderVersion** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## c
@@ -47,6 +49,11 @@
 * **drain** ([**CANProtocol**](namespaceCANProtocol.md))
 * **diagSerial** ([**STM32Board**](namespaceSTM32Board.md))
 * **diagnostics** ([**SimGateway**](namespaceSimGateway.md))
+
+
+## e
+
+* **enterBootloader** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## f

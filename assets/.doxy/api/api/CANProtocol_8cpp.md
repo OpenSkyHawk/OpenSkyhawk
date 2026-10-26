@@ -13,6 +13,7 @@
 * `#include "CANProtocol.h"`
 * `#include <STM32Board.h>`
 * `#include <FirmwareVersion.h>`
+* `#include <BootProtocol.h>`
 * `#include <Arduino.h>`
 * `#include <string.h>`
 

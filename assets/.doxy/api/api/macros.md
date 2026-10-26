@@ -633,6 +633,11 @@
 * **A\_4E\_C\_WINDSHLD\_DEFROST\_AM** ([**A4EC\_OutputIds.h**](A4EC__OutputIds_8h.md))
 
 
+## b
+
+* **BOOT\_RSP\_MSG\_NAME** ([**BootProtocol.h**](BootProtocol_8h.md))
+
+
 ## c
 
 * **CTRL\_BRAKE\_L** ([**HIDControls.h**](HIDControls_8h.md))

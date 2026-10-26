@@ -20,7 +20,7 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="namespacePanelBridge_1af631fc44c480752ac8e151b39eaea23b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespacePanelBridge_1af631fc44c480752ac8e151b39eaea23b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void PanelBridge::onNodeAlive</definition>
         <argsstring>(NodeCallback cb)</argsstring>
@@ -34,7 +34,7 @@
 <para>Register a callback fired when a node transitions from dead/unseen to alive. </para>
         </briefdescription>
         <detaileddescription>
-<para>Passing nullptr clears the callback. Set before calling <ref refid="namespacePanelBridge_1aa69b6d1d3413c31bbfa31a304fdeaa1c" kindref="member">setup()</ref>.</para>
+<para>Passing nullptr clears the callback. Set before calling setup().</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>cb</parametername>
@@ -48,9 +48,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="561" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="561" bodyend="561" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="54" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="687" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="687" bodyend="687" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="54" declcolumn="10"/>
       </memberdef>
-      <memberdef kind="function" id="namespacePanelBridge_1a3a0fe29ddc7ed31cb7b8d099908060bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespacePanelBridge_1a3a0fe29ddc7ed31cb7b8d099908060bb" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void PanelBridge::onNodeDead</definition>
         <argsstring>(NodeCallback cb)</argsstring>
@@ -64,7 +64,7 @@
 <para>Register a callback fired when a live node misses the heartbeat timeout (3 s). </para>
         </briefdescription>
         <detaileddescription>
-<para>Passing nullptr clears the callback. Set before calling <ref refid="namespacePanelBridge_1aa69b6d1d3413c31bbfa31a304fdeaa1c" kindref="member">setup()</ref>.</para>
+<para>Passing nullptr clears the callback. Set before calling setup().</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>cb</parametername>
@@ -78,9 +78,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="562" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="562" bodyend="562" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="63" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="688" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="688" bodyend="688" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="63" declcolumn="10"/>
       </memberdef>
-      <memberdef kind="function" id="namespacePanelBridge_1aa69b6d1d3413c31bbfa31a304fdeaa1c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespacePanelBridge_1aa69b6d1d3413c31bbfa31a304fdeaa1c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void PanelBridge::setup</definition>
         <argsstring>()</argsstring>
@@ -97,9 +97,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="564" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="564" bodyend="582" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="74" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="690" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="690" bodyend="708" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="74" declcolumn="10"/>
       </memberdef>
-      <memberdef kind="function" id="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void PanelBridge::loop</definition>
         <argsstring>()</argsstring>
@@ -116,13 +116,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="584" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="584" bodyend="621" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="85" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="710" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="710" bodyend="747" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="85" declcolumn="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="559" column="1"/>
+    <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="685" column="1"/>
   </compounddef>
 </doxygen>

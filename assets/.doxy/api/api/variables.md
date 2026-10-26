@@ -60,6 +60,9 @@
 
 ## n
 
+* **NODE\_BOOT\_STATE\_APP** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NODE\_BOOT\_STATE\_UPDATING** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NODE\_BOOT\_UPDATING\_MS** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NODE\_STATUS\_ROW\_BYTES** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NODE\_TELEM\_ROW\_BYTES** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NTC\_TEMP\_UNAVAILABLE** ([**NodeStatus.h**](NodeStatus_8h.md))

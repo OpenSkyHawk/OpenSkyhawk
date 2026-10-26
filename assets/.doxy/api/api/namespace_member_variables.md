@@ -73,6 +73,8 @@
 ## i
 
 * **IDLE\_TIMEOUT\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **INFO\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **INFO\_MAGIC** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **IDENTITY\_OFFSET** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **I\_MA\_PER\_MV** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 
@@ -133,6 +135,8 @@
 
 ## r
 
+* **RELAY\_EXPORT\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **RELAY\_EXPORT\_WORDS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RSP\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RELAY\_LINE\_MAX** ([**SimGateway**](namespaceSimGateway.md))
 

@@ -5054,7 +5054,9 @@ DCS-BIOS data, and health reporting keeps flowing while it is open.</p>
 needs no SimGateway change: PanelBridge reports connected PanelGroup nodes to the host over
 DCS-BIOS itself — <code>_NODE_STATUS</code> ASCII command messages downstream, and a roster request as a
 DCS-BIOS export write to reserved address <code>0xFF00</code> upstream (an address no aircraft module uses). Both ride the existing streams and
-transit SimGateway transparently; PanelBridge owns the feature.</p>
+transit SimGateway transparently; PanelBridge owns the feature. Firmware updates for the boards on
+the bus travel the same way: commands for a board's <a href="../../firmware/bootloader/">bootloader</a> go down
+as writes to a reserved block of export addresses, and its answers come back as <code>_BOOT_RSP</code> messages.</p>
 <h2 id="controlid-routing-logic">controlId routing logic</h2>
 <p>Incoming HID frames (PanelBridge → SimGateway) are fixed 6-byte little-endian:</p>
 <table>

@@ -4724,6 +4724,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#public-static-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-static-attributes-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4786,6 +4797,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-bootloaderversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function bootloaderVersion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-canhandle" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4812,6 +4834,17 @@
     <span class="md-ellipsis">
       
         function diagSerial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-enterbootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function enterBootloader
       
     </span>
   </a>
@@ -4944,6 +4977,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#public-static-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Static Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-backupregister" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function backupRegister
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4999,6 +5060,10 @@
 <td style="text-align: left;"><a href="#function-begin"><strong>begin</strong></a> () <br><em>Initialise all shared hardware. Call once at the top of setup().</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#function-bootloaderversion"><strong>bootloaderVersion</strong></a> () <br><em>The installed bootloader's protocol version, or 0 when there is none (#365).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">CAN_HandleTypeDef *</td>
 <td style="text-align: left;"><a href="#function-canhandle"><strong>canHandle</strong></a> () <br><em>Access the HAL CAN handle.</em></td>
 </tr>
@@ -5009,6 +5074,10 @@
 <tr>
 <td style="text-align: right;">Uart &amp;</td>
 <td style="text-align: left;"><a href="#function-diagserial"><strong>diagSerial</strong></a> () <br><em>Access DiagSerial directly for multi-field formatted output.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-enterbootloader"><strong>enterBootloader</strong></a> () <br><em>Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is present; returns (doing nothing) when there is none.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
@@ -5056,6 +5125,21 @@
 </tr>
 </tbody>
 </table>
+<h2 id="public-static-functions">Public Static Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">volatile uint32_t *</td>
+<td style="text-align: left;"><a href="#function-backupregister"><strong>backupRegister</strong></a> (uint8_t n) <br></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-pin_led_green">variable PIN_LED_GREEN</h3>
 <p><em>Green LED pin — same on all STM32 boards.</em> 
@@ -5074,6 +5158,13 @@
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">begin</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
 <p>Releases JTAG and keeps SWD (#299), so PA15 / PB3 / PB4 are ordinary GPIO from here on. Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a> after filter setup. </p>
+<hr>
+
+<h3 id="function-bootloaderversion">function bootloaderVersion</h3>
+<p><em>The installed bootloader's protocol version, or 0 when there is none (#365).</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">bootloaderVersion</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<p>Read from the bootloader's info block (<a href="../BootProtocol_8h/"><strong>BootProtocol.h</strong></a> INFO_ADDRESS) — only when this app runs behind the bootloader (VTOR at the app offset), so an image linked at 0x08000000 always reads 0. Reported in READY_n byte 3 and the bridge's own <code>_NODE_STATUS</code> row. </p>
 <hr>
 
 <h3 id="function-canhandle">function canHandle</h3>
@@ -5102,6 +5193,13 @@
 <p>Guard with <a href="./#function-isdebug"><strong>isDebug()</strong></a> to avoid formatting overhead when debug is off.</p>
 <p><strong>Returns:</strong></p>
 <p>Reference to the USART1 Uart instance. </p>
+<hr>
+
+<h3 id="function-enterbootloader">function enterBootloader</h3>
+<p><em>Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is present; returns (doing nothing) when there is none.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">enterBootloader</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<p>Sets the bootloader's one-shot entry flag (backup register DR1) and resets. Called by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> when a CONNECT arrives on this node's BOOT_CMD_n. </p>
 <hr>
 
 <h3 id="function-isdebug">function isDebug</h3>
@@ -5240,6 +5338,13 @@
 <p>Advances blink state using millis(). Fully non-blocking. </p>
 <p><strong>Note:</strong></p>
 <p>Library-internal: <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> / <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> / <a href="../namespacePduNode/"><strong>PduNode</strong></a> call it from their loop(). Not sketch API — not covered by the compatibility policy (#295). </p>
+<hr>
+<h2 id="public-static-functions-documentation">Public Static Functions Documentation</h2>
+<h3 id="function-backupregister">function backupRegister</h3>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">backupRegister</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div>
 <hr>
 
 <hr />

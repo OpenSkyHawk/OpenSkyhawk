@@ -135,7 +135,7 @@
 * **minRaw** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md))
 * **max** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **min** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
-* **magic** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md), [**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
+* **magic** ([**OpenSkyhawk::Boot::BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md), [**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md), [**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **MAX\_CELLS** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **mask** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **mul** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
@@ -175,6 +175,7 @@
 
 * **pollMs** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::AngleConfig**](structOpenSkyhawk_1_1AngleConfig.md))
 * **POLL\_MS** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
+* **protocolVersion** ([**OpenSkyhawk::Boot::BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md))
 * **place** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **phase** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **pending** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
@@ -189,7 +190,7 @@
 ## r
 
 * **reverse** ([**OpenSkyhawk::AnalogConfig**](structOpenSkyhawk_1_1AnalogConfig.md), [**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
-* **reserved** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
+* **reserved** ([**OpenSkyhawk::Boot::BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md), [**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **rangeSteps** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **recalDebounceMs** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **recoveryReboots** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))

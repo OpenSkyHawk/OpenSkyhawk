@@ -52,10 +52,11 @@ struct __attribute__((packed)) TelemPayload {
 static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
 
 struct __attribute__((packed)) ReadyPayload {
-    uint8_t fwMajor;  
-    uint8_t fwMinor;  
-    uint8_t fwPatch;  
-    uint8_t rsvd[5];  
+    uint8_t fwMajor;     
+    uint8_t fwMinor;     
+    uint8_t fwPatch;     
+    uint8_t bootloader;  
+    uint8_t rsvd[4];     
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 

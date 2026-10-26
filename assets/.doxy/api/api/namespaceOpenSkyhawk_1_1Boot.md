@@ -25,6 +25,11 @@
 
 
 
+## Classes
+
+| Type | Name |
+| ---: | :--- |
+| struct | [**BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md) <br> |
 
 
 ## Public Types
@@ -58,7 +63,11 @@
 |  constexpr uint8\_t | [**ENTRY\_BKP\_REGISTER**](#variable-entry_bkp_register)   = `1`<br> |
 |  constexpr uint16\_t | [**ENTRY\_MAGIC**](#variable-entry_magic)   = `0xB007`<br> |
 |  constexpr uint16\_t | [**IDLE\_TIMEOUT\_MS**](#variable-idle_timeout_ms)   = `30000`<br>_REQUESTED / CAUGHT with no command this long → back to the app (#364)_  |
+|  constexpr uint32\_t | [**INFO\_ADDRESS**](#variable-info_address)   = `0x08000FF0`<br> |
+|  constexpr uint32\_t | [**INFO\_MAGIC**](#variable-info_magic)   = `0x4C42534Fu`<br>_"OSBL" in memory order_  |
 |  constexpr uint8\_t | [**PROTOCOL\_VERSION**](#variable-protocol_version)   = `1`<br>_Bumped on any change to the frames below. A board reports it in READY\_n byte 3 (#365); 0 = no bootloader._  |
+|  constexpr uint16\_t | [**RELAY\_EXPORT\_ADDRESS**](#variable-relay_export_address)   = `0xFF10`<br> |
+|  constexpr uint8\_t | [**RELAY\_EXPORT\_WORDS**](#variable-relay_export_words)   = `10`<br>_0xFF10-0xFF23_  |
 |  constexpr uint16\_t | [**RSP\_ID\_BASE**](#variable-rsp_id_base)   = `0x780`<br>_BOOT\_RSP\_n = 0x780 + n — node n's bootloader → host._  |
 |  constexpr uint32\_t | [**UID\_ADDRESS**](#variable-uid_address)   = `0x1FFFF7E8`<br>_the F103's 96-bit unique ID_  |
 |  constexpr uint16\_t | [**UNCONFIGURED\_CMD\_ID**](#variable-unconfigured_cmd_id)   = `0x7C0`<br> |
@@ -426,11 +435,69 @@ constexpr uint16_t OpenSkyhawk::Boot::IDLE_TIMEOUT_MS;
 
 
 
+### variable INFO\_ADDRESS 
+
+```C++
+constexpr uint32_t OpenSkyhawk::Boot::INFO_ADDRESS;
+```
+
+
+
+The last 16 bytes of the bootloader's 4 KB. A running app reads it to know a bootloader is present (and so whether it may honour an enter request) and which protocol it speaks (READY\_n byte 3). 
+
+
+        
+
+<hr>
+
+
+
+### variable INFO\_MAGIC 
+
+_"OSBL" in memory order_ 
+```C++
+constexpr uint32_t OpenSkyhawk::Boot::INFO_MAGIC;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable PROTOCOL\_VERSION 
 
 _Bumped on any change to the frames below. A board reports it in READY\_n byte 3 (#365); 0 = no bootloader._ 
 ```C++
 constexpr uint8_t OpenSkyhawk::Boot::PROTOCOL_VERSION;
+```
+
+
+
+
+<hr>
+
+
+
+### variable RELAY\_EXPORT\_ADDRESS 
+
+```C++
+constexpr uint16_t OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable RELAY\_EXPORT\_WORDS 
+
+_0xFF10-0xFF23_ 
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::RELAY_EXPORT_WORDS;
 ```
 
 

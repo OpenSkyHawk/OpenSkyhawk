@@ -4713,6 +4713,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#detailed-description" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4720,6 +4742,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macro-definition-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro Definition Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Macro Definition Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-boot_rsp_msg_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define BOOT_RSP_MSG_NAME
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4769,11 +4819,47 @@
 </tr>
 </tbody>
 </table>
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1Boot_1_1BootloaderInfo/"><strong>BootloaderInfo</strong></a> <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="macros">Macros</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-boot_rsp_msg_name"><strong>BOOT_RSP_MSG_NAME</strong></a>  <code>"\_BOOT\_RSP"</code><br></td>
+</tr>
+</tbody>
+</table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>One source for every side of an update: the bootloader (Firmware/Bootloader), the running firmware that sends a node into it (<a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a>, #365), the Gateway uploader (#366) and the client sync. Header-only, no Arduino, no HAL — the bootloader builds bare-metal.</p>
+<p>One source for every side of an update: the bootloader (Firmware/Bootloader), the running firmware that sends a node into it (<a href="../namespaceSTM32Board/"><strong>STM32Board</strong></a> / <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a>, #365), the bridge relay (<a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>, #365), the Gateway uploader (#366) and the client sync. Header-only, no Arduino, no HAL — the bootloader builds bare-metal.</p>
 <p>Every wire value is a named <code>enum class X : T { NAME = literal }</code> or <code>constexpr T NAME = literal</code> so the client sync can read it (#346). Full protocol: FirmwarePlan/12-bootloader.md.</p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
+<h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
+<h3 id="define-boot_rsp_msg_name">define BOOT_RSP_MSG_NAME</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#define BOOT_RSP_MSG_NAME `"_BOOT_RSP"`</span>
+</code></pre></div>
+<hr>
+
 <hr />
 <p>The documentation for this class was generated from the following file <code>Firmware/Libraries/BootProtocol/BootProtocol.h</code></p>
 

@@ -2510,6 +2510,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The status LED">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#in-the-bootloader-red-and-green-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the bootloader: red and green together
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4823,6 +4840,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The status LED">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#in-the-bootloader-red-and-green-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the bootloader: red and green together
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4941,22 +4975,51 @@ a glance:</p>
 <td>Bus-off — CAN controller halted</td>
 </tr>
 <tr>
-<td>Amber flicker (alternating)</td>
+<td>Red / green alternating</td>
 <td>Warning / degraded state</td>
 </tr>
 </tbody>
 </table>
 <p>The state machine is shared (<code>STM32Board</code>); only the triggers differ per role. <strong>Green solid
 (connected)</strong> appears while data is actively flowing and decays back to green-blinking after
-~½ s of quiet. <strong>Amber (warning)</strong> means a tracked PanelGroup node died (PanelBridge), the
+~½ s of quiet. <strong>Warning (red/green alternating)</strong> means a tracked PanelGroup node died (PanelBridge), the
 master heartbeat was lost (any node other than PanelBridge), or the board's <strong>clock failed to lock</strong> (any STM32
 node — see below).</p>
+<h3 id="in-the-bootloader-red-and-green-together">In the bootloader: red and green together</h3>
+<p>The running firmware never lights both LEDs at once. When <strong>red and green are on together</strong>, the
+board is in its <a href="../bootloader/">bootloader</a>, not running its firmware:</p>
+<table>
+<thead>
+<tr>
+<th>LEDs</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Red + green blinking together (1 Hz)</td>
+<td>Waiting for an update — asked for one, caught at power-up, or its firmware is missing or broken</td>
+</tr>
+<tr>
+<td>Red + green flickering together (fast)</td>
+<td>A firmware update is being written</td>
+</tr>
+<tr>
+<td>Red + green, alternating with red alone</td>
+<td>The firmware kept resetting before it finished booting — the bootloader stopped starting it until it's updated</td>
+</tr>
+<tr>
+<td>Red + green, alternating with green alone</td>
+<td>A new board with no node number yet — waiting for its first firmware</td>
+</tr>
+</tbody>
+</table>
 <p>CAN faults are driven from the <code>CanStatus</code> callback. For non-CAN faults (dead node, lost
 master, SYNC timeout, I²C hang), the firmware calls <code>STM32Board::setWarning(true)</code> and clears
 it with <code>setWarning(false)</code> on recovery.</p>
 <p>One warning source outranks all others: a <strong>clock fault</strong>. If <code>SystemClock_Config</code> can't lock
 the 72 MHz HSE tree (dead crystal, cold joint, or an inconsistent config), <code>STM32Board</code> latches
-it, falls back to internal RC, and drives amber at <strong>top precedence</strong> — above CAN faults — so a
+it, falls back to internal RC, and drives the warning pattern at <strong>top precedence</strong> — above CAN faults — so a
 bad clock isn't misdiagnosed as a bus problem. A clock-faulted node also comes up <strong>CAN
 listen-only</strong> (never transmits at the wrong rate). Latched once at boot (query
 <code>STM32Board::clockFault()</code>); <code>begin()</code> logs

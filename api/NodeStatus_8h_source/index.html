@@ -4735,7 +4735,11 @@
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">GATEWAY_NODE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">19</span><span class="p">;</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_BOOT_STATE_APP</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">NODE_BOOT_STATE_UPDATING</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x80</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">NODE_BOOT_UPDATING_MS</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">3000</span><span class="p">;</span>
 
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeStatusField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">ID</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">   </span><span class="c1">// u8: node ID; GATEWAY_NODE_ID = the bridge's own row, 1-63 = CAN nodes</span>
@@ -4752,6 +4756,10 @@
 <span class="w">    </span><span class="n">FW_MAJOR</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: firmware release version from the node's READY_n; 00 00 00 = not reported</span>
 <span class="w">    </span><span class="n">FW_MINOR</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8</span>
 <span class="w">    </span><span class="n">FW_PATCH</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8</span>
+<span class="w">    </span><span class="n">BOOTLOADER</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: the node's bootloader protocol version (READY_n byte 3, or its own</span>
+<span class="w">                        </span><span class="c1">//     announcement); 00 = no bootloader / not reported (#365)</span>
+<span class="w">    </span><span class="n">BOOT_STATE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: NODE_BOOT_STATE_APP, else the bootloader's BootState (BootProtocol.h),</span>
+<span class="w">                        </span><span class="c1">//     | NODE_BOOT_STATE_UPDATING while update traffic flows (#365)</span>
 <span class="p">};</span>
 
 <span class="c1">// ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────</span>

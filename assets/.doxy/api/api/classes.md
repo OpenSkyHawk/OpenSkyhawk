@@ -30,6 +30,8 @@
 * [**BatchState**](structBatchState.md)
 * [**BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md)
+([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 
 
 ## c

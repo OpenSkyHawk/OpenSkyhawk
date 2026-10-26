@@ -58,9 +58,11 @@
 | Type | Name |
 | ---: | :--- |
 |  void | [**begin**](#function-begin) () <br>_Initialise all shared hardware. Call once at the top of setup()._  |
+|  uint8\_t | [**bootloaderVersion**](#function-bootloaderversion) () <br>_The installed bootloader's protocol version, or 0 when there is none (#365)._  |
 |  CAN\_HandleTypeDef \* | [**canHandle**](#function-canhandle) () <br>_Access the HAL CAN handle._  |
 |  bool | [**clockFault**](#function-clockfault) () <br>_True if SystemClock\_Config could not lock the intended 72 MHz HSE tree and fell back to internal RC (issue #245)._  |
 |  Uart & | [**diagSerial**](#function-diagserial) () <br>_Access DiagSerial directly for multi-field formatted output._  |
+|  void | [**enterBootloader**](#function-enterbootloader) () <br>_Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is present; returns (doing nothing) when there is none._  |
 |  bool | [**isDebug**](#function-isdebug) () <br>_Returns true when debug output is enabled._  |
 |  void | [**log**](#function-log) (const char \* msg) <br>_Print a line to DiagSerial if debug is enabled; no-op otherwise._  |
 |  void | [**logNodeFaultEdge**](#function-lognodefaultedge) (const char \* tag, [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) fault, const char \* detail) <br>_Edge-log a node's fault transition to DiagSerial (#163)._  |
@@ -74,6 +76,11 @@
 |  void | [**tick**](#function-tick) () <br>_Drive LED animations. Called once per loop() iteration by the node library._  |
 
 
+## Public Static Functions
+
+| Type | Name |
+| ---: | :--- |
+|  volatile uint32\_t \* | [**backupRegister**](#function-backupregister) (uint8\_t n) <br> |
 
 
 
@@ -145,6 +152,24 @@ void STM32Board::begin ()
 
 
 Releases JTAG and keeps SWD (#299), so PA15 / PB3 / PB4 are ordinary GPIO from here on. Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call [**CANProtocol::start()**](namespaceCANProtocol.md#function-start) after filter setup. 
+
+
+        
+
+<hr>
+
+
+
+### function bootloaderVersion 
+
+_The installed bootloader's protocol version, or 0 when there is none (#365)._ 
+```C++
+uint8_t STM32Board::bootloaderVersion () 
+```
+
+
+
+Read from the bootloader's info block ([**BootProtocol.h**](BootProtocol_8h.md) INFO\_ADDRESS) — only when this app runs behind the bootloader (VTOR at the app offset), so an image linked at 0x08000000 always reads 0. Reported in READY\_n byte 3 and the bridge's own `_NODE_STATUS` row. 
 
 
         
@@ -230,6 +255,24 @@ Reference to the USART1 Uart instance.
 
 
 
+
+
+        
+
+<hr>
+
+
+
+### function enterBootloader 
+
+_Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is present; returns (doing nothing) when there is none._ 
+```C++
+void STM32Board::enterBootloader () 
+```
+
+
+
+Sets the bootloader's one-shot entry flag (backup register DR1) and resets. Called by [**CANProtocol**](namespaceCANProtocol.md) when a CONNECT arrives on this node's BOOT\_CMD\_n. 
 
 
         
@@ -587,6 +630,23 @@ Library-internal: [**PanelGroup**](namespacePanelGroup.md) / [**PanelBridge**](n
 
 
         
+
+<hr>
+## Public Static Functions Documentation
+
+
+
+
+### function backupRegister 
+
+```C++
+static volatile uint32_t * STM32Board::backupRegister (
+    uint8_t n
+) 
+```
+
+
+
 
 <hr>
 

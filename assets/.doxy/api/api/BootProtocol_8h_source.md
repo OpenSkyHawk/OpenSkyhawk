@@ -103,6 +103,31 @@ constexpr uint32_t APP_OFFSET      = BOOTLOADER_SIZE;
 constexpr uint8_t  ENTRY_BKP_REGISTER = 1;
 constexpr uint16_t ENTRY_MAGIC        = 0xB007;
 
+// ── Bootloader info block (#365) ──────────────────────────────────────────────
+
+constexpr uint32_t INFO_ADDRESS = 0x08000FF0;
+constexpr uint32_t INFO_MAGIC   = 0x4C42534Fu;   
+
+struct BootloaderInfo {
+    uint32_t magic;            
+    uint8_t  protocolVersion;  
+    uint8_t  reserved[11];     
+};
+static_assert(sizeof(BootloaderInfo) == 16, "the bootloader info block is 16 bytes");
+
+// ── Relay through the Gateway (#365) ──────────────────────────────────────────
+// The Gateway → PanelBridge UART carries only the DCS-BIOS export stream, so a host sends a boot
+// command the way it asks for the roster: by writing reserved export addresses. One export record per
+// CAN frame, ten words at RELAY_EXPORT_ADDRESS: id, length, then data byte i in the low half of word
+// 2 + i (high half 0). One byte per word because the DCS-BIOS parser resyncs on any four 0x55 bytes
+// in a row — image data packed two to a word could contain them; a 0x00 between every data byte
+// can't. PanelBridge puts the frame on CAN — only BOOT_CMD_n for n = 1-63 and UNCONFIGURED_CMD_ID —
+// and never broadcasts the window as CTRL_BCAST. Every BOOT_RSP_n / UNCONFIGURED_RSP_ID frame goes
+// the other way as one DCS-BIOS message: `_BOOT_RSP <id(3 hex)><length(1 hex)><data(2 hex per byte)>`.
+constexpr uint16_t RELAY_EXPORT_ADDRESS = 0xFF10;
+constexpr uint8_t  RELAY_EXPORT_WORDS   = 10;     
+#define BOOT_RSP_MSG_NAME "_BOOT_RSP"
+
 constexpr uint8_t ATTEMPTS_BKP_REGISTER = 2;
 constexpr uint8_t ATTEMPT_LIMIT         = 3;
 

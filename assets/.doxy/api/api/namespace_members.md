@@ -27,7 +27,9 @@
 * **BLOCK\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **BOOTLOADER\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **BootState** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **backupRegister** ([**STM32Board**](namespaceSTM32Board.md))
 * **begin** ([**STM32Board**](namespaceSTM32Board.md))
+* **bootloaderVersion** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## c
@@ -112,6 +114,7 @@
 * **EncoderStepsPerDetent** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **ENTRY\_BKP\_REGISTER** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **ENTRY\_MAGIC** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **enterBootloader** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## f
@@ -136,6 +139,8 @@
 ## i
 
 * **IDLE\_TIMEOUT\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **INFO\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **INFO\_MAGIC** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **IDENTITY\_OFFSET** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **I\_MA\_PER\_MV** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **isDebug** ([**STM32Board**](namespaceSTM32Board.md))
@@ -227,6 +232,8 @@
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
+* **RELAY\_EXPORT\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **RELAY\_EXPORT\_WORDS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RSP\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **Reply** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **rail12Mv** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))

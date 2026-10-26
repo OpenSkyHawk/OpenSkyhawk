@@ -4962,6 +4962,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-node_boot_state_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NODE_BOOT_STATE_APP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-node_boot_state_updating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NODE_BOOT_STATE_UPDATING
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-node_boot_updating_ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NODE_BOOT_UPDATING_MS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-node_status_row_bytes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5221,7 +5254,19 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-node_status_row_bytes"><strong>NODE_STATUS_ROW_BYTES</strong></a>   = <code>17</code><br><code>_NODE_STATUS</code> <em>row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex).</em></td>
+<td style="text-align: left;"><a href="#variable-node_boot_state_app"><strong>NODE_BOOT_STATE_APP</strong></a>   = <code>0x00</code><br><code>BOOT_STATE</code> <em>values (#365): the app is running; any other value is the bootloader's BootState.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-node_boot_state_updating"><strong>NODE_BOOT_STATE_UPDATING</strong></a>   = <code>0x80</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-node_boot_updating_ms"><strong>NODE_BOOT_UPDATING_MS</strong></a>   = <code>3000</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-node_status_row_bytes"><strong>NODE_STATUS_ROW_BYTES</strong></a>   = <code>19</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
@@ -5345,10 +5390,12 @@
 <span class="w">    </span><span class="n">NODE_KIND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span>
 <span class="w">    </span><span class="n">FW_MAJOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span>
 <span class="w">    </span><span class="n">FW_MINOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
-<span class="w">    </span><span class="n">FW_PATCH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span>
+<span class="w">    </span><span class="n">FW_PATCH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">    </span><span class="n">BOOTLOADER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span>
+<span class="w">    </span><span class="n">BOOT_STATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">18</span>
 <span class="p">};</span>
 </code></pre></div></p>
-<p>Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE_STATUS_ROW_BYTES. The first six come from the node's HB_n (plus <code>present</code>), the next five from its HEALTH_n, the last three from its READY_n (v4, #295). Fields are only ever appended: a reader parses the fields it knows from a longer row and ignores the rest. (Not <code>NODE_ID</code>: every node build defines that as a macro.) </p>
+<p>Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE_STATUS_ROW_BYTES. The first six come from the node's HB_n (plus <code>present</code>), the next five from its HEALTH_n, the next three from its READY_n (v4, #295), the last two its bootloader state (#365). Fields are only ever appended: a reader parses the fields it knows from a longer row and ignores the rest. (Not <code>NODE_ID</code>: every node build defines that as a macro.) </p>
 <hr>
 
 <h3 id="enum-nodetelemfield">enum NodeTelemField</h3>
@@ -5446,10 +5493,27 @@
 </code></pre></div></p>
 <hr>
 
-<h3 id="variable-node_status_row_bytes">variable NODE_STATUS_ROW_BYTES</h3>
-<p><code>_NODE_STATUS</code> <em>row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex).</em>
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="p">;</span>
+<h3 id="variable-node_boot_state_app">variable NODE_BOOT_STATE_APP</h3>
+<p><code>BOOT_STATE</code> <em>values (#365): the app is running; any other value is the bootloader's BootState.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_BOOT_STATE_APP</span><span class="p">;</span>
 </code></pre></div></p>
+<hr>
+
+<h3 id="variable-node_boot_state_updating">variable NODE_BOOT_STATE_UPDATING</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_BOOT_STATE_UPDATING</span><span class="p">;</span>
+</code></pre></div>
+<p><code>BOOT_STATE</code> bit: update traffic for this node in the last NODE_BOOT_UPDATING_MS. A board in its bootloader without it is waiting — "stuck" when its state is APP_INVALID or APP_UNSTABLE. </p>
+<hr>
+
+<h3 id="variable-node_boot_updating_ms">variable NODE_BOOT_UPDATING_MS</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">NODE_BOOT_UPDATING_MS</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-node_status_row_bytes">variable NODE_STATUS_ROW_BYTES</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="p">;</span>
+</code></pre></div>
+<p><code>_NODE_STATUS</code> row length in bytes, sent as twice as many hex chars (proto v4: 19 → 38 hex; the two bootloader fields joined v4 before it shipped, #365). </p>
 <hr>
 
 <h3 id="variable-node_telem_row_bytes">variable NODE_TELEM_ROW_BYTES</h3>

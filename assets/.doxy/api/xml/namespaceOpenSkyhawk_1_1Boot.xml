@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="namespaceOpenSkyhawk_1_1Boot" kind="namespace" language="C++">
     <compoundname>OpenSkyhawk::Boot</compoundname>
+    <innerclass refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo" prot="public">OpenSkyhawk::Boot::BootloaderInfo</innerclass>
     <sectiondef kind="enum">
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1_1Boot_1a152fa8f2ccd971a210290e9a4c93bfcc" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -627,6 +628,69 @@
         </inbodydescription>
         <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="120" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="120" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a0a1445290c5875941be3cf1f6ec21a6d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::Boot::INFO_ADDRESS</definition>
+        <argsstring></argsstring>
+        <name>INFO_ADDRESS</name>
+        <qualifiedname>OpenSkyhawk::Boot::INFO_ADDRESS</qualifiedname>
+        <initializer>= 0x08000FF0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The last 16 bytes of the bootloader&apos;s 4 KB. A running app reads it to know a bootloader is present (and so whether it may honour an enter request) and which protocol it speaks (READY_n byte 3). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="126" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a3cc3f51f247a369c4504de7c1636a44c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::Boot::INFO_MAGIC</definition>
+        <argsstring></argsstring>
+        <name>INFO_MAGIC</name>
+        <qualifiedname>OpenSkyhawk::Boot::INFO_MAGIC</qualifiedname>
+        <initializer>= 0x4C42534Fu</initializer>
+        <briefdescription>
+<para>&quot;OSBL&quot; in memory order </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="127" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a5a63139664a3407d9fae5c3bf5770ffe" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS</definition>
+        <argsstring></argsstring>
+        <name>RELAY_EXPORT_ADDRESS</name>
+        <qualifiedname>OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS</qualifiedname>
+        <initializer>= 0xFF10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="145" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1ab9559894139082f3673bd3a793f26465" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::Boot::RELAY_EXPORT_WORDS</definition>
+        <argsstring></argsstring>
+        <name>RELAY_EXPORT_WORDS</name>
+        <qualifiedname>OpenSkyhawk::Boot::RELAY_EXPORT_WORDS</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>0xFF10-0xFF23 </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="146" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a9b03ea27984f6b4d0eb23bb49da5b977" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
         <definition>constexpr uint8_t OpenSkyhawk::Boot::ATTEMPTS_BKP_REGISTER</definition>
@@ -641,7 +705,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="125" column="19" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="125" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="152" column="19" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="152" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a2cd6e35c149a84f5b5ea71a023e6f313" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -656,7 +720,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="126" column="19" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="126" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="153" column="19" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="153" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1ad890646b188a7f4fb94bd6d587cfee8f" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint16_t</type>
@@ -672,7 +736,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="128" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="128" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="155" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="155" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a4c5dc686e224bb00f694ed963d3935db" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint16_t</type>
@@ -688,7 +752,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="129" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="129" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="156" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="156" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">

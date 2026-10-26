@@ -122,6 +122,11 @@
     <member refid="classOpenSkyhawk_1_1BoardThermal_1a649e5f47720ac4dbbf7947c342649fca" kind="function"><name>faultCode</name></member>
     <member refid="classOpenSkyhawk_1_1BoardThermal_1a88e9ee1143dcb7f2daa124223c314457" kind="function"><name>faultDetail</name></member>
   </compound>
+  <compound refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo" kind="struct"><name>OpenSkyhawk::Boot::BootloaderInfo</name>
+    <member refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1aea0465ff80329abec69e2b5b8b3515a2" kind="variable"><name>magic</name></member>
+    <member refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1ac8471a9e1444b2d1e0a9d4fb6fa62cb9" kind="variable"><name>protocolVersion</name></member>
+    <member refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1a81880bf1d762bec887c5cace25682cf8" kind="variable"><name>reserved</name></member>
+  </compound>
   <compound refid="structOpenSkyhawk_1_1CalBlob" kind="struct"><name>OpenSkyhawk::CalBlob</name>
     <member refid="structOpenSkyhawk_1_1CalBlob_1a31cc97f957a4c36be4dfc0c94d06c435" kind="variable"><name>magic</name></member>
     <member refid="structOpenSkyhawk_1_1CalBlob_1af40adb0e124469ab452c4cf9aa11ac2f" kind="variable"><name>version</name></member>
@@ -1018,6 +1023,10 @@
     <member refid="namespaceOpenSkyhawk_1_1Boot_1acdb92e4b0c74dd6a01d769def7ae9ee7" kind="variable"><name>APP_OFFSET</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1af2fd631255e6d5776bc0e58517fbff74" kind="variable"><name>ENTRY_BKP_REGISTER</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a5ed6f975dba2d572132efb2143d399d1" kind="variable"><name>ENTRY_MAGIC</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1a0a1445290c5875941be3cf1f6ec21a6d" kind="variable"><name>INFO_ADDRESS</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1a3cc3f51f247a369c4504de7c1636a44c" kind="variable"><name>INFO_MAGIC</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1a5a63139664a3407d9fae5c3bf5770ffe" kind="variable"><name>RELAY_EXPORT_ADDRESS</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1ab9559894139082f3673bd3a793f26465" kind="variable"><name>RELAY_EXPORT_WORDS</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a9b03ea27984f6b4d0eb23bb49da5b977" kind="variable"><name>ATTEMPTS_BKP_REGISTER</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a2cd6e35c149a84f5b5ea71a023e6f313" kind="variable"><name>ATTEMPT_LIMIT</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1ad890646b188a7f4fb94bd6d587cfee8f" kind="variable"><name>CATCH_WINDOW_MS</name></member>
@@ -1159,7 +1168,10 @@
     <member refid="namespaceSTM32Board_1a480fa3dcf5774e6950fb3a0f23e94759" kind="function"><name>readVddMv</name></member>
     <member refid="namespaceSTM32Board_1a7d2ec3789c2b1dd22bd0bec6c1064b89" kind="function"><name>readDieTempC</name></member>
     <member refid="namespaceSTM32Board_1a60e2cd4bacc4e9bb6d40357a4df37889" kind="function"><name>logNodeFaultEdge</name></member>
+    <member refid="namespaceSTM32Board_1a1de56863b1b466d260125a48cdab0b5a" kind="function"><name>backupRegister</name></member>
     <member refid="namespaceSTM32Board_1a5bd5eca4fdf29f15d237a990aa52fbf1" kind="function"><name>markBootHealthy</name></member>
+    <member refid="namespaceSTM32Board_1a7faffd4bd2514618b228d40014c38efe" kind="function"><name>bootloaderVersion</name></member>
+    <member refid="namespaceSTM32Board_1af27704e97e94cfb904779a7cf968bdbd" kind="function"><name>enterBootloader</name></member>
   </compound>
   <compound refid="A4EC__CmdIds_8h" kind="file"><name>A4EC_CmdIds.h</name>
     <member refid="A4EC__CmdIds_8h_1a7aa08739f6eb6060a4395fd5caa1442f" kind="define"><name>DCSIN_ACCEL_RESET</name></member>
@@ -1946,6 +1958,7 @@
     <member refid="A4EC__OutputIds_8h_1a026efdd651936ad38d0cca67e8e6b4c3" kind="define"><name>A_4E_C_WINDSHLD_DEFROST_AM</name></member>
   </compound>
   <compound refid="BootProtocol_8h" kind="file"><name>BootProtocol.h</name>
+    <member refid="BootProtocol_8h_1a6568eb06825dc3e1be7c56c86452935b" kind="define"><name>BOOT_RSP_MSG_NAME</name></member>
   </compound>
   <compound refid="CANProtocol_8cpp" kind="file"><name>CANProtocol.cpp</name>
     <member refid="CANProtocol_8cpp_1ab8c2b1490b083600ae5be831959f2b46" kind="variable"><name>TX_RING_SIZE</name></member>
@@ -2074,6 +2087,8 @@
     <member refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ad6a62c88db057359c3e93f5164a5031d" kind="enumvalue"><name>FW_MAJOR</name></member>
     <member refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2aec2e961173e586ebb7a912302e886e61" kind="enumvalue"><name>FW_MINOR</name></member>
     <member refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ae93b1f3a0d0641ccc1353e6105bb5071" kind="enumvalue"><name>FW_PATCH</name></member>
+    <member refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2aeff5b070b28daeabed75cd6e6651016e" kind="enumvalue"><name>BOOTLOADER</name></member>
+    <member refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2aca7322e74d5f3803d988168c5065caf1" kind="enumvalue"><name>BOOT_STATE</name></member>
     <member refid="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fd" kind="enum"><name>NodeTelemField</name></member>
     <member refid="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fdab718adec73e04ce3ec720dd11a06a308" kind="enumvalue"><name>ID</name></member>
     <member refid="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fdac57e921596445b99ab85558984966184" kind="enumvalue"><name>FRAME</name></member>
@@ -2128,6 +2143,9 @@
     <member refid="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71a804f62293d1119956874dd9dc7f3fac7" kind="enumvalue"><name>I5_PEAK_MA</name></member>
     <member refid="NodeStatus_8h_1a4ed9c421fe79c8e7b64e7dfcbf7c0784" kind="variable"><name>GATEWAY_NODE_ID</name></member>
     <member refid="NodeStatus_8h_1ac5d9dd26c11f8215ad904818613d5adb" kind="variable"><name>NODE_STATUS_ROW_BYTES</name></member>
+    <member refid="NodeStatus_8h_1aa8ec6c29bb2fb0d01d597d8f23bdca52" kind="variable"><name>NODE_BOOT_STATE_APP</name></member>
+    <member refid="NodeStatus_8h_1a535a81ee44614711457608eba2740ccc" kind="variable"><name>NODE_BOOT_STATE_UPDATING</name></member>
+    <member refid="NodeStatus_8h_1a8c57fccdd724d0a2907d36f7900ba765" kind="variable"><name>NODE_BOOT_UPDATING_MS</name></member>
     <member refid="NodeStatus_8h_1a4512c0ff0ba2b767df78463860946069" kind="variable"><name>NODE_TELEM_ROW_BYTES</name></member>
     <member refid="NodeStatus_8h_1a10990750c67c00baab1a0df47d3f1cac" kind="variable"><name>HB_ESR_TEC_SHIFT</name></member>
     <member refid="NodeStatus_8h_1a7a8c414fcd2de8af8e66c36d1d8a6d78" kind="variable"><name>HB_ESR_REC_SHIFT</name></member>

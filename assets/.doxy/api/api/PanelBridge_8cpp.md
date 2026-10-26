@@ -17,6 +17,7 @@
 * `#include <STM32Board.h>`
 * `#include <FirmwareVersion.h>`
 * `#include <FirmwareImage.h>`
+* `#include <BootProtocol.h>`
 * `#include <A4EC_InputMap.h>`
 * `#include <string.h>`
 
