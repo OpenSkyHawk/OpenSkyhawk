@@ -798,3 +798,38 @@ on `BLOCK_ACK.next`), and the relay packs whole frames per export record with `0
 (erase-at-BEGIN, RX ring, mailbox wait), `PanelBridge` (stream decoder), `SimGateway` (`Uploader`,
 `UploadProtocol.h`, `AxisCal.h` types / NACKs / inbound size), `03`, `04`, `06`, `07`, `12`, TechSpec,
 `docs/architecture/sim-gateway.md`, `docs/firmware/bootloader.md`. Client half: SkyHawkClient#175–#177.
+
+---
+
+## D30 — The bridge updates over USART2 from its own bootloader build; the bootloader freezes (#367)
+
+**Decision:** The Gateway's PanelBridge — the CAN master, which nothing on the bus can update — gets a second
+build of the bootloader (`Firmware/Bootloader` env `bridge`, `-DOSH_BOOT_BRIDGE`) that speaks the same
+protocol as `0xAA` frames on USART2 to the RP2040 instead of CAN. The Gateway firmware carries the PanelBridge
+app it was built with and flashes it as `UPL_FLASH` target `0`. The info block gains a `transports` byte, and an
+app enters only a bootloader that speaks the transport the request came on. From 1.0.0 the bootloader is
+frozen: protocol version 1 fixed, the build's platform / toolchain / CMSIS pinned, 4 KB forever, and a written
+cut order if it ever has to shrink (`12` § Freeze).
+
+**Rationale:**
+- *One image was the goal, and missed by ~60 B.* A custom 16-entry vector table and startup with no libc
+  init, plus LTO, won back ~280 B; both transports in one image still overflowed. The alternatives were
+  cutting validation (never), growing to 8 KB (4 KB of app space on every board), or two builds — the user's
+  stated fallback. Every line but the transport is shared, so the two can't drift.
+- *The RP2040 is already the uploader (D29)* and already shares a UART with the bridge — no new wiring, no
+  RP2040 → STM32 reset line (the Gateway board has none: NRST goes only to SWD and the reset button).
+  Catch-at-boot covers a bridge app that won't enter: the uploader keeps sending CONNECT, the user presses
+  reset.
+- *Bundle, don't fetch.* A Gateway release always carries the matching cockpit side, so the client can bring
+  it up to date with nothing to download, and `bridgeFw` tells it when to.
+- *Wrong build, no brick.* An app checks `transports` before resetting, so a board with the other build ignores
+  the request and keeps running (fix over ST-Link).
+- *Frozen means reproducible.* Release CI rebuilds the bootloader from source; a newer compiler can move its
+  size by ±100 B. Pinned, the same source always builds the same bytes; a link that grows into the info block
+  fails rather than ships.
+
+**Affects:** `Firmware/Bootloader` (startup, USART2 + DMA transport, `bridge` env, pins), `BootProtocol.h`
+(`transports`, serial framing, `BRIDGE_ENTER_EXPORT_ADDRESS`), `STM32Board::enterBootloader(via)`,
+`CANProtocol`, `PanelBridge` (`BridgeEnterListener`), `SimGateway` (`Uploader` target 0, UART hand-over),
+`Firmware/shared/bundle_bridge.py` + `osh_image.py` (`bootloader_env`), the release workflow, `03`, `04`, `06`,
+`07`, `12`, TechSpec, `docs/firmware/bootloader.md`, `docs/architecture/sim-gateway.md`, the flashing guide.

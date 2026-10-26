@@ -194,6 +194,8 @@ void handleDcsBiosExport(uint16_t address, uint16_t value) {
     // never broadcast onto CAN.
     if (address == NODE_STATUS_REQ_ADDR) return;
 #endif
+    // Reserved: the host's "bridge, enter your bootloader" (#367) — handled by BridgeEnterListener.
+    if (address == OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS) return;
     // Reserved: the bootloader relay window (#365, #366) — handled by BootRelayListener.
     if (address >= OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS
         && address < OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS + 2 * OpenSkyhawk::Boot::RELAY_EXPORT_WORDS) return;
@@ -648,6 +650,20 @@ public:
 };
 static NodeStatusReqListener _nodeStatusReqListener;
 #endif
+
+// The Gateway asks the bridge itself to update (#367): reset into the bootloader, which then talks to
+// the RP2040 over this same UART. Only with a bootloader that speaks serial installed — otherwise the
+// request is ignored (STM32Board::enterBootloader()).
+class BridgeEnterListener : public DcsBios::ExportStreamListener {
+public:
+    BridgeEnterListener()
+        : DcsBios::ExportStreamListener(OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS,
+                                        OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS) {}
+    void onDcsBiosWrite(unsigned int, unsigned int) override {
+        STM32Board::enterBootloader(OpenSkyhawk::Boot::TRANSPORT_SERIAL);
+    }
+};
+static BridgeEnterListener _bridgeEnterListener;
 
 // Host → bootloader relay (#365, stream encoding #366): each export record in the reserved window is
 // a byte stream of whole CAN frames — mark|len, id lo, id hi, data, with 0x55 / 0x56 escaped

@@ -2,6 +2,9 @@
 
 The Gateway has two chips, and each gets its own file. Flash both, from the same release.
 
+The USB-side file also carries this release's cockpit-side firmware. Once the cockpit side has its
+bootloader, a firmware updater can bring it up to date over USB — no ST-Link needed after the first time.
+
 | File | Chip | Side |
 |---|---|---|
 | `${USB_FILE}` | RP2040 | USB side — talks to the PC |

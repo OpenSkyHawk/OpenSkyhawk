@@ -758,6 +758,8 @@ bool onBridgeLine(const char* line, uint16_t len, uint32_t now);   // true = don
 void tick(uint32_t now);                             // every loop(), after the HID send
 bool busy();                                         // an upload session or a flash → calibration BUSY
 bool ownsUart();                                     // flashing → drop the client's export bytes
+bool ownsUartRx();                                   // flashing the bridge (#367): UART RX is the uploader's
+void onUartByte(uint8_t b, uint32_t now);            // …each byte, parsed as the bridge bootloader's 0xAA frames
 ```
 
 SimGateway wiring: `_calRx` grows to `CAL_MAX_INBOUND_FRAME` (270, `UPL_DATA`); `calLenValidForType()`
@@ -765,3 +767,19 @@ knows the `UPL_*` lengths; `_calHandleFrame()` hands `UPL_*` to `onFrame()` (BUS
 session) and NACKs `SESSION_OPEN` with BUSY while `busy()`; the CDC → UART path and `_calFlushHeld()`
 drop bytes while `ownsUart()`; `_relayByte()` offers every complete line to `onBridgeLine()`; `loop()`
 step 3c calls `tick()`. RAM: 146 KB of 256 KB with the staging buffer.
+
+**Target 0 — the bridge (#367).** The UART drain hands each byte to `onUartByte()` while
+`ownsUartRx()`, else to `_processByte()`; at every change of owner it resets the HID parser state and
+the line buffer (`_uploaderOwnsUart`), so a line cut off at the switch can't swallow the next one. The
+uploader sends serial frames instead of relay records (`addSerialFrame()`: no sync, no records), writes
+`BRIDGE_ENTER_EXPORT_ADDRESS` every 500 ms until the bootloader announces (≤ 2 s, then `CONNECT` every
+100 ms), and while CONFIRMING writes `NODE_STATUS_REQ_ADDR` every 500 ms until the node-0 row comes.
+
+**Bundled bridge image.** `Uploader.cpp` declares `osh_bundled_bridge[]` / `osh_bundled_bridge_len` as
+weak *declarations* (address 0 when absent — a weak `const` definition gets its value folded by GCC, so
+a bundle would never be read). `Firmware/shared/bundle_bridge.py` (a PRE script — only those may add
+sources) builds `custom_bridge_project` / `custom_bridge_env` with a nested `pio run` and compiles its
+`firmware.bin` into the Gateway firmware as the strong definitions; `bundledIdentity()` reads its
+identity block for `UPL_INFO_ACK.bridgeFw` and `UPL_FLASH 0` with nothing staged. Templates/SimGateway
+and Examples/E2E_DCS_Test/SimGateway bundle their sibling PanelBridge project; a project without the
+script (the tests) builds with no bundle.

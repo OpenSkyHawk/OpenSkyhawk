@@ -418,16 +418,37 @@ algorithm, CRC word skipped) and that the identity block matches `UPL_BEGIN`.
 A transport failure retries the whole flash from ENTERING_BOOT (`UPL_RETRIES` = 2; the board is then in
 its bootloader, app invalid, and answers at once); exhausted → `WRITE_FAILED` / `VERIFY_FAILED`. The
 result goes out as `UPL_RESULT` if the client is still there (a frame within 5 s), and is always kept for
-`UPL_INFO_ACK`. Target `0` (the bridge) → `UNSUPPORTED` until #367.
+`UPL_INFO_ACK`.
 
 **While flashing it owns the UART:** SimGateway drops the client's export bytes (CDC → UART) and the
 uploader writes the relay records itself (sync + records, a few hundred bytes per block); `_BOOT_RSP`
 lines are consumed, not relayed. `_NODE_STATUS` lines are always read (the confirmation) and always
 relayed. Calibration and upload exclude each other (`NACK BUSY`).
 
+**Target `0` — the Gateway's own cockpit side (#367).** PanelBridge runs the `bridge` bootloader
+(`12` § The Gateway's cockpit side), which talks USART2 straight to the RP2040, so there is no relay:
+
+- **The image:** the staged one if the client staged one, else the **bundled** bridge image — the
+  SimGateway build compiles the PanelBridge project and links its `.bin` in
+  (`Firmware/shared/bundle_bridge.py`, `custom_bridge_project` / `custom_bridge_env`; Uploader's weak
+  `osh_bundled_bridge`). `UPL_INFO_ACK.bridgeFw` is its version (0.0.0 = none) — the client compares it
+  with the node-0 row to tell the cockpit side is behind. Nothing staged and nothing bundled →
+  `NACK NOT_STAGED`.
+- **ENTERING_BOOT:** a write to `BRIDGE_ENTER_EXPORT_ADDRESS` (`0xFF02`) every 500 ms until the
+  bootloader announces (2 s at most), then `CONNECT` every 100 ms — pressing the Gateway's reset button
+  catches an app that ignores the request. 10 s → `NO_RESPONSE`.
+- **The UART is the uploader's both ways** from ENTERING_BOOT to CONFIRMING: every byte PanelBridge sends
+  goes to `Uploader::onUartByte()` (the `0xAA` serial frames), not the line / HID parsers. SimGateway
+  resets both parsers at each hand-over, so a line cut off at the switch can't swallow the next one.
+- **CONFIRMING:** asks for the roster (`NODE_STATUS_REQ_ADDR`) every 500 ms — the bridge's boot row can
+  be lost in the hand-over from its bootloader — until the node-0 row shows the app running.
+
 **Measured** (bench, 27.7 KB image): entering 0.12 s, erase 0.61 s, writing 2.22 s (12.5 KB/s), confirm
 ~0.2 s — 3.2 s update. A mid-transfer reset retried and finished (2 attempts, 4.4 s); a client that left
-1 s in found `OK` in `UPL_INFO_ACK` afterwards.
+1 s in found `OK` in `UPL_INFO_ACK` afterwards. The bridge (33.5 KB, #367): **4.1 s** from the bundle
+(writing 2.8 s); a bridge reset mid-write → retried, `OK` (6.4 s); the Gateway rebooted mid-write → the
+bridge stayed in its bootloader and the next `UPL_FLASH 0` finished (4.8 s); an app that ignores the
+request + the reset pressed during ENTERING_BOOT → caught, `OK`.
 
 ## UART Pin Contract
 

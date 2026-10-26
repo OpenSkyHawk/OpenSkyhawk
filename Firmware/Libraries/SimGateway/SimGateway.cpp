@@ -354,6 +354,7 @@ uint8_t  _line[SimGateway::RELAY_LINE_MAX];
 uint16_t _lineLen      = 0;
 bool     _lineCorrupt  = false;
 bool     _lineOverlong = false;
+bool     _uploaderOwnsUart = false;   // last byte went to Uploader::onUartByte (#367)
 
 void _lineReset() {
     _lineLen      = 0;
@@ -1277,7 +1278,14 @@ void loop() {
     //    UART RX moving (error-free) is the proof-of-recovery signal for FAULT.
     bool anyFired = false;
     while (_uart->available()) {
-        anyFired |= _processByte(_uart->read());
+        const uint8_t b = (uint8_t)_uart->read();
+        // While it flashes the bridge the uploader reads the UART itself (#367). Each hand-over starts
+        // the relay parsers clean: a line cut off at the switch would swallow the first one after it
+        // — the bridge's boot _NODE_STATUS row, which is what confirms the flash.
+        const bool owned = Uploader::ownsUartRx();
+        if (owned != _uploaderOwnsUart) { _uploaderOwnsUart = owned; _state = ParserState::IDLE; _lineReset(); }
+        if (owned) Uploader::onUartByte(b, millis());
+        else       anyFired |= _processByte(b);
         _uartMovedThisTick = true;
     }
 

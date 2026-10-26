@@ -51,4 +51,9 @@ bool busy();
 /// A flash runs: the uploader writes the UART, so the client's export bytes must be dropped.
 bool ownsUart();
 
+/// Flashing the bridge (#367): its bootloader answers on the UART in its own framing, so every byte
+/// PanelBridge sends goes to onUartByte() instead of the line / HID parser — until the bridge reboots.
+bool ownsUartRx();
+void onUartByte(uint8_t b, uint32_t now);
+
 }  // namespace Uploader

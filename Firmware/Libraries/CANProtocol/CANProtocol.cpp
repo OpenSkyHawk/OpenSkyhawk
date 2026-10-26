@@ -298,7 +298,7 @@ void drain() {
             // A host asking for this node's bootloader (#365): reset into it. Without one installed
             // enterBootloader() returns and the request is ignored — a reset would only restart us.
             if (frame.len && frame.data[0] == uint8_t(OpenSkyhawk::Boot::Cmd::CONNECT))
-                STM32Board::enterBootloader();
+                STM32Board::enterBootloader(OpenSkyhawk::Boot::TRANSPORT_CAN);
         } else {
             if (frame.canId == canIdHb(NODE_ID)) {
                 // Our own heartbeat ID. A node never receives its own frames, so another board has

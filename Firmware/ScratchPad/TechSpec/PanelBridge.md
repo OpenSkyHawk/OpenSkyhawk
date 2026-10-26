@@ -406,6 +406,13 @@ frame goes to `CANProtocol::send()` — only `BOOT_CMD_1`–`63` and `UNCONFIGUR
 to a node notes UPDATING only when that node's bootloader has been seen (`bootloader` ≠ 0).
 `handleDcsBiosExport()` drops the window.
 
+**Its own update (#367).** `BridgeEnterListener` (`ExportStreamListener` on
+`BRIDGE_ENTER_EXPORT_ADDRESS`, `0xFF02`) calls `STM32Board::enterBootloader(TRANSPORT_SERIAL)`: with
+the `bridge` bootloader installed the board resets into it and the Gateway's uploader talks to it on
+USART2; with the CAN build (or none) nothing happens. `handleDcsBiosExport()` drops the address. The
+PanelBridge projects set `[osh] bootloader_env = bridge`, so `pio run -t bootstrap` flashes the right
+build.
+
 Test hooks (`PANELBRIDGE_TEST`): `testFeedHeartbeat`, `testFeedHealth(nodeId, dieTempC, hFlags,
 faultMask, faultId, nodeKind)` (mirrors the `HEALTH_n` branch, incl. the kind delta),
 `testRequestNodeStatus`, `testCheckTimeouts`.

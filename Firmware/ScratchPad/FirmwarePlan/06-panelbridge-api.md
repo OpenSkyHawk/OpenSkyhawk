@@ -58,7 +58,10 @@ The bridge is a dumb relay between the host and the boards' bootloaders (`12-boo
   it starts and when it lapses) — replies from its bootloader always; commands to it only once a
   bootloader has been seen for it, so a CONNECT to a board without one (which ignores it) never shows
   it as updating.
-- **Not the bridge itself:** it never acts on `BOOT_CMD_0`; updating the bridge is #367 (USART2).
+- **Not the bridge itself:** it never acts on `BOOT_CMD_0`. The bridge is updated over USART2 by the
+  Gateway's uploader (#367): `BridgeEnterListener` (an `ExportStreamListener` on `0xFF02`, dropped by
+  `handleDcsBiosExport()`) calls `STM32Board::enterBootloader(TRANSPORT_SERIAL)`, and the `bridge`
+  bootloader takes it from there (`12-bootloader.md`).
 
 **Timeout clock (elapsed is signed):** `checkNodeTimeouts` samples `now` **after** `CANProtocol::drain()` (which stamps each node's `lastSeenMs` from `onCanRx`) and compares `(int32_t)(now - lastSeenMs) > HB_TIMEOUT_MS`. Both guard the same hazard — a millisecond ticking between the loop's `now` and the in-drain `lastSeenMs` would make the *unsigned* difference wrap to ~4.29e9 and declare a live node dead for one loop (a split-second false `present=00`→`present=01` flicker). Signed elapsed reads a small negative as "not yet elapsed" (#225).
 

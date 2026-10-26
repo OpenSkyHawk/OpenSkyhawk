@@ -2,7 +2,8 @@
 
 Every OpenSkyhawk STM32 board (PanelGroup nodes, PDUs, and the Gateway's PanelBridge chip) carries a
 small bootloader in its first 4 KB of flash. It starts the firmware, and it lets the board take a new
-firmware image over the cockpit's CAN bus, so a board can be updated without an ST-Link.
+firmware image without an ST-Link: over the cockpit's CAN bus for the nodes, and over the link to the
+Gateway's USB chip for the PanelBridge chip, which runs the bus and so can't be updated across it.
 
 ## What it does at power-up
 
@@ -35,8 +36,14 @@ writes it, and confirms the board comes back running the new version. If the PC 
 cable comes out halfway, the Gateway still finishes and keeps the result for when the PC is back; if
 the transfer itself fails, it tries again.
 
+The Gateway updates its own PanelBridge chip the same way, minus the bus: the Gateway firmware carries
+the PanelBridge firmware it was released with, and flashes it straight over the serial link between
+the two chips. Updating the Gateway therefore brings the cockpit side along, and the update tool can
+tell when that half is behind. If the PanelBridge firmware ever stops answering, press the Gateway's
+reset button while the update is waiting; the bootloader catches it the same way.
+
 An update of a typical board takes about three seconds — around six for one with a full 60 KB of
-firmware. The Gateway's PanelBridge reports each board's state as it goes — running, waiting in its
+firmware, and about four for the PanelBridge chip. The Gateway's PanelBridge reports each board's state as it goes — running, waiting in its
 bootloader, or being updated — along with the bootloader version it has.
 
 ## How a board knows its node number
@@ -61,7 +68,9 @@ pio run -t bootstrap
 ```
 
 Run it from the board's project folder. It builds and flashes the bootloader, then this project's
-firmware. After that, `pio run -t upload` updates the firmware alone and leaves the bootloader in
+firmware. The bootloader comes in two builds of the same code: the nodes get the one that talks CAN,
+and the PanelBridge project picks the one that talks to the Gateway's USB chip — `bootstrap` flashes the
+right one, and so does each board's `-full.hex`. After that, `pio run -t upload` updates the firmware alone and leaves the bootloader in
 place.
 
 From a release, flash the board's `-full.hex` file (bootloader plus firmware) on a new board, and its
@@ -72,6 +81,13 @@ From a release, flash the board's `-full.hex` file (bootloader plus firmware) on
     The bootloader starts any firmware with a valid identity block, and every sketch built on the
     PanelGroup library gets one automatically. A bare sketch that uses none of the OpenSkyhawk node
     libraries has no identity block, and the bootloader won't start it.
+
+## It doesn't change after 1.0
+
+The bootloader is frozen from firmware 1.0: boards in the field never get a new one over the bus, so
+every new feature goes into the firmware instead. It is built with a pinned compiler, so the same
+source always builds the same bytes, and it stays within its 4 KB for good. A release that does change
+it (a bug fix) ships it on its own as well, for the ST-Link.
 
 ## The bootloader protects itself
 

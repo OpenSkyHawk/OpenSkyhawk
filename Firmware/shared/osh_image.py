@@ -81,9 +81,13 @@ def rebuild_bin(target, source, env):
 
 
 def flash_bootloader(target, source, env):
-    """Build and upload Firmware/Bootloader with its own settings (its project accepts any SWD tap ID)."""
-    bootloader = os.path.join(env.GetProjectConfig().get("osh", "firmware"), "Bootloader")
-    return subprocess.call([env.subst("$PYTHONEXE"), "-m", "platformio", "run", "-d", bootloader, "-t", "upload"])
+    """Build and upload Firmware/Bootloader with its own settings (its project accepts any SWD tap ID).
+    Its env is `[osh] bootloader_env`: `bootloader` (CAN, the default) or `bridge` (USART2, #367)."""
+    config = env.GetProjectConfig()
+    bootloader = os.path.join(config.get("osh", "firmware"), "Bootloader")
+    build = config.get("osh", "bootloader_env", "bootloader")
+    return subprocess.call([env.subst("$PYTHONEXE"), "-m", "platformio", "run", "-d", bootloader, "-e", build,
+                            "-t", "upload"])
 
 
 try:

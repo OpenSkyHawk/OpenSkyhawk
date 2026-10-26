@@ -102,6 +102,13 @@ erasing anything, retries a failed transfer, confirms the new version from the n
 finishes even if the PC goes away. While it flashes it owns the UART: export data from the PC is set
 aside until it's done.
 
+It updates **its own PanelBridge** too (#367). PanelBridge runs the bus, so nothing on the bus can
+update it; instead its bootloader talks to SimGateway directly over the UART they already share.
+SimGateway asks PanelBridge to restart into its bootloader, takes over the UART in both directions, and
+flashes the PanelBridge firmware it carries — each Gateway firmware build includes the PanelBridge
+firmware it was built with — or one the client sent. The client compares that version with the one
+PanelBridge reports to know when the cockpit side is behind.
+
 ## controlId routing logic
 
 Incoming HID frames (PanelBridge → SimGateway) are fixed 6-byte little-endian:
