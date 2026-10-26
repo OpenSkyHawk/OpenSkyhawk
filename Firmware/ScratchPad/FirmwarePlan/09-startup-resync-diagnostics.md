@@ -37,7 +37,8 @@ app asked for it or the app fails its check, and announces on `BOOT_RSP_n`. See 
 7. Send `READY` frame (`CANProtocol::sendReady()` → `canIdReady(NODE_ID)` = `0x400 + NODE_ID`) —
    signals PanelBridge that the initial input poll and EVT burst are complete, and that this node
    is ready to answer a full-state `SYNC_REQ`. Its payload is the node's firmware version
-   (`ReadyPayload`, #295).
+   (`ReadyPayload`, #295). From here on the node answers every `SYNC_REQ` with a READY flagged
+   `RESYNC` too (#383), so a bridge that boots later still learns its version.
 8. Heartbeat begins — `CANProtocol::serviceNodeStatus()` arms its timers on its first call, in
    the first `loop()` after boot, so the first HB goes out ~500 ms after boot completes (#340).
 

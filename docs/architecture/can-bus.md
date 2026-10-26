@@ -136,7 +136,9 @@ The `SYNC_REQ` / `READY` handshake makes input state deterministic:
 2. PanelBridge broadcasts `SYNC_REQ` — on its own cold boot, on a DCS session change, when it
    sees a `READY_n`, or when a node transitions from unseen to alive.
 3. On receiving `SYNC_REQ`, every PanelGroup re-polls all its inputs and re-sends their
-   current state as `EVT_n` frames.
+   current state as `EVT_n` frames. Every node also re-sends its `READY_n`, flagged as a resync,
+   so a bridge that started after it still learns its firmware version; a resync READY never
+   triggers another `SYNC_REQ`.
 
 This guarantees PanelBridge can request a fresh input snapshot at any time. Missed *outputs*
 (LEDs, gauges) are tolerable — a fresh DCS-BIOS update arrives within ~50 ms. Missed *inputs*

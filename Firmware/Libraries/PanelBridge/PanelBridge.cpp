@@ -535,11 +535,14 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
 
     // READY_1 – READY_63: node boot-complete — mark alive, always broadcast SYNC_REQ.
     // SYNC_REQ is unconditional: READY signals a fresh boot regardless of prior state.
+    // A READY flagged RESYNC is a node answering our SYNC_REQ (#383): cache its version, but no
+    // SYNC_REQ back — the node already has it, and answering would loop.
     if (canId >= canIdReady(1) && canId <= canIdReady(MAX_NODE_ID)) {
         uint8_t nodeId = (uint8_t)(canId - canIdReady(0));
+        const bool resync = len > 4 && (data[4] & static_cast<uint8_t>(ReadyFlag::RESYNC));
         if (STM32Board::isDebug()) {
             auto& d = STM32Board::diagSerial();
-            d.print(F("[BRIDGE] READY node=")); d.println(nodeId);
+            d.print(resync ? F("[BRIDGE] READY (resync) node=") : F("[BRIDGE] READY node=")); d.println(nodeId);
         }
 #if PANELBRIDGE_NODE_STATUS
         // Firmware version (#295): every boot re-announces it, so a reflash is seen at once. Cache
@@ -562,7 +565,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
 #else
         markNodeAlive(nodeId, now);
 #endif
-        broadcastSyncReq();
+        if (!resync) broadcastSyncReq();
         return;
     }
     // All other IDs discarded silently

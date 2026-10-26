@@ -103,7 +103,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `TELEM_n` | `0x180+n` | Node_n → PanelBridge | 8 | Paged node telemetry (`TelemPayload`) — one frame per second plus flag-change edges; first user the PDU (#216) — see TELEM payload below |
 | `EVT_n` | `0x200+n` | Node_n → PanelBridge | 8 | Absolute input events (switches, selectors, pots) — `ControlPacketPair`, value `%u` → `set_state` |
 | `ECHO_n` | `0x300+n` | Node_n → PanelBridge | 8 | TEST_SEQ echo — 8-byte payload mirrored unchanged |
-| `READY_n` | `0x400+n` | Node_n → PanelBridge | 8 | One-time boot signal after initial input poll and EVT burst are complete; carries the node's firmware version (`ReadyPayload`, #295) — see READY payload below |
+| `READY_n` | `0x400+n` | Node_n → PanelBridge | 8 | Boot signal after initial input poll and EVT burst are complete; carries the node's firmware version (`ReadyPayload`, #295). Re-sent, flagged `RESYNC`, in answer to every `SYNC_REQ` (#383) — see READY payload below |
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
@@ -303,9 +303,18 @@ struct ReadyPayload {          // 8 bytes, DLC 8
     uint8_t fwMinor;           // 1
     uint8_t fwPatch;           // 2
     uint8_t bootloader;        // 3: installed bootloader's protocol version, 0 = none (#365)
-    uint8_t rsvd[4];           // 4-7: reserved, transmit 0
+    uint8_t flags;             // 4: ReadyFlag bits (#383) — 0 = the boot READY
+    uint8_t rsvd[3];           // 5-7: reserved, transmit 0
 };
 ```
+
+**Resync (#383).** The boot READY is the only time a node announced its version, so a bridge that
+booted after the node — a bridge-only reset, a Gateway update, a cold power-up where the bridge is
+slower — reported it as 0.0.0 until the node restarted. Since #383 every node also answers each
+`SYNC_REQ` with a READY flagged `ReadyFlag::RESYNC` (`0x01`), from `CANProtocol::drain()` once its
+boot READY is out. The bridge caches the version from it but does **not** broadcast `SYNC_REQ` for
+it (that would answer itself forever); a boot READY still triggers `SYNC_REQ` as before. Cost: one
+8-byte frame per node per `SYNC_REQ`. Firmware without the flag reads as a boot READY.
 
 PanelBridge caches the version per node (under `PANELBRIDGE_NODE_STATUS`), keeps it when the node
 times out, and reports it in `_NODE_STATUS` v4 (`04-dcs-bios-integration.md`). A READY from a node
