@@ -354,6 +354,7 @@ uint8_t  _line[SimGateway::RELAY_LINE_MAX];
 uint16_t _lineLen      = 0;
 bool     _lineCorrupt  = false;
 bool     _lineOverlong = false;
+bool     _uploaderOwnsUart = false;   // last byte went to Uploader::onUartByte (#367)
 
 void _lineReset() {
     _lineLen      = 0;
@@ -362,6 +363,10 @@ void _lineReset() {
 }
 
 void _relayByte(uint8_t b) {
+    // Noise before a line starts is dropped on its own: PanelBridge's UART coming up (every reset)
+    // clocks a stray byte just ahead of its boot roster, and a line never starts with one, so
+    // nothing real is lost (#367). Inside a line it still condemns the line.
+    if (_lineLen == 0 && b != '\n' && (b < 0x20 || b > 0x7E)) return;
     if (_lineLen < SimGateway::RELAY_LINE_MAX) _line[_lineLen++] = b;
     else                                       _lineOverlong = true;
 
@@ -833,8 +838,10 @@ bool _processByte(uint8_t b) {
                 _framePos = 0;
                 _state    = ParserState::IN_FRAME;
             } else {
-                // Resync: 0xAA was not magic; both bytes go to the line and resume. 0xAA is not
-                // ASCII, so the line they land in is dropped as corrupt rather than relayed.
+                // Resync: 0xAA was not magic; both bytes go to the line and resume. The line they
+                // land in is dropped as corrupt rather than relayed — marked here, since an 0xAA at
+                // a line's start would otherwise be dropped as noise on its own (#367).
+                _lineCorrupt = true;
                 _relayByte(0xAA);
                 _relayByte(b);
                 _state = ParserState::IDLE;
@@ -1277,7 +1284,14 @@ void loop() {
     //    UART RX moving (error-free) is the proof-of-recovery signal for FAULT.
     bool anyFired = false;
     while (_uart->available()) {
-        anyFired |= _processByte(_uart->read());
+        const uint8_t b = (uint8_t)_uart->read();
+        // While it flashes the bridge the uploader reads the UART itself (#367). Each hand-over starts
+        // the relay parsers clean: a line cut off at the switch would swallow the first one after it
+        // — the bridge's boot _NODE_STATUS row, which is what confirms the flash.
+        const bool owned = Uploader::ownsUartRx();
+        if (owned != _uploaderOwnsUart) { _uploaderOwnsUart = owned; _state = ParserState::IDLE; _lineReset(); }
+        if (owned) Uploader::onUartByte(b, millis());
+        else       anyFired |= _processByte(b);
         _uartMovedThisTick = true;
     }
 

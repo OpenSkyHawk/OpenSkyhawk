@@ -58,7 +58,19 @@ The bridge is a dumb relay between the host and the boards' bootloaders (`12-boo
   it starts and when it lapses) — replies from its bootloader always; commands to it only once a
   bootloader has been seen for it, so a CONNECT to a board without one (which ignores it) never shows
   it as updating.
-- **Not the bridge itself:** it never acts on `BOOT_CMD_0`; updating the bridge is #367 (USART2).
+- **Not the bridge itself:** it never acts on `BOOT_CMD_0`. The bridge is updated over USART2 by the
+  Gateway's uploader (#367): `BridgeEnterListener` (an `ExportStreamListener` on `0xFF02`, dropped by
+  `handleDcsBiosExport()`) calls `STM32Board::enterBootloader(TRANSPORT_SERIAL)`, and the `bridge`
+  bootloader takes it from there (`12-bootloader.md`).
+
+**Forgetting a node (#384).** A node that is gone on purpose stops counting as dead: its tracking
+is cleared, a WARNING it held clears, and the roster leaves it out.
+- **Automatic on an ID change:** `onBootRsp()` sees the bootloader's `NODE_SET` reply with status OK
+  on the old ID's `BOOT_RSP_n` (the Gateway uploader's `SET_NODE_ID`), forgets that ID and re-sends
+  the roster. The board comes back under its new ID through its own announcements.
+- **On request:** `NodeForgetListener` (an `ExportStreamListener` on `NODE_FORGET_REQ_ADDR`, `0xFF04`,
+  value = the NODE_ID) forgets a node only while it is dead, then re-sends the roster. A live node
+  is ignored, and one that comes back later reappears as new.
 
 **Timeout clock (elapsed is signed):** `checkNodeTimeouts` samples `now` **after** `CANProtocol::drain()` (which stamps each node's `lastSeenMs` from `onCanRx`) and compares `(int32_t)(now - lastSeenMs) > HB_TIMEOUT_MS`. Both guard the same hazard — a millisecond ticking between the loop's `now` and the in-drain `lastSeenMs` would make the *unsigned* difference wrap to ~4.29e9 and declare a live node dead for one loop (a split-second false `present=00`→`present=01` flicker). Signed elapsed reads a small negative as "not yet elapsed" (#225).
 
@@ -86,7 +98,9 @@ populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + h
   timeout in `checkNodeTimeouts` emits `present=00` for a silently-dead node),
 - when an alive node's cached `nodeKind` changes (#344) — normally its first `HEALTH_n`, ~1 s after
   the alive delta, which went out with kind `00`,
-- when a `READY_n` changes an alive node's cached firmware version (#295) — a reflash inside the
+- when a `READY_n` changes an alive node's cached firmware version (#295) — a `RESYNC` READY
+  (#383, the answer to the bridge's own `SYNC_REQ`) is cached the same way but never triggers a
+  `SYNC_REQ` of its own — a reflash inside the
   heartbeat timeout, and
 - at boot, and in response to a host request — a DCS-BIOS export write to `NODE_STATUS_REQ_ADDR`
   (`0xFF00`; `0x86FE` before v4), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A

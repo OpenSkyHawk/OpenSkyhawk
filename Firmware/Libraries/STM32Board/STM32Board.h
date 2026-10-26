@@ -100,12 +100,14 @@ namespace STM32Board {
 
     /**
      * @brief Reset into the bootloader, which then stays for an update (#365). Never returns when a
-     *        bootloader is present; returns (doing nothing) when there is none.
+     *        bootloader is installed that can be reached over @p via; otherwise returns, doing nothing.
      *
      * Sets the bootloader's one-shot entry flag (backup register DR1) and resets. Called by
-     * CANProtocol when a CONNECT arrives on this node's BOOT_CMD_n.
+     * CANProtocol for a CONNECT on this node's BOOT_CMD_n (via TRANSPORT_CAN), and by PanelBridge for
+     * the host's BRIDGE_ENTER_EXPORT_ADDRESS (via TRANSPORT_SERIAL, #367).
+     * @param via BootProtocol.h TRANSPORT_CAN or TRANSPORT_SERIAL — the way the request came in.
      */
-    void enterBootloader();
+    void enterBootloader(uint8_t via);
 
     /**
      * @brief CAN bus status event handler — maps CanStatus to LED state.

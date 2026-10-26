@@ -398,8 +398,11 @@ uint8_t bootloaderVersion() {
     return info->magic == INFO_MAGIC ? info->protocolVersion : 0;
 }
 
-void enterBootloader() {
-    if (!bootloaderVersion()) return;   // no bootloader: a reset would only restart this app
+void enterBootloader(uint8_t via) {
+    // No bootloader, or one that can't be reached the way this request came: a reset would only
+    // restart this app — or leave it in a bootloader nothing can talk to (#367).
+    if (!bootloaderVersion()) return;
+    if (!(reinterpret_cast<const OpenSkyhawk::Boot::BootloaderInfo*>(OpenSkyhawk::Boot::INFO_ADDRESS)->transports & via)) return;
     *backupRegister(OpenSkyhawk::Boot::ENTRY_BKP_REGISTER) = OpenSkyhawk::Boot::ENTRY_MAGIC;
     NVIC_SystemReset();
 }

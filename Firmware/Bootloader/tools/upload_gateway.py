@@ -6,6 +6,9 @@ Gateway over USB, have it flash a board over CAN, and report.
   python3 upload_gateway.py GW_PORT firmware.bin --unconfigured      # the one board with no NODE_ID
   python3 upload_gateway.py GW_PORT firmware.bin --node N --new-id M # move N to M first (M = the image's)
   python3 upload_gateway.py GW_PORT firmware.bin --node N --leave-after 3   # close the port 3 s into the flash
+  python3 upload_gateway.py GW_PORT --bridge                         # the Gateway's PanelBridge, from the
+                                                                     # image its firmware carries (#367)
+  python3 upload_gateway.py GW_PORT bridge.bin --bridge              # ...or from this one
   python3 upload_gateway.py GW_PORT --info                           # UPL_INFO: state and the last result
 
 Close SkyHawkClient first — it owns the port. Message codes and layouts are read from
@@ -104,12 +107,21 @@ def info(gw):
     if t is None:
         sys.exit("no UPL_INFO_ACK — this Gateway firmware has no uploader")
     state = {v: k for k, v in C.items() if k.startswith("UPL_STATE_")}.get(p[C["UPL_INFO_ACK_STATE"]])
+    b = C["UPL_INFO_ACK_BRIDGE_MAJOR"]
     print(f"uploader v{p[0]} · max {p[1]} KB · chunk {struct.unpack_from('<H', p, 2)[0]} · {state} · "
           f"last: target {p[C['UPL_INFO_ACK_LAST_TARGET']]} {RESULTS.get(p[C['UPL_INFO_ACK_LAST_RESULT']])} "
-          f"v{p[7]}.{p[8]}.{p[9]}")
+          f"v{p[7]}.{p[8]}.{p[9]} · bundled bridge v{p[b]}.{p[b + 1]}.{p[b + 2]}")
 
 
 def upload(gw, img, target, new_id, leave_after):
+    if img is not None:
+        stage(gw, img)
+    elif target == C["UPL_TARGET_BRIDGE"]:
+        gw.ask(C["CAL_T_UPL_ABORT"])   # target 0 prefers a staged image: drop any, so the bundled one goes
+    flash(gw, target, new_id, leave_after)
+
+
+def stage(gw, img):
     magic, _, _, length, crc, node, kind, ma, mi, pa = struct.unpack_from("<IHHIIBBBBB", img, 0x200)
     if magic != 0x594B534F:
         sys.exit("no identity block at +0x200 — not a production image")
@@ -134,6 +146,8 @@ def upload(gw, img, target, new_id, leave_after):
         sys.exit(f"UPL_END refused: {nack_text(p)}")
     print(f"staged and verified in {time.monotonic() - t0:.2f} s")
 
+
+def flash(gw, target, new_id, leave_after):
     t1 = time.monotonic()
     t, p = gw.ask(C["CAL_T_UPL_FLASH"], bytes([target, new_id]))
     if t != C["CAL_T_ACK"]:
@@ -159,8 +173,7 @@ def upload(gw, img, target, new_id, leave_after):
                 secs = struct.unpack_from("<H", p, C["UPL_RESULT_SECONDS"])[0]
                 dt = time.monotonic() - t1
                 print(f"\nresult: {RESULTS.get(p[0], hex(p[0]))} · node {p[1]} · v{p[2]}.{p[3]}.{p[4]} · "
-                      f"{p[5]} attempt(s) · {dt:.1f} s, Gateway {secs} s "
-                      f"({length / dt / 1024:.1f} KB/s incl. entering + confirming)")
+                      f"{p[5]} attempt(s) · {dt:.1f} s, Gateway {secs} s")
                 return
 
 
@@ -170,6 +183,7 @@ def main():
     ap.add_argument("image", nargs="?", help="production firmware.bin")
     ap.add_argument("--node", type=int, help="target NODE_ID")
     ap.add_argument("--unconfigured", action="store_true", help="the one board on the bus with no NODE_ID")
+    ap.add_argument("--bridge", action="store_true", help="the Gateway's PanelBridge (no image: the bundled one)")
     ap.add_argument("--new-id", type=int, help="SET_NODE_ID first (must be the image's NODE_ID)")
     ap.add_argument("--leave-after", type=float, help="close the port this many seconds into the flash")
     ap.add_argument("--info", action="store_true", help="UPL_INFO only")
@@ -179,10 +193,11 @@ def main():
         if a.info:
             info(gw)
             return
-        if not a.image or (a.node is None and not a.unconfigured):
-            ap.error("an image and --node N (or --unconfigured)")
-        target = C["UPL_TARGET_UNCONFIGURED"] if a.unconfigured else a.node
-        upload(gw, pathlib.Path(a.image).read_bytes(), target,
+        if not a.bridge and (not a.image or (a.node is None and not a.unconfigured)):
+            ap.error("an image and --node N (or --unconfigured), or --bridge")
+        target = (C["UPL_TARGET_BRIDGE"] if a.bridge else
+                  C["UPL_TARGET_UNCONFIGURED"] if a.unconfigured else a.node)
+        upload(gw, pathlib.Path(a.image).read_bytes() if a.image else None, target,
                a.new_id if a.new_id is not None else C["UPL_NODE_ID_KEEP"], a.leave_after)
     finally:
         gw.s.close()

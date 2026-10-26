@@ -26,7 +26,8 @@ pio run -t bootstrap       # bootloader + firmware, once per new board
 
 After that, `pio run -t upload` flashes the firmware alone and keeps the bootloader. From a release,
 use the board's `-full.hex` file on a new board and its `.elf` file on one that already has the
-bootloader.
+bootloader. The Gateway's PanelBridge chip takes a different build of the bootloader from the nodes;
+`bootstrap` and the release files already pick the right one for each board.
 
 The bootloader write-protects itself, so anything that writes from address 0 — the per-library test
 sketches, or a new bootloader — needs the protection lifted first. The one-line command is on the

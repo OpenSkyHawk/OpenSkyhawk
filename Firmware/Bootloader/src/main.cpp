@@ -74,7 +74,12 @@ extern "C" void SysTick_Handler(void) { g_ms++; }
 // platformio.ini. A running app reads it to know a bootloader is here and which protocol it speaks.
 extern "C" __attribute__((section(".osh_bootinfo"), used))
 const Boot::BootloaderInfo osh_bootloader_info = {
-    Boot::INFO_MAGIC, Boot::PROTOCOL_VERSION, {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}};
+#ifdef OSH_BOOT_BRIDGE
+    Boot::INFO_MAGIC, Boot::PROTOCOL_VERSION, Boot::TRANSPORT_SERIAL,
+#else
+    Boot::INFO_MAGIC, Boot::PROTOCOL_VERSION, Boot::TRANSPORT_CAN,
+#endif
+    {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}};
 
 namespace {
 
@@ -139,14 +144,25 @@ void can_init() {
     uint32_t t = g_ms;
     while ((CAN1->MSR & CAN_MSR_INAK) && g_ms - t < 100) {}      // joins after 11 recessive bits
 }
-void poll_can();
+// Two builds from this source (#367): env:bootloader (nodes, CAN) and env:bridge (-DOSH_BOOT_BRIDGE:
+// the Gateway's PanelBridge, USART2 — it is the CAN master, so nothing on the bus could update it).
+// One image with both didn't fit 4 KB; the transport is fixed per build and the other compiles out.
+#ifdef OSH_BOOT_BRIDGE
+constexpr bool SERIAL = true;
+#else
+constexpr bool SERIAL = false;
+#endif
+
+void poll_rx();
+void uart_send(const uint8_t* d, uint8_t len);
 void can_send(const uint8_t* d, uint8_t len) {
+    if (SERIAL) { uart_send(d, len); return; }
     // Our replies (0x780+n) lose arbitration to a host streaming 0x740+n, so a mailbox can stay busy
     // for a while: keep emptying the 3-deep RX FIFO meanwhile, or the stream overruns it (#366). Any
     // of the three mailboxes will do — TXFP keeps them in request order.
     uint32_t t = g_ms;
     while (!(CAN1->TSR & (CAN_TSR_TME0 | CAN_TSR_TME1 | CAN_TSR_TME2))) {
-        poll_can();
+        poll_rx();
         if (g_ms - t > 20) return;   // nobody ACKs → drop it
     }
     const uint32_t mb = (CAN1->TSR & CAN_TSR_CODE) >> CAN_TSR_CODE_Pos;
@@ -172,12 +188,76 @@ struct RxFrame { uint8_t n; uint8_t d[8]; };
 constexpr uint8_t RING = Boot::WINDOW_BLOCKS * (Boot::DATA_FRAMES + 1) + 4;
 RxFrame  g_ring[RING];
 uint8_t  g_head, g_tail;
-void poll_can() {
-    while (uint8_t(g_head + 1) % RING != g_tail) {
+bool ring_full() { return uint8_t(g_head + 1) % RING == g_tail; }
+
+// ── USART2 — the bridge build (#367) ──────────────────────────────────────────
+// Updates come from the Gateway's RP2040 over the link they already share. RX by circular DMA (DMA1
+// channel 6), so bytes keep landing while we write flash; frames (BootProtocol.h) go into the ring.
+uint8_t  g_ubuf[256];
+uint16_t g_upos;
+uint8_t  g_uf[5 + 8], g_un;
+
+void uart_init() {
+    RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;   // can_init() does this in the CAN build
+    RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
+    RCC->AHBENR  |= RCC_AHBENR_DMA1EN;
+    GPIOA->CRL = (GPIOA->CRL & ~(0xFFu << 8)) | (0x8Bu << 8);   // PA2 TX: alternate push-pull; PA3 RX: input, pull-up
+    GPIOA->ODR |= 1u << 3;
+    DMA1_Channel6->CPAR  = uint32_t(&USART2->DR);
+    DMA1_Channel6->CMAR  = uint32_t(g_ubuf);
+    DMA1_Channel6->CNDTR = sizeof g_ubuf;
+    DMA1_Channel6->CCR   = DMA_CCR_MINC | DMA_CCR_CIRC | DMA_CCR_EN;
+    USART2->BRR = 36000000u / Boot::SERIAL_BAUD;   // APB1 is 36 MHz on HSE and on the HSI fallback
+    USART2->CR3 = USART_CR3_DMAR;
+    USART2->CR1 = USART_CR1_UE | USART_CR1_TE | USART_CR1_RE;
+}
+void uart_put(uint8_t c) { while (!(USART2->SR & USART_SR_TXE)) {} USART2->DR = c; }
+void uart_send(const uint8_t* d, uint8_t len) {
+    uint8_t sum = uint8_t(g_rsp_id) + uint8_t(g_rsp_id >> 8) + len;
+    uart_put(Boot::SERIAL_FRAME_START); uart_put(uint8_t(g_rsp_id)); uart_put(uint8_t(g_rsp_id >> 8)); uart_put(len);
+    for (uint8_t i = 0; i < len; i++) { uart_put(d[i]); sum += d[i]; }
+    uart_put(sum);
+}
+void uart_poll() {
+    // Where DMA writes next. CNDTR counts down and reloads at the wrap; read as 0 in that instant it
+    // would give 256, which g_upos never reaches — replaying stale bytes. Free: it's a byte truncate.
+    const uint16_t end = (sizeof g_ubuf - DMA1_Channel6->CNDTR) % sizeof g_ubuf;
+    while (g_upos != end && !ring_full()) {
+        const uint8_t c = g_ubuf[g_upos];
+        g_upos = uint16_t((g_upos + 1) % sizeof g_ubuf);
+        if (!g_un && c != Boot::SERIAL_FRAME_START) continue;
+        g_uf[g_un++] = c;
+        if (g_un < 4) continue;
+        if (g_uf[3] > 8) { g_un = 0; continue; }
+        if (g_un < 5u + g_uf[3]) continue;
+        g_un = 0;
+        uint8_t sum = 0;
+        const uint8_t last = uint8_t(4 + g_uf[3]);   // header + data: at most 12
+        for (uint8_t i = 1; i < last; i++) sum += g_uf[i];
+        if (sum != g_uf[4 + g_uf[3]] || (g_uf[1] | (g_uf[2] << 8)) != g_cmd_id) continue;
         RxFrame& f = g_ring[g_head];
-        if (!can_recv(f.d, &f.n)) return;
+        f.n = g_uf[3];
+        memcpy(f.d, g_uf + 4, f.n);
         g_head = uint8_t(g_head + 1) % RING;
     }
+}
+
+void poll_rx() {
+    if (SERIAL) { uart_poll(); return; }
+    while (!ring_full()) {
+        RxFrame& f = g_ring[g_head];
+        if (!can_recv(f.d, &f.n)) break;
+        g_head = uint8_t(g_head + 1) % RING;
+    }
+}
+
+// The next frame from either transport, or false.
+bool next_frame(RxFrame& out) {
+    poll_rx();
+    if (g_tail == g_head) return false;
+    out = g_ring[g_tail];
+    g_tail = uint8_t(g_tail + 1) % RING;
+    return true;
 }
 
 void reply(Reply code, uint8_t a = 0, uint8_t b = 0, uint8_t c = 0, uint8_t len = 2) {
@@ -189,6 +269,7 @@ void announce(Reply code) {
                                      uint8_t(g_uid16), uint8_t(g_uid16 >> 8)};
     can_send(d, sizeof d);
 }
+
 
 // ── Flash ─────────────────────────────────────────────────────────────────────
 void flash_unlock() {
@@ -216,7 +297,7 @@ bool flash_program(volatile uint16_t* at, uint16_t v, uint32_t mode) {   // mode
 bool flash_write(uint32_t addr, const uint8_t* d, uint32_t n) {
     for (uint32_t i = 0; i < n; i += 2) {
         if (!flash_program(reinterpret_cast<volatile uint16_t*>(addr + i), d[i] | (d[i + 1] << 8), FLASH_CR_PG)) return false;
-        poll_can();   // keep the stream flowing while we write
+        poll_rx();   // keep the stream flowing while we write
     }
     return true;
 }
@@ -291,7 +372,14 @@ bool app_valid() {
     uint32_t sp = u32(APP_ADDR), pc = u32(APP_ADDR + 4);
     led(false, false);
     SysTick->CTRL = 0;
-    RCC->APB1RSTR |= RCC_APB1RSTR_CAN1RST; RCC->APB1RSTR &= ~RCC_APB1RSTR_CAN1RST;
+    // Bridge: hold TX idle-high (input, pull-up) until the app takes it — an alternate-function pin
+    // with USART2 in reset pulls the line low, a break that cost the app's first line (#367 bench).
+    if (SERIAL) { GPIOA->ODR |= 1u << 2; GPIOA->CRL = (GPIOA->CRL & ~(0xFu << 8)) | (0x8u << 8); }
+    RCC->APB1RSTR |= RCC_APB1RSTR_CAN1RST | RCC_APB1RSTR_USART2RST;
+    RCC->APB1RSTR &= ~(RCC_APB1RSTR_CAN1RST | RCC_APB1RSTR_USART2RST);
+    DMA1_Channel6->CCR = 0;
+    RCC->AHBENR &= ~RCC_AHBENR_DMA1EN;
+    RCC->APB1ENR &= ~RCC_APB1ENR_USART2EN;
     RCC->APB1ENR &= ~(RCC_APB1ENR_CAN1EN | RCC_APB1ENR_PWREN | RCC_APB1ENR_BKPEN);
     RCC->AHBENR &= ~RCC_AHBENR_CRCEN;
     clock_deinit();
@@ -484,14 +572,16 @@ int main() {
     g_rsp_id = g_node == UNSET ? Boot::UNCONFIGURED_RSP_ID : Boot::canIdBootRsp(g_node);
     g_state = requested ? BootState::REQUESTED : !valid ? (g_node == UNSET ? BootState::UNCONFIGURED : BootState::APP_INVALID)
             : attempts >= Boot::ATTEMPT_LIMIT ? BootState::APP_UNSTABLE : BootState::CAUGHT;
-    can_init();
+    if (SERIAL) uart_init();
+    else        can_init();
 
     if (valid && !requested && g_state == BootState::CAUGHT) {
         // Catch at boot: a CONNECT now keeps us here — rescues an app that never takes the request.
+        // On the bridge it comes over USART2 (the Gateway, while the user presses the reset button).
         bool caught = false;
-        uint8_t m[8], n;
+        RxFrame f;
         for (uint32_t t0 = g_ms; !caught && g_ms - t0 < Boot::CATCH_WINDOW_MS; )
-            caught = can_recv(m, &n) && n && m[0] == uint8_t(Cmd::CONNECT);
+            caught = next_frame(f) && f.n && f.d[0] == uint8_t(Cmd::CONNECT);
         if (!caught) {
             *bkp(Boot::ATTEMPTS_BKP_REGISTER) = attempts + 1;   // the app sets it back to 0 once healthy
             jump_to_app();
@@ -508,11 +598,7 @@ int main() {
         // Entered on request or caught, the old app is still valid until BEGIN: nobody came → back to it.
         if ((g_state == BootState::REQUESTED || g_state == BootState::CAUGHT) && g_ms - g_last_cmd >= Boot::IDLE_TIMEOUT_MS)
             NVIC_SystemReset();
-        poll_can();
-        if (g_tail != g_head) {
-            RxFrame& f = g_ring[g_tail];
-            if (f.n) handle(f.d, f.n);
-            g_tail = uint8_t(g_tail + 1) % RING;
-        }
+        RxFrame f;
+        if (next_frame(f) && f.n) handle(f.d, f.n);
     }
 }
