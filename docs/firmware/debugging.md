@@ -42,7 +42,9 @@ The state machine is shared (`STM32Board`); only the triggers differ per role. *
 (connected)** appears while data is actively flowing and decays back to green-blinking after
 ~½ s of quiet. **Warning (red/green alternating)** means a tracked PanelGroup node died (PanelBridge), the
 master heartbeat was lost (any node other than PanelBridge), or the board's **clock failed to lock** (any STM32
-node — see below).
+node — see below). On PanelBridge it clears when the node comes back, when its node ID is changed by a
+firmware update (the old ID is forgotten automatically), or when the client is told to forget a board
+that was removed on purpose.
 
 ### In the bootloader: red and green together
 

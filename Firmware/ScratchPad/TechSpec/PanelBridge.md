@@ -414,6 +414,11 @@ USART2; with the CAN build (or none) nothing happens. `handleDcsBiosExport()` dr
 PanelBridge projects set `[osh] bootloader_env = bridge`, so `pio run -t bootstrap` flashes the right
 build.
 
+**Forgetting a node (#384).** `forgetNode(id)` resets the node's `NodeState` and, if it was dead,
+decrements `_deadCount` (clearing WARNING at 0). Called from `onBootRsp()` on `NODE_SET` OK (the old
+ID after a `SET_NODE_ID`) and from `NodeForgetListener` (`NODE_FORGET_REQ_ADDR`, dead nodes only);
+both then `emitAllNodes()`. `handleDcsBiosExport()` drops `NODE_FORGET_REQ_ADDR`.
+
 Test hooks (`PANELBRIDGE_TEST`): `testFeedHeartbeat`, `testFeedHealth(nodeId, dieTempC, hFlags,
 faultMask, faultId, nodeKind)` (mirrors the `HEALTH_n` branch, incl. the kind delta),
 `testRequestNodeStatus`, `testCheckTimeouts`.
