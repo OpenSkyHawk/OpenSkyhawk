@@ -2421,6 +2421,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../firmware/bootloader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../firmware/node-id/" class="md-nav__link">
         
   
@@ -5056,19 +5084,35 @@ helper functions — <strong>never hard-code these values</strong>, always use t
 <td>8</td>
 </tr>
 <tr>
-<td><em>reserved</em></td>
-<td><code>0x740</code>–<code>0x7BF</code></td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
+<td><code>BOOT_CMD_n</code></td>
+<td><code>0x740 + n</code></td>
+<td><code>Boot::canIdBootCmd(n)</code></td>
+<td>PanelBridge → node <em>n</em>'s bootloader</td>
+<td>≤8</td>
+</tr>
+<tr>
+<td><code>BOOT_RSP_n</code></td>
+<td><code>0x780 + n</code></td>
+<td><code>Boot::canIdBootRsp(n)</code></td>
+<td>Node <em>n</em>'s bootloader → PanelBridge</td>
+<td>≤8</td>
+</tr>
+<tr>
+<td><code>BOOT_UNCONF_*</code></td>
+<td><code>0x7C0</code> / <code>0x7C1</code></td>
+<td><code>Boot::UNCONFIGURED_CMD_ID</code> / <code>_RSP_ID</code></td>
+<td>PanelBridge ↔ a bootloader with no NODE_ID</td>
+<td>≤8</td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><code>CTRL_BCAST</code> carries DCS-BIOS output state from PanelBridge to every node — the whole export
   stream, whatever aircraft is flying; each output picks out its own address.</li>
-<li><code>0x740</code>–<code>0x7BF</code> is reserved for a future firmware-update frame family, at the lowest priority
-  on the bus so update traffic never delays a control.</li>
+<li><code>BOOT_CMD_n</code> / <code>BOOT_RSP_n</code> are the <a href="../../firmware/bootloader/">bootloader</a>'s frames: a board
+  waiting in its bootloader announces itself once a second and takes a new firmware image in 64-byte
+  blocks. They sit at the lowest priority on the bus, so update traffic never delays a control. The
+  <code>0x7C0</code>/<code>0x7C1</code> pair is for a board that has no NODE_ID yet.</li>
 <li><code>EVT_n</code> carries input events from a node back up to PanelBridge.</li>
 <li><code>HB_n</code> is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
   Every node — PanelBridge included, as <code>HB_0</code> — sends <code>HB_n</code> and <code>HEALTH_n</code> from one shared

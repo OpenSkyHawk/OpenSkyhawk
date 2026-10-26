@@ -92,9 +92,9 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
-// Reserved, not yet assigned (#295): 0x740-0x7BF for a future boot/update frame family —
-// BOOT_CMD_n = 0x740+n (bridge → node n), BOOT_RSP_n = 0x780+n (node n → bridge). The lowest
-// priority on the bus, so update traffic never delays a control. Don't allocate it to anything else.
+// 0x740-0x7BF and 0x7C0-0x7C1: the bootloader's frames (#363) — BOOT_CMD_n = 0x740+n (bridge → node
+// n), BOOT_RSP_n = 0x780+n (node n → bridge), and the unconfigured-board pair. The lowest priority on
+// the bus, so update traffic never delays a control. Defined in BootProtocol.h, not here.
 
 // ── controlId namespace ───────────────────────────────────────────────────────
 // Payload controlIds live inside ControlPacket data bytes. They are intentionally

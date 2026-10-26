@@ -2382,6 +2382,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../firmware/bootloader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../firmware/node-id/" class="md-nav__link">
         
   
@@ -4924,8 +4952,10 @@ if the whole cockpit drops off at once, check the PDU fuses first.</p>
 <p>Each PDU is calibrated once, at bring-up. The values are stored on the board and survive firmware
 updates.</p>
 <ol>
-<li><strong>Flash</strong> the PDU for its console, e.g. <code>pio run -d Firmware/Panels/PDU_Left -t upload</code>
-   (<code>PDU_Right</code> / <code>PDU_Center</code> for the others — the code is identical, only the node ID differs).</li>
+<li><strong>Flash</strong> the PDU for its console, e.g. <code>pio run -d Firmware/Panels/PDU_Left -t bootstrap</code> on a
+   new board — it puts the <a href="../../firmware/bootloader/">bootloader</a> on too — or <code>-t upload</code> on one that
+   already has it (<code>PDU_Right</code> / <code>PDU_Center</code> for the others — the code is identical, only the node ID
+   differs).</li>
 <li><strong>Open the debug serial console</strong> at 115200 baud. The PDU prints its node ID and calibration
    state at boot; <code>CAL SHOW</code> prints it again.</li>
 <li><strong>Supply reference:</strong> measure the board's 3.3 V rail with a multimeter and enter it, in

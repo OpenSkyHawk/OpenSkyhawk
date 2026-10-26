@@ -18,6 +18,8 @@
 
 ## c
 
+* **canIdBootCmd** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **canIdBootRsp** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **calDefaults** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **calSeal** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **calValid** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))

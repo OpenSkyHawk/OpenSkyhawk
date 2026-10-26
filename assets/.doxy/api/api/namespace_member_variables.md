@@ -8,7 +8,16 @@
 * **ACTION\_TOGGLE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **ANALOG\_NC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **AXIS\_CAL\_SLOTS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **ANNOUNCE\_INTERVAL\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **ANNOUNCE\_LEN** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **APP\_OFFSET** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **ADC\_FULL** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
+
+
+## b
+
+* **BLOCK\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **BOOTLOADER\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 
 
 ## c
@@ -23,6 +32,7 @@
 * **CAL\_MAX\_PAYLOAD** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_PROTO\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md), [**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
+* **CMD\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **CRC\_VECTOR\_BYTES\_00\_0F** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **CRC\_VECTOR\_WORD\_12345678** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **CAL\_PAGE\_SIZE** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
@@ -34,6 +44,8 @@
 ## d
 
 * **DUP\_NODE\_TIMEOUT\_MS** ([**CANProtocol**](namespaceCANProtocol.md))
+* **DATA\_BYTES** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **DATA\_FRAMES** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **DEFAULT\_UART\_RX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
 * **DEFAULT\_UART\_TX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
 
@@ -41,6 +53,8 @@
 ## e
 
 * **EASE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **ENTRY\_BKP\_REGISTER** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **ENTRY\_MAGIC** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 
 
 ## f
@@ -107,6 +121,7 @@
 
 ## p
 
+* **PROTOCOL\_VERSION** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **PX\_PER\_MM** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
@@ -114,6 +129,7 @@
 
 ## r
 
+* **RSP\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RELAY\_LINE\_MAX** ([**SimGateway**](namespaceSimGateway.md))
 
 
@@ -125,6 +141,8 @@
 
 ## u
 
+* **UNCONFIGURED\_CMD\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **UNCONFIGURED\_RSP\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNSTAMPED** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **UART\_RX\_QUEUE\_BYTES** ([**SimGateway**](namespaceSimGateway.md))
 

@@ -8,6 +8,10 @@
 * **ACTION\_TOGGLE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **ANALOG\_NC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **AXIS\_CAL\_SLOTS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **ANNOUNCE\_INTERVAL\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **ANNOUNCE\_LEN** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **APP\_OFFSET** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **AnnounceField** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **ADC\_FULL** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **aggregateFaults** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **axisCalApply** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -18,6 +22,9 @@
 ## b
 
 * **busOff** ([**CANProtocol**](namespaceCANProtocol.md))
+* **BLOCK\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **BOOTLOADER\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **BootState** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **begin** ([**STM32Board**](namespaceSTM32Board.md))
 
 
@@ -48,6 +55,10 @@
 * **CalSessionOpenField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalStreamSelectField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalType** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CMD\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **Cmd** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **canIdBootCmd** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **canIdBootRsp** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **CRC\_VECTOR\_BYTES\_00\_0F** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **CRC\_VECTOR\_WORD\_12345678** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **CAL\_PAGE\_SIZE** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
@@ -83,6 +94,8 @@
 * **drain** ([**CANProtocol**](namespaceCANProtocol.md))
 * **DrumFont** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **DrumScroll** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **DATA\_BYTES** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **DATA\_FRAMES** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **diagSerial** ([**STM32Board**](namespaceSTM32Board.md))
 * **DEFAULT\_UART\_RX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
 * **DEFAULT\_UART\_TX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
@@ -94,6 +107,8 @@
 * **EASE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **EncoderMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **EncoderStepsPerDetent** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **ENTRY\_BKP\_REGISTER** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **ENTRY\_MAGIC** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 
 
 ## f
@@ -143,12 +158,12 @@
 * **LAYOUT\_VERSION** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **linkRecoveryBegin** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **linkRecoveryStep** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
-* **LinkPhase** ([**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d74.md))
+* **LinkPhase** ([**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d75.md))
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**PduNode**](namespacePduNode.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
 * **logNodeFaultEdge** ([**STM32Board**](namespaceSTM32Board.md))
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d76.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d77.md))
 
 
 ## m
@@ -170,7 +185,7 @@
 * **ntcTempDC** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **NodeCallback** ([**PanelBridge**](namespacePanelBridge.md))
 * **noteShiftBus** ([**PanelGroup**](namespacePanelGroup.md))
-* **namespace\_0d76\_1ab627f4130761e84c3b6950e4e1f1f6fd** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d76.md))
+* **namespace\_0d77\_1a18f65ca270ab40598048360f51e64b29** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d77.md))
 
 
 ## o
@@ -195,17 +210,20 @@
 
 ## p
 
+* **PROTOCOL\_VERSION** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **putLe16** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **PX\_PER\_MM** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d76.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d77.md))
 
 
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
+* **RSP\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **Reply** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **rail12Mv** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **rail5Mv** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **railed** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
@@ -229,6 +247,7 @@
 * **serviceNodeStatus** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
+* **Status** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **slotEmpty** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **SNAP\_LANDING** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -254,6 +273,8 @@
 
 ## u
 
+* **UNCONFIGURED\_CMD\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **UNCONFIGURED\_RSP\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNSTAMPED** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **UART\_RX\_QUEUE\_BYTES** ([**SimGateway**](namespaceSimGateway.md))
 

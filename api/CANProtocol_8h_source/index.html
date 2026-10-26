@@ -2280,6 +2280,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../firmware/bootloader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../firmware/node-id/" class="md-nav__link">
         
   
@@ -4771,9 +4799,9 @@
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">canIdReady</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mh">0x400</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-<span class="c1">// Reserved, not yet assigned (#295): 0x740-0x7BF for a future boot/update frame family —</span>
-<span class="c1">// BOOT_CMD_n = 0x740+n (bridge → node n), BOOT_RSP_n = 0x780+n (node n → bridge). The lowest</span>
-<span class="c1">// priority on the bus, so update traffic never delays a control. Don't allocate it to anything else.</span>
+<span class="c1">// 0x740-0x7BF and 0x7C0-0x7C1: the bootloader's frames (#363) — BOOT_CMD_n = 0x740+n (bridge → node</span>
+<span class="c1">// n), BOOT_RSP_n = 0x780+n (node n → bridge), and the unconfigured-board pair. The lowest priority on</span>
+<span class="c1">// the bus, so update traffic never delays a control. Defined in BootProtocol.h, not here.</span>
 
 <span class="c1">// ── controlId namespace ───────────────────────────────────────────────────────</span>
 <span class="c1">// Payload controlIds live inside ControlPacket data bytes. They are intentionally</span>

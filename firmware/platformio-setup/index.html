@@ -2393,6 +2393,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../bootloader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../node-id/" class="md-nav__link">
         
   
@@ -4914,7 +4942,9 @@ see <a href="../build-flags/">Build Flags</a>.</p>
 <span class="k">[osh]</span>
 <span class="na">firmware</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">${PROJECT_DIR}/../..</span><span class="w">          </span><span class="c1">; the same path, to Firmware/</span>
 </code></pre></div>
-<p>They pull in <code>Firmware/shared/stm32.ini</code>, which gives the image an <strong>identity block</strong>: 32 bytes
+<p>They pull in <code>Firmware/shared/stm32.ini</code>, which places the firmware behind the
+<a href="../bootloader/">bootloader</a> (from <code>0x08001000</code>), adds the <code>pio run -t bootstrap</code> target for new
+boards, and gives the image an <strong>identity block</strong>: 32 bytes
 naming the board's NODE_ID, its kind (PanelGroup, PDU or PanelBridge), the firmware version, and
 the image's length and checksum. A post-build step fills in the length and checksum, so
 <code>firmware.bin</code>, <code>firmware.elf</code> and the flashed board all give the same checksum. The firmware
@@ -4954,7 +4984,8 @@ the in-tree <code>Templates/PanelGroup</code> should target <code>genericSTM32F1
 </div>
 <h2 id="flashing">Flashing</h2>
 <p>STM32 boards flash over <strong>SWD with an ST-Link</strong> (<code>upload_protocol = stlink</code>). PlatformIO drives
-the probe directly — <code>pio run -t upload</code>. SimGateway (RP2040) flashes over USB by UF2 or
+the probe directly — <code>pio run -t upload</code>. A new board takes <code>pio run -t bootstrap</code> once instead,
+which puts the <a href="../bootloader/">bootloader</a> on first. SimGateway (RP2040) flashes over USB by UF2 or
 straight from PlatformIO; no ST-Link.</p>
 <p>If an upload fails — old ST-Link firmware, or a clone's non-standard tap ID — see
 <a href="../../guides/flashing/#st-link-troubleshooting">Flashing → ST-Link troubleshooting</a>.</p>

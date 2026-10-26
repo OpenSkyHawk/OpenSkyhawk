@@ -2286,6 +2286,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../firmware/bootloader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../firmware/node-id/" class="md-nav__link">
         
   
@@ -4863,6 +4891,13 @@ pio<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>
 <p><code>upload_protocol = stlink</code> is already set in the templates. No separate flasher GUI is needed —
 PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
 <a href="../../firmware/platformio-setup/">PlatformIO Setup</a>.</p>
+<p><strong>A new board needs the <a href="../../firmware/bootloader/">bootloader</a> first.</strong> The firmware starts at
+<code>0x08001000</code>, behind the bootloader, so a board that has never been flashed gets both at once:</p>
+<div class="highlight"><pre><span></span><code>pio<span class="w"> </span>run<span class="w"> </span>-t<span class="w"> </span>bootstrap<span class="w">       </span><span class="c1"># bootloader + firmware, once per new board</span>
+</code></pre></div>
+<p>After that, <code>pio run -t upload</code> flashes the firmware alone and keeps the bootloader. From a release,
+use the board's <code>-full.hex</code> file on a new board and its <code>.elf</code> file on one that already has the
+bootloader.</p>
 <h3 id="st-link-troubleshooting">ST-Link troubleshooting</h3>
 <div class="admonition warning">
 <p class="admonition-title">Upload fails with 'only supports deprecated HLA'?</p>

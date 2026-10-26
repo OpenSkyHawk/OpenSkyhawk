@@ -2371,6 +2371,34 @@
   
   
     <li class="md-nav__item">
+      <a href="bootloader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="node-id/" class="md-nav__link">
         
   
@@ -4859,6 +4887,16 @@ source</strong> for any constant or API. When a doc and a header disagree, the h
 <td>The firmware release version every board reports — one number for the whole release, set by the release process</td>
 </tr>
 <tr>
+<td><code>FirmwareImage</code></td>
+<td>STM32</td>
+<td>The identity block every firmware image carries — node, board kind, version, length and checksum</td>
+</tr>
+<tr>
+<td><code>BootProtocol</code></td>
+<td>shared</td>
+<td>The <a href="bootloader/">bootloader</a>'s CAN frames and codes — shared by the bootloader, the firmware and the updater</td>
+</tr>
+<tr>
 <td><code>PanelGroup</code></td>
 <td>STM32</td>
 <td>CAN sub-node: <code>PinRef</code>, MCP23017 management, input and output control classes</td>
@@ -4908,6 +4946,8 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
   <code>RotaryEncoder</code> (REL/DIR), <code>RotaryAcceleratedEncoder</code>, <code>ActionButton</code></li>
 <li><strong>Five output classes</strong> — <code>LED</code>, <code>DrumDisplay</code>, <code>NeedleGauge</code>, <code>Dimmer</code> (PWM backlight)
   and <code>IntegerOutput</code> (your own callback), the last two over the <code>AnalogOutput</code> family base</li>
+<li><strong><a href="bootloader/">Bootloader</a></strong> on every STM32 board — checks the firmware at power-up and takes
+  a new image over CAN, safe against an interrupted update</li>
 <li><strong>Power-distribution node</strong> (<code>PowerMonitor</code>, one per console) — per-rail voltage and current,
   board temperature, fault flags and calibration, reported on the <code>TELEM_n</code> frame; awaiting
   bench tuning on the PDU boards</li>
@@ -4928,6 +4968,7 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
 <li><strong><a href="platformio-setup/">PlatformIO Setup</a></strong> — start a firmware project from the templates</li>
 <li><strong><a href="build-flags/">Build Flags</a></strong> — all 32 <code>-D</code> flags: ours, the framework's, and the test seams</li>
 <li><strong><a href="compatibility/">Compatibility &amp; Versioning</a></strong> — what 1.x keeps stable, and how versions move</li>
+<li><strong><a href="bootloader/">Bootloader</a></strong> — what starts the firmware, updates over CAN, and getting it onto a board</li>
 <li><strong><a href="node-id/">NODE_ID &amp; CAN Addressing</a></strong> — the NODE_ID scheme, registry, and how to claim one</li>
 <li><strong><a href="dcsbios-integration/">DCS-BIOS Integration</a></strong> — <code>DCSIN_*</code> IDs, the A4EC headers, output addresses</li>
 <li><strong><a href="hid-controls/">HID Controls</a></strong> — the <code>CTRL_*</code> axis/button/hat allocations</li>

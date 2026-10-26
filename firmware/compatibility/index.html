@@ -14,7 +14,7 @@
         <link rel="prev" href="../build-flags/">
       
       
-        <link rel="next" href="../node-id/">
+        <link rel="next" href="../bootloader/">
       
       
         
@@ -2381,6 +2381,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootloader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -4975,8 +5003,8 @@ sketch API.</p>
 <li><strong>The calibration channel grows by new message types.</strong> Each type has one fixed length, so an
   existing type never grows; <code>DIAG</code> keeps spare bytes for new counters.</li>
 </ul>
-<p>Two ranges are set aside for a future firmware updater: CAN IDs <code>0x740</code>–<code>0x7BF</code>, and calibration
-message types <code>0x10</code>–<code>0x1F</code> / <code>0x90</code>–<code>0x9F</code>.</p>
+<p>The <a href="../bootloader/">bootloader</a> uses CAN IDs <code>0x740</code>–<code>0x7C1</code>. Calibration message types
+<code>0x10</code>–<code>0x1F</code> / <code>0x90</code>–<code>0x9F</code> are set aside for the firmware updater on the Gateway.</p>
 <p><strong>Byte order:</strong> multi-byte fields in CAN payloads, the Gateway's HID frame and calibration frames
 are little-endian. The
 numbers in <code>_NODE_STATUS</code> are written as hex text, most significant digit first; <code>_NODE_TELEM</code>

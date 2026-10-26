@@ -20,6 +20,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md) _Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis._     
     * **struct** [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) _Captured endpoints for one axis, unsigned 0–65535 throughout._     
     * **class** [**BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md)     
+    * **namespace** [**Boot**](namespaceOpenSkyhawk_1_1Boot.md)     
     * **struct** [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) _The whole persisted calibration set, written and erased as one unit._     
     * **class** [**Dimmer**](classOpenSkyhawk_1_1Dimmer.md) _PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin._     
     * **class** [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._     
@@ -61,10 +62,10 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md) _Three-position switch (ON-OFF-ON / spring-centred) on two pins. Emits 0 / 1 / 2 over CAN (MULTIPOS dispatch)._     
     * **class** [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md) _Multi-position rotary selector — N discrete pins, exactly one active at a time. Emits the active position index 0..N-1 over CAN (MULTIPOS dispatch)._     
     * **class** [**SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md) _Guarded switch — the DcsBios::SwitchWithCover2Pos equivalent. One physical switch pin drives two sim controls: the guard cover and the switch it protects._     
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d16.md) 
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d25.md) 
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d29.md) 
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d74.md)     
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d17.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d26.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d30.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d75.md)     
 * **struct** [**IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md)     
 * **namespace** [**PanelBridge**](namespacePanelBridge.md)     
 * **namespace** [**PanelGroup**](namespacePanelGroup.md) _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._    
@@ -75,9 +76,9 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
 * **struct** [**GatewayDiag**](structSimGateway_1_1GatewayDiag.md) _Link-health counters and event times (#355). Reported to the host as_ `DIAG` _._    
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d12.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d55.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d57.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d66.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d76.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d13.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d56.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d58.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d67.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d77.md)     
 
