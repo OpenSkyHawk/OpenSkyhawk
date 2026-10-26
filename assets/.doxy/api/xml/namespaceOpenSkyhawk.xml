@@ -359,6 +359,54 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887ab012ea76a076a925bc6b062aca994a36" prot="public">
+          <name>CAL_T_UPL_INFO</name>
+          <initializer>= 0x10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a1fa7f8558cae529540b85486a9412bf4" prot="public">
+          <name>CAL_T_UPL_BEGIN</name>
+          <initializer>= 0x11</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887abcf400db8c0fc5cd0b8eeed27edea7de" prot="public">
+          <name>CAL_T_UPL_DATA</name>
+          <initializer>= 0x12</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a6d977113556503e1e2f3e9b77f2396e6" prot="public">
+          <name>CAL_T_UPL_END</name>
+          <initializer>= 0x13</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887ac0ece60ba61d33a2fcf77b1e2a92bd7a" prot="public">
+          <name>CAL_T_UPL_FLASH</name>
+          <initializer>= 0x14</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a3f51698a208ec80f7335771372a703be" prot="public">
+          <name>CAL_T_UPL_ABORT</name>
+          <initializer>= 0x15</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887af02f1b83fd999d31d8b471cf92085197" prot="public">
           <name>CAL_T_HELLO_ACK</name>
           <initializer>= 0x81</initializer>
@@ -415,14 +463,38 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a0281a2b3fd3034839e4cad973ade5cb9" prot="public">
+          <name>CAL_T_UPL_INFO_ACK</name>
+          <initializer>= 0x90</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887af4f6923d5ba516ae050ad17ac6242a63" prot="public">
+          <name>CAL_T_UPL_STATUS</name>
+          <initializer>= 0x91</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887af66d7a77c4396d1f2d609eb277f9c20e" prot="public">
+          <name>CAL_T_UPL_RESULT</name>
+          <initializer>= 0x92</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Message types. High bit set = device→client, so direction is readable in a capture. Reserved for firmware update (#295), not yet assigned: 0x10-0x1F (client→device) and 0x90-0x9F (device→client). Don&apos;t allocate them to anything else. </para>
+<para>Message types. High bit set = device→client, so direction is readable in a capture. 0x10-0x1F (client→device) and 0x90-0x9F (device→client) are the firmware updater&apos;s (#295, assigned from #366 — <ref refid="UploadProtocol_8h" kindref="compound">UploadProtocol.h</ref> holds their payloads); 0x16-0x1F / 0x93-0x9F still free. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="192" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="192" bodyend="210"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="196" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="196" bodyend="223"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aaf" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -492,14 +564,62 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aafa7abd88b7477a23475a400c6b49d5b172" prot="public">
+          <name>CAL_NACK_BUSY</name>
+          <initializer>= 0x09</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aafa8a421e20feb9917d5f4f2c14cca21c86" prot="public">
+          <name>CAL_NACK_TOO_LARGE</name>
+          <initializer>= 0x0A</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aafa0e7934b56f5165f82c1a24c055cb3a7c" prot="public">
+          <name>CAL_NACK_BAD_OFFSET</name>
+          <initializer>= 0x0B</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aafa2bd874e14cf942080d70663be6dc0d7c" prot="public">
+          <name>CAL_NACK_IMAGE_CRC</name>
+          <initializer>= 0x0C</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aafa884ad790d5d0b85083b1e8296a292cd6" prot="public">
+          <name>CAL_NACK_BAD_IMAGE</name>
+          <initializer>= 0x0D</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aafaab6db8348a543e50ff1b80ae86f81ad8" prot="public">
+          <name>CAL_NACK_NOT_STAGED</name>
+          <initializer>= 0x0E</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>NACK reasons. <computeroutput>detail</computeroutput> names the offending axis where one applies, else 0xFF. Reserved for firmware update (#295), not yet assigned: 0x09-0x0E. </para>
+<para>NACK reasons. <computeroutput>detail</computeroutput> names the offending axis where one applies, else 0xFF. 0x09-0x0E are the firmware updater&apos;s (#366). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="214" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="214" bodyend="223"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="227" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="227" bodyend="242"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -560,7 +680,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="236" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="236" bodyend="243"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="255" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="255" bodyend="262"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a54eda748537446686c8ffda6acbbbfb2" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -597,7 +717,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="246" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="246" bodyend="250"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="265" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="265" bodyend="269"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1aaeb11c351af8723da10b35f90ebb85c9" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -650,7 +770,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="256" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="256" bodyend="262"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="275" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="275" bodyend="281"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a5d6d01d6028a46a8fd920c6921c06344" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -671,7 +791,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="265" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="265" bodyend="267"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="284" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="284" bodyend="286"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a738aa0a2436bd680bc376ebda1d2737a" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -700,7 +820,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="270" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="270" bodyend="273"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="289" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="289" bodyend="292"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1afaa36990fc24a834f2ebf3b5a5550aaf" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -721,7 +841,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="276" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="276" bodyend="278"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="295" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="295" bodyend="297"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a3694081d3117f06dd19625c05eaa0abd" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -774,7 +894,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="281" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="281" bodyend="287"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="300" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="300" bodyend="306"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a44871b71bbaf67ceacf53d1f4c69917c" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -795,7 +915,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="290" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="290" bodyend="292"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="309" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="309" bodyend="311"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1af722b98e6dcc1adf2f7c5bcb93be1405" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -816,7 +936,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="295" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="295" bodyend="297"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="314" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="314" bodyend="316"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1af51fbc7c106664b13996d9d452a95aad" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -853,7 +973,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="300" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="300" bodyend="304"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="319" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="319" bodyend="323"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -890,7 +1010,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="307" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="307" bodyend="311"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="326" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="326" bodyend="330"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -1073,7 +1193,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="324" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="324" bodyend="346"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="343" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="343" bodyend="365"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -1110,7 +1230,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="352" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="352" bodyend="356"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="371" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="371" bodyend="375"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -1156,6 +1276,571 @@
         <inbodydescription>
         </inbodydescription>
         <location file="Firmware/Libraries/SimGateway/LinkRecovery.h" line="35" column="1" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.h" bodystart="35" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1afdd4776b0b1363bf7c6904cad6081701" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplState</name>
+        <qualifiedname>OpenSkyhawk::UplState</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1afdd4776b0b1363bf7c6904cad6081701aa77f4364146987924f76aa14823fcb2d" prot="public">
+          <name>UPL_STATE_IDLE</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1afdd4776b0b1363bf7c6904cad6081701a823304000656f36abc79e92f93cb0b9e" prot="public">
+          <name>UPL_STATE_STAGING</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1afdd4776b0b1363bf7c6904cad6081701ad6d45d87006490a0f94dd2fc2307e0ab" prot="public">
+          <name>UPL_STATE_STAGED</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1afdd4776b0b1363bf7c6904cad6081701a789a9de37067fbd3ce4ef5a91717feaa" prot="public">
+          <name>UPL_STATE_FLASHING</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>What the uploader is doing (UPL_INFO_ACK <computeroutput>state</computeroutput>). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="33" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="33" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplPhase</name>
+        <qualifiedname>OpenSkyhawk::UplPhase</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25a79997634fb4aa7d56f0b6308b1122809" prot="public">
+          <name>UPL_PHASE_ENTERING_BOOT</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25a664527a7eeb54ba781507fcf7261fd80" prot="public">
+          <name>UPL_PHASE_CONNECTED</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25a68efe6044bf278b75307e5ea11ba308f" prot="public">
+          <name>UPL_PHASE_SETTING_ID</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25aaf45afc3489c6d303721b9bd10f516e4" prot="public">
+          <name>UPL_PHASE_ERASING</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25af629d9c7c7f92e8ea3dc727ab73b6073" prot="public">
+          <name>UPL_PHASE_WRITING</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25ab6e95be8f8cf3c88663473557675a550" prot="public">
+          <name>UPL_PHASE_VERIFYING</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25ac476a8432f836e2c402cf5e1817d3109" prot="public">
+          <name>UPL_PHASE_REBOOTING</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ab41691e58e401b1d7f56df318afe2d25a349ceaa21224cdc2d6a05a2b01812c96" prot="public">
+          <name>UPL_PHASE_CONFIRMING</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Where a flash is (UPL_STATUS <computeroutput>phase</computeroutput>). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="41" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="41" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplResult</name>
+        <qualifiedname>OpenSkyhawk::UplResult</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131a3f8b61bb5575eab8fc6123eff8e22ee5" prot="public">
+          <name>UPL_RESULT_NONE</name>
+          <initializer>= 0x00</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131a0d5784811ba0e45e12b1c524fa959a94" prot="public">
+          <name>UPL_RESULT_OK</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131adcb40dd09444492745340f2a5b4ca11a" prot="public">
+          <name>UPL_RESULT_NO_RESPONSE</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131af909a5e59143ee7c494c0b86da9510d1" prot="public">
+          <name>UPL_RESULT_NO_BOOTLOADER</name>
+          <initializer>= 0x03</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131af1907dafced2ccbb48cf56b5c34562a8" prot="public">
+          <name>UPL_RESULT_ID_MISMATCH</name>
+          <initializer>= 0x04</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131acf1b60cdb2b70a40e5853292a89ef8a6" prot="public">
+          <name>UPL_RESULT_KIND_MISMATCH</name>
+          <initializer>= 0x05</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131ac9873bcbd99591a4b7333cdc545661c4" prot="public">
+          <name>UPL_RESULT_TOO_BIG_FOR_BOARD</name>
+          <initializer>= 0x06</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131aebd2a76b1e08ac84610193b7f04c0f67" prot="public">
+          <name>UPL_RESULT_WRITE_FAILED</name>
+          <initializer>= 0x07</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131ac589c8701ff9a5c2b6e2471deae6b5fc" prot="public">
+          <name>UPL_RESULT_VERIFY_FAILED</name>
+          <initializer>= 0x08</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131ac7655b7def5ba89b8016368d8887f608" prot="public">
+          <name>UPL_RESULT_VERSION_MISMATCH</name>
+          <initializer>= 0x09</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131a8ad8e20f9495e7e498a16560a0411f4a" prot="public">
+          <name>UPL_RESULT_TIMEOUT</name>
+          <initializer>= 0x0A</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a5cf4f785815a186d5a512dc03fb52131a242bff08f7d771fa7669d39bb33b7df2" prot="public">
+          <name>UPL_RESULT_UNSUPPORTED</name>
+          <initializer>= 0x0B</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>How a flash ended (UPL_RESULT <computeroutput>result</computeroutput>, UPL_INFO_ACK <computeroutput>lastResult</computeroutput>). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="53" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="53" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplInfoAckField</name>
+        <qualifiedname>OpenSkyhawk::UplInfoAckField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238add6d3ba3140b3b789b3a11a7de71b99b" prot="public">
+          <name>UPL_INFO_ACK_PROTO</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a08e4d1cf72f260d094ded8e91f58e79f" prot="public">
+          <name>UPL_INFO_ACK_MAX_IMAGE_KB</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238ae4f6975c5736ac8c54f47f26ca460338" prot="public">
+          <name>UPL_INFO_ACK_CHUNK</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a877af36874e57dada6a79da214fa0b1f" prot="public">
+          <name>UPL_INFO_ACK_STATE</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a500d706577043db847ff641a7ab3192b" prot="public">
+          <name>UPL_INFO_ACK_LAST_TARGET</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a9a3c3d9c81b157c34423530343946da3" prot="public">
+          <name>UPL_INFO_ACK_LAST_RESULT</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a63088b50d279a3be3b6a130fe336afd9" prot="public">
+          <name>UPL_INFO_ACK_LAST_MAJOR</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a411b347a39923a24fd09fb607aa0e94b" prot="public">
+          <name>UPL_INFO_ACK_LAST_MINOR</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a5f00e194f699adaecc20a1ce747ef736" prot="public">
+          <name>UPL_INFO_ACK_LAST_PATCH</name>
+          <initializer>= 9</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a3aeedf16da705ec31f99ed335b20d2e3" prot="public">
+          <name>UPL_INFO_ACK_BRIDGE_MAJOR</name>
+          <initializer>= 10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a7982bd7f64515eb50a5aead2728bb5ce" prot="public">
+          <name>UPL_INFO_ACK_BRIDGE_MINOR</name>
+          <initializer>= 11</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238a2514dd2776fbd8edf502bb7edbd5ec8a" prot="public">
+          <name>UPL_INFO_ACK_BRIDGE_PATCH</name>
+          <initializer>= 12</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aec395a9277689c621919739cdf99b238ab72200a5be82ce2e274b128b1dff7389" prot="public">
+          <name>UPL_INFO_ACK_RESERVED</name>
+          <initializer>= 13</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>UPL_INFO_ACK</computeroutput> (16 bytes, device→client). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="73" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="73" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1adaee29544de7103d9afa8f6f6b0aedb5" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplBeginField</name>
+        <qualifiedname>OpenSkyhawk::UplBeginField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1adaee29544de7103d9afa8f6f6b0aedb5aedb7dec1ec79f667df0f23753f15ce94" prot="public">
+          <name>UPL_BEGIN_LENGTH</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1adaee29544de7103d9afa8f6f6b0aedb5a7c6dad69c385cff3f60c4572e08739e6" prot="public">
+          <name>UPL_BEGIN_CRC</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>UPL_BEGIN</computeroutput> (8 bytes, client→device). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="90" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="90" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1af3493799f19a5e21cd32dfefec599653" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplDataField</name>
+        <qualifiedname>OpenSkyhawk::UplDataField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1af3493799f19a5e21cd32dfefec599653a5f1bca0fd35415a9f602ead77d30a132" prot="public">
+          <name>UPL_DATA_OFFSET</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1af3493799f19a5e21cd32dfefec599653a67e22a3a40d828346a8c9fea4ccf133e" prot="public">
+          <name>UPL_DATA_BYTES</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>UPL_DATA</computeroutput> (260 bytes, client→device). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="96" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="96" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1aebedc6613310957348ac6a426956350b" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplFlashField</name>
+        <qualifiedname>OpenSkyhawk::UplFlashField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1aebedc6613310957348ac6a426956350ba958622397e050e4b207247f0a35dd1c7" prot="public">
+          <name>UPL_FLASH_TARGET</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aebedc6613310957348ac6a426956350bab70e78fc949f8db84ac0d8f0666765db" prot="public">
+          <name>UPL_FLASH_NEW_NODE_ID</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>UPL_FLASH</computeroutput> (2 bytes, client→device). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="102" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="102" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1ae3b96dd9ccaf74398e4f2ce762734566" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplStatusField</name>
+        <qualifiedname>OpenSkyhawk::UplStatusField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1ae3b96dd9ccaf74398e4f2ce762734566a36d50ce61c8975276dfd045a2b2cec53" prot="public">
+          <name>UPL_STATUS_PHASE</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ae3b96dd9ccaf74398e4f2ce762734566a7b5640646af1a43eef45e963e3838d5e" prot="public">
+          <name>UPL_STATUS_TARGET</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ae3b96dd9ccaf74398e4f2ce762734566a94752e32888d68a72ca7f8217a17a88e" prot="public">
+          <name>UPL_STATUS_ATTEMPT</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ae3b96dd9ccaf74398e4f2ce762734566a7e1c4809e8579505c3ce7c37f2153844" prot="public">
+          <name>UPL_STATUS_BLOCK</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ae3b96dd9ccaf74398e4f2ce762734566a649e842105a76d821fbec5d22e609a40" prot="public">
+          <name>UPL_STATUS_BLOCKS</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ae3b96dd9ccaf74398e4f2ce762734566ad4f960376f41b0ab132770842b718624" prot="public">
+          <name>UPL_STATUS_RESERVED</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>UPL_STATUS</computeroutput> (8 bytes, device→client). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="108" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="108" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1adfedcaaa7098482aa7abf4fc43ab126f" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>UplResultField</name>
+        <qualifiedname>OpenSkyhawk::UplResultField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1adfedcaaa7098482aa7abf4fc43ab126fa29cd64ad75024dcb8ff5ac3bb278f1f4" prot="public">
+          <name>UPL_RESULT_RESULT</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1adfedcaaa7098482aa7abf4fc43ab126faecd56b73e8425769499d5bdaa06c3ffc" prot="public">
+          <name>UPL_RESULT_TARGET</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1adfedcaaa7098482aa7abf4fc43ab126fabe0069e89592d1da801025910bd8d018" prot="public">
+          <name>UPL_RESULT_MAJOR</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1adfedcaaa7098482aa7abf4fc43ab126fa604bc22a28178aa16f691ab2c855a590" prot="public">
+          <name>UPL_RESULT_MINOR</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1adfedcaaa7098482aa7abf4fc43ab126faf5e819293833d5f3203192d7b6914d2f" prot="public">
+          <name>UPL_RESULT_PATCH</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1adfedcaaa7098482aa7abf4fc43ab126faf4e3a767a81c7cad8e9e63ded22bfb2c" prot="public">
+          <name>UPL_RESULT_ATTEMPTS</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1adfedcaaa7098482aa7abf4fc43ab126fab85c64715377223e3f6a78f830ee4e90" prot="public">
+          <name>UPL_RESULT_SECONDS</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>UPL_RESULT</computeroutput> (8 bytes, device→client). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="118" column="1" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="118" bodyend="126"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -1459,7 +2144,7 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         <qualifiedname>OpenSkyhawk::CAL_MAX_PAYLOAD</qualifiedname>
         <initializer>= 82</initializer>
         <briefdescription>
-<para>CAL_DATA, the largest legal payload. </para>
+<para>CAL_DATA, the largest payload the device sends. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -1482,6 +2167,37 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </inbodydescription>
         <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="187" column="20" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="187" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1ad3836ad990447c599f05012404adadce" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::CAL_MAX_INBOUND_PAYLOAD</definition>
+        <argsstring></argsstring>
+        <name>CAL_MAX_INBOUND_PAYLOAD</name>
+        <qualifiedname>OpenSkyhawk::CAL_MAX_INBOUND_PAYLOAD</qualifiedname>
+        <initializer>= 260</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>UPL_DATA (#366), the largest payload the device <emphasis>receives</emphasis> — client → device only, so every device → client frame stays within CAL_MAX_FRAME. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="190" column="20" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="190" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a466257ac45fef9937fbe8c11526bd36c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::CAL_MAX_INBOUND_FRAME</definition>
+        <argsstring></argsstring>
+        <name>CAL_MAX_INBOUND_FRAME</name>
+        <qualifiedname>OpenSkyhawk::CAL_MAX_INBOUND_FRAME</qualifiedname>
+        <initializer>= <ref refid="namespaceOpenSkyhawk_1a1cae0a0920ec4bb09e90358d6f936a50" kindref="member">CAL_ENVELOPE_BYTES</ref> + <ref refid="namespaceOpenSkyhawk_1ad3836ad990447c599f05012404adadce" kindref="member">CAL_MAX_INBOUND_PAYLOAD</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="191" column="20" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1ac4dafa7e3e38c06df4cdfb40b5b5eba6" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
         <definition>constexpr uint8_t OpenSkyhawk::CAL_AXIS_NONE</definition>
@@ -1496,7 +2212,7 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="226" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="226" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="245" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="245" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1ac7f065d9af195b7b21358dddf50ddaf5" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -1512,7 +2228,7 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="253" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="253" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="272" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="272" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1aabeca9b9b0391c4603c79420a92e3032" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -1528,7 +2244,7 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="349" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="349" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="368" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="368" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1abdda8726e90f3f96bc501e418a9f5e9d" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint32_t</type>
@@ -1593,6 +2309,118 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         <inbodydescription>
         </inbodydescription>
         <location file="Firmware/Libraries/SimGateway/LinkRecovery.h" line="32" column="20" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a696eced5a3469e9c4b61d7ba2dc6ee50" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::UPL_PROTO_VERSION</definition>
+        <argsstring></argsstring>
+        <name>UPL_PROTO_VERSION</name>
+        <qualifiedname>OpenSkyhawk::UPL_PROTO_VERSION</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="23" column="20" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a9c86ef4bb52227eff2a80fcd9d71d0f6" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::UPL_MAX_IMAGE_BYTES</definition>
+        <argsstring></argsstring>
+        <name>UPL_MAX_IMAGE_BYTES</name>
+        <qualifiedname>OpenSkyhawk::UPL_MAX_IMAGE_BYTES</qualifiedname>
+        <initializer>= 124u * 1024u</initializer>
+        <briefdescription>
+<para>an app on a 128 KB STM32F103CB (4 KB bootloader) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="24" column="20" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a91a11c4f57344848c440d998c159e72b" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::UPL_CHUNK_BYTES</definition>
+        <argsstring></argsstring>
+        <name>UPL_CHUNK_BYTES</name>
+        <qualifiedname>OpenSkyhawk::UPL_CHUNK_BYTES</qualifiedname>
+        <initializer>= 256</initializer>
+        <briefdescription>
+<para>UPL_DATA&apos;s data field. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="25" column="20" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a51aca54e6784002b26ee46d2c0ea0d44" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::UPL_TARGET_BRIDGE</definition>
+        <argsstring></argsstring>
+        <name>UPL_TARGET_BRIDGE</name>
+        <qualifiedname>OpenSkyhawk::UPL_TARGET_BRIDGE</qualifiedname>
+        <initializer>= 0x00</initializer>
+        <briefdescription>
+<para>UPL_FLASH <computeroutput>target</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>the Gateway&apos;s own <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> (#367; UNSUPPORTED until then) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="28" column="19" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a50e98f3a017ae654f62fcd5fe9cf47d8" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::UPL_TARGET_UNCONFIGURED</definition>
+        <argsstring></argsstring>
+        <name>UPL_TARGET_UNCONFIGURED</name>
+        <qualifiedname>OpenSkyhawk::UPL_TARGET_UNCONFIGURED</qualifiedname>
+        <initializer>= 0xFE</initializer>
+        <briefdescription>
+<para>the one bootloader on the bus with no NODE_ID yet </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="29" column="19" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a7febf495f74963d71b9ca5b129d19160" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::UPL_NODE_ID_KEEP</definition>
+        <argsstring></argsstring>
+        <name>UPL_NODE_ID_KEEP</name>
+        <qualifiedname>OpenSkyhawk::UPL_NODE_ID_KEEP</qualifiedname>
+        <initializer>= 0xFF</initializer>
+        <briefdescription>
+<para>UPL_FLASH <computeroutput>newNodeId</computeroutput>: don&apos;t change it. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="30" column="19" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a92e5bf38aeffc97b328e4711a75e24d8" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::UPL_RETRIES</definition>
+        <argsstring></argsstring>
+        <name>UPL_RETRIES</name>
+        <qualifiedname>OpenSkyhawk::UPL_RETRIES</qualifiedname>
+        <initializer>= 2</initializer>
+        <briefdescription>
+<para>whole-flash retries after a transport failure </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/UploadProtocol.h" line="68" column="19" bodyfile="Firmware/Libraries/SimGateway/UploadProtocol.h" bodystart="68" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -2030,7 +2858,7 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="63" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="63" bodyend="86" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="381" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="63" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="63" bodyend="96" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="400" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a82486fb3a8b5c08619b2dbab91865dea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint16_t</type>
@@ -2121,7 +2949,7 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="88" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="88" bodyend="113" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="393" declcolumn="10"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="98" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="98" bodyend="123" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="412" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1ad6b903a2fa71bedb61152f923493b37c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -2166,7 +2994,7 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="115" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="115" bodyend="123" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="405" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="125" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="125" bodyend="133" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="424" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a9163c975afb2763bd6f649480de9e986" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>

@@ -31,6 +31,8 @@
 * **CAL\_FRAME\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md), [**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **CAL\_MAX\_FRAME** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_MAX\_INBOUND\_FRAME** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_MAX\_INBOUND\_PAYLOAD** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_MAX\_PAYLOAD** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_PROTO\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md), [**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
@@ -135,8 +137,12 @@
 
 ## r
 
+* **RELAY\_ESCAPE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **RELAY\_ESC\_55** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **RELAY\_ESC\_56** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RELAY\_EXPORT\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RELAY\_EXPORT\_WORDS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **RELAY\_FRAME\_MARK** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RSP\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RELAY\_LINE\_MAX** ([**SimGateway**](namespaceSimGateway.md))
 
@@ -153,6 +159,13 @@
 * **UNCONFIGURED\_CMD\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNCONFIGURED\_RSP\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNSTAMPED** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
+* **UPL\_CHUNK\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **UPL\_MAX\_IMAGE\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **UPL\_NODE\_ID\_KEEP** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **UPL\_PROTO\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **UPL\_RETRIES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **UPL\_TARGET\_BRIDGE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **UPL\_TARGET\_UNCONFIGURED** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **UART\_RX\_QUEUE\_BYTES** ([**SimGateway**](namespaceSimGateway.md))
 
 
@@ -168,6 +181,7 @@
 
 ## w
 
+* **WINDOW\_BLOCKS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **WATCHDOG\_MS** ([**SimGateway**](namespaceSimGateway.md))
 
 

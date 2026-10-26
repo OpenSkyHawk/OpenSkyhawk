@@ -19,9 +19,11 @@ Here is a list of all namespaces with brief descriptions:
 * **namespace** [**PduNode**](namespacePduNode.md)     
 * **namespace** [**STM32Board**](namespaceSTM32Board.md)     
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
+* **namespace** [**Uploader**](namespaceUploader.md)     
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d13.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d56.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d58.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d67.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d77.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/Uploader.cpp}**](namespace_0d79.md) 
 

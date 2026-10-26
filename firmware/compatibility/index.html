@@ -4931,7 +4931,7 @@ format, so a mixed set has no meaning. Every board reports the version it runs (
 </tr>
 <tr>
 <td><strong>PC side</strong></td>
-<td>The <code>_NODE_STATUS</code>, <code>_NODE_STATUS_END</code>, <code>_NODE_TELEM</code> and <code>_BOOT_RSP</code> messages, the roster request (<code>0xFF00</code>) and the bootloader relay addresses (<code>0xFF10</code>–<code>0xFF23</code>); the USB calibration channel; the Gateway's USB identity (VID, PID, product and serial-port names), because DCS binds your controls to it.</td>
+<td>The <code>_NODE_STATUS</code>, <code>_NODE_STATUS_END</code>, <code>_NODE_TELEM</code> and <code>_BOOT_RSP</code> messages, the roster request (<code>0xFF00</code>) and the bootloader relay addresses (<code>0xFF10</code>–<code>0xFF4F</code>); the USB calibration channel; the Gateway's USB identity (VID, PID, product and serial-port names), because DCS binds your controls to it.</td>
 </tr>
 <tr>
 <td><strong>Control IDs</strong></td>
@@ -5003,8 +5003,9 @@ sketch API.</p>
 <li><strong>The calibration channel grows by new message types.</strong> Each type has one fixed length, so an
   existing type never grows; <code>DIAG</code> keeps spare bytes for new counters.</li>
 </ul>
-<p>The <a href="../bootloader/">bootloader</a> uses CAN IDs <code>0x740</code>–<code>0x7C1</code>. Calibration message types
-<code>0x10</code>–<code>0x1F</code> / <code>0x90</code>–<code>0x9F</code> are set aside for the firmware updater on the Gateway.</p>
+<p>The <a href="../bootloader/">bootloader</a> uses CAN IDs <code>0x740</code>–<code>0x7C1</code>. Message types <code>0x10</code>–<code>0x1F</code> /
+<code>0x90</code>–<code>0x9F</code> on the Gateway's USB channel are the firmware updater's (<code>0x10</code>–<code>0x15</code> and <code>0x90</code>–<code>0x92</code> in
+use).</p>
 <p><strong>Byte order:</strong> multi-byte fields in CAN payloads, the Gateway's HID frame and calibration frames
 are little-endian. The
 numbers in <code>_NODE_STATUS</code> are written as hex text, most significant digit first; <code>_NODE_TELEM</code>

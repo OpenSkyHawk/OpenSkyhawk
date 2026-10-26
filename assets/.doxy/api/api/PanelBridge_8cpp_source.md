@@ -204,7 +204,7 @@ void handleDcsBiosExport(uint16_t address, uint16_t value) {
     // never broadcast onto CAN.
     if (address == NODE_STATUS_REQ_ADDR) return;
 #endif
-    // Reserved: the bootloader relay window (#365) — handled by BootRelayListener.
+    // Reserved: the bootloader relay window (#365, #366) — handled by BootRelayListener.
     if (address >= OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS
         && address < OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS + 2 * OpenSkyhawk::Boot::RELAY_EXPORT_WORDS) return;
     // A real DCS-BIOS export → data is flowing → CONNECTED (green solid). The reserved
@@ -659,34 +659,50 @@ public:
 static NodeStatusReqListener _nodeStatusReqListener;
 #endif
 
-// Host → bootloader relay (#365): one export record per CAN frame in the reserved window — id,
-// length, then one data byte per word (BootProtocol.h says why) — put on the bus once the record's
-// last word arrives. Only BOOT_CMD_1-63 and
-// the unconfigured command ID pass: the host can't inject anything else onto CAN.
+// Host → bootloader relay (#365, stream encoding #366): each export record in the reserved window is
+// a byte stream of whole CAN frames — mark|len, id lo, id hi, data, with 0x55 / 0x56 escaped
+// (BootProtocol.h says why). A record always starts on a frame boundary, so a lost record costs only
+// its own frames. Only BOOT_CMD_1-63 and the unconfigured command ID go on the bus: the host can't
+// inject anything else onto CAN.
 class BootRelayListener : public DcsBios::ExportStreamListener {
 public:
     BootRelayListener()
         : DcsBios::ExportStreamListener(OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS,
                                         OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS + 2 * (OpenSkyhawk::Boot::RELAY_EXPORT_WORDS - 1)) {}
     void onDcsBiosWrite(unsigned int address, unsigned int data) override {
-        using namespace OpenSkyhawk::Boot;
-        const uint8_t w = (uint8_t)((address - RELAY_EXPORT_ADDRESS) / 2);
-        if (w == 0) _have = 0;
-        _words[w] = (uint16_t)data;
-        _have |= 1u << w;
-        if (w != RELAY_EXPORT_WORDS - 1 || _have != (1u << RELAY_EXPORT_WORDS) - 1) return;
-        const uint16_t id  = _words[0];
-        const uint8_t  len = _words[1] < 8 ? (uint8_t)_words[1] : 8;
-        const bool toNode  = id >= canIdBootCmd(1) && id <= canIdBootCmd(MAX_NODE_ID);
-        if (!toNode && id != UNCONFIGURED_CMD_ID) return;
-        uint8_t bytes[8];
-        for (uint8_t i = 0; i < 8; i++) bytes[i] = (uint8_t)_words[2 + i];
-        CANProtocol::send(id, bytes, len);
-        if (toNode) noteBootTraffic((uint8_t)(id - CMD_ID_BASE), millis());
+        if (address == OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS) _need = 0;   // a record starts a frame
+        feed((uint8_t)data);
+        feed((uint8_t)(data >> 8));
     }
 private:
-    uint16_t _words[OpenSkyhawk::Boot::RELAY_EXPORT_WORDS] = {};
-    uint16_t _have = 0;
+    void feed(uint8_t b) {
+        using namespace OpenSkyhawk::Boot;
+        if (!_need) {                                    // between frames: a mark, or padding
+            if ((b & 0xF0) == RELAY_FRAME_MARK && (b & 0x0F) <= 8) { _need = 2 + (b & 0x0F); _pos = 0; _esc = false; }
+            return;
+        }
+        if (_esc) {
+            _esc = false;
+            if (b == RELAY_ESC_55) b = 0x55;
+            else if (b == RELAY_ESC_56) b = 0x56;
+            else { _need = 0; return; }                  // a broken escape: drop the frame
+        } else if (b == RELAY_ESCAPE) { _esc = true; return; }
+        _f[_pos++] = b;
+        if (_pos < _need) return;
+        _need = 0;
+        const uint16_t id  = _f[0] | (_f[1] << 8);
+        const bool toNode  = id >= canIdBootCmd(1) && id <= canIdBootCmd(MAX_NODE_ID);
+        if (!toNode && id != UNCONFIGURED_CMD_ID) return;
+        CANProtocol::send(id, _f + 2, (uint8_t)(_pos - 2));
+#if PANELBRIDGE_NODE_STATUS
+        // Only a node with a bootloader can be updated: a CONNECT to one without (it ignores it)
+        // must not show it as UPDATING.
+        if (toNode && _nodes[id - CMD_ID_BASE - 1].bootloader) noteBootTraffic((uint8_t)(id - CMD_ID_BASE), millis());
+#endif
+    }
+    uint8_t _f[2 + 8];
+    uint8_t _need = 0, _pos = 0;   // _need = 2 + len while a frame is open, else 0
+    bool    _esc  = false;
 };
 static BootRelayListener _bootRelayListener;
 

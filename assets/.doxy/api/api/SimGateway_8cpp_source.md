@@ -12,6 +12,7 @@
 
 #include "SimGateway.h"
 #include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the release version HELLO_ACK reports
+#include "Uploader.h"         // the firmware uploader (#366)
 
 // ── TinyUSB HID backend (production builds only) ──────────────────────────────
 //
@@ -379,8 +380,14 @@ void _relayByte(uint8_t b) {
         return;
     }
 
+    // The uploader reads PanelBridge's `_BOOT_RSP` and `_NODE_STATUS` lines (#366), and keeps the
+    // bootloader's replies from the client while it flashes.
+    const bool forUploader = !_lineOverlong && !_lineCorrupt
+        && Uploader::onBridgeLine(reinterpret_cast<const char*>(_line), (uint16_t)(_lineLen - 1), millis());
+
     if      (_lineOverlong)                    _bump(_diag.linesOverlong);
     else if (_lineCorrupt)                     _bump(_diag.linesCorrupt);
+    else if (forUploader)                      {}
     else if (!_writeCdcWhole(_line, _lineLen)) _bump(_diag.linesDropped);
     _lineReset();
 }
@@ -400,7 +407,7 @@ using OpenSkyhawk::CAL_ENVELOPE_BYTES;
 using OpenSkyhawk::CAL_MAX_FRAME;
 using OpenSkyhawk::CAL_AXIS_NONE;
 
-uint8_t  _calRx[CAL_MAX_FRAME];
+uint8_t  _calRx[OpenSkyhawk::CAL_MAX_INBOUND_FRAME];   // UPL_DATA (#366) is the one >92-byte frame, inbound only
 uint16_t _calRxPos      = 0;
 
 bool     _calSession    = false;
@@ -657,6 +664,17 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
     (void)n;
 
     _calLastRxMs = millis();
+    Uploader::onClientFrame(_calLastRxMs);
+
+    // The firmware uploader's messages (#366). One session at a time: no upload while calibrating.
+    if (Uploader::handles(type)) {
+        if (_calSession && type == OpenSkyhawk::CAL_T_UPL_BEGIN) {
+            _calNack(type, seq, OpenSkyhawk::CAL_NACK_BUSY, CAL_AXIS_NONE);
+            return;
+        }
+        Uploader::onFrame(type, seq, pay, len, _calLastRxMs);
+        return;
+    }
 
     // Session gating. HELLO / GET_CAL / GET_DIAG / KEEPALIVE are answered at any time — that is what
     // lets the client show badges without opening a dialog.
@@ -686,6 +704,10 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
             break;
 
         case OpenSkyhawk::CAL_T_SESSION_OPEN: {
+            if (Uploader::busy()) {   // an upload session or a flash owns the channel (#366)
+                _calNack(type, seq, OpenSkyhawk::CAL_NACK_BUSY, CAL_AXIS_NONE);
+                break;
+            }
             const uint8_t axis = pay[OpenSkyhawk::CAL_SESSION_OPEN_AXIS_IDX];
             if (axis != CAL_AXIS_NONE && axis >= OpenSkyhawk::AXIS_CAL_SLOTS) {
                 _calNack(type, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, axis);
@@ -762,7 +784,8 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
 
 // Give every held byte back to the relay, in order, and start scanning fresh.
 void _calFlushHeld() {
-    for (uint16_t i = 0; i < _calRxPos; ++i) _writeUart(_calRx[i]);
+    if (!Uploader::ownsUart())   // a flash owns the UART (#366): the client's bytes are dropped
+        for (uint16_t i = 0; i < _calRxPos; ++i) _writeUart(_calRx[i]);
     _calRxPos = 0;
 }
 
@@ -1200,6 +1223,13 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
 
     _calLoad(); // RAM-only in SIMGATEWAY_TEST builds — tests never touch flash
 
+    Uploader::begin({
+        [](uint8_t type, uint8_t seq, const uint8_t* p, uint16_t n) { _calSend(type, seq, p, n); },
+        [](uint8_t type, uint8_t seq) { _calAck(type, seq); },
+        [](uint8_t type, uint8_t seq, uint8_t reason, uint8_t detail) { _calNack(type, seq, reason, detail); },
+        [](const uint8_t* p, uint16_t n) { for (uint16_t i = 0; i < n; ++i) _writeUart(p[i]); },
+    });
+
     _hidBegin(); // no-op in SIMGATEWAY_TEST builds
 
     statusLedBegin(); // configure GP2/GP3 status LEDs (both off)
@@ -1243,7 +1273,9 @@ void loop() {
     uint16_t budget = CDC_TO_UART_BUDGET;
     while (budget && Serial.available()) {
         const uint8_t b = (uint8_t)Serial.read();
-        if (!_calInboundByte(b)) _writeUart(b);
+        // While the uploader flashes it owns the UART (#366): the client's export bytes are dropped,
+        // so a client that didn't pause its relay can't corrupt the transfer.
+        if (!_calInboundByte(b) && !Uploader::ownsUart()) _writeUart(b);
         cdcMoved = true;
         --budget;
     }
@@ -1268,6 +1300,9 @@ void loop() {
     if (_calSession && (uint32_t)(millis() - _calLastRxMs) > CAL_SESSION_TIMEOUT_MS) {
         _calEndSession();
     }
+
+    // 3c. Advance a firmware upload (#366) — at most one block onto the UART per loop.
+    Uploader::tick(millis());
 
     // 4. Advance the status-LED state machine (non-blocking). Reads the uart0 RSR
     //    after the drain so this tick's UART errors are visible, and counts them.

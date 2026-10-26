@@ -125,4 +125,7 @@ Here is a list of all files with brief descriptions:
             * **file** [**LinkRecovery.h**](LinkRecovery_8h.md) _USB self-recovery ladder for_ [_**SimGateway**_](namespaceSimGateway.md) _— pure decision logic, no hardware._    
             * **file** [**SimGateway.cpp**](SimGateway_8cpp.md)     
             * **file** [**SimGateway.h**](SimGateway_8h.md) _RP2040 USB HID gateway library for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**SimGateway**_](namespaceSimGateway.md) _board._    
+            * **file** [**UploadProtocol.h**](UploadProtocol_8h.md) _The Gateway uploader's USB contract (#366) — states, phases, results and payload layouts of the UPL\_\* messages._     
+            * **file** [**Uploader.cpp**](Uploader_8cpp.md)     
+            * **file** [**Uploader.h**](Uploader_8h.md) _The Gateway's firmware uploader (#366) — stages an image the client streams over USB, then flashes a board's bootloader over CAN through_ [_**PanelBridge**_](namespacePanelBridge.md) _, on its own._    
 

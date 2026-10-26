@@ -63,6 +63,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **struct** [**RxQueueEntry**](structRxQueueEntry.md) 
 * **struct** [**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md) _Link-health counters and event times (#355). Reported to the host as_ `DIAG` _._
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md) 
+* **struct** [**Uploader::Io**](structUploader_1_1Io.md) _How the uploader reaches the client and_ [_**PanelBridge**_](namespacePanelBridge.md) _._
 * **class** **Adafruit_ADS1115**    
     * **class** [**ADS1115**](classADS1115.md) [_**ADS1115**_](classADS1115.md) _ADC. Inherits Adafruit\_ADS1115 without modification._
 

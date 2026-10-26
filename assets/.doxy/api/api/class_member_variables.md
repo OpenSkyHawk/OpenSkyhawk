@@ -17,6 +17,7 @@
 * **adc** ([**PinRef**](classPinRef.md))
 * **ads** ([**PinRef**](classPinRef.md))
 * **attempts** ([**TxQueueEntry**](structTxQueueEntry.md))
+* **ack** ([**Uploader::Io**](structUploader_1_1Io.md))
 
 
 ## b
@@ -161,6 +162,7 @@
 * **nodeKind** ([**OpenSkyhawk::FirmwareImage::Identity**](structOpenSkyhawk_1_1FirmwareImage_1_1Identity.md))
 * **NO\_POSITION** ([**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md))
 * **ntcOffsetDC** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
+* **nack** ([**Uploader::Io**](structUploader_1_1Io.md))
 
 
 ## o
@@ -210,6 +212,7 @@
 * **sensor** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **stepsPerRev** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **sr** ([**PinRef**](classPinRef.md))
+* **send** ([**Uploader::Io**](structUploader_1_1Io.md))
 
 
 ## t
@@ -242,6 +245,7 @@
 * **widthMm** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md))
 * **wrap** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **watchdogResets** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **writeUart** ([**Uploader::Io**](structUploader_1_1Io.md))
 
 
 ## z

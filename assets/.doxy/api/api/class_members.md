@@ -27,6 +27,7 @@
 * **adc** ([**PinRef**](classPinRef.md))
 * **ads** ([**PinRef**](classPinRef.md))
 * **attempts** ([**TxQueueEntry**](structTxQueueEntry.md))
+* **ack** ([**Uploader::Io**](structUploader_1_1Io.md))
 
 
 ## b
@@ -238,6 +239,7 @@
 * **ntcOffsetDC** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
 * **noteInput** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **noteOutput** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
+* **nack** ([**Uploader::Io**](structUploader_1_1Io.md))
 
 
 ## o
@@ -338,6 +340,7 @@
 * **step** ([**OpenSkyhawk::SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md))
 * **sameMcpPortAs** ([**PinRef**](classPinRef.md))
 * **sr** ([**PinRef**](classPinRef.md))
+* **send** ([**Uploader::Io**](structUploader_1_1Io.md))
 
 
 ## t
@@ -382,6 +385,7 @@
 * **writeAnalog** ([**PinRef**](classPinRef.md))
 * **writeDeferred** ([**PinRef**](classPinRef.md))
 * **watchdogResets** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **writeUart** ([**Uploader::Io**](structUploader_1_1Io.md))
 
 
 ## z

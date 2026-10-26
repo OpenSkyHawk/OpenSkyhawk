@@ -89,6 +89,7 @@ enum class Status : uint8_t {
 // ── Transfer shape ────────────────────────────────────────────────────────────
 
 constexpr uint16_t BLOCK_SIZE        = 64;  
+constexpr uint8_t  WINDOW_BLOCKS     = 4;
 constexpr uint8_t  DATA_BYTES        = 7;   
 constexpr uint8_t  DATA_FRAMES       = 10;  
 constexpr uint16_t ANNOUNCE_INTERVAL_MS = 1000;
@@ -116,16 +117,23 @@ struct BootloaderInfo {
 static_assert(sizeof(BootloaderInfo) == 16, "the bootloader info block is 16 bytes");
 
 // ── Relay through the Gateway (#365) ──────────────────────────────────────────
-// The Gateway → PanelBridge UART carries only the DCS-BIOS export stream, so a host sends a boot
-// command the way it asks for the roster: by writing reserved export addresses. One export record per
-// CAN frame, ten words at RELAY_EXPORT_ADDRESS: id, length, then data byte i in the low half of word
-// 2 + i (high half 0). One byte per word because the DCS-BIOS parser resyncs on any four 0x55 bytes
-// in a row — image data packed two to a word could contain them; a 0x00 between every data byte
-// can't. PanelBridge puts the frame on CAN — only BOOT_CMD_n for n = 1-63 and UNCONFIGURED_CMD_ID —
-// and never broadcasts the window as CTRL_BCAST. Every BOOT_RSP_n / UNCONFIGURED_RSP_ID frame goes
-// the other way as one DCS-BIOS message: `_BOOT_RSP <id(3 hex)><length(1 hex)><data(2 hex per byte)>`.
+// The Gateway → PanelBridge UART carries only the DCS-BIOS export stream, so a host sends boot
+// commands the way it asks for the roster: by writing reserved export addresses. Each export record at
+// RELAY_EXPORT_ADDRESS (up to RELAY_EXPORT_WORDS words, low byte of each word first) carries a byte
+// stream of whole CAN frames (#366):
+//   RELAY_FRAME_MARK | len   (len 0-8), id lo, id hi, len data bytes
+// with every 0x55 and 0x56 inside a frame sent as RELAY_ESCAPE + RELAY_ESC_55 / RELAY_ESC_56 — the
+// DCS-BIOS parser resyncs on any four 0x55 bytes in a row, which image data could contain. Bytes
+// between frames (padding) are 0x00 and ignored; every record starts on a frame boundary. PanelBridge
+// puts each frame on CAN — only BOOT_CMD_n for n = 1-63 and UNCONFIGURED_CMD_ID — and never
+// broadcasts the window as CTRL_BCAST. Every BOOT_RSP_n / UNCONFIGURED_RSP_ID frame goes the other way
+// as one DCS-BIOS message: `_BOOT_RSP <id(3 hex)><length(1 hex)><data(2 hex per byte)>`.
 constexpr uint16_t RELAY_EXPORT_ADDRESS = 0xFF10;
-constexpr uint8_t  RELAY_EXPORT_WORDS   = 10;     
+constexpr uint8_t  RELAY_EXPORT_WORDS   = 32;     
+constexpr uint8_t  RELAY_FRAME_MARK     = 0xE0;   
+constexpr uint8_t  RELAY_ESCAPE         = 0x56;
+constexpr uint8_t  RELAY_ESC_55         = 0x01;   
+constexpr uint8_t  RELAY_ESC_56         = 0x02;   
 #define BOOT_RSP_MSG_NAME "_BOOT_RSP"
 
 constexpr uint8_t ATTEMPTS_BKP_REGISTER = 2;

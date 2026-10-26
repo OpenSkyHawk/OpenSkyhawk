@@ -5017,6 +5017,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-relay_escape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable RELAY_ESCAPE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-relay_esc_55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable RELAY_ESC_55
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-relay_esc_56" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable RELAY_ESC_56
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-relay_export_address" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5032,6 +5065,17 @@
     <span class="md-ellipsis">
       
         variable RELAY_EXPORT_WORDS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-relay_frame_mark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable RELAY_FRAME_MARK
       
     </span>
   </a>
@@ -5076,6 +5120,17 @@
     <span class="md-ellipsis">
       
         variable UNCONFIGURED_RSP_ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-window_blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable WINDOW_BLOCKS
       
     </span>
   </a>
@@ -5225,7 +5280,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-block_size"><strong>BLOCK_SIZE</strong></a>   = <code>64</code><br><em>bytes per block; the image is padded with 0xFF to a whole block</em></td>
+<td style="text-align: left;"><a href="#variable-block_size"><strong>BLOCK_SIZE</strong></a>   = <code>64</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
@@ -5272,12 +5327,28 @@
 <td style="text-align: left;"><a href="#variable-protocol_version"><strong>PROTOCOL_VERSION</strong></a>   = <code>1</code><br><em>Bumped on any change to the frames below. A board reports it in READY_n byte 3 (#365); 0 = no bootloader.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-relay_escape"><strong>RELAY_ESCAPE</strong></a>   = <code>0x56</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-relay_esc_55"><strong>RELAY_ESC_55</strong></a>   = <code>0x01</code><br><em>after RELAY_ESCAPE: decodes to 0x55</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-relay_esc_56"><strong>RELAY_ESC_56</strong></a>   = <code>0x02</code><br><em>after RELAY_ESCAPE: decodes to 0x56</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">constexpr uint16_t</td>
 <td style="text-align: left;"><a href="#variable-relay_export_address"><strong>RELAY_EXPORT_ADDRESS</strong></a>   = <code>0xFF10</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-relay_export_words"><strong>RELAY_EXPORT_WORDS</strong></a>   = <code>10</code><br><em>0xFF10-0xFF23</em></td>
+<td style="text-align: left;"><a href="#variable-relay_export_words"><strong>RELAY_EXPORT_WORDS</strong></a>   = <code>32</code><br><em>0xFF10-0xFF4F: 64 bytes per record</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-relay_frame_mark"><strong>RELAY_FRAME_MARK</strong></a>   = <code>0xE0</code><br><em>| len: a frame starts</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
@@ -5294,6 +5365,10 @@
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
 <td style="text-align: left;"><a href="#variable-unconfigured_rsp_id"><strong>UNCONFIGURED_RSP_ID</strong></a>   = <code>0x7C1</code><br><em>A bootloader with no NODE_ID yet (option byte Data0 = 0xFF, no valid app) announces here.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-window_blocks"><strong>WINDOW_BLOCKS</strong></a>   = <code>4</code><br></td>
 </tr>
 </tbody>
 </table>
@@ -5413,9 +5488,9 @@
 <hr>
 
 <h3 id="variable-block_size">variable BLOCK_SIZE</h3>
-<p><em>bytes per block; the image is padded with 0xFF to a whole block</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">BLOCK_SIZE</span><span class="p">;</span>
-</code></pre></div></p>
+</code></pre></div>
+<p>bytes per block; the image is padded with 0xFF to a whole block </p>
 <hr>
 
 <h3 id="variable-bootloader_size">variable BOOTLOADER_SIZE</h3>
@@ -5483,14 +5558,37 @@
 </code></pre></div></p>
 <hr>
 
+<h3 id="variable-relay_escape">variable RELAY_ESCAPE</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_ESCAPE</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-relay_esc_55">variable RELAY_ESC_55</h3>
+<p><em>after RELAY_ESCAPE: decodes to 0x55</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_ESC_55</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-relay_esc_56">variable RELAY_ESC_56</h3>
+<p><em>after RELAY_ESCAPE: decodes to 0x56</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_ESC_56</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
 <h3 id="variable-relay_export_address">variable RELAY_EXPORT_ADDRESS</h3>
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_ADDRESS</span><span class="p">;</span>
 </code></pre></div>
 <hr>
 
 <h3 id="variable-relay_export_words">variable RELAY_EXPORT_WORDS</h3>
-<p><em>0xFF10-0xFF23</em> 
+<p><em>0xFF10-0xFF4F: 64 bytes per record</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_WORDS</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-relay_frame_mark">variable RELAY_FRAME_MARK</h3>
+<p><em>| len: a frame starts</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_FRAME_MARK</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
 
@@ -5516,6 +5614,12 @@
 <p><em>A bootloader with no NODE_ID yet (option byte Data0 = 0xFF, no valid app) announces here.</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">UNCONFIGURED_RSP_ID</span><span class="p">;</span>
 </code></pre></div></p>
+<hr>
+
+<h3 id="variable-window_blocks">variable WINDOW_BLOCKS</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">WINDOW_BLOCKS</span><span class="p">;</span>
+</code></pre></div>
+<p>Blocks a host may send ahead of the last ack (#366). The bootloader buffers their frames while it writes flash; a lost block is resent from BLOCK_ACK's <code>next</code> (go-back-N). BEGIN erases every page the image needs before it replies, so no erase stalls the stream. </p>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-canidbootcmd">function canIdBootCmd</h3>

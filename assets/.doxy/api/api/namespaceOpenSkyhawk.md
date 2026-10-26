@@ -108,6 +108,15 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | enum uint8\_t | [**LeadingZero**](#enum-leadingzero)  <br>_Leading-zero handling for a readout's high-order digit cells._  |
 | enum uint8\_t | [**LinkAction**](#enum-linkaction)  <br>_What the caller should do this tick._  |
 | enum uint8\_t | [**StepPattern**](#enum-steppattern)  <br>_Coil energising sequence._  |
+| enum uint8\_t | [**UplBeginField**](#enum-uplbeginfield)  <br>`UPL_BEGIN` _(8 bytes, client→device)._ |
+| enum uint8\_t | [**UplDataField**](#enum-upldatafield)  <br>`UPL_DATA` _(260 bytes, client→device)._ |
+| enum uint8\_t | [**UplFlashField**](#enum-uplflashfield)  <br>`UPL_FLASH` _(2 bytes, client→device)._ |
+| enum uint8\_t | [**UplInfoAckField**](#enum-uplinfoackfield)  <br>`UPL_INFO_ACK` _(16 bytes, device→client)._ |
+| enum uint8\_t | [**UplPhase**](#enum-uplphase)  <br>_Where a flash is (UPL\_STATUS_ `phase` _)._ |
+| enum uint8\_t | [**UplResult**](#enum-uplresult)  <br>_How a flash ended (UPL\_RESULT_ `result` _, UPL\_INFO\_ACK_`lastResult` _)._ |
+| enum uint8\_t | [**UplResultField**](#enum-uplresultfield)  <br>`UPL_RESULT` _(8 bytes, device→client)._ |
+| enum uint8\_t | [**UplState**](#enum-uplstate)  <br>_What the uploader is doing (UPL\_INFO\_ACK_ `state` _)._ |
+| enum uint8\_t | [**UplStatusField**](#enum-uplstatusfield)  <br>`UPL_STATUS` _(8 bytes, device→client)._ |
 
 
 
@@ -124,13 +133,22 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 |  constexpr uint8\_t | [**CAL\_FRAME\_MAGIC**](#variable-cal_frame_magic)   = `{ 0xAA, 0x53, 0x4B, 0x43 }`<br> |
 |  constexpr uint32\_t | [**CAL\_MAGIC**](#variable-cal_magic)   = `/* multi line expression */`<br>_Blob signature. Little-endian in flash, so a hexdump reads "OSKC"._  |
 |  constexpr uint16\_t | [**CAL\_MAX\_FRAME**](#variable-cal_max_frame)   = `[**CAL\_ENVELOPE\_BYTES**](namespaceOpenSkyhawk.md#variable-cal_envelope_bytes) + [**CAL\_MAX\_PAYLOAD**](namespaceOpenSkyhawk.md#variable-cal_max_payload)`<br> |
-|  constexpr uint16\_t | [**CAL\_MAX\_PAYLOAD**](#variable-cal_max_payload)   = `82`<br>_CAL\_DATA, the largest legal payload._  |
+|  constexpr uint16\_t | [**CAL\_MAX\_INBOUND\_FRAME**](#variable-cal_max_inbound_frame)   = `[**CAL\_ENVELOPE\_BYTES**](namespaceOpenSkyhawk.md#variable-cal_envelope_bytes) + [**CAL\_MAX\_INBOUND\_PAYLOAD**](namespaceOpenSkyhawk.md#variable-cal_max_inbound_payload)`<br> |
+|  constexpr uint16\_t | [**CAL\_MAX\_INBOUND\_PAYLOAD**](#variable-cal_max_inbound_payload)   = `260`<br> |
+|  constexpr uint16\_t | [**CAL\_MAX\_PAYLOAD**](#variable-cal_max_payload)   = `82`<br>_CAL\_DATA, the largest payload the device sends._  |
 |  constexpr uint8\_t | [**CAL\_PROTO\_VERSION**](#variable-cal_proto_version)   = `1`<br> |
 |  constexpr uint16\_t | [**CAL\_VERSION**](#variable-cal_version)   = `1`<br>_Blob layout version._  |
 |  constexpr uint32\_t | [**LINK\_BACKOFF\_MS**](#variable-link_backoff_ms)   = `60000`<br>_after a recovery reboot: re-attach period_  |
 |  constexpr uint32\_t | [**LINK\_BAD\_MS**](#variable-link_bad_ms)   = `5000`<br>_unhealthy this long → first re-attach_  |
 |  constexpr uint32\_t | [**LINK\_REATTACH\_GAP\_MS**](#variable-link_reattach_gap_ms)   = `100`<br>_detached this long before attach_  |
 |  constexpr uint32\_t | [**LINK\_REBOOT\_AFTER\_MS**](#variable-link_reboot_after_ms)   = `5000`<br>_re-attached, still unhealthy → reboot_  |
+|  constexpr uint16\_t | [**UPL\_CHUNK\_BYTES**](#variable-upl_chunk_bytes)   = `256`<br>_UPL\_DATA's data field._  |
+|  constexpr uint32\_t | [**UPL\_MAX\_IMAGE\_BYTES**](#variable-upl_max_image_bytes)   = `124u \* 1024u`<br>_an app on a 128 KB STM32F103CB (4 KB bootloader)_  |
+|  constexpr uint8\_t | [**UPL\_NODE\_ID\_KEEP**](#variable-upl_node_id_keep)   = `0xFF`<br>_UPL\_FLASH_ `newNodeId` _: don't change it._ |
+|  constexpr uint8\_t | [**UPL\_PROTO\_VERSION**](#variable-upl_proto_version)   = `1`<br> |
+|  constexpr uint8\_t | [**UPL\_RETRIES**](#variable-upl_retries)   = `2`<br>_whole-flash retries after a transport failure_  |
+|  constexpr uint8\_t | [**UPL\_TARGET\_BRIDGE**](#variable-upl_target_bridge)   = `0x00`<br>_UPL\_FLASH_ `target` _._ |
+|  constexpr uint8\_t | [**UPL\_TARGET\_UNCONFIGURED**](#variable-upl_target_unconfigured)   = `0xFE`<br>_the one bootloader on the bus with no NODE\_ID yet_  |
 |  const [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) | [**kSwitecDefaultAccel**](#variable-kswitecdefaultaccel)   = `/* multi line expression */`<br>_Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family._  |
 |  constexpr uint8\_t | [**kSwitecDefaultAccelN**](#variable-kswitecdefaultacceln)   = `5`<br> |
 
@@ -406,13 +424,19 @@ enum OpenSkyhawk::CalNackReason {
     CAL_NACK_BAD_ORDER = 0x05,
     CAL_NACK_NO_SESSION = 0x06,
     CAL_NACK_NO_STORAGE = 0x07,
-    CAL_NACK_BAD_DEADZONE = 0x08
+    CAL_NACK_BAD_DEADZONE = 0x08,
+    CAL_NACK_BUSY = 0x09,
+    CAL_NACK_TOO_LARGE = 0x0A,
+    CAL_NACK_BAD_OFFSET = 0x0B,
+    CAL_NACK_IMAGE_CRC = 0x0C,
+    CAL_NACK_BAD_IMAGE = 0x0D,
+    CAL_NACK_NOT_STAGED = 0x0E
 };
 ```
 
 
 
-NACK reasons. `detail` names the offending axis where one applies, else 0xFF. Reserved for firmware update (#295), not yet assigned: 0x09-0x0E. 
+NACK reasons. `detail` names the offending axis where one applies, else 0xFF. 0x09-0x0E are the firmware updater's (#366). 
 
 
         
@@ -517,19 +541,28 @@ enum OpenSkyhawk::CalType {
     CAL_T_KEEPALIVE = 0x07,
     CAL_T_STREAM_SELECT = 0x08,
     CAL_T_GET_DIAG = 0x09,
+    CAL_T_UPL_INFO = 0x10,
+    CAL_T_UPL_BEGIN = 0x11,
+    CAL_T_UPL_DATA = 0x12,
+    CAL_T_UPL_END = 0x13,
+    CAL_T_UPL_FLASH = 0x14,
+    CAL_T_UPL_ABORT = 0x15,
     CAL_T_HELLO_ACK = 0x81,
     CAL_T_CAL_DATA = 0x82,
     CAL_T_SESSION_ACK = 0x83,
     CAL_T_ACK = 0x84,
     CAL_T_NACK = 0x85,
     CAL_T_RAW = 0x86,
-    CAL_T_DIAG = 0x87
+    CAL_T_DIAG = 0x87,
+    CAL_T_UPL_INFO_ACK = 0x90,
+    CAL_T_UPL_STATUS = 0x91,
+    CAL_T_UPL_RESULT = 0x92
 };
 ```
 
 
 
-Message types. High bit set = device→client, so direction is readable in a capture. Reserved for firmware update (#295), not yet assigned: 0x10-0x1F (client→device) and 0x90-0x9F (device→client). Don't allocate them to anything else. 
+Message types. High bit set = device→client, so direction is readable in a capture. 0x10-0x1F (client→device) and 0x90-0x9F (device→client) are the firmware updater's (#295, assigned from #366 — [**UploadProtocol.h**](UploadProtocol_8h.md) holds their payloads); 0x16-0x1F / 0x93-0x9F still free. 
 
 
         
@@ -708,6 +741,197 @@ enum OpenSkyhawk::StepPattern {
 
 
 <hr>
+
+
+
+### enum UplBeginField 
+
+`UPL_BEGIN` _(8 bytes, client→device)._
+```C++
+enum OpenSkyhawk::UplBeginField {
+    UPL_BEGIN_LENGTH = 0,
+    UPL_BEGIN_CRC = 4
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum UplDataField 
+
+`UPL_DATA` _(260 bytes, client→device)._
+```C++
+enum OpenSkyhawk::UplDataField {
+    UPL_DATA_OFFSET = 0,
+    UPL_DATA_BYTES = 4
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum UplFlashField 
+
+`UPL_FLASH` _(2 bytes, client→device)._
+```C++
+enum OpenSkyhawk::UplFlashField {
+    UPL_FLASH_TARGET = 0,
+    UPL_FLASH_NEW_NODE_ID = 1
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum UplInfoAckField 
+
+`UPL_INFO_ACK` _(16 bytes, device→client)._
+```C++
+enum OpenSkyhawk::UplInfoAckField {
+    UPL_INFO_ACK_PROTO = 0,
+    UPL_INFO_ACK_MAX_IMAGE_KB = 1,
+    UPL_INFO_ACK_CHUNK = 2,
+    UPL_INFO_ACK_STATE = 4,
+    UPL_INFO_ACK_LAST_TARGET = 5,
+    UPL_INFO_ACK_LAST_RESULT = 6,
+    UPL_INFO_ACK_LAST_MAJOR = 7,
+    UPL_INFO_ACK_LAST_MINOR = 8,
+    UPL_INFO_ACK_LAST_PATCH = 9,
+    UPL_INFO_ACK_BRIDGE_MAJOR = 10,
+    UPL_INFO_ACK_BRIDGE_MINOR = 11,
+    UPL_INFO_ACK_BRIDGE_PATCH = 12,
+    UPL_INFO_ACK_RESERVED = 13
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum UplPhase 
+
+_Where a flash is (UPL\_STATUS_ `phase` _)._
+```C++
+enum OpenSkyhawk::UplPhase {
+    UPL_PHASE_ENTERING_BOOT = 1,
+    UPL_PHASE_CONNECTED = 2,
+    UPL_PHASE_SETTING_ID = 3,
+    UPL_PHASE_ERASING = 4,
+    UPL_PHASE_WRITING = 5,
+    UPL_PHASE_VERIFYING = 6,
+    UPL_PHASE_REBOOTING = 7,
+    UPL_PHASE_CONFIRMING = 8
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum UplResult 
+
+_How a flash ended (UPL\_RESULT_ `result` _, UPL\_INFO\_ACK_`lastResult` _)._
+```C++
+enum OpenSkyhawk::UplResult {
+    UPL_RESULT_NONE = 0x00,
+    UPL_RESULT_OK = 0x01,
+    UPL_RESULT_NO_RESPONSE = 0x02,
+    UPL_RESULT_NO_BOOTLOADER = 0x03,
+    UPL_RESULT_ID_MISMATCH = 0x04,
+    UPL_RESULT_KIND_MISMATCH = 0x05,
+    UPL_RESULT_TOO_BIG_FOR_BOARD = 0x06,
+    UPL_RESULT_WRITE_FAILED = 0x07,
+    UPL_RESULT_VERIFY_FAILED = 0x08,
+    UPL_RESULT_VERSION_MISMATCH = 0x09,
+    UPL_RESULT_TIMEOUT = 0x0A,
+    UPL_RESULT_UNSUPPORTED = 0x0B
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum UplResultField 
+
+`UPL_RESULT` _(8 bytes, device→client)._
+```C++
+enum OpenSkyhawk::UplResultField {
+    UPL_RESULT_RESULT = 0,
+    UPL_RESULT_TARGET = 1,
+    UPL_RESULT_MAJOR = 2,
+    UPL_RESULT_MINOR = 3,
+    UPL_RESULT_PATCH = 4,
+    UPL_RESULT_ATTEMPTS = 5,
+    UPL_RESULT_SECONDS = 6
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum UplState 
+
+_What the uploader is doing (UPL\_INFO\_ACK_ `state` _)._
+```C++
+enum OpenSkyhawk::UplState {
+    UPL_STATE_IDLE = 0,
+    UPL_STATE_STAGING = 1,
+    UPL_STATE_STAGED = 2,
+    UPL_STATE_FLASHING = 3
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum UplStatusField 
+
+`UPL_STATUS` _(8 bytes, device→client)._
+```C++
+enum OpenSkyhawk::UplStatusField {
+    UPL_STATUS_PHASE = 0,
+    UPL_STATUS_TARGET = 1,
+    UPL_STATUS_ATTEMPT = 2,
+    UPL_STATUS_BLOCK = 3,
+    UPL_STATUS_BLOCKS = 5,
+    UPL_STATUS_RESERVED = 7
+};
+```
+
+
+
+
+<hr>
 ## Public Attributes Documentation
 
 
@@ -827,9 +1051,39 @@ constexpr uint16_t OpenSkyhawk::CAL_MAX_FRAME;
 
 
 
+### variable CAL\_MAX\_INBOUND\_FRAME 
+
+```C++
+constexpr uint16_t OpenSkyhawk::CAL_MAX_INBOUND_FRAME;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_MAX\_INBOUND\_PAYLOAD 
+
+```C++
+constexpr uint16_t OpenSkyhawk::CAL_MAX_INBOUND_PAYLOAD;
+```
+
+
+
+UPL\_DATA (#366), the largest payload the device _receives_ — client → device only, so every device → client frame stays within CAL\_MAX\_FRAME. 
+
+
+        
+
+<hr>
+
+
+
 ### variable CAL\_MAX\_PAYLOAD 
 
-_CAL\_DATA, the largest legal payload._ 
+_CAL\_DATA, the largest payload the device sends._ 
 ```C++
 constexpr uint16_t OpenSkyhawk::CAL_MAX_PAYLOAD;
 ```
@@ -926,6 +1180,107 @@ constexpr uint32_t OpenSkyhawk::LINK_REATTACH_GAP_MS;
 _re-attached, still unhealthy → reboot_ 
 ```C++
 constexpr uint32_t OpenSkyhawk::LINK_REBOOT_AFTER_MS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable UPL\_CHUNK\_BYTES 
+
+_UPL\_DATA's data field._ 
+```C++
+constexpr uint16_t OpenSkyhawk::UPL_CHUNK_BYTES;
+```
+
+
+
+
+<hr>
+
+
+
+### variable UPL\_MAX\_IMAGE\_BYTES 
+
+_an app on a 128 KB STM32F103CB (4 KB bootloader)_ 
+```C++
+constexpr uint32_t OpenSkyhawk::UPL_MAX_IMAGE_BYTES;
+```
+
+
+
+
+<hr>
+
+
+
+### variable UPL\_NODE\_ID\_KEEP 
+
+_UPL\_FLASH_ `newNodeId` _: don't change it._
+```C++
+constexpr uint8_t OpenSkyhawk::UPL_NODE_ID_KEEP;
+```
+
+
+
+
+<hr>
+
+
+
+### variable UPL\_PROTO\_VERSION 
+
+```C++
+constexpr uint8_t OpenSkyhawk::UPL_PROTO_VERSION;
+```
+
+
+
+
+<hr>
+
+
+
+### variable UPL\_RETRIES 
+
+_whole-flash retries after a transport failure_ 
+```C++
+constexpr uint8_t OpenSkyhawk::UPL_RETRIES;
+```
+
+
+
+
+<hr>
+
+
+
+### variable UPL\_TARGET\_BRIDGE 
+
+_UPL\_FLASH_ `target` _._
+```C++
+constexpr uint8_t OpenSkyhawk::UPL_TARGET_BRIDGE;
+```
+
+
+
+the Gateway's own [**PanelBridge**](namespacePanelBridge.md) (#367; UNSUPPORTED until then) 
+
+
+        
+
+<hr>
+
+
+
+### variable UPL\_TARGET\_UNCONFIGURED 
+
+_the one bootloader on the bus with no NODE\_ID yet_ 
+```C++
+constexpr uint8_t OpenSkyhawk::UPL_TARGET_UNCONFIGURED;
 ```
 
 

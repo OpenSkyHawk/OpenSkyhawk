@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespaceUploader" kind="namespace" language="C++">
+    <compoundname>Uploader</compoundname>
+    <innerclass refid="structUploader_1_1Io" prot="public">Uploader::Io</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceUploader_1a8684ce88e604c82ecd311f67632ead12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Uploader::begin</definition>
+        <argsstring>(const Io &amp;io)</argsstring>
+        <name>begin</name>
+        <qualifiedname>Uploader::begin</qualifiedname>
+        <param>
+          <type>const <ref refid="structUploader_1_1Io" kindref="compound">Io</ref> &amp;</type>
+          <declname>io</declname>
+        </param>
+        <briefdescription>
+<para>Install the callbacks. Call once from SimGateway::begin(). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="283" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="283" bodyend="283" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="30" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1a7e5823b3a211c7fba017daa45fca3fe2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Uploader::handles</definition>
+        <argsstring>(uint8_t type)</argsstring>
+        <name>handles</name>
+        <qualifiedname>Uploader::handles</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+<para>True for the CAL_T_UPL_* request types the uploader answers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="285" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="285" bodyend="288" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="33" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1ac8ddcf956426ffd69e02abbc356c0a22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Uploader::busy</definition>
+        <argsstring>()</argsstring>
+        <name>busy</name>
+        <qualifiedname>Uploader::busy</qualifiedname>
+        <briefdescription>
+<para>An upload session is open or a flash runs — the calibration session must answer BUSY. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="290" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="290" bodyend="290" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="49" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1a11b47b7d72071fc271e6a84f71fa062a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Uploader::ownsUart</definition>
+        <argsstring>()</argsstring>
+        <name>ownsUart</name>
+        <qualifiedname>Uploader::ownsUart</qualifiedname>
+        <briefdescription>
+<para>A flash runs: the uploader writes the UART, so the client&apos;s export bytes must be dropped. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="291" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="291" bodyend="291" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="52" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1aa153086f01a7bfb81470a5659363dbf7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Uploader::onClientFrame</definition>
+        <argsstring>(uint32_t now)</argsstring>
+        <name>onClientFrame</name>
+        <qualifiedname>Uploader::onClientFrame</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>now</declname>
+        </param>
+        <briefdescription>
+<para>Any verified client frame (KEEPALIVE included): the client is still there. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="293" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="293" bodyend="293" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="39" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1a2c274fdef8c28224be6e98392eaa372a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Uploader::onFrame</definition>
+        <argsstring>(uint8_t type, uint8_t seq, const uint8_t *payload, uint16_t len, uint32_t now)</argsstring>
+        <name>onFrame</name>
+        <qualifiedname>Uploader::onFrame</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>seq</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>now</declname>
+        </param>
+        <briefdescription>
+<para>A verified client frame of one of those types. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="295" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="295" bodyend="373" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="36" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1ad4e76a474ba5a14cceba5591bc6f2b2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Uploader::onBridgeLine</definition>
+        <argsstring>(const char *line, uint16_t len, uint32_t now)</argsstring>
+        <name>onBridgeLine</name>
+        <qualifiedname>Uploader::onBridgeLine</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>line</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>now</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A complete line from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> (without the &apos;<linebreak/>
+&apos;). Returns true when the line must not be relayed to the client — <computeroutput>_BOOT_RSP</computeroutput> while the uploader itself is flashing. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="375" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="375" bodyend="399" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="43" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1a65dfe625f0913def4609b69414c34beb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Uploader::tick</definition>
+        <argsstring>(uint32_t now)</argsstring>
+        <name>tick</name>
+        <qualifiedname>Uploader::tick</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>now</declname>
+        </param>
+        <briefdescription>
+<para>Advance the flash. Call every loop(). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="401" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="401" bodyend="473" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="46" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="281" column="1"/>
+  </compounddef>
+</doxygen>

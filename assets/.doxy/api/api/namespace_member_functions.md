@@ -14,8 +14,9 @@
 
 * **busOff** ([**CANProtocol**](namespaceCANProtocol.md))
 * **backupRegister** ([**STM32Board**](namespaceSTM32Board.md))
-* **begin** ([**STM32Board**](namespaceSTM32Board.md))
+* **begin** ([**STM32Board**](namespaceSTM32Board.md), [**Uploader**](namespaceUploader.md))
 * **bootloaderVersion** ([**STM32Board**](namespaceSTM32Board.md))
+* **busy** ([**Uploader**](namespaceUploader.md))
 
 
 ## c
@@ -64,6 +65,11 @@
 * **flushExpanderWrites** ([**PanelGroup**](namespacePanelGroup.md))
 
 
+## h
+
+* **handles** ([**Uploader**](namespaceUploader.md))
+
+
 ## i
 
 * **isDebug** ([**STM32Board**](namespaceSTM32Board.md))
@@ -102,6 +108,10 @@
 * **onNodeAlive** ([**PanelBridge**](namespacePanelBridge.md))
 * **onNodeDead** ([**PanelBridge**](namespacePanelBridge.md))
 * **onCanStatus** ([**STM32Board**](namespaceSTM32Board.md))
+* **onBridgeLine** ([**Uploader**](namespaceUploader.md))
+* **onClientFrame** ([**Uploader**](namespaceUploader.md))
+* **onFrame** ([**Uploader**](namespaceUploader.md))
+* **ownsUart** ([**Uploader**](namespaceUploader.md))
 
 
 ## p
@@ -152,7 +162,7 @@
 * **tryToSendDcsBiosMessage** ([**DcsBios**](namespaceDcsBios.md))
 * **trimmed** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **thermal** ([**PduNode**](namespacePduNode.md))
-* **tick** ([**STM32Board**](namespaceSTM32Board.md))
+* **tick** ([**STM32Board**](namespaceSTM32Board.md), [**Uploader**](namespaceUploader.md))
 
 
 ## v

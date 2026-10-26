@@ -8,6 +8,7 @@
     <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
     <includedby refid="PanelGroup_8cpp" local="no">Firmware/Libraries/PanelGroup/PanelGroup.cpp</includedby>
     <includedby refid="PduNode_8cpp" local="no">Firmware/Libraries/PowerMonitor/PduNode.cpp</includedby>
+    <includedby refid="Uploader_8cpp" local="no">Firmware/Libraries/SimGateway/Uploader.cpp</includedby>
     <incdepgraph>
       <node id="1">
         <label>Firmware/Libraries/FirmwareImage/FirmwareImage.h</label>
@@ -43,6 +44,8 @@
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
       </node>
       <node id="2">
         <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
@@ -55,6 +58,10 @@
       <node id="4">
         <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
         <link refid="PduNode_8cpp"/>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/SimGateway/Uploader.cpp</label>
+        <link refid="Uploader_8cpp"/>
       </node>
     </invincdepgraph>
     <innerclass refid="structOpenSkyhawk_1_1FirmwareImage_1_1Identity" prot="public">OpenSkyhawk::FirmwareImage::Identity</innerclass>

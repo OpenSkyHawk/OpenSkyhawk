@@ -54,7 +54,7 @@
 |  constexpr uint32\_t | [**APP\_OFFSET**](#variable-app_offset)   = `[**BOOTLOADER\_SIZE**](namespaceOpenSkyhawk_1_1Boot.md#variable-bootloader_size)`<br> |
 |  constexpr uint8\_t | [**ATTEMPTS\_BKP\_REGISTER**](#variable-attempts_bkp_register)   = `2`<br> |
 |  constexpr uint8\_t | [**ATTEMPT\_LIMIT**](#variable-attempt_limit)   = `3`<br> |
-|  constexpr uint16\_t | [**BLOCK\_SIZE**](#variable-block_size)   = `64`<br>_bytes per block; the image is padded with 0xFF to a whole block_  |
+|  constexpr uint16\_t | [**BLOCK\_SIZE**](#variable-block_size)   = `64`<br> |
 |  constexpr uint32\_t | [**BOOTLOADER\_SIZE**](#variable-bootloader_size)   = `0x1000`<br>_4 KB = one F103 write-protect block; apps start here_  |
 |  constexpr uint16\_t | [**CATCH\_WINDOW\_MS**](#variable-catch_window_ms)   = `200`<br>_after every reset, a CONNECT on BOOT\_CMD\_n keeps the board here (#364)_  |
 |  constexpr uint16\_t | [**CMD\_ID\_BASE**](#variable-cmd_id_base)   = `0x740`<br>_BOOT\_CMD\_n = 0x740 + n — host (bridge) → node n's bootloader._  |
@@ -66,12 +66,17 @@
 |  constexpr uint32\_t | [**INFO\_ADDRESS**](#variable-info_address)   = `0x08000FF0`<br> |
 |  constexpr uint32\_t | [**INFO\_MAGIC**](#variable-info_magic)   = `0x4C42534Fu`<br>_"OSBL" in memory order_  |
 |  constexpr uint8\_t | [**PROTOCOL\_VERSION**](#variable-protocol_version)   = `1`<br>_Bumped on any change to the frames below. A board reports it in READY\_n byte 3 (#365); 0 = no bootloader._  |
+|  constexpr uint8\_t | [**RELAY\_ESCAPE**](#variable-relay_escape)   = `0x56`<br> |
+|  constexpr uint8\_t | [**RELAY\_ESC\_55**](#variable-relay_esc_55)   = `0x01`<br>_after RELAY\_ESCAPE: decodes to 0x55_  |
+|  constexpr uint8\_t | [**RELAY\_ESC\_56**](#variable-relay_esc_56)   = `0x02`<br>_after RELAY\_ESCAPE: decodes to 0x56_  |
 |  constexpr uint16\_t | [**RELAY\_EXPORT\_ADDRESS**](#variable-relay_export_address)   = `0xFF10`<br> |
-|  constexpr uint8\_t | [**RELAY\_EXPORT\_WORDS**](#variable-relay_export_words)   = `10`<br>_0xFF10-0xFF23_  |
+|  constexpr uint8\_t | [**RELAY\_EXPORT\_WORDS**](#variable-relay_export_words)   = `32`<br>_0xFF10-0xFF4F: 64 bytes per record_  |
+|  constexpr uint8\_t | [**RELAY\_FRAME\_MARK**](#variable-relay_frame_mark)   = `0xE0`<br>_\| len: a frame starts_  |
 |  constexpr uint16\_t | [**RSP\_ID\_BASE**](#variable-rsp_id_base)   = `0x780`<br>_BOOT\_RSP\_n = 0x780 + n — node n's bootloader → host._  |
 |  constexpr uint32\_t | [**UID\_ADDRESS**](#variable-uid_address)   = `0x1FFFF7E8`<br>_the F103's 96-bit unique ID_  |
 |  constexpr uint16\_t | [**UNCONFIGURED\_CMD\_ID**](#variable-unconfigured_cmd_id)   = `0x7C0`<br> |
 |  constexpr uint16\_t | [**UNCONFIGURED\_RSP\_ID**](#variable-unconfigured_rsp_id)   = `0x7C1`<br>_A bootloader with no NODE\_ID yet (option byte Data0 = 0xFF, no valid app) announces here._  |
+|  constexpr uint8\_t | [**WINDOW\_BLOCKS**](#variable-window_blocks)   = `4`<br> |
 
 
 
@@ -309,13 +314,16 @@ constexpr uint8_t OpenSkyhawk::Boot::ATTEMPT_LIMIT;
 
 ### variable BLOCK\_SIZE 
 
-_bytes per block; the image is padded with 0xFF to a whole block_ 
 ```C++
 constexpr uint16_t OpenSkyhawk::Boot::BLOCK_SIZE;
 ```
 
 
 
+bytes per block; the image is padded with 0xFF to a whole block 
+
+
+        
 
 <hr>
 
@@ -480,6 +488,47 @@ constexpr uint8_t OpenSkyhawk::Boot::PROTOCOL_VERSION;
 
 
 
+### variable RELAY\_ESCAPE 
+
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::RELAY_ESCAPE;
+```
+
+
+
+
+<hr>
+
+
+
+### variable RELAY\_ESC\_55 
+
+_after RELAY\_ESCAPE: decodes to 0x55_ 
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::RELAY_ESC_55;
+```
+
+
+
+
+<hr>
+
+
+
+### variable RELAY\_ESC\_56 
+
+_after RELAY\_ESCAPE: decodes to 0x56_ 
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::RELAY_ESC_56;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable RELAY\_EXPORT\_ADDRESS 
 
 ```C++
@@ -495,9 +544,23 @@ constexpr uint16_t OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS;
 
 ### variable RELAY\_EXPORT\_WORDS 
 
-_0xFF10-0xFF23_ 
+_0xFF10-0xFF4F: 64 bytes per record_ 
 ```C++
 constexpr uint8_t OpenSkyhawk::Boot::RELAY_EXPORT_WORDS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable RELAY\_FRAME\_MARK 
+
+_\| len: a frame starts_ 
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::RELAY_FRAME_MARK;
 ```
 
 
@@ -561,6 +624,23 @@ constexpr uint16_t OpenSkyhawk::Boot::UNCONFIGURED_RSP_ID;
 
 
 
+
+<hr>
+
+
+
+### variable WINDOW\_BLOCKS 
+
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::WINDOW_BLOCKS;
+```
+
+
+
+Blocks a host may send ahead of the last ack (#366). The bootloader buffers their frames while it writes flash; a lost block is resent from BLOCK\_ACK's `next` (go-back-N). BEGIN erases every page the image needs before it replies, so no erase stalls the stream. 
+
+
+        
 
 <hr>
 ## Public Functions Documentation

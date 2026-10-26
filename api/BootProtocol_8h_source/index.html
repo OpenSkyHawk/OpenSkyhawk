@@ -4797,6 +4797,7 @@
 <span class="c1">// ── Transfer shape ────────────────────────────────────────────────────────────</span>
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">BLOCK_SIZE</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span><span class="w">  </span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">WINDOW_BLOCKS</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">DATA_BYTES</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w">   </span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">DATA_FRAMES</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">ANNOUNCE_INTERVAL_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
@@ -4824,16 +4825,23 @@
 <span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">BootloaderInfo</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="s">"the bootloader info block is 16 bytes"</span><span class="p">);</span>
 
 <span class="c1">// ── Relay through the Gateway (#365) ──────────────────────────────────────────</span>
-<span class="c1">// The Gateway → PanelBridge UART carries only the DCS-BIOS export stream, so a host sends a boot</span>
-<span class="c1">// command the way it asks for the roster: by writing reserved export addresses. One export record per</span>
-<span class="c1">// CAN frame, ten words at RELAY_EXPORT_ADDRESS: id, length, then data byte i in the low half of word</span>
-<span class="c1">// 2 + i (high half 0). One byte per word because the DCS-BIOS parser resyncs on any four 0x55 bytes</span>
-<span class="c1">// in a row — image data packed two to a word could contain them; a 0x00 between every data byte</span>
-<span class="c1">// can't. PanelBridge puts the frame on CAN — only BOOT_CMD_n for n = 1-63 and UNCONFIGURED_CMD_ID —</span>
-<span class="c1">// and never broadcasts the window as CTRL_BCAST. Every BOOT_RSP_n / UNCONFIGURED_RSP_ID frame goes</span>
-<span class="c1">// the other way as one DCS-BIOS message: `_BOOT_RSP &lt;id(3 hex)&gt;&lt;length(1 hex)&gt;&lt;data(2 hex per byte)&gt;`.</span>
+<span class="c1">// The Gateway → PanelBridge UART carries only the DCS-BIOS export stream, so a host sends boot</span>
+<span class="c1">// commands the way it asks for the roster: by writing reserved export addresses. Each export record at</span>
+<span class="c1">// RELAY_EXPORT_ADDRESS (up to RELAY_EXPORT_WORDS words, low byte of each word first) carries a byte</span>
+<span class="c1">// stream of whole CAN frames (#366):</span>
+<span class="c1">//   RELAY_FRAME_MARK | len   (len 0-8), id lo, id hi, len data bytes</span>
+<span class="c1">// with every 0x55 and 0x56 inside a frame sent as RELAY_ESCAPE + RELAY_ESC_55 / RELAY_ESC_56 — the</span>
+<span class="c1">// DCS-BIOS parser resyncs on any four 0x55 bytes in a row, which image data could contain. Bytes</span>
+<span class="c1">// between frames (padding) are 0x00 and ignored; every record starts on a frame boundary. PanelBridge</span>
+<span class="c1">// puts each frame on CAN — only BOOT_CMD_n for n = 1-63 and UNCONFIGURED_CMD_ID — and never</span>
+<span class="c1">// broadcasts the window as CTRL_BCAST. Every BOOT_RSP_n / UNCONFIGURED_RSP_ID frame goes the other way</span>
+<span class="c1">// as one DCS-BIOS message: `_BOOT_RSP &lt;id(3 hex)&gt;&lt;length(1 hex)&gt;&lt;data(2 hex per byte)&gt;`.</span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">RELAY_EXPORT_ADDRESS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF10</span><span class="p">;</span>
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_EXPORT_WORDS</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">     </span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_EXPORT_WORDS</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w">     </span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_FRAME_MARK</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mh">0xE0</span><span class="p">;</span><span class="w">   </span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_ESCAPE</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x56</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_ESC_55</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span><span class="w">   </span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_ESC_56</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">;</span><span class="w">   </span>
 <span class="cp">#define BOOT_RSP_MSG_NAME "_BOOT_RSP"</span>
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ATTEMPTS_BKP_REGISTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>

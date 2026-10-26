@@ -74,6 +74,8 @@ constexpr uint8_t CAL_FRAME_MAGIC[4] = { 0xAA, 0x53, 0x4B, 0x43 };   // "\xAA S 
 constexpr uint16_t CAL_ENVELOPE_BYTES = 10;   
 constexpr uint16_t CAL_MAX_PAYLOAD    = 82;   
 constexpr uint16_t CAL_MAX_FRAME      = CAL_ENVELOPE_BYTES + CAL_MAX_PAYLOAD;  // 92
+constexpr uint16_t CAL_MAX_INBOUND_PAYLOAD = 260;
+constexpr uint16_t CAL_MAX_INBOUND_FRAME   = CAL_ENVELOPE_BYTES + CAL_MAX_INBOUND_PAYLOAD;  // 270
 
 enum CalType : uint8_t {
     CAL_T_HELLO         = 0x01,
@@ -85,6 +87,12 @@ enum CalType : uint8_t {
     CAL_T_KEEPALIVE     = 0x07,
     CAL_T_STREAM_SELECT = 0x08,
     CAL_T_GET_DIAG      = 0x09,   // link-health counters (#355); answered at any time
+    CAL_T_UPL_INFO      = 0x10,   // uploader state (#366); answered at any time
+    CAL_T_UPL_BEGIN     = 0x11,   // open an upload session: image length + CRC
+    CAL_T_UPL_DATA      = 0x12,   // 256 image bytes at an offset (the one >82-byte type, inbound only)
+    CAL_T_UPL_END       = 0x13,   // verify the staged image
+    CAL_T_UPL_FLASH     = 0x14,   // flash it into a board; the Gateway finishes on its own
+    CAL_T_UPL_ABORT     = 0x15,   // drop the session and the staged image (not while flashing)
 
     CAL_T_HELLO_ACK     = 0x81,
     CAL_T_CAL_DATA      = 0x82,
@@ -93,6 +101,9 @@ enum CalType : uint8_t {
     CAL_T_NACK          = 0x85,
     CAL_T_RAW           = 0x86,
     CAL_T_DIAG          = 0x87,
+    CAL_T_UPL_INFO_ACK  = 0x90,
+    CAL_T_UPL_STATUS    = 0x91,   // a flash's progress, while the client keeps the session alive
+    CAL_T_UPL_RESULT    = 0x92,   // a flash's outcome
 };
 
 enum CalNackReason : uint8_t {
@@ -104,6 +115,12 @@ enum CalNackReason : uint8_t {
     CAL_NACK_NO_SESSION   = 0x06,
     CAL_NACK_NO_STORAGE   = 0x07,
     CAL_NACK_BAD_DEADZONE = 0x08,
+    CAL_NACK_BUSY         = 0x09,   // another session (calibration / upload) or a flash is running
+    CAL_NACK_TOO_LARGE    = 0x0A,   // UPL_BEGIN length over UPL_MAX_IMAGE_BYTES
+    CAL_NACK_BAD_OFFSET   = 0x0B,   // UPL_DATA outside the announced length, or not chunk-aligned
+    CAL_NACK_IMAGE_CRC    = 0x0C,   // UPL_END: the staged bytes don't match UPL_BEGIN's CRC
+    CAL_NACK_BAD_IMAGE    = 0x0D,   // UPL_END: no valid identity block, or it disagrees with UPL_BEGIN
+    CAL_NACK_NOT_STAGED   = 0x0E,   // UPL_FLASH without a verified staged image
 };
 
 constexpr uint8_t CAL_AXIS_NONE = 0xFF;

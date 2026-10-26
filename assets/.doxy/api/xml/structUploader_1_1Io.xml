@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structUploader_1_1Io" kind="struct" language="C++" prot="public">
+    <compoundname>Uploader::Io</compoundname>
+    <includes refid="Uploader_8h" local="no">Uploader.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structUploader_1_1Io_1a2a804a1345eee285cdb4343df4adb215" prot="public" static="no" mutable="no">
+        <type>void(*</type>
+        <definition>void(* Uploader::Io::send) (uint8_t type, uint8_t seq, const uint8_t *payload, uint16_t len)</definition>
+        <argsstring>)(uint8_t type, uint8_t seq, const uint8_t *payload, uint16_t len)</argsstring>
+        <name>send</name>
+        <qualifiedname>Uploader::Io::send</qualifiedname>
+        <briefdescription>
+<para>a frame to the client </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.h" line="23" column="5" bodyfile="Firmware/Libraries/SimGateway/Uploader.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structUploader_1_1Io_1ad05ea32b3fd6879ae227c38d3a434a4b" prot="public" static="no" mutable="no">
+        <type>void(*</type>
+        <definition>void(* Uploader::Io::ack) (uint8_t type, uint8_t seq)</definition>
+        <argsstring>)(uint8_t type, uint8_t seq)</argsstring>
+        <name>ack</name>
+        <qualifiedname>Uploader::Io::ack</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.h" line="24" column="5" bodyfile="Firmware/Libraries/SimGateway/Uploader.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structUploader_1_1Io_1aad9df349c2223812a5b69b025df59373" prot="public" static="no" mutable="no">
+        <type>void(*</type>
+        <definition>void(* Uploader::Io::nack) (uint8_t type, uint8_t seq, uint8_t reason, uint8_t detail)</definition>
+        <argsstring>)(uint8_t type, uint8_t seq, uint8_t reason, uint8_t detail)</argsstring>
+        <name>nack</name>
+        <qualifiedname>Uploader::Io::nack</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.h" line="25" column="5" bodyfile="Firmware/Libraries/SimGateway/Uploader.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structUploader_1_1Io_1a85397e982b031f9e3025fb9463783e25" prot="public" static="no" mutable="no">
+        <type>void(*</type>
+        <definition>void(* Uploader::Io::writeUart) (const uint8_t *p, uint16_t n)</definition>
+        <argsstring>)(const uint8_t *p, uint16_t n)</argsstring>
+        <name>writeUart</name>
+        <qualifiedname>Uploader::Io::writeUart</qualifiedname>
+        <briefdescription>
+<para>bytes to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.h" line="26" column="5" bodyfile="Firmware/Libraries/SimGateway/Uploader.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>How the uploader reaches the client and <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Firmware/Libraries/SimGateway/Uploader.h" line="22" column="1" bodyfile="Firmware/Libraries/SimGateway/Uploader.h" bodystart="22" bodyend="27"/>
+    <listofallmembers>
+      <member refid="structUploader_1_1Io_1ad05ea32b3fd6879ae227c38d3a434a4b" prot="public" virt="non-virtual"><scope>Uploader::Io</scope><name>ack</name></member>
+      <member refid="structUploader_1_1Io_1aad9df349c2223812a5b69b025df59373" prot="public" virt="non-virtual"><scope>Uploader::Io</scope><name>nack</name></member>
+      <member refid="structUploader_1_1Io_1a2a804a1345eee285cdb4343df4adb215" prot="public" virt="non-virtual"><scope>Uploader::Io</scope><name>send</name></member>
+      <member refid="structUploader_1_1Io_1a85397e982b031f9e3025fb9463783e25" prot="public" virt="non-virtual"><scope>Uploader::Io</scope><name>writeUart</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
