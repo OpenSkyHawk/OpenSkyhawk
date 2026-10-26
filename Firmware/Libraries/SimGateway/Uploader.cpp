@@ -340,7 +340,8 @@ void onUartByte(uint8_t c, uint32_t now) {
     if (_sn < 5u + _sf[3]) return;
     _sn = 0;
     uint8_t sum = 0;
-    for (uint8_t i = 1; i < 4u + _sf[3]; i++) sum += _sf[i];
+    const uint8_t last = (uint8_t)(4 + _sf[3]);   // header + data: at most 12
+    for (uint8_t i = 1; i < last; i++) sum += _sf[i];
     if (sum == _sf[4 + _sf[3]]) onBootReply((uint16_t)(_sf[1] | (_sf[2] << 8)), _sf + 4, _sf[3], now);
 }
 

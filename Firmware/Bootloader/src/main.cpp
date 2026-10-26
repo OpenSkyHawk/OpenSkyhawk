@@ -232,7 +232,8 @@ void uart_poll() {
         if (g_un < 5u + g_uf[3]) continue;
         g_un = 0;
         uint8_t sum = 0;
-        for (uint8_t i = 1; i < 4u + g_uf[3]; i++) sum += g_uf[i];
+        const uint8_t last = uint8_t(4 + g_uf[3]);   // header + data: at most 12
+        for (uint8_t i = 1; i < last; i++) sum += g_uf[i];
         if (sum != g_uf[4 + g_uf[3]] || (g_uf[1] | (g_uf[2] << 8)) != g_cmd_id) continue;
         RxFrame& f = g_ring[g_head];
         f.n = g_uf[3];

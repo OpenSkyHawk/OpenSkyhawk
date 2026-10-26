@@ -268,7 +268,7 @@ replaced only over ST-Link — so every later feature lives in the app or the Ga
   so the same source always builds the same bytes — a newer compiler can move the size by ±100 B.
   Changing any of them is a bootloader change.
 - **Budget: 4 KB, never more.** Real footprints at the freeze (vectors, code, `.data` copy, info block):
-  `bootloader` 3,684 B (412 free), `bridge` 3,656 B (440 free). The release workflow's summary reports
+  `bootloader` 3,684 B (412 free), `bridge` 3,668 B (428 free). The release workflow's summary reports
   both; code that grows into the info block fails the link.
 - **A bootloader change** (bug fix only) ships in the release where it changed (`bootloader/` in the
   zip, and every `-full.hex`); `manifest.json` names the release that holds the current one.
