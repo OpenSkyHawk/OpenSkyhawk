@@ -190,9 +190,10 @@ burst. So the bridge syncs **one node at a time**:
   that doesn't answer (older firmware, or busy), and moves to the next. A node's answer takes tens
   of ms (its EVT burst on the bus, then the bridge forwarding each to the host at 250 kbaud), so a
   30-node cockpit syncs in ~1–2 s; 4.5 s if none answered.
-- The bridge's RX ring is 64 frames (`CAN_RX_RING_SIZE`, nodes keep 8) and `rxDropCount()` counts
-  overflow. On the bench (3 nodes, 10 bridge restarts) sequential sync drops nothing even with the
-  old 8-frame ring; the 64 is margin for larger cockpits.
+- The bridge's RX ring is 128 frames (`CAN_RX_RING_SIZE`, nodes keep 8; ~2 KB of RAM) and
+  `rxDropCount()` counts overflow. Sequential sync alone drops nothing on the bench, even with the old
+  8-frame ring; the 128 is for the bridge's own stalls under load — at 63 nodes the 5 s roster reply
+  holds its loop ~130 ms while ~440 frames/s keep arriving (heartbeats, health, ~500 inputs/s).
 
 Each PanelGroup node that receives a `SYNC_REQ` for it re-polls every registered input object and
 sends a CAN EVT with its current value. PanelBridge routes each EVT normally.

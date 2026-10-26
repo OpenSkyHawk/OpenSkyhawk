@@ -35,7 +35,7 @@ static constexpr uint8_t TX_RING_SIZE    = 16;
 // The bridge hears every node, so it gets the deep ring; a node hears only the bridge (#387).
 // Override with -DCAN_RX_RING_SIZE=N (2-255).
 #ifndef CAN_RX_RING_SIZE
-#define CAN_RX_RING_SIZE ((NODE_ID) == GATEWAY_NODE_ID ? 64 : 8)
+#define CAN_RX_RING_SIZE ((NODE_ID) == GATEWAY_NODE_ID ? 128 : 8)
 #endif
 static constexpr uint8_t RX_RING_SIZE    = CAN_RX_RING_SIZE;
 static constexpr uint8_t MAX_FILTER_IDS  = 16;
