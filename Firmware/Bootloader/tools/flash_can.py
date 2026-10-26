@@ -169,7 +169,7 @@ def main():
             img = pathlib.Path(a.image).read_bytes()
             flash(bus, img, a.node if a.node is not None else identity(img)[2], a.stop_after, a.no_go, a.delay_ms)
     except KeyboardInterrupt:
-        pass
+        pass  # Ctrl-C is how --listen (or a stuck wait) ends — close the bus quietly, no traceback
     finally:
         bus.close()
 
