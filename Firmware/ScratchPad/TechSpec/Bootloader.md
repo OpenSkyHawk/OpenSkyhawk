@@ -50,8 +50,11 @@ Production projects reach it through `Firmware/shared/`: `stm32.ini` sets the ap
 
 ## Implementation Notes
 
-- **Size:** 3,716 B after #366 (incl. the 16-byte info block; 3,560 B after #365, 3,428 B after #364,
-  2,876 B after #363). RAM ~640 B — the 48-frame RX ring is 432 of it.
+- **Size — the real footprint:** ~3,984 B after #366 (~3,828 after #365, ~3,696 after #364, ~3,144
+  after #363), of 4,096. PlatformIO's "Flash used" leaves out the 268-byte `.isr_vector`, so it reads
+  268 B low (3,716 for #366) — don't trust it here. Code ends at `0x08000F8C`; the info block at
+  `0x08000FF0` is the hard guard (the link fails on overlap). #367 trims the startup to recover room
+  before the freeze. RAM ~640 B — the 48-frame RX ring is 432 of it.
 - **Streaming (#366):** `poll_can()` moves frames from the 3-deep CAN FIFO into the ring — called from
   the main loop, between every halfword `flash_write()` programs, and while `can_send()` waits for a free
   transmit mailbox (any of the three; TXFP keeps request order). That last one matters: replies on

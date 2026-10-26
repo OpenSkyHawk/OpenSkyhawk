@@ -684,7 +684,7 @@ release's `-full.hex`). Protocol and boot flow: `12-bootloader.md`.
   the Arduino model, not an option.
 - *Our own, not Katapult.* Katapult (#361 spike) checks only the first word of the app, writes the vector
   table first (a half-written image passes), has no timeout, uses CAN IDs that collide with
-  `HB_n` / `HEALTH_n` / `TELEM_n`, and is GPLv3 with a make/Kconfig build. Ours is ~2.9 KB bare-metal
+  `HB_n` / `HEALTH_n` / `TELEM_n`, and is GPLv3 with a make/Kconfig build. Ours is ~3.1 KB bare-metal
   CMSIS, in PlatformIO, on the IDs #295 reserved.
 - *4 KB, not less.* The F103 write-protects in 4 KB blocks and #364 protects the bootloader; a smaller
   bootloader would leave the rest of its block unusable anyway.
