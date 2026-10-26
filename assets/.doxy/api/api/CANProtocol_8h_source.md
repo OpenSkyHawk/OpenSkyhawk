@@ -79,6 +79,8 @@ static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010;
 static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  
 static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  
 
+static constexpr uint8_t SYNC_REQ_LEN_TARGETED = 1;
+
 // ── CAN ID functions (per-node IDs computed from NODE_ID) ─────────────────────
 
 constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
@@ -188,6 +190,10 @@ namespace CANProtocol {
     void sendReady();
 
     uint32_t txDropCount();
+
+    uint32_t rxDropCount();
+
+    void sendSyncReq(uint8_t nodeId);
 
     // ── Node status service (every node) ──────────────────────────────────────
 

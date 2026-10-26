@@ -70,9 +70,11 @@
 |  void | [**onStatusChange**](#function-onstatuschange) ([**CanStatusCallback**](CANProtocol_8h.md#typedef-canstatuscallback) cb) <br>_Register a CAN bus status change callback._  |
 |  void | [**onSyncReq**](#function-onsyncreq) ([**CanSyncReqCallback**](CANProtocol_8h.md#typedef-cansyncreqcallback) cb) <br>_Register a SYNC\_REQ handler._  |
 |  uint8\_t | [**rec**](#function-rec) () <br>_Return the CAN Receive Error Counter (0-255) from ESR._  |
+|  uint32\_t | [**rxDropCount**](#function-rxdropcount) () <br>_Return the cumulative RX drop count since startup (#387): frames lost because the software RX ring was full when they arrived. Should stay 0; nonzero means loop() falls behind the bus._  |
 |  void | [**send**](#function-send) (uint32\_t canId, const uint8\_t \* data, uint8\_t len) <br>_Send a CAN frame._  |
 |  void | [**sendBatched**](#function-sendbatched) (uint32\_t canId, const ControlPacket & pkt) <br>_Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch._  |
 |  void | [**sendReady**](#function-sendready) () <br>_Send this node's boot READY\_n (_ `canIdReady(NODE_ID)` _) carrying_[_**makeReadyPayload()**_](namespaceCANProtocol.md#function-makereadypayload) _._ |
+|  void | [**sendSyncReq**](#function-sendsyncreq) (uint8\_t nodeId) <br>_Ask one node to re-send its state: SYNC\_REQ naming_ `nodeId` _(#387)._[_**PanelBridge**_](namespacePanelBridge.md) _only._ |
 |  void | [**serviceNodeStatus**](#function-servicenodestatus) ([**NodeKind**](NodeStatus_8h.md#enum-nodekind) kind, uint16\_t rxCount=0) <br>_Run the node-generic status duties. Call once per loop(), after_ [_**drain()**_](namespaceCANProtocol.md#function-drain) _._ |
 |  void | [**start**](#function-start) () <br>_Start the CAN peripheral and apply registered filters._  |
 |  void | [**startLoopback**](#function-startloopback) () <br>_Start in silent loopback mode — for bench testing only._  |
@@ -467,7 +469,7 @@ void CANProtocol::onSyncReq (
 
 
 
-Fired by [**drain()**](namespaceCANProtocol.md#function-drain) when SYNC\_REQ (0x012) is received. [**PanelGroup**](namespacePanelGroup.md) registers this to trigger a re-poll of all registered input objects.
+Fired by [**drain()**](namespaceCANProtocol.md#function-drain) when a SYNC\_REQ (0x012) for this node arrives — one naming its NODE\_ID, or an untargeted one. [**PanelGroup**](namespacePanelGroup.md) registers this to re-send all its inputs. Once the node's transmit queue has emptied afterwards, [**drain()**](namespaceCANProtocol.md#function-drain) sends a READY flagged ReadyFlag::RESYNC: the end of the node's answer, which the bridge waits for before syncing the next node (#383, #387).
 
 
 
@@ -491,6 +493,20 @@ Fired by [**drain()**](namespaceCANProtocol.md#function-drain) when SYNC\_REQ (0
 _Return the CAN Receive Error Counter (0-255) from ESR._ 
 ```C++
 uint8_t CANProtocol::rec () 
+```
+
+
+
+
+<hr>
+
+
+
+### function rxDropCount 
+
+_Return the cumulative RX drop count since startup (#387): frames lost because the software RX ring was full when they arrived. Should stay 0; nonzero means loop() falls behind the bus._ 
+```C++
+uint32_t CANProtocol::rxDropCount () 
 ```
 
 
@@ -578,7 +594,34 @@ void CANProtocol::sendReady ()
 
 
 
-Call once at the end of the node's setup(), after its boot EVT burst. [**PanelBridge**](namespacePanelBridge.md) marks the node alive, caches its version and broadcasts SYNC\_REQ. Bounded retry like every other special frame (02-can-protocol.md). From then on [**drain()**](namespaceCANProtocol.md#function-drain) answers every SYNC\_REQ with a READY flagged ReadyFlag::RESYNC (#383) — nothing for the caller to do. 
+Call once at the end of the node's setup(), after its boot EVT burst. [**PanelBridge**](namespacePanelBridge.md) marks the node alive, caches its version and queues the node for a sync. Bounded retry like every other special frame (02-can-protocol.md). From then on [**drain()**](namespaceCANProtocol.md#function-drain) ends every answer to a SYNC\_REQ with a READY flagged ReadyFlag::RESYNC (#383, #387) — nothing for the caller to do. 
+
+
+        
+
+<hr>
+
+
+
+### function sendSyncReq 
+
+_Ask one node to re-send its state: SYNC\_REQ naming_ `nodeId` _(#387)._[_**PanelBridge**_](namespacePanelBridge.md) _only._
+```C++
+void CANProtocol::sendSyncReq (
+    uint8_t nodeId
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `nodeId` 1-63. 
+
+
 
 
         

@@ -59,7 +59,7 @@
 |  constexpr uint32\_t | [**HEALTH\_PERIOD\_MS**](#variable-health_period_ms)   = `1000`<br> |
 |  constexpr uint8\_t | [**MAX\_FILTER\_IDS**](#variable-max_filter_ids)   = `16`<br> |
 |  constexpr uint8\_t | [**MAX\_TX\_ATTEMPTS**](#variable-max_tx_attempts)   = `3`<br> |
-|  constexpr uint8\_t | [**RX\_RING\_SIZE**](#variable-rx_ring_size)   = `8`<br> |
+|  constexpr uint8\_t | [**RX\_RING\_SIZE**](#variable-rx_ring_size)   = `((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 128 : 8)`<br> |
 |  constexpr uint8\_t | [**TX\_RING\_SIZE**](#variable-tx_ring_size)   = `16`<br> |
 |  [**BatchState**](structBatchState.md) | [**\_batches**](#variable-_batches)  <br> |
 |  bool | [**\_dupSeen**](#variable-_dupseen)   = `false`<br> |
@@ -78,7 +78,10 @@
 |  bool | [**\_overheat**](#variable-_overheat)   = `false`<br> |
 |  uint8\_t | [**\_ownHbLoopPending**](#variable-_ownhblooppending)   = `0`<br> |
 |  bool | [**\_readySent**](#variable-_readysent)   = `false`<br> |
+|  bool | [**\_resyncPending**](#variable-_resyncpending)   = `false`<br> |
+|  uint32\_t | [**\_resyncSinceMs**](#variable-_resyncsincems)   = `0`<br> |
 |  [**CanRxCallback**](CANProtocol_8h.md#typedef-canrxcallback) | [**\_rxCb**](#variable-_rxcb)   = `nullptr`<br> |
+|  uint32\_t | [**\_rxDrops**](#variable-_rxdrops)   = `0`<br> |
 |  volatile uint8\_t | [**\_rxHead**](#variable-_rxhead)   = `0`<br> |
 |  [**RxQueueEntry**](structRxQueueEntry.md) | [**\_rxRing**](#variable-_rxring)  <br> |
 |  volatile uint8\_t | [**\_rxTail**](#variable-_rxtail)   = `0`<br> |
@@ -151,6 +154,11 @@
 
 
 
+## Macros
+
+| Type | Name |
+| ---: | :--- |
+| define  | [**CAN\_RX\_RING\_SIZE**](CANProtocol_8cpp.md#define-can_rx_ring_size)  `((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 128 : 8)`<br> |
 
 ## Public Static Attributes Documentation
 
@@ -456,10 +464,49 @@ bool _readySent;
 
 
 
+### variable \_resyncPending 
+
+```C++
+bool _resyncPending;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_resyncSinceMs 
+
+```C++
+uint32_t _resyncSinceMs;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable \_rxCb 
 
 ```C++
 CanRxCallback _rxCb;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_rxDrops 
+
+```C++
+uint32_t _rxDrops;
 ```
 
 
@@ -777,6 +824,22 @@ static void _startInternal (
 
 ```C++
 static void _updateStatus () 
+```
+
+
+
+
+<hr>
+## Macro Definition Documentation
+
+
+
+
+
+### define CAN\_RX\_RING\_SIZE 
+
+```C++
+#define CAN_RX_RING_SIZE `((NODE_ID) == GATEWAY_NODE_ID ? 128 : 8)`
 ```
 
 

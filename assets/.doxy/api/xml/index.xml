@@ -794,6 +794,8 @@
     <member refid="namespaceCANProtocol_1a216b9779a18f0f2808ccef2076977c95" kind="function"><name>makeReadyPayload</name></member>
     <member refid="namespaceCANProtocol_1ac41d6775e2db496cfce11e517b5a37c5" kind="function"><name>sendReady</name></member>
     <member refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kind="function"><name>txDropCount</name></member>
+    <member refid="namespaceCANProtocol_1a246478d9d0640c78fd32fc11b59f8f33" kind="function"><name>rxDropCount</name></member>
+    <member refid="namespaceCANProtocol_1a83faf446fc4ba406cefe3a22361d8664" kind="function"><name>sendSyncReq</name></member>
     <member refid="namespaceCANProtocol_1a598c3f06d60603c4ed497b1133655e49" kind="function"><name>lastNodeHealth</name></member>
     <member refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kind="function"><name>serviceNodeStatus</name></member>
   </compound>
@@ -2081,6 +2083,7 @@
     <member refid="BootProtocol_8h_1a6568eb06825dc3e1be7c56c86452935b" kind="define"><name>BOOT_RSP_MSG_NAME</name></member>
   </compound>
   <compound refid="CANProtocol_8cpp" kind="file"><name>CANProtocol.cpp</name>
+    <member refid="CANProtocol_8cpp_1a73ba2bfef6f2b54ec4a0c43935cab8af" kind="define"><name>CAN_RX_RING_SIZE</name></member>
     <member refid="CANProtocol_8cpp_1ab8c2b1490b083600ae5be831959f2b46" kind="variable"><name>TX_RING_SIZE</name></member>
     <member refid="CANProtocol_8cpp_1a6ed548630a5d43db6305235cce94116a" kind="variable"><name>RX_RING_SIZE</name></member>
     <member refid="CANProtocol_8cpp_1afe36626a88c1e9b2220f955e2396eaf0" kind="variable"><name>MAX_FILTER_IDS</name></member>
@@ -2095,6 +2098,9 @@
     <member refid="CANProtocol_8cpp_1a5b2a3b8032d639af719c01040846a52c" kind="variable"><name>_statusCb</name></member>
     <member refid="CANProtocol_8cpp_1a9687dabc39156fd4bf066fcf14ede868" kind="variable"><name>_syncReqCb</name></member>
     <member refid="CANProtocol_8cpp_1a20f6a2f2cafd97cf8d263b57eb41dab0" kind="variable"><name>_readySent</name></member>
+    <member refid="CANProtocol_8cpp_1adf4f9953a89cda860f3b35fbdb60d89a" kind="variable"><name>_resyncPending</name></member>
+    <member refid="CANProtocol_8cpp_1a5647d59fbe0eb1738fc35c53b886d4d8" kind="variable"><name>_resyncSinceMs</name></member>
+    <member refid="CANProtocol_8cpp_1a5aec1af63a4b742769ca539d1df32e13" kind="variable"><name>_rxDrops</name></member>
     <member refid="CANProtocol_8cpp_1a2794f36e9a2373b34e11d2b380ea327e" kind="variable"><name>_rxCb</name></member>
     <member refid="CANProtocol_8cpp_1a138fc366b9b00851dbd34f2ef9495e60" kind="variable"><name>_status</name></member>
     <member refid="CANProtocol_8cpp_1ae18bc05d725d5b3c6ecfbdb005c6797e" kind="variable"><name>_txDrops</name></member>
@@ -2143,6 +2149,7 @@
     <member refid="CANProtocol_8h_1ad4fcfdb1de4fe026f80deb985b61d91a" kind="variable"><name>CAN_ID_CTRL_BCAST</name></member>
     <member refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" kind="variable"><name>CAN_ID_TEST_SEQ</name></member>
     <member refid="CANProtocol_8h_1ad1f85ba093dec9722550d305be836227" kind="variable"><name>CAN_ID_SYNC_REQ</name></member>
+    <member refid="CANProtocol_8h_1ac562222d4c599fdbf6578f6e7be96ad6" kind="variable"><name>SYNC_REQ_LEN_TARGETED</name></member>
     <member refid="CANProtocol_8h_1a05ae1732f5ce786b88fff167c94adba2" kind="variable"><name>CTRL_ID_DCS_MIN</name></member>
     <member refid="CANProtocol_8h_1a641852573b3979285d256589876be93b" kind="variable"><name>CTRL_ID_DCS_MAX</name></member>
     <member refid="CANProtocol_8h_1af903c55bd4ae0b54a10b3c8e5311760e" kind="variable"><name>DIAG_MAGIC</name></member>

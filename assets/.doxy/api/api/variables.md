@@ -92,6 +92,7 @@
 
 ## s
 
+* **SYNC\_REQ\_LEN\_TARGETED** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **ShiftBus1** ([**ShiftBus.cpp**](ShiftBus_8cpp.md), [**ShiftBus.h**](ShiftBus_8h.md))
 
 
@@ -120,7 +121,10 @@
 * **\_overheat** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_ownHbLoopPending** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_readySent** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_resyncPending** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_resyncSinceMs** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxCb** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_rxDrops** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxHead** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxRing** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxTail** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))

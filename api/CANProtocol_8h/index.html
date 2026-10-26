@@ -4950,6 +4950,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#variable-sync_req_len_targeted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable SYNC_REQ_LEN_TARGETED
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5172,7 +5183,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_sync_req"><strong>CAN_ID_SYNC_REQ</strong></a>   = <code>0x012</code><br><em>Request all nodes to re-poll inputs.</em></td>
+<td style="text-align: left;"><a href="#variable-can_id_sync_req"><strong>CAN_ID_SYNC_REQ</strong></a>   = <code>0x012</code><br><em>Request nodes to re-send their state (see below)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
@@ -5205,6 +5216,10 @@
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
 <td style="text-align: left;"><a href="#variable-diag_rtt"><strong>DIAG_RTT</strong></a>   = <code>0x01</code><br><em>Round-trip time measurement frame.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-sync_req_len_targeted"><strong>SYNC_REQ_LEN_TARGETED</strong></a>   = <code>1</code><br></td>
 </tr>
 </tbody>
 </table>
@@ -5309,7 +5324,7 @@
 <hr>
 
 <h3 id="variable-can_id_sync_req">variable CAN_ID_SYNC_REQ</h3>
-<p><em>Request all nodes to re-poll inputs.</em> 
+<p><em>Request nodes to re-send their state (see below)</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CAN_ID_SYNC_REQ</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
@@ -5360,6 +5375,12 @@
 <p><em>Round-trip time measurement frame.</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DIAG_RTT</span><span class="p">;</span>
 </code></pre></div></p>
+<hr>
+
+<h3 id="variable-sync_req_len_targeted">variable SYNC_REQ_LEN_TARGETED</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">SYNC_REQ_LEN_TARGETED</span><span class="p">;</span>
+</code></pre></div>
+<p>SYNC_REQ payload (#387): byte 0 = the NODE_ID it is for — only that node answers. An empty SYNC_REQ (DLC 0) is for every node; <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> no longer sends one (it syncs one node at a time), but nodes still honour it. </p>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-__attribute__">function __attribute__</h3>

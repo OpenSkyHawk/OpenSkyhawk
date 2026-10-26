@@ -181,10 +181,28 @@ static int32_t _lastModelTimeSec = -1;  // -1 = unseeded
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-static void broadcastSyncReq() {
-    static const uint8_t empty[1] = {};
-    CANProtocol::send(CAN_ID_SYNC_REQ, empty, 0);
-    STM32Board::log("[BRIDGE] SYNC_REQ broadcast");
+// ── Sequential sync (#387) ─────────────────────────────────────────────────────
+// A node answers SYNC_REQ with every input as EVT frames, then READY(RESYNC). All nodes at once
+// overflowed the RX ring (and scales with the cockpit), so nodes are synced one at a time: ask
+// node n, move on when its READY(RESYNC) arrives — the end of its answer — or after
+// SYNC_TIMEOUT_MS for a node that doesn't answer (older firmware, or busy).
+static constexpr uint32_t SYNC_TIMEOUT_MS = 150;
+static uint64_t _syncQueue  = 0;   // bit n-1: node n waits for a sync
+static uint8_t  _syncing    = 0;   // the node asked last, 0 = none
+static uint32_t _syncSentMs = 0;
+
+static void queueSync(uint8_t nodeId) { _syncQueue |= 1ull << (nodeId - 1); }
+
+static void serviceSync(uint32_t now) {
+    if (_syncing && (int32_t)(now - _syncSentMs) < (int32_t)SYNC_TIMEOUT_MS) return;
+    _syncing = 0;
+    if (!_syncQueue) return;
+    uint8_t i = 0;
+    while (!(_syncQueue & (1ull << i))) i++;
+    _syncQueue &= ~(1ull << i);
+    _syncing    = (uint8_t)(i + 1);
+    _syncSentMs = now;
+    CANProtocol::sendSyncReq(_syncing);
 }
 
 static void sendHidFrame(uint16_t controlId, uint16_t value) {
@@ -380,6 +398,7 @@ static void forgetNode(uint8_t nodeId) {
     NodeState& ns = _nodes[nodeId - 1];
     const bool wasDead = ns.everSeen && !ns.alive;
     ns = NodeState{};
+    _syncQueue &= ~(1ull << (nodeId - 1));
     if (wasDead && _deadCount > 0 && --_deadCount == 0) STM32Board::setWarning(false);
     if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
@@ -468,10 +487,10 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         const bool leftBoot = ns.bootState != NODE_BOOT_STATE_APP || ns.updating;
         ns.bootState = NODE_BOOT_STATE_APP;
         ns.updating  = false;
-        if (markNodeAlive(nodeId, now)) broadcastSyncReq();
+        if (markNodeAlive(nodeId, now)) queueSync(nodeId);
         else if (leftBoot) emitNode(nodeId, true);
 #else
-        if (markNodeAlive(nodeId, now)) broadcastSyncReq();
+        if (markNodeAlive(nodeId, now)) queueSync(nodeId);
 #endif
         return;
     }
@@ -567,10 +586,10 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         return;
     }
 
-    // READY_1 – READY_63: node boot-complete — mark alive, always broadcast SYNC_REQ.
-    // SYNC_REQ is unconditional: READY signals a fresh boot regardless of prior state.
-    // A READY flagged RESYNC is a node answering our SYNC_REQ (#383): cache its version, but no
-    // SYNC_REQ back — the node already has it, and answering would loop.
+    // READY_1 – READY_63: node boot-complete — mark alive and queue it for a sync (#387), whatever
+    // its prior state: READY signals a fresh boot. A READY flagged RESYNC is a node finishing its
+    // answer to our SYNC_REQ (#383, #387): cache its version and move on to the next node — never
+    // queue it again, or the two would answer each other forever.
     if (canId >= canIdReady(1) && canId <= canIdReady(MAX_NODE_ID)) {
         uint8_t nodeId = (uint8_t)(canId - canIdReady(0));
         const bool resync = len > 4 && (data[4] & static_cast<uint8_t>(ReadyFlag::RESYNC));
@@ -599,7 +618,8 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
 #else
         markNodeAlive(nodeId, now);
 #endif
-        if (!resync) broadcastSyncReq();
+        if (!resync) queueSync(nodeId);                  // a fresh boot: sync it (#387)
+        else if (nodeId == _syncing) _syncing = 0;       // its answer is complete: next node
         return;
     }
     // All other IDs discarded silently
@@ -649,8 +669,9 @@ static void onModelTimeChange(char* value) {
         return;
     }
     if (sec < _lastModelTimeSec) {
-        STM32Board::log("[BRIDGE] DCS session change — SYNC_REQ");
-        broadcastSyncReq();
+        STM32Board::log("[BRIDGE] DCS session change — sync every node");
+        for (uint8_t i = 0; i < MAX_NODE_ID; i++)
+            if (_nodes[i].alive) queueSync(i + 1);
     }
     _lastModelTimeSec = sec;
 }
@@ -785,7 +806,7 @@ void setup() {
     CANProtocol::filterAcceptAll();
     CANProtocol::onReceive(onCanRx);
     CANProtocol::start();
-    broadcastSyncReq();
+    // No SYNC_REQ here (#387): each node is queued for a sync as its first heartbeat arrives.
 #if PANELBRIDGE_NODE_STATUS
     emitAllNodes();   // seed the host with the current roster (node-0 row only at cold boot) (#86)
     // Let it finish going out: the sketch calls DcsBios::setup() next, whose Serial.begin() restarts
@@ -806,6 +827,7 @@ void loop() {
     // node that is transmitting normally (#225).
     uint32_t now = millis();
     checkNodeTimeouts(now);
+    serviceSync(now);
 
     // Node status (#340): HB_0 every 500 ms and HEALTH_0 every 1 s. HB_0 is an unconditional
     // liveness beacon — unlike CTRL_BCAST, which only moves when a DCS export changes — so nodes

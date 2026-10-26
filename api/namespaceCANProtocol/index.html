@@ -4918,6 +4918,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-rxdropcount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function rxDropCount
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-send" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4944,6 +4955,17 @@
     <span class="md-ellipsis">
       
         function sendReady
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-sendsyncreq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function sendSyncReq
       
     </span>
   </a>
@@ -5113,6 +5135,10 @@
 <td style="text-align: left;"><a href="#function-rec"><strong>rec</strong></a> () <br><em>Return the CAN Receive Error Counter (0-255) from ESR.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#function-rxdropcount"><strong>rxDropCount</strong></a> () <br><em>Return the cumulative RX drop count since startup (#387): frames lost because the software RX ring was full when they arrived. Should stay 0; nonzero means loop() falls behind the bus.</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-send"><strong>send</strong></a> (uint32_t canId, const uint8_t * data, uint8_t len) <br><em>Send a CAN frame.</em></td>
 </tr>
@@ -5123,6 +5149,10 @@
 <tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-sendready"><strong>sendReady</strong></a> () <br><em>Send this node's boot READY_n (</em> <code>canIdReady(NODE_ID)</code> <em>) carrying</em><a href="./#function-makereadypayload"><em><strong>makeReadyPayload()</strong></em></a> <em>.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-sendsyncreq"><strong>sendSyncReq</strong></a> (uint8_t nodeId) <br><em>Ask one node to re-send its state: SYNC_REQ naming</em> <code>nodeId</code> <em>(#387).</em><a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>only.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -5303,7 +5333,7 @@
 <span class="w">    </span><span class="n">CanSyncReqCallback</span><span class="w"> </span><span class="n">cb</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Fired by <a href="./#function-drain"><strong>drain()</strong></a> when SYNC_REQ (0x012) is received. <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> registers this to trigger a re-poll of all registered input objects.</p>
+<p>Fired by <a href="./#function-drain"><strong>drain()</strong></a> when a SYNC_REQ (0x012) for this node arrives — one naming its NODE_ID, or an untargeted one. <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> registers this to re-send all its inputs. Once the node's transmit queue has emptied afterwards, <a href="./#function-drain"><strong>drain()</strong></a> sends a READY flagged ReadyFlag::RESYNC: the end of the node's answer, which the bridge waits for before syncing the next node (#383, #387).</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>cb</code> Callback to invoke on SYNC_REQ receipt. </li>
@@ -5313,6 +5343,12 @@
 <h3 id="function-rec">function rec</h3>
 <p><em>Return the CAN Receive Error Counter (0-255) from ESR.</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">rec</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-rxdropcount">function rxDropCount</h3>
+<p><em>Return the cumulative RX drop count since startup (#387): frames lost because the software RX ring was full when they arrived. Should stay 0; nonzero means loop() falls behind the bus.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">rxDropCount</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
 <hr>
 
@@ -5353,7 +5389,19 @@
 <p><em>Send this node's boot READY_n (</em> <code>canIdReady(NODE_ID)</code> <em>) carrying</em><a href="./#function-makereadypayload"><em><strong>makeReadyPayload()</strong></em></a> <em>.</em>
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendReady</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Call once at the end of the node's setup(), after its boot EVT burst. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> marks the node alive, caches its version and broadcasts SYNC_REQ. Bounded retry like every other special frame (02-can-protocol.md). From then on <a href="./#function-drain"><strong>drain()</strong></a> answers every SYNC_REQ with a READY flagged ReadyFlag::RESYNC (#383) — nothing for the caller to do. </p>
+<p>Call once at the end of the node's setup(), after its boot EVT burst. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> marks the node alive, caches its version and queues the node for a sync. Bounded retry like every other special frame (02-can-protocol.md). From then on <a href="./#function-drain"><strong>drain()</strong></a> ends every answer to a SYNC_REQ with a READY flagged ReadyFlag::RESYNC (#383, #387) — nothing for the caller to do. </p>
+<hr>
+
+<h3 id="function-sendsyncreq">function sendSyncReq</h3>
+<p><em>Ask one node to re-send its state: SYNC_REQ naming</em> <code>nodeId</code> <em>(#387).</em><a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>only.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendSyncReq</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>nodeId</code> 1-63. </li>
+</ul>
 <hr>
 
 <h3 id="function-servicenodestatus">function serviceNodeStatus</h3>

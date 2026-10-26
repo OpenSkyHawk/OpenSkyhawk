@@ -55,7 +55,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 | Type | Name |
 | ---: | :--- |
 |  constexpr uint32\_t | [**CAN\_ID\_CTRL\_BCAST**](#variable-can_id_ctrl_bcast)   = `0x010`<br>_Broadcast ControlPacketPair to all panels._  |
-|  constexpr uint32\_t | [**CAN\_ID\_SYNC\_REQ**](#variable-can_id_sync_req)   = `0x012`<br>_Request all nodes to re-poll inputs._  |
+|  constexpr uint32\_t | [**CAN\_ID\_SYNC\_REQ**](#variable-can_id_sync_req)   = `0x012`<br>_Request nodes to re-send their state (see below)_  |
 |  constexpr uint32\_t | [**CAN\_ID\_TEST\_SEQ**](#variable-can_id_test_seq)   = `0x011`<br>_RTT throughput test._  |
 |  constexpr uint16\_t | [**CTRL\_ID\_DCS\_MAX**](#variable-ctrl_id_dcs_max)   = `0x86FF`<br>_DCS-BIOS range end._  |
 |  constexpr uint16\_t | [**CTRL\_ID\_DCS\_MIN**](#variable-ctrl_id_dcs_min)   = `0x8000`<br>_DCS-BIOS range start._  |
@@ -64,6 +64,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 |  constexpr uint8\_t | [**DIAG\_HB**](#variable-diag_hb)   = `0x02`<br>_Sub-node heartbeat frame._  |
 |  constexpr uint8\_t | [**DIAG\_MAGIC**](#variable-diag_magic)   = `0xAA`<br>_Frame sync byte._  |
 |  constexpr uint8\_t | [**DIAG\_RTT**](#variable-diag_rtt)   = `0x01`<br>_Round-trip time measurement frame._  |
+|  constexpr uint8\_t | [**SYNC\_REQ\_LEN\_TARGETED**](#variable-sync_req_len_targeted)   = `1`<br> |
 
 
 
@@ -240,7 +241,7 @@ constexpr uint32_t CAN_ID_CTRL_BCAST;
 
 ### variable CAN\_ID\_SYNC\_REQ 
 
-_Request all nodes to re-poll inputs._ 
+_Request nodes to re-send their state (see below)_ 
 ```C++
 constexpr uint32_t CAN_ID_SYNC_REQ;
 ```
@@ -359,6 +360,23 @@ constexpr uint8_t DIAG_RTT;
 
 
 
+
+<hr>
+
+
+
+### variable SYNC\_REQ\_LEN\_TARGETED 
+
+```C++
+constexpr uint8_t SYNC_REQ_LEN_TARGETED;
+```
+
+
+
+SYNC\_REQ payload (#387): byte 0 = the NODE\_ID it is for — only that node answers. An empty SYNC\_REQ (DLC 0) is for every node; [**PanelBridge**](namespacePanelBridge.md) no longer sends one (it syncs one node at a time), but nodes still honour it. 
+
+
+        
 
 <hr>
 ## Public Functions Documentation

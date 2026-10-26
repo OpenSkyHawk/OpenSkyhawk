@@ -4757,6 +4757,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-static-attributes-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5022,10 +5033,43 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-_resyncpending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _resyncPending
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_resyncsincems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _resyncSinceMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-_rxcb" class="md-nav__link">
     <span class="md-ellipsis">
       
         variable _rxCb
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_rxdrops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _rxDrops
       
     </span>
   </a>
@@ -5324,6 +5368,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#macro-definition-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro Definition Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Macro Definition Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-can_rx_ring_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define CAN_RX_RING_SIZE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5420,7 +5492,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-rx_ring_size"><strong>RX_RING_SIZE</strong></a>   = <code>8</code><br></td>
+<td style="text-align: left;"><a href="#variable-rx_ring_size"><strong>RX_RING_SIZE</strong></a>   = <code>((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 128 : 8)</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
@@ -5495,8 +5567,20 @@
 <td style="text-align: left;"><a href="#variable-_readysent"><strong>_readySent</strong></a>   = <code>false</code><br></td>
 </tr>
 <tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_resyncpending"><strong>_resyncPending</strong></a>   = <code>false</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#variable-_resyncsincems"><strong>_resyncSinceMs</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
 <td style="text-align: right;"><a href="../CANProtocol_8h/#typedef-canrxcallback"><strong>CanRxCallback</strong></a></td>
 <td style="text-align: left;"><a href="#variable-_rxcb"><strong>_rxCb</strong></a>   = <code>nullptr</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#variable-_rxdrops"><strong>_rxDrops</strong></a>   = <code>0</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">volatile uint8_t</td>
@@ -5611,6 +5695,21 @@
 <tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-_updatestatus"><strong>_updateStatus</strong></a> () <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="macros">Macros</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-can_rx_ring_size"><strong>CAN_RX_RING_SIZE</strong></a>  <code>((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 128 : 8)</code><br></td>
 </tr>
 </tbody>
 </table>
@@ -5730,8 +5829,23 @@
 </code></pre></div>
 <hr>
 
+<h3 id="variable-_resyncpending">variable _resyncPending</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">_resyncPending</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-_resyncsincems">variable _resyncSinceMs</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_resyncSinceMs</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
 <h3 id="variable-_rxcb">variable _rxCb</h3>
 <div class="highlight"><pre><span></span><code><span class="n">CanRxCallback</span><span class="w"> </span><span class="n">_rxCb</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-_rxdrops">variable _rxDrops</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_rxDrops</span><span class="p">;</span>
 </code></pre></div>
 <hr>
 
@@ -5861,6 +5975,11 @@
 
 <h3 id="function-_updatestatus">function _updateStatus</h3>
 <div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">_updateStatus</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div>
+<hr>
+<h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
+<h3 id="define-can_rx_ring_size">define CAN_RX_RING_SIZE</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#define CAN_RX_RING_SIZE `((NODE_ID) == GATEWAY_NODE_ID ? 128 : 8)`</span>
 </code></pre></div>
 <hr>
 

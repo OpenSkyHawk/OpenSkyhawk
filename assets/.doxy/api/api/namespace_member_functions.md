@@ -125,6 +125,7 @@
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
+* **rxDropCount** ([**CANProtocol**](namespaceCANProtocol.md))
 * **rail12Mv** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **rail5Mv** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **railed** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
@@ -144,6 +145,7 @@
 * **send** ([**CANProtocol**](namespaceCANProtocol.md))
 * **sendBatched** ([**CANProtocol**](namespaceCANProtocol.md))
 * **sendReady** ([**CANProtocol**](namespaceCANProtocol.md))
+* **sendSyncReq** ([**CANProtocol**](namespaceCANProtocol.md))
 * **serviceNodeStatus** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
