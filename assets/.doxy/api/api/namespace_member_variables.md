@@ -20,6 +20,7 @@
 
 * **BLOCK\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **BOOTLOADER\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **BRIDGE\_ENTER\_EXPORT\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 
 
 ## c
@@ -149,8 +150,16 @@
 
 ## s
 
+* **SERIAL\_BAUD** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **SERIAL\_FRAME\_START** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **SNAP\_LANDING** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
+## t
+
+* **TRANSPORT\_CAN** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **TRANSPORT\_SERIAL** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 
 
 ## u

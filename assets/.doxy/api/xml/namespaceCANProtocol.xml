@@ -134,7 +134,7 @@
 </listitem><listitem><para>TEST_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.</para>
 </listitem><listitem><para>HB_0 on a non-bridge node: stamped for <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">serviceNodeStatus()</ref>&apos;s watchdog, then <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>.</para>
 </listitem><listitem><para>The node&apos;s own <computeroutput>HB_NODE_ID</computeroutput>: stamped for <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">serviceNodeStatus()</ref>&apos;s duplicate NODE_ID check (#344), then <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>.</para>
-</listitem><listitem><para>The node&apos;s own <computeroutput>BOOT_CMD_n</computeroutput> (not on the bridge): a CONNECT resets into the bootloader when one is installed (<ref refid="namespaceSTM32Board_1af27704e97e94cfb904779a7cf968bdbd" kindref="member">STM32Board::enterBootloader()</ref>, #365); never forwarded.</para>
+</listitem><listitem><para>The node&apos;s own <computeroutput>BOOT_CMD_n</computeroutput> (not on the bridge): a CONNECT resets into the bootloader when one is installed (<ref refid="namespaceSTM32Board_1a593f38c0e9fea1a50face7d548a9218b" kindref="member">STM32Board::enterBootloader()</ref>, #365); never forwarded.</para>
 </listitem><listitem><para>All other frames: fires <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>.</para>
 </listitem></itemizedlist>
 </para>

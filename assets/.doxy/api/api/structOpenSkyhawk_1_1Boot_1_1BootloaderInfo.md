@@ -39,6 +39,7 @@
 |  uint32\_t | [**magic**](#variable-magic)  <br>_INFO\_MAGIC._  |
 |  uint8\_t | [**protocolVersion**](#variable-protocolversion)  <br>_PROTOCOL\_VERSION of the bootloader that is installed._  |
 |  uint8\_t | [**reserved**](#variable-reserved)  <br>_0xFF_  |
+|  uint8\_t | [**transports**](#variable-transports)  <br>_TRANSPORT\_\* bits._  |
 
 
 
@@ -120,7 +121,21 @@ uint8_t OpenSkyhawk::Boot::BootloaderInfo::protocolVersion;
 
 _0xFF_ 
 ```C++
-uint8_t OpenSkyhawk::Boot::BootloaderInfo::reserved[11];
+uint8_t OpenSkyhawk::Boot::BootloaderInfo::reserved[10];
+```
+
+
+
+
+<hr>
+
+
+
+### variable transports 
+
+_TRANSPORT\_\* bits._ 
+```C++
+uint8_t OpenSkyhawk::Boot::BootloaderInfo::transports;
 ```
 
 

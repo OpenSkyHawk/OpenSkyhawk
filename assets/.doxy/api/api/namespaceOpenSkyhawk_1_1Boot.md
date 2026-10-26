@@ -56,6 +56,7 @@
 |  constexpr uint8\_t | [**ATTEMPT\_LIMIT**](#variable-attempt_limit)   = `3`<br> |
 |  constexpr uint16\_t | [**BLOCK\_SIZE**](#variable-block_size)   = `64`<br> |
 |  constexpr uint32\_t | [**BOOTLOADER\_SIZE**](#variable-bootloader_size)   = `0x1000`<br>_4 KB = one F103 write-protect block; apps start here_  |
+|  constexpr uint16\_t | [**BRIDGE\_ENTER\_EXPORT\_ADDRESS**](#variable-bridge_enter_export_address)   = `0xFF02`<br> |
 |  constexpr uint16\_t | [**CATCH\_WINDOW\_MS**](#variable-catch_window_ms)   = `200`<br>_after every reset, a CONNECT on BOOT\_CMD\_n keeps the board here (#364)_  |
 |  constexpr uint16\_t | [**CMD\_ID\_BASE**](#variable-cmd_id_base)   = `0x740`<br>_BOOT\_CMD\_n = 0x740 + n — host (bridge) → node n's bootloader._  |
 |  constexpr uint8\_t | [**DATA\_BYTES**](#variable-data_bytes)   = `7`<br>_payload bytes per DATA frame (byte 0 = Cmd::DATA\_k)_  |
@@ -73,6 +74,10 @@
 |  constexpr uint8\_t | [**RELAY\_EXPORT\_WORDS**](#variable-relay_export_words)   = `32`<br>_0xFF10-0xFF4F: 64 bytes per record_  |
 |  constexpr uint8\_t | [**RELAY\_FRAME\_MARK**](#variable-relay_frame_mark)   = `0xE0`<br>_\| len: a frame starts_  |
 |  constexpr uint16\_t | [**RSP\_ID\_BASE**](#variable-rsp_id_base)   = `0x780`<br>_BOOT\_RSP\_n = 0x780 + n — node n's bootloader → host._  |
+|  constexpr uint32\_t | [**SERIAL\_BAUD**](#variable-serial_baud)   = `250000`<br> |
+|  constexpr uint8\_t | [**SERIAL\_FRAME\_START**](#variable-serial_frame_start)   = `0xAA`<br> |
+|  constexpr uint8\_t | [**TRANSPORT\_CAN**](#variable-transport_can)   = `0x01`<br>_BOOT\_CMD\_n / BOOT\_RSP\_n — the node build._  |
+|  constexpr uint8\_t | [**TRANSPORT\_SERIAL**](#variable-transport_serial)   = `0x02`<br>_USART2 to the Gateway's RP2040 — the bridge build._  |
 |  constexpr uint32\_t | [**UID\_ADDRESS**](#variable-uid_address)   = `0x1FFFF7E8`<br>_the F103's 96-bit unique ID_  |
 |  constexpr uint16\_t | [**UNCONFIGURED\_CMD\_ID**](#variable-unconfigured_cmd_id)   = `0x7C0`<br> |
 |  constexpr uint16\_t | [**UNCONFIGURED\_RSP\_ID**](#variable-unconfigured_rsp_id)   = `0x7C1`<br>_A bootloader with no NODE\_ID yet (option byte Data0 = 0xFF, no valid app) announces here._  |
@@ -343,6 +348,23 @@ constexpr uint32_t OpenSkyhawk::Boot::BOOTLOADER_SIZE;
 
 
 
+### variable BRIDGE\_ENTER\_EXPORT\_ADDRESS 
+
+```C++
+constexpr uint16_t OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS;
+```
+
+
+
+A host writes this export address (any value) to ask the bridge's app to reset into its bootloader — the bridge's counterpart of a node's CONNECT on BOOT\_CMD\_n. Honoured only with a bootloader installed. 
+
+
+        
+
+<hr>
+
+
+
 ### variable CATCH\_WINDOW\_MS 
 
 _after every reset, a CONNECT on BOOT\_CMD\_n keeps the board here (#364)_ 
@@ -575,6 +597,68 @@ constexpr uint8_t OpenSkyhawk::Boot::RELAY_FRAME_MARK;
 _BOOT\_RSP\_n = 0x780 + n — node n's bootloader → host._ 
 ```C++
 constexpr uint16_t OpenSkyhawk::Boot::RSP_ID_BASE;
+```
+
+
+
+
+<hr>
+
+
+
+### variable SERIAL\_BAUD 
+
+```C++
+constexpr uint32_t OpenSkyhawk::Boot::SERIAL_BAUD;
+```
+
+
+
+the Gateway link's rate (FirmwarePlan/03) 
+
+
+        
+
+<hr>
+
+
+
+### variable SERIAL\_FRAME\_START 
+
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::SERIAL_FRAME_START;
+```
+
+
+
+
+<hr>
+
+
+
+### variable TRANSPORT\_CAN 
+
+_BOOT\_CMD\_n / BOOT\_RSP\_n — the node build._ 
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::TRANSPORT_CAN;
+```
+
+
+
+[**BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md) `transports` bits (#367): how the installed bootloader can be reached. An app only resets into it on a request that arrived the same way, so a board can't strand itself in a bootloader nothing can talk to. (0xFF from a #365 / #366 bootloader reads as both.) 
+
+
+        
+
+<hr>
+
+
+
+### variable TRANSPORT\_SERIAL 
+
+_USART2 to the Gateway's RP2040 — the bridge build._ 
+```C++
+constexpr uint8_t OpenSkyhawk::Boot::TRANSPORT_SERIAL;
 ```
 
 

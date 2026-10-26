@@ -4912,6 +4912,8 @@
 <span class="w">    </span><span class="c1">// never broadcast onto CAN.</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NODE_STATUS_REQ_ADDR</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
 <span class="cp">#endif</span>
+<span class="w">    </span><span class="c1">// Reserved: the host's "bridge, enter your bootloader" (#367) — handled by BridgeEnterListener.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">BRIDGE_ENTER_EXPORT_ADDRESS</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
 <span class="w">    </span><span class="c1">// Reserved: the bootloader relay window (#365, #366) — handled by BootRelayListener.</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_ADDRESS</span>
 <span class="w">        </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_ADDRESS</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_WORDS</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
@@ -5367,6 +5369,20 @@
 <span class="k">static</span><span class="w"> </span><span class="n">NodeStatusReqListener</span><span class="w"> </span><span class="n">_nodeStatusReqListener</span><span class="p">;</span>
 <span class="cp">#endif</span>
 
+<span class="c1">// The Gateway asks the bridge itself to update (#367): reset into the bootloader, which then talks to</span>
+<span class="c1">// the RP2040 over this same UART. Only with a bootloader that speaks serial installed — otherwise the</span>
+<span class="c1">// request is ignored (STM32Board::enterBootloader()).</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BridgeEnterListener</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">ExportStreamListener</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">BridgeEnterListener</span><span class="p">()</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">ExportStreamListener</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">BRIDGE_ENTER_EXPORT_ADDRESS</span><span class="p">,</span>
+<span class="w">                                        </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">BRIDGE_ENTER_EXPORT_ADDRESS</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onDcsBiosWrite</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">enterBootloader</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">TRANSPORT_SERIAL</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+<span class="k">static</span><span class="w"> </span><span class="n">BridgeEnterListener</span><span class="w"> </span><span class="n">_bridgeEnterListener</span><span class="p">;</span>
+
 <span class="c1">// Host → bootloader relay (#365, stream encoding #366): each export record in the reserved window is</span>
 <span class="c1">// a byte stream of whole CAN frames — mark|len, id lo, id hi, data, with 0x55 / 0x56 escaped</span>
 <span class="c1">// (BootProtocol.h says why). A record always starts on a frame boundary, so a lost record costs only</span>
@@ -5437,6 +5453,10 @@
 <span class="w">    </span><span class="n">broadcastSyncReq</span><span class="p">();</span>
 <span class="cp">#if PANELBRIDGE_NODE_STATUS</span>
 <span class="w">    </span><span class="n">emitAllNodes</span><span class="p">();</span><span class="w">   </span><span class="c1">// seed the host with the current roster (node-0 row only at cold boot) (#86)</span>
+<span class="w">    </span><span class="c1">// Let it finish going out: the sketch calls DcsBios::setup() next, whose Serial.begin() restarts</span>
+<span class="w">    </span><span class="c1">// the UART and stranded all but the first write in the TX buffer (#367 bench) — the host lost</span>
+<span class="w">    </span><span class="c1">// the boot row on every bridge reset.</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
 <span class="cp">#endif</span>
 <span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">markBootHealthy</span><span class="p">();</span><span class="w">   </span><span class="c1">// the bootloader's crash-loop counter back to 0 (#364)</span>
 <span class="p">}</span>

@@ -4802,10 +4802,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-onuartbyte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function onUartByte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-ownsuart" class="md-nav__link">
     <span class="md-ellipsis">
       
         function ownsUart
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-ownsuartrx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function ownsUartRx
       
     </span>
   </a>
@@ -4899,8 +4921,16 @@
 <td style="text-align: left;"><a href="#function-onframe"><strong>onFrame</strong></a> (uint8_t type, uint8_t seq, const uint8_t * p, uint16_t len, uint32_t now) <br><em>A verified client frame of one of those types.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-onuartbyte"><strong>onUartByte</strong></a> (uint8_t c, uint32_t now) <br></td>
+</tr>
+<tr>
 <td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#function-ownsuart"><strong>ownsUart</strong></a> () <br><em>A flash runs: the uploader writes the UART, so the client's export bytes must be dropped.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-ownsuartrx"><strong>ownsUartRx</strong></a> () <br></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -4962,10 +4992,24 @@
 </code></pre></div></p>
 <hr>
 
+<h3 id="function-onuartbyte">function onUartByte</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">Uploader</span><span class="o">::</span><span class="n">onUartByte</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">c</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+<hr>
+
 <h3 id="function-ownsuart">function ownsUart</h3>
 <p><em>A flash runs: the uploader writes the UART, so the client's export bytes must be dropped.</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">Uploader</span><span class="o">::</span><span class="n">ownsUart</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
+<hr>
+
+<h3 id="function-ownsuartrx">function ownsUartRx</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">Uploader</span><span class="o">::</span><span class="n">ownsUartRx</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div>
+<p>Flashing the bridge (#367): its bootloader answers on the UART in its own framing, so every byte <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> sends goes to <a href="./#function-onuartbyte"><strong>onUartByte()</strong></a> instead of the line / HID parser — until the bridge reboots. </p>
 <hr>
 
 <h3 id="function-tick">function tick</h3>

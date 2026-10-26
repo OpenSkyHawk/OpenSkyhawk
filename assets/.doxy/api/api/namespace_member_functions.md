@@ -111,7 +111,9 @@
 * **onBridgeLine** ([**Uploader**](namespaceUploader.md))
 * **onClientFrame** ([**Uploader**](namespaceUploader.md))
 * **onFrame** ([**Uploader**](namespaceUploader.md))
+* **onUartByte** ([**Uploader**](namespaceUploader.md))
 * **ownsUart** ([**Uploader**](namespaceUploader.md))
+* **ownsUartRx** ([**Uploader**](namespaceUploader.md))
 
 
 ## p

@@ -1267,7 +1267,7 @@ constexpr uint8_t OpenSkyhawk::UPL_TARGET_BRIDGE;
 
 
 
-the Gateway's own [**PanelBridge**](namespacePanelBridge.md) (#367; UNSUPPORTED until then) 
+the Gateway's own [**PanelBridge**](namespacePanelBridge.md), over USART2 (#367): the staged image, else the bundled one 
 
 
         

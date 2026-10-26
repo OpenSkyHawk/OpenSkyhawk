@@ -4817,10 +4817,14 @@
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">INFO_ADDRESS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08000FF0</span><span class="p">;</span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">INFO_MAGIC</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x4C42534Fu</span><span class="p">;</span><span class="w">   </span>
 
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">TRANSPORT_CAN</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span><span class="w">   </span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">TRANSPORT_SERIAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">;</span><span class="w">   </span>
+
 <span class="k">struct</span><span class="w"> </span><span class="nc">BootloaderInfo</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">magic</span><span class="p">;</span><span class="w">            </span>
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">protocolVersion</span><span class="p">;</span><span class="w">  </span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">reserved</span><span class="p">[</span><span class="mi">11</span><span class="p">];</span><span class="w">     </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">transports</span><span class="p">;</span><span class="w">       </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">reserved</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">     </span>
 <span class="p">};</span>
 <span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">BootloaderInfo</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="s">"the bootloader info block is 16 bytes"</span><span class="p">);</span>
 
@@ -4843,6 +4847,17 @@
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_ESC_55</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span><span class="w">   </span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">RELAY_ESC_56</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">;</span><span class="w">   </span>
 <span class="cp">#define BOOT_RSP_MSG_NAME "_BOOT_RSP"</span>
+
+<span class="c1">// ── The bridge's serial transport (#367) ──────────────────────────────────────</span>
+<span class="c1">// The Gateway's PanelBridge is the CAN master: nothing on the bus can update it. Its bootloader is the</span>
+<span class="c1">// `bridge` build of the same source (Firmware/Bootloader), which takes the same commands and answers</span>
+<span class="c1">// with the same replies, as frames on USART2 (PA2 / PA3, the link to the Gateway's RP2040) instead of</span>
+<span class="c1">// CAN — both transports don't fit 4 KB. The id is the CAN id the frame would have had (BOOT_CMD_0 /</span>
+<span class="c1">// BOOT_RSP_0). One frame on the wire:</span>
+<span class="c1">//   SERIAL_FRAME_START, id lo, id hi, len (0-8), data, sum   (sum = id lo + id hi + len + data, mod 256)</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">SERIAL_FRAME_START</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xAA</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">SERIAL_BAUD</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">250000</span><span class="p">;</span><span class="w">   </span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">BRIDGE_ENTER_EXPORT_ADDRESS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF02</span><span class="p">;</span>
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ATTEMPTS_BKP_REGISTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ATTEMPT_LIMIT</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>

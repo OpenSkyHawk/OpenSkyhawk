@@ -4907,6 +4907,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-bridge_enter_export_address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable BRIDGE_ENTER_EXPORT_ADDRESS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-catch_window_ms" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5087,6 +5098,50 @@
     <span class="md-ellipsis">
       
         variable RSP_ID_BASE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-serial_baud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable SERIAL_BAUD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-serial_frame_start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable SERIAL_FRAME_START
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-transport_can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable TRANSPORT_CAN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-transport_serial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable TRANSPORT_SERIAL
       
     </span>
   </a>
@@ -5288,6 +5343,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-bridge_enter_export_address"><strong>BRIDGE_ENTER_EXPORT_ADDRESS</strong></a>   = <code>0xFF02</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
 <td style="text-align: left;"><a href="#variable-catch_window_ms"><strong>CATCH_WINDOW_MS</strong></a>   = <code>200</code><br><em>after every reset, a CONNECT on BOOT_CMD_n keeps the board here (#364)</em></td>
 </tr>
 <tr>
@@ -5353,6 +5412,22 @@
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
 <td style="text-align: left;"><a href="#variable-rsp_id_base"><strong>RSP_ID_BASE</strong></a>   = <code>0x780</code><br><em>BOOT_RSP_n = 0x780 + n — node n's bootloader → host.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-serial_baud"><strong>SERIAL_BAUD</strong></a>   = <code>250000</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-serial_frame_start"><strong>SERIAL_FRAME_START</strong></a>   = <code>0xAA</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-transport_can"><strong>TRANSPORT_CAN</strong></a>   = <code>0x01</code><br><em>BOOT_CMD_n / BOOT_RSP_n — the node build.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-transport_serial"><strong>TRANSPORT_SERIAL</strong></a>   = <code>0x02</code><br><em>USART2 to the Gateway's RP2040 — the bridge build.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
@@ -5499,6 +5574,12 @@
 </code></pre></div></p>
 <hr>
 
+<h3 id="variable-bridge_enter_export_address">variable BRIDGE_ENTER_EXPORT_ADDRESS</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">BRIDGE_ENTER_EXPORT_ADDRESS</span><span class="p">;</span>
+</code></pre></div>
+<p>A host writes this export address (any value) to ask the bridge's app to reset into its bootloader — the bridge's counterpart of a node's CONNECT on BOOT_CMD_n. Honoured only with a bootloader installed. </p>
+<hr>
+
 <h3 id="variable-catch_window_ms">variable CATCH_WINDOW_MS</h3>
 <p><em>after every reset, a CONNECT on BOOT_CMD_n keeps the board here (#364)</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">CATCH_WINDOW_MS</span><span class="p">;</span>
@@ -5595,6 +5676,30 @@
 <h3 id="variable-rsp_id_base">variable RSP_ID_BASE</h3>
 <p><em>BOOT_RSP_n = 0x780 + n — node n's bootloader → host.</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RSP_ID_BASE</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-serial_baud">variable SERIAL_BAUD</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">SERIAL_BAUD</span><span class="p">;</span>
+</code></pre></div>
+<p>the Gateway link's rate (FirmwarePlan/03) </p>
+<hr>
+
+<h3 id="variable-serial_frame_start">variable SERIAL_FRAME_START</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">SERIAL_FRAME_START</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-transport_can">variable TRANSPORT_CAN</h3>
+<p><em>BOOT_CMD_n / BOOT_RSP_n — the node build.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">TRANSPORT_CAN</span><span class="p">;</span>
+</code></pre></div></p>
+<p><a href="../structOpenSkyhawk_1_1Boot_1_1BootloaderInfo/"><strong>BootloaderInfo</strong></a> <code>transports</code> bits (#367): how the installed bootloader can be reached. An app only resets into it on a request that arrived the same way, so a board can't strand itself in a bootloader nothing can talk to. (0xFF from a #365 / #366 bootloader reads as both.) </p>
+<hr>
+
+<h3 id="variable-transport_serial">variable TRANSPORT_SERIAL</h3>
+<p><em>USART2 to the Gateway's RP2040 — the bridge build.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">TRANSPORT_SERIAL</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
 

@@ -62,7 +62,7 @@
 |  CAN\_HandleTypeDef \* | [**canHandle**](#function-canhandle) () <br>_Access the HAL CAN handle._  |
 |  bool | [**clockFault**](#function-clockfault) () <br>_True if SystemClock\_Config could not lock the intended 72 MHz HSE tree and fell back to internal RC (issue #245)._  |
 |  Uart & | [**diagSerial**](#function-diagserial) () <br>_Access DiagSerial directly for multi-field formatted output._  |
-|  void | [**enterBootloader**](#function-enterbootloader) () <br>_Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is present; returns (doing nothing) when there is none._  |
+|  void | [**enterBootloader**](#function-enterbootloader) (uint8\_t via) <br>_Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is installed that can be reached over_ `via` _; otherwise returns, doing nothing._ |
 |  bool | [**isDebug**](#function-isdebug) () <br>_Returns true when debug output is enabled._  |
 |  void | [**log**](#function-log) (const char \* msg) <br>_Print a line to DiagSerial if debug is enabled; no-op otherwise._  |
 |  void | [**logNodeFaultEdge**](#function-lognodefaultedge) (const char \* tag, [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) fault, const char \* detail) <br>_Edge-log a node's fault transition to DiagSerial (#163)._  |
@@ -265,14 +265,23 @@ Reference to the USART1 Uart instance.
 
 ### function enterBootloader 
 
-_Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is present; returns (doing nothing) when there is none._ 
+_Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is installed that can be reached over_ `via` _; otherwise returns, doing nothing._
 ```C++
-void STM32Board::enterBootloader () 
+void STM32Board::enterBootloader (
+    uint8_t via
+) 
 ```
 
 
 
-Sets the bootloader's one-shot entry flag (backup register DR1) and resets. Called by [**CANProtocol**](namespaceCANProtocol.md) when a CONNECT arrives on this node's BOOT\_CMD\_n. 
+Sets the bootloader's one-shot entry flag (backup register DR1) and resets. Called by [**CANProtocol**](namespaceCANProtocol.md) for a CONNECT on this node's BOOT\_CMD\_n (via TRANSPORT\_CAN), and by [**PanelBridge**](namespacePanelBridge.md) for the host's BRIDGE\_ENTER\_EXPORT\_ADDRESS (via TRANSPORT\_SERIAL, #367). 
+
+**Parameters:**
+
+
+* `via` [**BootProtocol.h**](BootProtocol_8h.md) TRANSPORT\_CAN or TRANSPORT\_SERIAL — the way the request came in. 
+
+
 
 
         

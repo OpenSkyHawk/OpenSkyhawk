@@ -38,6 +38,9 @@ bool busy();
 
 bool ownsUart();
 
+bool ownsUartRx();
+void onUartByte(uint8_t b, uint32_t now);
+
 }  // namespace Uploader
 ```
 

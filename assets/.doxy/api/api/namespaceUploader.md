@@ -62,7 +62,9 @@
 |  bool | [**onBridgeLine**](#function-onbridgeline) (const char \* line, uint16\_t len, uint32\_t now) <br> |
 |  void | [**onClientFrame**](#function-onclientframe) (uint32\_t now) <br>_Any verified client frame (KEEPALIVE included): the client is still there._  |
 |  void | [**onFrame**](#function-onframe) (uint8\_t type, uint8\_t seq, const uint8\_t \* p, uint16\_t len, uint32\_t now) <br>_A verified client frame of one of those types._  |
+|  void | [**onUartByte**](#function-onuartbyte) (uint8\_t c, uint32\_t now) <br> |
 |  bool | [**ownsUart**](#function-ownsuart) () <br>_A flash runs: the uploader writes the UART, so the client's export bytes must be dropped._  |
+|  bool | [**ownsUartRx**](#function-ownsuartrx) () <br> |
 |  void | [**tick**](#function-tick) (uint32\_t now) <br>_Advance the flash. Call every loop()._  |
 
 
@@ -201,6 +203,22 @@ void Uploader::onFrame (
 
 
 
+### function onUartByte 
+
+```C++
+void Uploader::onUartByte (
+    uint8_t c,
+    uint32_t now
+) 
+```
+
+
+
+
+<hr>
+
+
+
 ### function ownsUart 
 
 _A flash runs: the uploader writes the UART, so the client's export bytes must be dropped._ 
@@ -210,6 +228,23 @@ bool Uploader::ownsUart ()
 
 
 
+
+<hr>
+
+
+
+### function ownsUartRx 
+
+```C++
+bool Uploader::ownsUartRx () 
+```
+
+
+
+Flashing the bridge (#367): its bootloader answers on the UART in its own framing, so every byte [**PanelBridge**](namespacePanelBridge.md) sends goes to [**onUartByte()**](namespaceUploader.md#function-onuartbyte) instead of the line / HID parser — until the bridge reboots. 
+
+
+        
 
 <hr>
 

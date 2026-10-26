@@ -5077,7 +5077,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-enterbootloader"><strong>enterBootloader</strong></a> () <br><em>Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is present; returns (doing nothing) when there is none.</em></td>
+<td style="text-align: left;"><a href="#function-enterbootloader"><strong>enterBootloader</strong></a> (uint8_t via) <br><em>Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is installed that can be reached over</em> <code>via</code> <em>; otherwise returns, doing nothing.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
@@ -5196,10 +5196,16 @@
 <hr>
 
 <h3 id="function-enterbootloader">function enterBootloader</h3>
-<p><em>Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is present; returns (doing nothing) when there is none.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">enterBootloader</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+<p><em>Reset into the bootloader, which then stays for an update (#365). Never returns when a bootloader is installed that can be reached over</em> <code>via</code> <em>; otherwise returns, doing nothing.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">enterBootloader</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">via</span>
+<span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Sets the bootloader's one-shot entry flag (backup register DR1) and resets. Called by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> when a CONNECT arrives on this node's BOOT_CMD_n. </p>
+<p>Sets the bootloader's one-shot entry flag (backup register DR1) and resets. Called by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> for a CONNECT on this node's BOOT_CMD_n (via TRANSPORT_CAN), and by <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> for the host's BRIDGE_ENTER_EXPORT_ADDRESS (via TRANSPORT_SERIAL, #367). </p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>via</code> <a href="../BootProtocol_8h/"><strong>BootProtocol.h</strong></a> TRANSPORT_CAN or TRANSPORT_SERIAL — the way the request came in. </li>
+</ul>
 <hr>
 
 <h3 id="function-isdebug">function isDebug</h3>

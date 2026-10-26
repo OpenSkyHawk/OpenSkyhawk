@@ -53,7 +53,7 @@ namespace STM32Board {
 
     uint8_t bootloaderVersion();
 
-    void enterBootloader();
+    void enterBootloader(uint8_t via);
 
     void onCanStatus(CanStatus status);
 

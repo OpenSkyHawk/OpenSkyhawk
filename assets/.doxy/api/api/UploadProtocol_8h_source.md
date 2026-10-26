@@ -53,7 +53,7 @@ enum UplResult : uint8_t {
     UPL_RESULT_VERIFY_FAILED     = 0x08,   // the bootloader's CRC check failed, after retries
     UPL_RESULT_VERSION_MISMATCH  = 0x09,   // the board rebooted into a different version
     UPL_RESULT_TIMEOUT           = 0x0A,   // the board never came back after GO
-    UPL_RESULT_UNSUPPORTED       = 0x0B,   // target not supported by this Gateway firmware (the bridge, until #367)
+    UPL_RESULT_UNSUPPORTED       = 0x0B,   // not sent since #367 (kept so the code stays taken): target 0 with nothing to flash is NACKed NOT_STAGED
 };
 
 constexpr uint8_t UPL_RETRIES = 2;   

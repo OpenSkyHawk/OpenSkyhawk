@@ -125,7 +125,8 @@
   <compound refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo" kind="struct"><name>OpenSkyhawk::Boot::BootloaderInfo</name>
     <member refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1aea0465ff80329abec69e2b5b8b3515a2" kind="variable"><name>magic</name></member>
     <member refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1ac8471a9e1444b2d1e0a9d4fb6fa62cb9" kind="variable"><name>protocolVersion</name></member>
-    <member refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1a81880bf1d762bec887c5cace25682cf8" kind="variable"><name>reserved</name></member>
+    <member refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1ab93339f2fb16b71aaaecbb50052e984c" kind="variable"><name>transports</name></member>
+    <member refid="structOpenSkyhawk_1_1Boot_1_1BootloaderInfo_1a36f9e1d8c634cbcf9b3aa5b4f50a12e5" kind="variable"><name>reserved</name></member>
   </compound>
   <compound refid="structOpenSkyhawk_1_1CalBlob" kind="struct"><name>OpenSkyhawk::CalBlob</name>
     <member refid="structOpenSkyhawk_1_1CalBlob_1a31cc97f957a4c36be4dfc0c94d06c435" kind="variable"><name>magic</name></member>
@@ -1123,12 +1124,17 @@
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a5ed6f975dba2d572132efb2143d399d1" kind="variable"><name>ENTRY_MAGIC</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a0a1445290c5875941be3cf1f6ec21a6d" kind="variable"><name>INFO_ADDRESS</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a3cc3f51f247a369c4504de7c1636a44c" kind="variable"><name>INFO_MAGIC</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1ab5874bf9e5e11023832101c37e9871b5" kind="variable"><name>TRANSPORT_CAN</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1a81f218ace18f53beadaf9ef66b82fa25" kind="variable"><name>TRANSPORT_SERIAL</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a5a63139664a3407d9fae5c3bf5770ffe" kind="variable"><name>RELAY_EXPORT_ADDRESS</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1ab9559894139082f3673bd3a793f26465" kind="variable"><name>RELAY_EXPORT_WORDS</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1af3c5c456e0f79b46b9f1c0c5a218f0b1" kind="variable"><name>RELAY_FRAME_MARK</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a976aadebfd0955f0d6ed46abc46bbf48" kind="variable"><name>RELAY_ESCAPE</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1ab948420241c6f8bd951fc62a4d78f136" kind="variable"><name>RELAY_ESC_55</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1aafd0a2e07e6896383ca97407e0b91fdf" kind="variable"><name>RELAY_ESC_56</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1afba92e31c26659bd659e5a3d5527813d" kind="variable"><name>SERIAL_FRAME_START</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1a5f585d8bd0c73f95bfd4f8e9b246a0c2" kind="variable"><name>SERIAL_BAUD</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Boot_1a863b0c393ee2b42aa254ef250d731171" kind="variable"><name>BRIDGE_ENTER_EXPORT_ADDRESS</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a9b03ea27984f6b4d0eb23bb49da5b977" kind="variable"><name>ATTEMPTS_BKP_REGISTER</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1a2cd6e35c149a84f5b5ea71a023e6f313" kind="variable"><name>ATTEMPT_LIMIT</name></member>
     <member refid="namespaceOpenSkyhawk_1_1Boot_1ad890646b188a7f4fb94bd6d587cfee8f" kind="variable"><name>CATCH_WINDOW_MS</name></member>
@@ -1273,13 +1279,15 @@
     <member refid="namespaceSTM32Board_1a1de56863b1b466d260125a48cdab0b5a" kind="function"><name>backupRegister</name></member>
     <member refid="namespaceSTM32Board_1a5bd5eca4fdf29f15d237a990aa52fbf1" kind="function"><name>markBootHealthy</name></member>
     <member refid="namespaceSTM32Board_1a7faffd4bd2514618b228d40014c38efe" kind="function"><name>bootloaderVersion</name></member>
-    <member refid="namespaceSTM32Board_1af27704e97e94cfb904779a7cf968bdbd" kind="function"><name>enterBootloader</name></member>
+    <member refid="namespaceSTM32Board_1a593f38c0e9fea1a50face7d548a9218b" kind="function"><name>enterBootloader</name></member>
   </compound>
   <compound refid="namespaceUploader" kind="namespace"><name>Uploader</name>
     <member refid="namespaceUploader_1a8684ce88e604c82ecd311f67632ead12" kind="function"><name>begin</name></member>
     <member refid="namespaceUploader_1a7e5823b3a211c7fba017daa45fca3fe2" kind="function"><name>handles</name></member>
     <member refid="namespaceUploader_1ac8ddcf956426ffd69e02abbc356c0a22" kind="function"><name>busy</name></member>
     <member refid="namespaceUploader_1a11b47b7d72071fc271e6a84f71fa062a" kind="function"><name>ownsUart</name></member>
+    <member refid="namespaceUploader_1ac85396f2e83bbfa8f86f5f9c76bb52ec" kind="function"><name>ownsUartRx</name></member>
+    <member refid="namespaceUploader_1aa20cfaa55944fc57357b2aa287a51fb1" kind="function"><name>onUartByte</name></member>
     <member refid="namespaceUploader_1aa153086f01a7bfb81470a5659363dbf7" kind="function"><name>onClientFrame</name></member>
     <member refid="namespaceUploader_1a2c274fdef8c28224be6e98392eaa372a" kind="function"><name>onFrame</name></member>
     <member refid="namespaceUploader_1ad4e76a474ba5a14cceba5591bc6f2b2b" kind="function"><name>onBridgeLine</name></member>
@@ -2437,6 +2445,7 @@
   <compound refid="SimGateway_8h" kind="file"><name>SimGateway.h</name>
   </compound>
   <compound refid="Uploader_8cpp" kind="file"><name>Uploader.cpp</name>
+    <member refid="Uploader_8cpp_1af42f83c01ff2f0b98fd73b99906e3a7e" kind="function"><name>__attribute__</name></member>
   </compound>
   <compound refid="Uploader_8h" kind="file"><name>Uploader.h</name>
   </compound>

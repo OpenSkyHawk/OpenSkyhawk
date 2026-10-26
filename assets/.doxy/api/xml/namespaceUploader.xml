@@ -21,7 +21,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="283" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="283" bodyend="283" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="30" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="323" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="323" bodyend="323" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="30" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceUploader_1a7e5823b3a211c7fba017daa45fca3fe2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -40,7 +40,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="285" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="285" bodyend="288" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="33" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="325" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="325" bodyend="328" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="33" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceUploader_1ac8ddcf956426ffd69e02abbc356c0a22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -55,7 +55,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="290" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="290" bodyend="290" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="49" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="330" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="330" bodyend="330" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="49" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceUploader_1a11b47b7d72071fc271e6a84f71fa062a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -70,7 +70,44 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="291" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="291" bodyend="291" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="52" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="331" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="331" bodyend="331" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="52" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1ac85396f2e83bbfa8f86f5f9c76bb52ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Uploader::ownsUartRx</definition>
+        <argsstring>()</argsstring>
+        <name>ownsUartRx</name>
+        <qualifiedname>Uploader::ownsUartRx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Flashing the bridge (#367): its bootloader answers on the UART in its own framing, so every byte <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> sends goes to <ref refid="namespaceUploader_1aa20cfaa55944fc57357b2aa287a51fb1" kindref="member">onUartByte()</ref> instead of the line / HID parser — until the bridge reboots. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="333" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="333" bodyend="333" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="56" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceUploader_1aa20cfaa55944fc57357b2aa287a51fb1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Uploader::onUartByte</definition>
+        <argsstring>(uint8_t c, uint32_t now)</argsstring>
+        <name>onUartByte</name>
+        <qualifiedname>Uploader::onUartByte</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>now</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="335" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="335" bodyend="346" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="57" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceUploader_1aa153086f01a7bfb81470a5659363dbf7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -89,7 +126,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="293" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="293" bodyend="293" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="39" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="348" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="348" bodyend="348" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="39" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceUploader_1a2c274fdef8c28224be6e98392eaa372a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -124,7 +161,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="295" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="295" bodyend="373" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="36" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="350" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="350" bodyend="445" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="36" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceUploader_1ad4e76a474ba5a14cceba5591bc6f2b2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -152,7 +189,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="375" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="375" bodyend="399" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="43" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="447" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="447" bodyend="471" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="43" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceUploader_1a65dfe625f0913def4609b69414c34beb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -171,13 +208,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="401" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="401" bodyend="473" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="46" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="473" column="6" bodyfile="Firmware/Libraries/SimGateway/Uploader.cpp" bodystart="473" bodyend="555" declfile="Firmware/Libraries/SimGateway/Uploader.h" declline="46" declcolumn="6"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="281" column="1"/>
+    <location file="Firmware/Libraries/SimGateway/Uploader.cpp" line="321" column="1"/>
   </compounddef>
 </doxygen>

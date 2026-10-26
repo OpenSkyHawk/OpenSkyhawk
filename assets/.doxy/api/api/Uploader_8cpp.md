@@ -59,6 +59,11 @@
 
 
 
+## Public Functions
+
+| Type | Name |
+| ---: | :--- |
+|   | [**\_\_attribute\_\_**](#function-__attribute__) ((weak)) const<br> |
 
 
 
@@ -87,6 +92,23 @@
 
 
 
+## Public Functions Documentation
+
+
+
+
+### function \_\_attribute\_\_ 
+
+```C++
+__attribute__ (
+    (weak)
+) const
+```
+
+
+
+
+<hr>
 
 ------------------------------
 The documentation for this class was generated from the following file `Firmware/Libraries/SimGateway/Uploader.cpp`

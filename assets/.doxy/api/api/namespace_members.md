@@ -26,6 +26,7 @@
 * **busOff** ([**CANProtocol**](namespaceCANProtocol.md))
 * **BLOCK\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **BOOTLOADER\_SIZE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **BRIDGE\_ENTER\_EXPORT\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **BootState** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **backupRegister** ([**STM32Board**](namespaceSTM32Board.md))
 * **begin** ([**STM32Board**](namespaceSTM32Board.md), [**Uploader**](namespaceUploader.md))
@@ -223,7 +224,9 @@
 * **onBridgeLine** ([**Uploader**](namespaceUploader.md))
 * **onClientFrame** ([**Uploader**](namespaceUploader.md))
 * **onFrame** ([**Uploader**](namespaceUploader.md))
+* **onUartByte** ([**Uploader**](namespaceUploader.md))
 * **ownsUart** ([**Uploader**](namespaceUploader.md))
+* **ownsUartRx** ([**Uploader**](namespaceUploader.md))
 
 
 ## p
@@ -271,6 +274,8 @@
 * **serviceNodeStatus** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
+* **SERIAL\_BAUD** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **SERIAL\_FRAME\_START** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **Status** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **slotEmpty** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -290,6 +295,8 @@
 * **tec** ([**CANProtocol**](namespaceCANProtocol.md))
 * **txDropCount** ([**CANProtocol**](namespaceCANProtocol.md))
 * **tryToSendDcsBiosMessage** ([**DcsBios**](namespaceDcsBios.md))
+* **TRANSPORT\_CAN** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **TRANSPORT\_SERIAL** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **trimmed** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **thermal** ([**PduNode**](namespacePduNode.md))
 * **tick** ([**STM32Board**](namespaceSTM32Board.md), [**Uploader**](namespaceUploader.md))

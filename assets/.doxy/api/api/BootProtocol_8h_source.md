@@ -109,10 +109,14 @@ constexpr uint16_t ENTRY_MAGIC        = 0xB007;
 constexpr uint32_t INFO_ADDRESS = 0x08000FF0;
 constexpr uint32_t INFO_MAGIC   = 0x4C42534Fu;   
 
+constexpr uint8_t TRANSPORT_CAN    = 0x01;   
+constexpr uint8_t TRANSPORT_SERIAL = 0x02;   
+
 struct BootloaderInfo {
     uint32_t magic;            
     uint8_t  protocolVersion;  
-    uint8_t  reserved[11];     
+    uint8_t  transports;       
+    uint8_t  reserved[10];     
 };
 static_assert(sizeof(BootloaderInfo) == 16, "the bootloader info block is 16 bytes");
 
@@ -135,6 +139,17 @@ constexpr uint8_t  RELAY_ESCAPE         = 0x56;
 constexpr uint8_t  RELAY_ESC_55         = 0x01;   
 constexpr uint8_t  RELAY_ESC_56         = 0x02;   
 #define BOOT_RSP_MSG_NAME "_BOOT_RSP"
+
+// ── The bridge's serial transport (#367) ──────────────────────────────────────
+// The Gateway's PanelBridge is the CAN master: nothing on the bus can update it. Its bootloader is the
+// `bridge` build of the same source (Firmware/Bootloader), which takes the same commands and answers
+// with the same replies, as frames on USART2 (PA2 / PA3, the link to the Gateway's RP2040) instead of
+// CAN — both transports don't fit 4 KB. The id is the CAN id the frame would have had (BOOT_CMD_0 /
+// BOOT_RSP_0). One frame on the wire:
+//   SERIAL_FRAME_START, id lo, id hi, len (0-8), data, sum   (sum = id lo + id hi + len + data, mod 256)
+constexpr uint8_t  SERIAL_FRAME_START = 0xAA;
+constexpr uint32_t SERIAL_BAUD        = 250000;   
+constexpr uint16_t BRIDGE_ENTER_EXPORT_ADDRESS = 0xFF02;
 
 constexpr uint8_t ATTEMPTS_BKP_REGISTER = 2;
 constexpr uint8_t ATTEMPT_LIMIT         = 3;

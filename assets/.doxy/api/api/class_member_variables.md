@@ -217,6 +217,7 @@
 
 ## t
 
+* **transports** ([**OpenSkyhawk::Boot::BootloaderInfo**](structOpenSkyhawk_1_1Boot_1_1BootloaderInfo.md))
 * **TELEM\_PERIOD\_MS** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
 
 

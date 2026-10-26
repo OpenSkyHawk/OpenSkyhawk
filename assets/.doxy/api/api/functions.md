@@ -49,7 +49,7 @@
 * **\_pollRxFifo0** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_startInternal** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_updateStatus** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
-* **\_\_attribute\_\_** ([**CANProtocol.h**](CANProtocol_8h.md))
+* **\_\_attribute\_\_** ([**CANProtocol.h**](CANProtocol_8h.md), [**Uploader.cpp**](Uploader_8cpp.md))
 * **\_applyLed** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_blinkPeriodFor** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_configAdcClock** ([**STM32Board.cpp**](STM32Board_8cpp.md))
