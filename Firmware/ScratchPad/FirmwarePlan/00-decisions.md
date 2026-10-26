@@ -735,3 +735,36 @@ CAN, addressed by a hash of its chip UID. Details: `12-bootloader.md`.
 `STM32Board` (`markBootHealthy()`), PanelGroup / PduNode / PanelBridge, TechSpec `Bootloader` +
 `BootProtocol` + `STM32Board`, `docs/firmware/bootloader.md`, `docs/guides/flashing.md`. Client half:
 SkyHawkClient#175 (stuck / unstable states), #177 (From file…, change-node-ID-first).
+
+---
+
+## D28 — Updates ride the existing host link: export records down, `_BOOT_RSP` up (#365)
+
+**Decision:** The host reaches a board's bootloader through the Gateway and PanelBridge with no new
+framing on either link. Down, each bootloader CAN frame is a DCS-BIOS export record at the reserved
+window `0xFF10`–`0xFF23` (one data byte per word); up, each bootloader frame is a `_BOOT_RSP` DCS-BIOS
+message. A running app enters its bootloader on a CONNECT, only when the bootloader's info block
+(`0x08000FF0`) says one is installed. `_NODE_STATUS` gains `bootloader` and `bootState` inside v4.
+
+**Rationale:**
+- *The Gateway → bridge UART is the raw export stream.* Any byte can appear in it, so a magic-byte
+  frame can't be told apart — but reserved export addresses already work for the roster request
+  (D23). One byte per word because the DCS-BIOS parser resyncs on four `0x55` in a row, which image
+  data could contain.
+- *Today's Gateway carries it unchanged.* It relays export bytes down and whole printable lines up,
+  so #365 was benched from a PC before the Gateway uploader (#366) existed, and #366 drives the same
+  format from the RP2040.
+- *The bridge stays dumb.* It relays frames and reports state; the uploader owns sessions, retries
+  and checks. It passes only the boot command IDs, so the host can't inject other CAN traffic.
+- *CONNECT means "enter".* The host's loop is the same whether the board runs its app, is in its
+  bootloader, or is being caught at reset.
+- *Detect, don't assume.* An app linked behind the bootloader could still sit on a board whose
+  bootloader is older or absent (bench); reading the info block makes "ignore the request" exact, and
+  gives READY_n byte 3 the installed version, not the one the app was built against.
+- *Inside v4.* v4 hadn't shipped and the client wasn't on it yet, so appending the two fields needed no
+  bump.
+
+**Affects:** `BootProtocol.h`, `NodeStatus.h`, `CANProtocol` (filter, drain, READY), `STM32Board`
+(`bootloaderVersion()`, `enterBootloader()`), `PanelBridge`, the bootloader (info block, LEDs, idle
+announce), `02`, `04`, `06`, `09`, `12`, TechSpec, `docs/firmware/debugging.md`,
+`docs/firmware/bootloader.md`. Client half: SkyHawkClient#175.

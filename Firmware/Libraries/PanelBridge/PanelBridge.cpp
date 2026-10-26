@@ -400,6 +400,10 @@ static void onBootRsp(uint32_t canId, const uint8_t* data, uint8_t len, uint32_t
                || data[(uint8_t)AnnounceField::STATE] != ns.bootState;
         ns.bootloader = data[(uint8_t)AnnounceField::PROTOCOL];
         ns.bootState  = data[(uint8_t)AnnounceField::STATE];
+    } else if (len >= 2 && data[0] == (uint8_t)Reply::BEGUN && data[1] == (uint8_t)Status::OK) {
+        // BEGIN erased the old app — say so now, not at the next announcement.
+        changed = ns.bootState != (uint8_t)BootState::APP_INVALID;
+        ns.bootState = (uint8_t)BootState::APP_INVALID;
     }
     if (data[0] != (uint8_t)Reply::ANNOUNCE) noteBootTraffic(nodeId, now);   // a reply: a session is on
     if (!markNodeAlive(nodeId, now) && changed) emitNode(nodeId, true);
@@ -584,7 +588,7 @@ static void checkNodeTimeouts(uint32_t now) {
                 auto& d = STM32Board::diagSerial();
                 d.print(F("[BRIDGE] node=")); d.print(nodeId); d.println(F(" dead"));
             }
-            _deadCount++;                   // a tracked node died → WARNING (amber)
+            _deadCount++;                   // a tracked node died → WARNING (red/green alternating)
             STM32Board::setWarning(true);
             if (_cbDead) _cbDead(nodeId);
 #if PANELBRIDGE_NODE_STATUS

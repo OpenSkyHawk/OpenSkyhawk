@@ -36,13 +36,25 @@ a glance:
 | **Green solid** | **Connected — CAN healthy and data flowing** (DCS exports on PanelBridge; `CTRL_BCAST` on PanelGroup) |
 | Red fast blink | TEC > 0 — transmit errors accumulating |
 | Red solid | Bus-off — CAN controller halted |
-| Amber flicker (alternating) | Warning / degraded state |
+| Red / green alternating | Warning / degraded state |
 
 The state machine is shared (`STM32Board`); only the triggers differ per role. **Green solid
 (connected)** appears while data is actively flowing and decays back to green-blinking after
-~½ s of quiet. **Amber (warning)** means a tracked PanelGroup node died (PanelBridge), the
+~½ s of quiet. **Warning (red/green alternating)** means a tracked PanelGroup node died (PanelBridge), the
 master heartbeat was lost (any node other than PanelBridge), or the board's **clock failed to lock** (any STM32
 node — see below).
+
+### In the bootloader: red and green together
+
+The running firmware never lights both LEDs at once. When **red and green are on together**, the
+board is in its [bootloader](bootloader.md), not running its firmware:
+
+| LEDs | Meaning |
+|-----|---------|
+| Red + green blinking together (1 Hz) | Waiting for an update — asked for one, caught at power-up, or its firmware is missing or broken |
+| Red + green flickering together (fast) | A firmware update is being written |
+| Red + green, alternating with red alone | The firmware kept resetting before it finished booting — the bootloader stopped starting it until it's updated |
+| Red + green, alternating with green alone | A new board with no node number yet — waiting for its first firmware |
 
 CAN faults are driven from the `CanStatus` callback. For non-CAN faults (dead node, lost
 master, SYNC timeout, I²C hang), the firmware calls `STM32Board::setWarning(true)` and clears
@@ -50,7 +62,7 @@ it with `setWarning(false)` on recovery.
 
 One warning source outranks all others: a **clock fault**. If `SystemClock_Config` can't lock
 the 72 MHz HSE tree (dead crystal, cold joint, or an inconsistent config), `STM32Board` latches
-it, falls back to internal RC, and drives amber at **top precedence** — above CAN faults — so a
+it, falls back to internal RC, and drives the warning pattern at **top precedence** — above CAN faults — so a
 bad clock isn't misdiagnosed as a bus problem. A clock-faulted node also comes up **CAN
 listen-only** (never transmits at the wrong rate). Latched once at boot (query
 `STM32Board::clockFault()`); `begin()` logs

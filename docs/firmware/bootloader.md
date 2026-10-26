@@ -10,18 +10,28 @@ The bootloader checks the firmware before starting it. Every firmware image carr
 block: which node it is for, what kind of board, its version, and a checksum over the whole image. If
 the checksum matches, the firmware starts within a few milliseconds and the board behaves as it always
 has. If it doesn't — an update was interrupted, or the board was never flashed — the bootloader stays
-in charge, blinks the status LED red, and announces itself on the bus once a second, ready for a new
-image.
+in charge, blinks the red and green LEDs together, and announces itself on the bus once a second,
+ready for a new image. Red and green lit together always means "in the bootloader" — the firmware
+never shows that pattern; the full list is on the [status LED](debugging.md#in-the-bootloader-red-and-green-together)
+page.
 
 If the firmware passes the check but keeps resetting before it finishes booting, the bootloader
-counts the attempts. After three, it stops starting it and announces the board as unstable, with the
-red LED on, until a new image arrives. And for 200 ms after every reset it listens for an update tool
+counts the attempts. After three, it stops starting it and announces the board as unstable (red and
+green together, alternating with red alone) until a new image arrives. And for 200 ms after every reset it listens for an update tool
 asking it to stay — so even firmware that never answers on the bus can be replaced: power-cycle the
 cockpit while the update is waiting.
 
 An update is written so that a failure at any point is safe. The first block of the new firmware is
 held back and written only after the whole image has arrived and its checksum matches. Pull the power
 halfway through, and the board comes back in its bootloader, ready to try again.
+
+## Updating through the cockpit
+
+A board doesn't need its own connection for an update. The firmware updater reaches it the way the
+simulator does: from the PC through the Gateway's USB, and across the CAN bus. A running board that
+is asked for an update restarts into its bootloader by itself, and the Gateway's PanelBridge carries
+the update to it and reports each board's state — running, waiting in its bootloader, or being
+updated — along with the bootloader version it has.
 
 ## How a board knows its node number
 

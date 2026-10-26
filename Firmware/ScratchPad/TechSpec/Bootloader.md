@@ -1,6 +1,6 @@
 # Bootloader — Technical Specification
 
-**Status:** Done (core #363, safety #364)
+**Status:** Done (core #363, safety #364, info block + LEDs #365)
 **FirmwarePlan ref:** `FirmwarePlan/12-bootloader.md`, `FirmwarePlan/08-hardware-firmware-contracts.md#image-layout--identity-block-362`, `FirmwarePlan/00-decisions.md#d26`, `#d27`
 **Depends on:** `BootProtocol`, `FirmwareImage` (headers only); CMSIS device headers
 
@@ -37,7 +37,8 @@ Production projects reach it through `Firmware/shared/`: `stm32.ini` sets the ap
 | Part | Functions | Notes |
 |---|---|---|
 | Clocks | `clock_init()` → SYSCLK Hz, `clock_deinit()` | HSE 72 MHz with a start timeout, else HSI/2 × 9 = 36 MHz (APB1 36 MHz either way — same CAN timing) |
-| LED | `led_init()`, `led(red, green)` | PB14 red / PB15 green |
+| LED | `led_init()`, `led(red, green)` | PB14 red / PB15 green; red + green together = in the bootloader (patterns in FirmwarePlan 12) |
+| Info block | `osh_bootloader_info` | `.osh_bootinfo` at `0x08000FF0` (`-Wl,--section-start`), kept by `-Wl,-u` — code growing into it fails the link |
 | CAN | `can_init()`, `can_send()`, `can_recv()`, `reply()`, `announce()` | `BTR = 0x033C0003`, ABOM + TXFP; filter 0 = exactly `BOOT_CMD_n` → FIFO0 (disabled when unconfigured); TX mailbox 0, dropped after 20 ms without an ACK |
 | Flash | `flash_unlock/wait/erase/program/write()` | 1 KB pages; every halfword read back |
 | Option bytes | `option_bytes_set(data0, data1, wrp0)`, `wrp0()` | read all 8 → OPTER → program back (RDP first), skip `0xFF`, verify the stored value bytes |
@@ -49,8 +50,11 @@ Production projects reach it through `Firmware/shared/`: `stm32.ini` sets the ap
 
 ## Implementation Notes
 
-- **Size:** 3,428 B of 4,096 after #364 (2,876 B after #363) — 668 B left. RAM ~196 B (`Session` holds
-  two 64-byte buffers).
+- **Size:** 3,560 B after #365 (incl. the 16-byte info block; 3,428 B after #364, 2,876 B after #363).
+  Code ends at `0x08000EF0`; the hard limit for code is `0x08000FF0`. RAM ~196 B (`Session` holds two
+  64-byte buffers).
+- **Idle announce (#365):** the stay loop also announces during a transfer quiet for over 1 s, so the
+  bridge keeps the node alive.
 - **The jump** must switch the stack and branch in one asm block — #361's bus fault came from a
   compiler `pop` after `__set_MSP()`.
 - **GO resets** rather than jumping, so the started app always went through the boot check.

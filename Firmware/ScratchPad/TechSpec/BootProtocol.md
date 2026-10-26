@@ -53,6 +53,12 @@ constexpr uint32_t BOOTLOADER_SIZE = 0x1000, APP_OFFSET = BOOTLOADER_SIZE;
 constexpr uint8_t  ENTRY_BKP_REGISTER = 1;   constexpr uint16_t ENTRY_MAGIC = 0xB007;
 constexpr uint8_t  ATTEMPTS_BKP_REGISTER = 2; constexpr uint8_t ATTEMPT_LIMIT = 3;
 constexpr uint16_t CATCH_WINDOW_MS = 200, IDLE_TIMEOUT_MS = 30000;
+
+// #365
+constexpr uint32_t INFO_ADDRESS = 0x08000FF0, INFO_MAGIC = 0x4C42534F;   // "OSBL"
+struct BootloaderInfo { uint32_t magic; uint8_t protocolVersion; uint8_t reserved[11]; };   // 16 B
+constexpr uint16_t RELAY_EXPORT_ADDRESS = 0xFF10;  constexpr uint8_t RELAY_EXPORT_WORDS = 10;
+#define BOOT_RSP_MSG_NAME "_BOOT_RSP"
 }
 ```
 

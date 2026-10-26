@@ -21,7 +21,10 @@ The single UART carries two distinct byte streams in the **PanelBridge → SimGa
    `controlId < 0x8000` for HID dispatch.
 
 In the **SimGateway → PanelBridge** direction, the UART carries only the raw DCS-BIOS binary
-export stream forwarded from USB CDC.
+export stream forwarded from USB CDC. The host's requests to the bridge ride inside it as writes to
+reserved export addresses — the roster request (`0xFF00`) and the bootloader relay (`0xFF10`–`0xFF23`,
+#365) — see `04-dcs-bios-integration.md`. Their replies come back as ordinary DCS-BIOS text lines
+(`_NODE_STATUS`, `_BOOT_RSP`).
 
 ---
 
