@@ -4730,6 +4730,10 @@
 <span class="c1">// export of that control with a roster burst. The A4EC refresh warns if a new DCS-BIOS release ever</span>
 <span class="c1">// puts an aircraft here (tools/gen_a4ec, --modules-dir).</span>
 <span class="cp">#define NODE_STATUS_REQ_ADDR      0xFF00</span>
+<span class="c1">// Host→device "forget this node" export address (#384): the value is a NODE_ID (1-63) that is</span>
+<span class="c1">// gone on purpose — unplugged or swapped. The bridge drops it only while it is dead (a live node is</span>
+<span class="c1">// ignored), clears its WARNING and re-sends the roster. Same reserved block as the roster request.</span>
+<span class="cp">#define NODE_FORGET_REQ_ADDR      0xFF04</span>
 <span class="cp">#define NODE_STATUS_MSG_NAME      "_NODE_STATUS"</span>
 <span class="cp">#define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"</span>
 

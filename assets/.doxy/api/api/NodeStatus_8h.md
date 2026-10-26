@@ -118,6 +118,7 @@ _Neutral node-status contract for every_ [_**OpenSkyhawk**_](namespaceOpenSkyhaw
 
 | Type | Name |
 | ---: | :--- |
+| define  | [**NODE\_FORGET\_REQ\_ADDR**](NodeStatus_8h.md#define-node_forget_req_addr)  `0xFF04`<br> |
 | define  | [**NODE\_STATUS\_END\_MSG\_NAME**](NodeStatus_8h.md#define-node_status_end_msg_name)  `"\_NODE\_STATUS\_END"`<br> |
 | define  | [**NODE\_STATUS\_MSG\_NAME**](NodeStatus_8h.md#define-node_status_msg_name)  `"\_NODE\_STATUS"`<br> |
 | define  | [**NODE\_STATUS\_PROTO\_VERSION**](NodeStatus_8h.md#define-node_status_proto_version)  `4`<br> |
@@ -569,6 +570,19 @@ constexpr int16_t NTC_TEMP_UNAVAILABLE;
 ## Macro Definition Documentation
 
 
+
+
+
+### define NODE\_FORGET\_REQ\_ADDR 
+
+```C++
+#define NODE_FORGET_REQ_ADDR `0xFF04`
+```
+
+
+
+
+<hr>
 
 
 

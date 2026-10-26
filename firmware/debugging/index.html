@@ -4984,7 +4984,9 @@ a glance:</p>
 (connected)</strong> appears while data is actively flowing and decays back to green-blinking after
 ~½ s of quiet. <strong>Warning (red/green alternating)</strong> means a tracked PanelGroup node died (PanelBridge), the
 master heartbeat was lost (any node other than PanelBridge), or the board's <strong>clock failed to lock</strong> (any STM32
-node — see below).</p>
+node — see below). On PanelBridge it clears when the node comes back, when its node ID is changed by a
+firmware update (the old ID is forgotten automatically), or when the client is told to forget a board
+that was removed on purpose.</p>
 <h3 id="in-the-bootloader-red-and-green-together">In the bootloader: red and green together</h3>
 <p>The running firmware never lights both LEDs at once. When <strong>red and green are on together</strong>, the
 board is in its <a href="../bootloader/">bootloader</a>, not running its firmware:</p>

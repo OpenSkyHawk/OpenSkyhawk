@@ -204,6 +204,8 @@ void handleDcsBiosExport(uint16_t address, uint16_t value) {
     // never broadcast onto CAN.
     if (address == NODE_STATUS_REQ_ADDR) return;
 #endif
+    // Reserved: the host's "forget this node" (#384) — handled by NodeForgetListener.
+    if (address == NODE_FORGET_REQ_ADDR) return;
     // Reserved: the host's "bridge, enter your bootloader" (#367) — handled by BridgeEnterListener.
     if (address == OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS) return;
     // Reserved: the bootloader relay window (#365, #366) — handled by BootRelayListener.
@@ -372,6 +374,19 @@ static bool markNodeAlive(uint8_t nodeId, uint32_t now) {
     return false;
 }
 
+// A node that's gone on purpose (#384): drop it from tracking, so a dead one no longer holds
+// WARNING and the roster leaves it out.
+static void forgetNode(uint8_t nodeId) {
+    NodeState& ns = _nodes[nodeId - 1];
+    const bool wasDead = ns.everSeen && !ns.alive;
+    ns = NodeState{};
+    if (wasDead && _deadCount > 0 && --_deadCount == 0) STM32Board::setWarning(false);
+    if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] node=")); d.print(nodeId); d.println(F(" forgotten"));
+    }
+}
+
 // ── Bootloader relay (#365) ───────────────────────────────────────────────────
 
 // Update traffic for node n passed through here: UPDATING on, pushed as a delta when it starts.
@@ -403,6 +418,15 @@ static void onBootRsp(uint32_t canId, const uint8_t* data, uint8_t len, uint32_t
     emitBootRsp(canId, data, len);
     if (canId == UNCONFIGURED_RSP_ID) return;   // no NODE_ID yet: nothing to track
     const uint8_t nodeId = (uint8_t)(canId - RSP_ID_BASE);
+    // SET_NODE_ID done (#384): the board restarts under its new ID, so this one is gone on purpose —
+    // forget it rather than let it time out into a WARNING. The new ID shows up on its own.
+    if (len >= 2 && data[0] == (uint8_t)Reply::NODE_SET && data[1] == (uint8_t)Status::OK) {
+        forgetNode(nodeId);
+#if PANELBRIDGE_NODE_STATUS
+        emitAllNodes();
+#endif
+        return;
+    }
 #if PANELBRIDGE_NODE_STATUS
     NodeState& ns = _nodes[nodeId - 1];
     bool changed = false;
@@ -663,6 +687,22 @@ public:
 };
 static NodeStatusReqListener _nodeStatusReqListener;
 #endif
+
+// Host "forget this node" (#384): value = a NODE_ID that is gone on purpose. Only a dead node is
+// dropped — a live one would just come back — then the roster goes out so the host reconciles.
+class NodeForgetListener : public DcsBios::ExportStreamListener {
+public:
+    NodeForgetListener() : DcsBios::ExportStreamListener(NODE_FORGET_REQ_ADDR, NODE_FORGET_REQ_ADDR) {}
+    void onDcsBiosWrite(unsigned int, unsigned int value) override {
+        const uint8_t nodeId = (uint8_t)value;
+        if (nodeId < 1 || nodeId > MAX_NODE_ID || !_nodes[nodeId - 1].everSeen || _nodes[nodeId - 1].alive) return;
+        forgetNode(nodeId);
+#if PANELBRIDGE_NODE_STATUS
+        emitAllNodes();
+#endif
+    }
+};
+static NodeForgetListener _nodeForgetListener;
 
 // The Gateway asks the bridge itself to update (#367): reset into the bootloader, which then talks to
 // the RP2040 over this same UART. Only with a bootloader that speaks serial installed — otherwise the
