@@ -11,6 +11,8 @@
 * **ANNOUNCE\_INTERVAL\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **ANNOUNCE\_LEN** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **APP\_OFFSET** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **ATTEMPTS\_BKP\_REGISTER** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **ATTEMPT\_LIMIT** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **AnnounceField** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **ADC\_FULL** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **aggregateFaults** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -55,6 +57,7 @@
 * **CalSessionOpenField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalStreamSelectField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalType** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CATCH\_WINDOW\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **CMD\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **Cmd** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **canIdBootCmd** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
@@ -132,6 +135,7 @@
 
 ## i
 
+* **IDLE\_TIMEOUT\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **IDENTITY\_OFFSET** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **I\_MA\_PER\_MV** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **isDebug** ([**STM32Board**](namespaceSTM32Board.md))
@@ -174,6 +178,7 @@
 * **makeReadyPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **MAGIC** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **markBootHealthy** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## n
@@ -273,6 +278,7 @@
 
 ## u
 
+* **UID\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNCONFIGURED\_CMD\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNCONFIGURED\_RSP\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNSTAMPED** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))

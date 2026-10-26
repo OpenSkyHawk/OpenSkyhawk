@@ -5025,6 +5025,7 @@
 <span class="w">    </span><span class="c1">// timers arm on the first serviceNodeStatus() call in loop(); the master-loss watchdog stays</span>
 <span class="w">    </span><span class="c1">// disarmed until the first HB_0 is seen.</span>
 <span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendReady</span><span class="p">();</span>
+<span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">markBootHealthy</span><span class="p">();</span><span class="w">   </span><span class="c1">// the bootloader's crash-loop counter back to 0 (#364)</span>
 <span class="p">}</span>
 
 <span class="c1">// ── PanelGroup::loop ──────────────────────────────────────────────────────────</span>

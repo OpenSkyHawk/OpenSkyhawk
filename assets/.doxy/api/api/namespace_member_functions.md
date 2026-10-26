@@ -78,6 +78,7 @@
 * **makeNodeHealthPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeReadyPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **markBootHealthy** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## n

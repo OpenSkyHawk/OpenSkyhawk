@@ -4852,6 +4852,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-markboothealthy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function markBootHealthy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-oncanstatus" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5013,6 +5024,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-markboothealthy"><strong>markBootHealthy</strong></a> () <br><em>Tell the bootloader this boot made it — clears its crash-loop counter (#364).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-oncanstatus"><strong>onCanStatus</strong></a> (<a href="../CANProtocol_8h/#enum-canstatus"><strong>CanStatus</strong></a> status) <br><em>CAN bus status event handler — maps CanStatus to LED state.</em></td>
 </tr>
 <tr>
@@ -5126,6 +5141,15 @@
 </ul>
 <p><strong>Note:</strong></p>
 <p>Library-internal: used by the node-status service. Not sketch API — not covered by the compatibility policy (#295). </p>
+<hr>
+
+<h3 id="function-markboothealthy">function markBootHealthy</h3>
+<p><em>Tell the bootloader this boot made it — clears its crash-loop counter (#364).</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">markBootHealthy</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<p>The bootloader counts every jump to the app in a backup register and stays in charge (APP_UNSTABLE) once the count reaches BootProtocol's ATTEMPT_LIMIT. Call once the node has finished booting: <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> / <a href="../namespacePduNode/"><strong>PduNode</strong></a> after READY, <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> at the end of setup(). Harmless on a board without the bootloader. </p>
+<p><strong>Note:</strong></p>
+<p>Library-internal: the node libraries call it. Not sketch API — not covered by the compatibility policy (#295). </p>
 <hr>
 
 <h3 id="function-oncanstatus">function onCanStatus</h3>

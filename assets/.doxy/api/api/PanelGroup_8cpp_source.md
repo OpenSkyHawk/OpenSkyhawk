@@ -317,6 +317,7 @@ void setup() {
     // timers arm on the first serviceNodeStatus() call in loop(); the master-loss watchdog stays
     // disarmed until the first HB_0 is seen.
     CANProtocol::sendReady();
+    STM32Board::markBootHealthy();   // the bootloader's crash-loop counter back to 0 (#364)
 }
 
 // ── PanelGroup::loop ──────────────────────────────────────────────────────────

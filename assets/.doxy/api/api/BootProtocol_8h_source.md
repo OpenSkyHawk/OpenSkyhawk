@@ -38,6 +38,7 @@ enum class Cmd : uint8_t {
     DATA_9  = 0x29,  
     END     = 0x30,  
     GO      = 0x40,  
+    SET_NODE_ID = 0x50,  
 };
 
 // ── Bootloader → host (BOOT_RSP_n), byte 0 ───────────────────────────────────
@@ -49,23 +50,28 @@ enum class Reply : uint8_t {
     ANNOUNCE    = 0xA0,  
     ENDED       = 0xB0,  
     GOING       = 0xC0,  
+    NODE_SET    = 0xD0,  
 };
 
 enum class AnnounceField : uint8_t {
     CODE     = 0,  
     PROTOCOL = 1,  
-    NODE_ID  = 2,  
+    ID       = 2,  
     KIND     = 3,  
     STATE    = 4,  
     FLASH_KB = 5,  
+    UID16    = 6,  
 };
-constexpr uint8_t ANNOUNCE_LEN = 6;
+constexpr uint8_t  ANNOUNCE_LEN = 8;
+constexpr uint32_t UID_ADDRESS  = 0x1FFFF7E8;  
 
 enum class BootState : uint8_t {
     REQUESTED    = 0x01,  
     APP_INVALID  = 0x02,  
     UNCONFIGURED = 0x03,  
-    // 0x04-0xFF reserved (#364: app unstable, caught at boot)
+    APP_UNSTABLE = 0x04,  
+    CAUGHT       = 0x05,  
+    // 0x06-0xFF reserved
 };
 
 enum class Status : uint8_t {
@@ -76,6 +82,8 @@ enum class Status : uint8_t {
     OUT_OF_ORDER = 0x04,  
     NO_APP       = 0x05,  
     BAD_IMAGE    = 0x06,  
+    WRONG_NODE   = 0x07,  
+    WRONG_KIND   = 0x08,  
 };
 
 // ── Transfer shape ────────────────────────────────────────────────────────────
@@ -94,6 +102,12 @@ constexpr uint32_t APP_OFFSET      = BOOTLOADER_SIZE;
 
 constexpr uint8_t  ENTRY_BKP_REGISTER = 1;
 constexpr uint16_t ENTRY_MAGIC        = 0xB007;
+
+constexpr uint8_t ATTEMPTS_BKP_REGISTER = 2;
+constexpr uint8_t ATTEMPT_LIMIT         = 3;
+
+constexpr uint16_t CATCH_WINDOW_MS  = 200;    
+constexpr uint16_t IDLE_TIMEOUT_MS  = 30000;  
 
 }  // namespace Boot
 }  // namespace OpenSkyhawk

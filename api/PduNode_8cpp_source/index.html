@@ -4947,6 +4947,7 @@
 <span class="w">    </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[PDU] NODE_ID="</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">NODE_ID</span><span class="p">);</span>
 <span class="w">    </span><span class="n">printCal</span><span class="p">();</span>
 <span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendReady</span><span class="p">();</span>
+<span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">markBootHealthy</span><span class="p">();</span><span class="w">   </span><span class="c1">// the bootloader's crash-loop counter back to 0 (#364)</span>
 <span class="p">}</span>
 
 <span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>

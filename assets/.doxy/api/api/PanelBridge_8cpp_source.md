@@ -588,6 +588,7 @@ void setup() {
 #if PANELBRIDGE_NODE_STATUS
     emitAllNodes();   // seed the host with the current roster (node-0 row only at cold boot) (#86)
 #endif
+    STM32Board::markBootHealthy();   // the bootloader's crash-loop counter back to 0 (#364)
 }
 
 void loop() {

@@ -12,6 +12,7 @@
 
 * `#include "STM32Board.h"`
 * `#include <CANProtocol.h>`
+* `#include <BootProtocol.h>`
 
 
 

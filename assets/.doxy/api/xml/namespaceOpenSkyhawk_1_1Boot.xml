@@ -11,7 +11,7 @@
           <name>CONNECT</name>
           <initializer>= 0x01</initializer>
           <briefdescription>
-<para>open a session → <ref refid="namespaceOpenSkyhawk_1_1Boot_1aa6bd79a00367a15bbcf6c2c562704e3aaa5afd6edd5336d91316964e493936858" kindref="member">Reply::CONNECTED</ref> </para>
+<para>open a session → <ref refid="namespaceOpenSkyhawk_1_1Boot_1aa6bd79a00367a15bbcf6c2c562704e3aaa5afd6edd5336d91316964e493936858" kindref="member">Reply::CONNECTED</ref>. On UNCONFIGURED_CMD_ID: [uid16:u16] </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -70,13 +70,22 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1a152fa8f2ccd971a210290e9a4c93bfcca2d40bee859bfe1d025602445dfe0e177" prot="public">
+          <name>SET_NODE_ID</name>
+          <initializer>= 0x50</initializer>
+          <briefdescription>
+<para>[id] after CONNECT: invalidate the app, set NODE_ID (1-63), reset → <ref refid="namespaceOpenSkyhawk_1_1Boot_1aa6bd79a00367a15bbcf6c2c562704e3aa39a86db17e1f32175e4bcf2e871c4146" kindref="member">Reply::NODE_SET</ref> (#364) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="42" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="42" bodyend="50"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="44" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="44" bodyend="53"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1_1Boot_1aa6bd79a00367a15bbcf6c2c562704e3a" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -136,13 +145,22 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1aa6bd79a00367a15bbcf6c2c562704e3aa39a86db17e1f32175e4bcf2e871c4146" prot="public">
+          <name>NODE_SET</name>
+          <initializer>= 0xD0</initializer>
+          <briefdescription>
+<para>[status]; on OK the board resets and answers on its new BOOT_RSP_n </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="54" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="54" bodyend="61"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="57" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="57" bodyend="65"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1_1Boot_1ab8038d4ca9cf2dd8b65015ffa37e2e80" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -166,11 +184,11 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
-        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1ab8038d4ca9cf2dd8b65015ffa37e2e80a6a712031b86b598cd798b8b743831838" prot="public">
-          <name>NODE_ID</name>
+        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1ab8038d4ca9cf2dd8b65015ffa37e2e80ab718adec73e04ce3ec720dd11a06a308" prot="public">
+          <name>ID</name>
           <initializer>= 2</initializer>
           <briefdescription>
-<para>option byte Data0 (0xFF = unconfigured) </para>
+<para>NODE_ID — option byte Data0 (0xFF = unconfigured). Not &quot;NODE_ID&quot;: every node build defines that macro. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -202,6 +220,15 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1ab8038d4ca9cf2dd8b65015ffa37e2e80a67f260fa1297dd44dc06355d9a02abe8" prot="public">
+          <name>UID16</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+<para>u16: low half of CRC-32/MPEG-2 over the chip&apos;s 96-bit UID — tells boards apart (#364) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
 <para>Byte offsets in ANNOUNCE / CONNECTED. </para>
         </briefdescription>
@@ -209,7 +236,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="64" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="64" bodyend="71"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="68" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="68" bodyend="76"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1_1Boot_1add9035f2d0d7d09b6c8dc682d4b07bee" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -242,6 +269,24 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1add9035f2d0d7d09b6c8dc682d4b07beea2e8eb465b80b43c25628e3f704663d99" prot="public">
+          <name>APP_UNSTABLE</name>
+          <initializer>= 0x04</initializer>
+          <briefdescription>
+<para>the app reset ATTEMPT_LIMIT times without reporting healthy (#364) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1add9035f2d0d7d09b6c8dc682d4b07beeaf67a3bdb4927fa4ed55d0a24685ac4b3" prot="public">
+          <name>CAUGHT</name>
+          <initializer>= 0x05</initializer>
+          <briefdescription>
+<para>a CONNECT arrived in the CATCH_WINDOW_MS after reset (#364) — the app may be valid </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
 <para>Why the board is in its bootloader (<ref refid="namespaceOpenSkyhawk_1_1Boot_1ab8038d4ca9cf2dd8b65015ffa37e2e80a2b848a8cc886d253d21a77c43cd50aae" kindref="member">AnnounceField::STATE</ref>). </para>
         </briefdescription>
@@ -249,7 +294,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="75" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="75" bodyend="80"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="81" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="81" bodyend="88"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1_1Boot_1a63dac43fd466b09dce18f536770b0c5d" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -317,6 +362,24 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1a63dac43fd466b09dce18f536770b0c5da9b398440002289e4b800e460f43df642" prot="public">
+          <name>WRONG_NODE</name>
+          <initializer>= 0x07</initializer>
+          <briefdescription>
+<para>the image&apos;s nodeId isn&apos;t this board&apos;s NODE_ID — SET_NODE_ID first (#364) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1_1Boot_1a63dac43fd466b09dce18f536770b0c5da2ecb83cb035c8bf1a70ab7e78ad77ad6" prot="public">
+          <name>WRONG_KIND</name>
+          <initializer>= 0x08</initializer>
+          <briefdescription>
+<para>the image&apos;s nodeKind isn&apos;t this board&apos;s kind — never accepted (#364) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
 <para>Result byte of BEGUN / BLOCK_ACK / ENDED / GOING. </para>
         </briefdescription>
@@ -324,7 +387,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="83" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="83" bodyend="91"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="91" column="1" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="91" bodyend="101"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -400,13 +463,13 @@
         <qualifiedname>OpenSkyhawk::Boot::UNCONFIGURED_CMD_ID</qualifiedname>
         <initializer>= 0x7C0</initializer>
         <briefdescription>
-<para>Commands to an unconfigured bootloader, addressed by chip UID — reserved for #364, unused in #363. </para>
         </briefdescription>
         <detaileddescription>
+<para>Commands to an unconfigured bootloader (#364). CONNECT names the board&apos;s UID hash (<ref refid="namespaceOpenSkyhawk_1_1Boot_1ab8038d4ca9cf2dd8b65015ffa37e2e80a67f260fa1297dd44dc06355d9a02abe8" kindref="member">AnnounceField::UID16</ref>); only that board binds the session and answers on UNCONFIGURED_RSP_ID. One unconfigured board on the bus at a time. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="38" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="38" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="40" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="40" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a4192a8c574b8e283c71606e6cdbe0775" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -414,14 +477,30 @@
         <argsstring></argsstring>
         <name>ANNOUNCE_LEN</name>
         <qualifiedname>OpenSkyhawk::Boot::ANNOUNCE_LEN</qualifiedname>
-        <initializer>= 6</initializer>
+        <initializer>= 8</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="72" column="19" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="72" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="77" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a7dc9a190bab488a2b97d38b219fe9c65" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::Boot::UID_ADDRESS</definition>
+        <argsstring></argsstring>
+        <name>UID_ADDRESS</name>
+        <qualifiedname>OpenSkyhawk::Boot::UID_ADDRESS</qualifiedname>
+        <initializer>= 0x1FFFF7E8</initializer>
+        <briefdescription>
+<para>the F103&apos;s 96-bit unique ID </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="78" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="78" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a724b0287cb881f7351c576d701e083f6" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint16_t</type>
@@ -437,7 +516,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="95" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="95" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="105" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="105" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a69951be7adba5cafad1867d771b08798" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -453,7 +532,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="96" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="96" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="106" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="106" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a849bfac4dfd242a3777a0af6c568da9b" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -469,7 +548,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="97" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="97" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="107" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="107" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a8f2115ec6b2e542d6c02f5d215344d9a" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint16_t</type>
@@ -484,7 +563,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="98" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="98" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="108" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="108" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a5ba65671e585af68387c376ee32934a7" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint32_t</type>
@@ -500,7 +579,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="104" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="104" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="114" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="114" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1acdb92e4b0c74dd6a01d769def7ae9ee7" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint32_t</type>
@@ -515,7 +594,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="105" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="105" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="115" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="115" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1af2fd631255e6d5776bc0e58517fbff74" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -531,7 +610,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="109" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="109" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="119" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="119" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a5ed6f975dba2d572132efb2143d399d1" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint16_t</type>
@@ -546,7 +625,70 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="110" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="110" bodyend="-1"/>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="120" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a9b03ea27984f6b4d0eb23bb49da5b977" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::Boot::ATTEMPTS_BKP_REGISTER</definition>
+        <argsstring></argsstring>
+        <name>ATTEMPTS_BKP_REGISTER</name>
+        <qualifiedname>OpenSkyhawk::Boot::ATTEMPTS_BKP_REGISTER</qualifiedname>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Crash-loop counter (#364): the bootloader adds one before every jump to the app; the app sets it back to 0 once it is healthy (<ref refid="namespaceSTM32Board_1a5bd5eca4fdf29f15d237a990aa52fbf1" kindref="member">STM32Board::markBootHealthy()</ref>). At ATTEMPT_LIMIT the bootloader stays (<ref refid="namespaceOpenSkyhawk_1_1Boot_1add9035f2d0d7d09b6c8dc682d4b07beea2e8eb465b80b43c25628e3f704663d99" kindref="member">BootState::APP_UNSTABLE</ref>). Cleared by a committed image; lost on a power cycle. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="125" column="19" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a2cd6e35c149a84f5b5ea71a023e6f313" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::Boot::ATTEMPT_LIMIT</definition>
+        <argsstring></argsstring>
+        <name>ATTEMPT_LIMIT</name>
+        <qualifiedname>OpenSkyhawk::Boot::ATTEMPT_LIMIT</qualifiedname>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="126" column="19" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1ad890646b188a7f4fb94bd6d587cfee8f" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::Boot::CATCH_WINDOW_MS</definition>
+        <argsstring></argsstring>
+        <name>CATCH_WINDOW_MS</name>
+        <qualifiedname>OpenSkyhawk::Boot::CATCH_WINDOW_MS</qualifiedname>
+        <initializer>= 200</initializer>
+        <briefdescription>
+<para>after every reset, a CONNECT on BOOT_CMD_n keeps the board here (#364) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="128" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1_1Boot_1a4c5dc686e224bb00f694ed963d3935db" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::Boot::IDLE_TIMEOUT_MS</definition>
+        <argsstring></argsstring>
+        <name>IDLE_TIMEOUT_MS</name>
+        <qualifiedname>OpenSkyhawk::Boot::IDLE_TIMEOUT_MS</qualifiedname>
+        <initializer>= 30000</initializer>
+        <briefdescription>
+<para>REQUESTED / CAUGHT with no command this long → back to the app (#364) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/BootProtocol/BootProtocol.h" line="129" column="20" bodyfile="Firmware/Libraries/BootProtocol/BootProtocol.h" bodystart="129" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">

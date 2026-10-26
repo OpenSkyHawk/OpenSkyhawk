@@ -64,6 +64,7 @@
 |  bool | [**isDebug**](#function-isdebug) () <br>_Returns true when debug output is enabled._  |
 |  void | [**log**](#function-log) (const char \* msg) <br>_Print a line to DiagSerial if debug is enabled; no-op otherwise._  |
 |  void | [**logNodeFaultEdge**](#function-lognodefaultedge) (const char \* tag, [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) fault, const char \* detail) <br>_Edge-log a node's fault transition to DiagSerial (#163)._  |
+|  void | [**markBootHealthy**](#function-markboothealthy) () <br>_Tell the bootloader this boot made it — clears its crash-loop counter (#364)._  |
 |  void | [**onCanStatus**](#function-oncanstatus) ([**CanStatus**](CANProtocol_8h.md#enum-canstatus) status) <br>_CAN bus status event handler — maps CanStatus to LED state._  |
 |  int8\_t | [**readDieTempC**](#function-readdietempc) () <br>_Read the MCU's built-in internal temperature sensor (ADC ch16)._  |
 |  uint16\_t | [**readVddMv**](#function-readvddmv) () <br>_Estimate MCU Vdd from the internal reference (Vrefint, ADC ch17)._  |
@@ -315,6 +316,31 @@ Holds its own static prev-fault state. A firmware binary has exactly ONE node id
 **Note:**
 
 Library-internal: used by the node-status service. Not sketch API — not covered by the compatibility policy (#295). 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function markBootHealthy 
+
+_Tell the bootloader this boot made it — clears its crash-loop counter (#364)._ 
+```C++
+void STM32Board::markBootHealthy () 
+```
+
+
+
+The bootloader counts every jump to the app in a backup register and stays in charge (APP\_UNSTABLE) once the count reaches BootProtocol's ATTEMPT\_LIMIT. Call once the node has finished booting: [**PanelGroup**](namespacePanelGroup.md) / [**PduNode**](namespacePduNode.md) after READY, [**PanelBridge**](namespacePanelBridge.md) at the end of setup(). Harmless on a board without the bootloader. 
+
+**Note:**
+
+Library-internal: the node libraries call it. Not sketch API — not covered by the compatibility policy (#295). 
 
 
 

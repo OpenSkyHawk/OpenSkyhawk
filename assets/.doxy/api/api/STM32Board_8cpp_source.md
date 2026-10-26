@@ -12,6 +12,7 @@
 
 #include "STM32Board.h"
 #include <CANProtocol.h>  // for CanStatus enum values
+#include <BootProtocol.h> // ATTEMPTS_BKP_REGISTER — the bootloader's crash-loop counter (#364)
 
 // ── Private types ─────────────────────────────────────────────────────────────
 
@@ -387,6 +388,13 @@ void logNodeFaultEdge(const char* tag, NodeFaultCode fault, const char* detail) 
         }
     }
     _prevFault = fault;
+}
+
+void markBootHealthy() {
+    __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_RCC_BKP_CLK_ENABLE();
+    HAL_PWR_EnableBkUpAccess();
+    (&BKP->DR1)[OpenSkyhawk::Boot::ATTEMPTS_BKP_REGISTER - 1] = 0;   // DR1..DR10 sit 32 bits apart
 }
 
 #ifdef STM32BOARD_TEST

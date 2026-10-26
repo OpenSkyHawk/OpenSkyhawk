@@ -4746,6 +4746,7 @@
 <span class="w">    </span><span class="n">DATA_9</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x29</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">END</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mh">0x30</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">GO</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x40</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="n">SET_NODE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x50</span><span class="p">,</span><span class="w">  </span>
 <span class="p">};</span>
 
 <span class="c1">// ── Bootloader → host (BOOT_RSP_n), byte 0 ───────────────────────────────────</span>
@@ -4757,23 +4758,28 @@
 <span class="w">    </span><span class="n">ANNOUNCE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0xA0</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">ENDED</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mh">0xB0</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">GOING</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mh">0xC0</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="n">NODE_SET</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0xD0</span><span class="p">,</span><span class="w">  </span>
 <span class="p">};</span>
 
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AnnounceField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">CODE</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">PROTOCOL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span>
-<span class="w">    </span><span class="n">NODE_ID</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="n">ID</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">KIND</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">STATE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">FLASH_KB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="n">UID16</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">  </span>
 <span class="p">};</span>
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ANNOUNCE_LEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">ANNOUNCE_LEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">UID_ADDRESS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1FFFF7E8</span><span class="p">;</span><span class="w">  </span>
 
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">BootState</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">REQUESTED</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">APP_INVALID</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">UNCONFIGURED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w">  </span>
-<span class="w">    </span><span class="c1">// 0x04-0xFF reserved (#364: app unstable, caught at boot)</span>
+<span class="w">    </span><span class="n">APP_UNSTABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="n">CAUGHT</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">// 0x06-0xFF reserved</span>
 <span class="p">};</span>
 
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Status</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
@@ -4784,6 +4790,8 @@
 <span class="w">    </span><span class="n">OUT_OF_ORDER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">NO_APP</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w">  </span>
 <span class="w">    </span><span class="n">BAD_IMAGE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="n">WRONG_NODE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="n">WRONG_KIND</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w">  </span>
 <span class="p">};</span>
 
 <span class="c1">// ── Transfer shape ────────────────────────────────────────────────────────────</span>
@@ -4802,6 +4810,12 @@
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">ENTRY_BKP_REGISTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">ENTRY_MAGIC</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mh">0xB007</span><span class="p">;</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ATTEMPTS_BKP_REGISTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ATTEMPT_LIMIT</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CATCH_WINDOW_MS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w">    </span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">IDLE_TIMEOUT_MS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">30000</span><span class="p">;</span><span class="w">  </span>
 
 <span class="p">}</span><span class="w">  </span><span class="c1">// namespace Boot</span>
 <span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>

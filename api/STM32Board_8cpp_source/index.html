@@ -4720,6 +4720,7 @@
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"STM32Board.h"</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;CANProtocol.h&gt;</span><span class="w">  </span><span class="c1">// for CanStatus enum values</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;BootProtocol.h&gt;</span><span class="w"> </span><span class="c1">// ATTEMPTS_BKP_REGISTER — the bootloader's crash-loop counter (#364)</span>
 
 <span class="c1">// ── Private types ─────────────────────────────────────────────────────────────</span>
 
@@ -5095,6 +5096,13 @@
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">    </span><span class="n">_prevFault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fault</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">markBootHealthy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">__HAL_RCC_PWR_CLK_ENABLE</span><span class="p">();</span>
+<span class="w">    </span><span class="n">__HAL_RCC_BKP_CLK_ENABLE</span><span class="p">();</span>
+<span class="w">    </span><span class="n">HAL_PWR_EnableBkUpAccess</span><span class="p">();</span>
+<span class="w">    </span><span class="p">(</span><span class="o">&amp;</span><span class="n">BKP</span><span class="o">-&gt;</span><span class="n">DR1</span><span class="p">)[</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">ATTEMPTS_BKP_REGISTER</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// DR1..DR10 sit 32 bits apart</span>
 <span class="p">}</span>
 
 <span class="cp">#ifdef STM32BOARD_TEST</span>

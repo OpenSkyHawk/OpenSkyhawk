@@ -715,111 +715,112 @@
 <codeline lineno="578"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>PANELBRIDGE_NODE_STATUS</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="579"><highlight class="normal"><sp/><sp/><sp/><sp/>emitAllNodes();<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>seed<sp/>the<sp/>host<sp/>with<sp/>the<sp/>current<sp/>roster<sp/>(node-0<sp/>row<sp/>only<sp/>at<sp/>cold<sp/>boot)<sp/>(#86)</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="580"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="581"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="582"><highlight class="normal"></highlight></codeline>
-<codeline lineno="583"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/>{</highlight></codeline>
-<codeline lineno="584"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kindref="member">STM32Board::tick</ref>();</highlight></codeline>
-<codeline lineno="585"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">CANProtocol::drain</ref>();</highlight></codeline>
-<codeline lineno="586"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Sample<sp/>`now`<sp/>AFTER<sp/>draining<sp/>CAN<sp/>RX.<sp/>onCanRx<sp/>(called<sp/>from<sp/>drain)<sp/>stamps<sp/>each<sp/>node&apos;s</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="587"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>lastSeenMs<sp/>with<sp/>its<sp/>own<sp/>millis();<sp/>if<sp/>`now`<sp/>were<sp/>sampled<sp/>before<sp/>drain,<sp/>a<sp/>millisecond<sp/>ticking</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="588"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>over<sp/>during<sp/>drain<sp/>leaves<sp/>now<sp/>&lt;<sp/>lastSeenMs,<sp/>and<sp/>the<sp/>unsigned<sp/>`now<sp/>-<sp/>lastSeenMs`<sp/>in</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="589"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>checkNodeTimeouts<sp/>underflows<sp/>to<sp/>~4.29e9<sp/>&gt;<sp/>HB_TIMEOUT_MS<sp/>—<sp/>a<sp/>false<sp/>one-loop<sp/>&quot;dead&quot;<sp/>flap<sp/>on<sp/>a</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="590"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>node<sp/>that<sp/>is<sp/>transmitting<sp/>normally<sp/>(#225).</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="591"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
-<codeline lineno="592"><highlight class="normal"><sp/><sp/><sp/><sp/>checkNodeTimeouts(now);</highlight></codeline>
-<codeline lineno="593"><highlight class="normal"></highlight></codeline>
-<codeline lineno="594"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Node<sp/>status<sp/>(#340):<sp/>HB_0<sp/>every<sp/>500<sp/>ms<sp/>and<sp/>HEALTH_0<sp/>every<sp/>1<sp/>s.<sp/>HB_0<sp/>is<sp/>an<sp/>unconditional</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="595"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>liveness<sp/>beacon<sp/>—<sp/>unlike<sp/>CTRL_BCAST,<sp/>which<sp/>only<sp/>moves<sp/>when<sp/>a<sp/>DCS<sp/>export<sp/>changes<sp/>—<sp/>so<sp/>nodes</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="596"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>detect<sp/>master<sp/>loss<sp/>even<sp/>when<sp/>the<sp/>sim<sp/>is<sp/>idle/paused.<sp/>The<sp/>bridge<sp/>is<sp/>a<sp/>node<sp/>too:<sp/>its<sp/>own</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="597"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FaultSources<sp/>(e.g.<sp/>a<sp/>future<sp/>host-link<sp/>watchdog)<sp/>roll<sp/>up<sp/>into<sp/>HEALTH_0.<sp/>No<sp/>master<sp/>watchdog</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="598"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>runs<sp/>here<sp/>(NODE_ID<sp/>0<sp/>is<sp/>the<sp/>master);<sp/>the<sp/>bridge<sp/>keeps<sp/>no<sp/>RX<sp/>count<sp/>for<sp/>its<sp/>heartbeat.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="599"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">CANProtocol::serviceNodeStatus</ref>(<ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4aa75a1789547188e39e2e344c286d2b62" kindref="member">NodeKind::BRIDGE</ref>);</highlight></codeline>
-<codeline lineno="600"><highlight class="normal"></highlight></codeline>
-<codeline lineno="601"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>diag<sp/>=<sp/><ref refid="namespaceSTM32Board_1a54f0c0c3de2c351a93f77c8a851c4861" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
-<codeline lineno="602"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(diag.available())<sp/>{</highlight></codeline>
-<codeline lineno="603"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>(char)diag.read();</highlight></codeline>
-<codeline lineno="604"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(c<sp/>!=<sp/></highlight><highlight class="charliteral">&apos;T&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="605"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_testSeqNum++;</highlight></codeline>
-<codeline lineno="606"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_testSeqSentMs<sp/>=<sp/>millis();</highlight></codeline>
-<codeline lineno="607"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>payload[8]<sp/>=<sp/>{};</highlight></codeline>
-<codeline lineno="608"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[0]<sp/>=<sp/>(uint8_t)(_testSeqNum<sp/>&amp;<sp/>0xFF);</highlight></codeline>
-<codeline lineno="609"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[1]<sp/>=<sp/>(uint8_t)(_testSeqNum<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
-<codeline lineno="610"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[2]<sp/>=<sp/>(uint8_t)(_testSeqSentMs<sp/>&amp;<sp/>0xFF);</highlight></codeline>
-<codeline lineno="611"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[3]<sp/>=<sp/>(uint8_t)((_testSeqSentMs<sp/>&gt;&gt;<sp/><sp/>8)<sp/>&amp;<sp/>0xFF);</highlight></codeline>
-<codeline lineno="612"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[4]<sp/>=<sp/>(uint8_t)((_testSeqSentMs<sp/>&gt;&gt;<sp/>16)<sp/>&amp;<sp/>0xFF);</highlight></codeline>
-<codeline lineno="613"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[5]<sp/>=<sp/>(uint8_t)((_testSeqSentMs<sp/>&gt;&gt;<sp/>24)<sp/>&amp;<sp/>0xFF);</highlight></codeline>
-<codeline lineno="614"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>payload[6..7]<sp/>=<sp/>reserved<sp/>=<sp/>0</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="615"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" kindref="member">CANProtocol::send</ref>(<ref refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" kindref="member">CAN_ID_TEST_SEQ</ref>,<sp/>payload,<sp/>8);</highlight></codeline>
-<codeline lineno="616"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
-<codeline lineno="617"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>diag.print(F(</highlight><highlight class="stringliteral">&quot;[BRIDGE]<sp/>TEST_SEQ<sp/>seq=&quot;</highlight><highlight class="normal">));<sp/>diag.println(_testSeqNum);</highlight></codeline>
-<codeline lineno="618"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="619"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="620"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="621"><highlight class="normal"></highlight></codeline>
-<codeline lineno="622"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelBridge</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="623"><highlight class="normal"></highlight></codeline>
-<codeline lineno="624"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>PANELBRIDGE_TEST</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="625"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref><sp/>{</highlight></codeline>
-<codeline lineno="626"><highlight class="normal"></highlight></codeline>
-<codeline lineno="627"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testDispatchEvt(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
-<codeline lineno="628"><highlight class="normal"><sp/><sp/><sp/><sp/>dispatchEvtSlot(controlId,<sp/>value);</highlight></codeline>
-<codeline lineno="629"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="630"><highlight class="normal"></highlight></codeline>
-<codeline lineno="631"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testDispatchRel(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
-<codeline lineno="632"><highlight class="normal"><sp/><sp/><sp/><sp/>dispatchRelSlot(controlId,<sp/>value);</highlight></codeline>
-<codeline lineno="633"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="634"><highlight class="normal"></highlight></codeline>
-<codeline lineno="635"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testDispatchDir(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
-<codeline lineno="636"><highlight class="normal"><sp/><sp/><sp/><sp/>dispatchDirSlot(controlId,<sp/>value);</highlight></codeline>
-<codeline lineno="637"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="638"><highlight class="normal"></highlight></codeline>
-<codeline lineno="639"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testDispatchAction(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
-<codeline lineno="640"><highlight class="normal"><sp/><sp/><sp/><sp/>dispatchActionSlot(controlId,<sp/>value);</highlight></codeline>
-<codeline lineno="641"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="642"><highlight class="normal"></highlight></codeline>
-<codeline lineno="643"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testFeedCanFrame(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/>uint8_t<sp/>len)<sp/>{</highlight></codeline>
-<codeline lineno="644"><highlight class="normal"><sp/><sp/><sp/><sp/>onCanRx(canId,<sp/>data,<sp/>len);</highlight></codeline>
-<codeline lineno="645"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="646"><highlight class="normal"></highlight></codeline>
-<codeline lineno="647"><highlight class="normal">uint32_t<sp/>testDcsSendCount()<sp/>{</highlight></codeline>
-<codeline lineno="648"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_testDcsSends;</highlight></codeline>
-<codeline lineno="649"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="650"><highlight class="normal"></highlight></codeline>
-<codeline lineno="651"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testHandleExport(uint16_t<sp/>address,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
-<codeline lineno="652"><highlight class="normal"><sp/><sp/><sp/><sp/>handleDcsBiosExport(address,<sp/>value);</highlight></codeline>
-<codeline lineno="653"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="654"><highlight class="normal"></highlight></codeline>
-<codeline lineno="655"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>PANELBRIDGE_NODE_STATUS</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="656"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testFeedHeartbeat(uint8_t<sp/>nodeId,<sp/>uint8_t<sp/>flags,<sp/>uint16_t<sp/>uptime,</highlight></codeline>
-<codeline lineno="657"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>rxCount,<sp/>uint16_t<sp/>esr)<sp/>{</highlight></codeline>
-<codeline lineno="658"><highlight class="normal"><sp/><sp/><sp/><sp/>HeartbeatPayload<sp/>hb{<sp/>nodeId,<sp/>flags,<sp/>uptime,<sp/>rxCount,<sp/>esr<sp/>};</highlight></codeline>
-<codeline lineno="659"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(&amp;_nodes[nodeId<sp/>-<sp/>1].last,<sp/>&amp;hb,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(hb));</highlight></codeline>
-<codeline lineno="660"><highlight class="normal"><sp/><sp/><sp/><sp/>markNodeAlive(nodeId,<sp/>millis());</highlight></codeline>
-<codeline lineno="661"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="662"><highlight class="normal"></highlight></codeline>
-<codeline lineno="663"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testFeedHealth(uint8_t<sp/>nodeId,<sp/>int8_t<sp/>dieTempC,</highlight></codeline>
-<codeline lineno="664"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>hFlags,<sp/>uint8_t<sp/>faultMask,<sp/>uint8_t<sp/>faultId,<sp/>uint8_t<sp/>nodeKind)<sp/>{</highlight></codeline>
-<codeline lineno="665"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Mirrors<sp/>the<sp/>HEALTH_n<sp/>branch<sp/>of<sp/>onCanRx:<sp/>no<sp/>liveness<sp/>change;<sp/>a<sp/>kind<sp/>change<sp/>pushes<sp/>a<sp/>delta.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="666"><highlight class="normal"><sp/><sp/><sp/><sp/>NodeState&amp;<sp/>ns<sp/>=<sp/>_nodes[nodeId<sp/>-<sp/>1];</highlight></codeline>
-<codeline lineno="667"><highlight class="normal"><sp/><sp/><sp/><sp/>ns.dieTempC<sp/><sp/><sp/><sp/>=<sp/>dieTempC;</highlight></codeline>
-<codeline lineno="668"><highlight class="normal"><sp/><sp/><sp/><sp/>ns.healthFlags<sp/>=<sp/>hFlags;</highlight></codeline>
-<codeline lineno="669"><highlight class="normal"><sp/><sp/><sp/><sp/>ns.faultMask<sp/><sp/><sp/>=<sp/>faultMask;</highlight></codeline>
-<codeline lineno="670"><highlight class="normal"><sp/><sp/><sp/><sp/>ns.faultId<sp/><sp/><sp/><sp/><sp/>=<sp/>faultId;</highlight></codeline>
-<codeline lineno="671"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeKind<sp/>!=<sp/>ns.nodeKind)<sp/>{</highlight></codeline>
-<codeline lineno="672"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ns.nodeKind<sp/>=<sp/>nodeKind;</highlight></codeline>
-<codeline lineno="673"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ns.alive)<sp/>emitNode(nodeId,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="674"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="675"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="676"><highlight class="normal"></highlight></codeline>
-<codeline lineno="677"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testRequestNodeStatus()<sp/>{<sp/>emitAllNodes();<sp/>}</highlight></codeline>
-<codeline lineno="678"><highlight class="normal"></highlight></codeline>
-<codeline lineno="679"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testCheckTimeouts(uint32_t<sp/>now)<sp/>{<sp/>checkNodeTimeouts(now);<sp/>}</highlight></codeline>
-<codeline lineno="680"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>PANELBRIDGE_NODE_STATUS</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="681"><highlight class="normal"></highlight></codeline>
-<codeline lineno="682"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelBridge</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="683"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>PANELBRIDGE_TEST</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="684"><highlight class="normal"></highlight></codeline>
-<codeline lineno="685"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="581"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a5bd5eca4fdf29f15d237a990aa52fbf1" kindref="member">STM32Board::markBootHealthy</ref>();<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>bootloader&apos;s<sp/>crash-loop<sp/>counter<sp/>back<sp/>to<sp/>0<sp/>(#364)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="582"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="583"><highlight class="normal"></highlight></codeline>
+<codeline lineno="584"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="585"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kindref="member">STM32Board::tick</ref>();</highlight></codeline>
+<codeline lineno="586"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">CANProtocol::drain</ref>();</highlight></codeline>
+<codeline lineno="587"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Sample<sp/>`now`<sp/>AFTER<sp/>draining<sp/>CAN<sp/>RX.<sp/>onCanRx<sp/>(called<sp/>from<sp/>drain)<sp/>stamps<sp/>each<sp/>node&apos;s</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="588"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>lastSeenMs<sp/>with<sp/>its<sp/>own<sp/>millis();<sp/>if<sp/>`now`<sp/>were<sp/>sampled<sp/>before<sp/>drain,<sp/>a<sp/>millisecond<sp/>ticking</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="589"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>over<sp/>during<sp/>drain<sp/>leaves<sp/>now<sp/>&lt;<sp/>lastSeenMs,<sp/>and<sp/>the<sp/>unsigned<sp/>`now<sp/>-<sp/>lastSeenMs`<sp/>in</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="590"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>checkNodeTimeouts<sp/>underflows<sp/>to<sp/>~4.29e9<sp/>&gt;<sp/>HB_TIMEOUT_MS<sp/>—<sp/>a<sp/>false<sp/>one-loop<sp/>&quot;dead&quot;<sp/>flap<sp/>on<sp/>a</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="591"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>node<sp/>that<sp/>is<sp/>transmitting<sp/>normally<sp/>(#225).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="592"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="593"><highlight class="normal"><sp/><sp/><sp/><sp/>checkNodeTimeouts(now);</highlight></codeline>
+<codeline lineno="594"><highlight class="normal"></highlight></codeline>
+<codeline lineno="595"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Node<sp/>status<sp/>(#340):<sp/>HB_0<sp/>every<sp/>500<sp/>ms<sp/>and<sp/>HEALTH_0<sp/>every<sp/>1<sp/>s.<sp/>HB_0<sp/>is<sp/>an<sp/>unconditional</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="596"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>liveness<sp/>beacon<sp/>—<sp/>unlike<sp/>CTRL_BCAST,<sp/>which<sp/>only<sp/>moves<sp/>when<sp/>a<sp/>DCS<sp/>export<sp/>changes<sp/>—<sp/>so<sp/>nodes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="597"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>detect<sp/>master<sp/>loss<sp/>even<sp/>when<sp/>the<sp/>sim<sp/>is<sp/>idle/paused.<sp/>The<sp/>bridge<sp/>is<sp/>a<sp/>node<sp/>too:<sp/>its<sp/>own</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="598"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FaultSources<sp/>(e.g.<sp/>a<sp/>future<sp/>host-link<sp/>watchdog)<sp/>roll<sp/>up<sp/>into<sp/>HEALTH_0.<sp/>No<sp/>master<sp/>watchdog</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="599"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>runs<sp/>here<sp/>(NODE_ID<sp/>0<sp/>is<sp/>the<sp/>master);<sp/>the<sp/>bridge<sp/>keeps<sp/>no<sp/>RX<sp/>count<sp/>for<sp/>its<sp/>heartbeat.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="600"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">CANProtocol::serviceNodeStatus</ref>(<ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4aa75a1789547188e39e2e344c286d2b62" kindref="member">NodeKind::BRIDGE</ref>);</highlight></codeline>
+<codeline lineno="601"><highlight class="normal"></highlight></codeline>
+<codeline lineno="602"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>diag<sp/>=<sp/><ref refid="namespaceSTM32Board_1a54f0c0c3de2c351a93f77c8a851c4861" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
+<codeline lineno="603"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(diag.available())<sp/>{</highlight></codeline>
+<codeline lineno="604"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>(char)diag.read();</highlight></codeline>
+<codeline lineno="605"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(c<sp/>!=<sp/></highlight><highlight class="charliteral">&apos;T&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="606"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_testSeqNum++;</highlight></codeline>
+<codeline lineno="607"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_testSeqSentMs<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="608"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>payload[8]<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="609"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[0]<sp/>=<sp/>(uint8_t)(_testSeqNum<sp/>&amp;<sp/>0xFF);</highlight></codeline>
+<codeline lineno="610"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[1]<sp/>=<sp/>(uint8_t)(_testSeqNum<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
+<codeline lineno="611"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[2]<sp/>=<sp/>(uint8_t)(_testSeqSentMs<sp/>&amp;<sp/>0xFF);</highlight></codeline>
+<codeline lineno="612"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[3]<sp/>=<sp/>(uint8_t)((_testSeqSentMs<sp/>&gt;&gt;<sp/><sp/>8)<sp/>&amp;<sp/>0xFF);</highlight></codeline>
+<codeline lineno="613"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[4]<sp/>=<sp/>(uint8_t)((_testSeqSentMs<sp/>&gt;&gt;<sp/>16)<sp/>&amp;<sp/>0xFF);</highlight></codeline>
+<codeline lineno="614"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>payload[5]<sp/>=<sp/>(uint8_t)((_testSeqSentMs<sp/>&gt;&gt;<sp/>24)<sp/>&amp;<sp/>0xFF);</highlight></codeline>
+<codeline lineno="615"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>payload[6..7]<sp/>=<sp/>reserved<sp/>=<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="616"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" kindref="member">CANProtocol::send</ref>(<ref refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" kindref="member">CAN_ID_TEST_SEQ</ref>,<sp/>payload,<sp/>8);</highlight></codeline>
+<codeline lineno="617"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="618"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>diag.print(F(</highlight><highlight class="stringliteral">&quot;[BRIDGE]<sp/>TEST_SEQ<sp/>seq=&quot;</highlight><highlight class="normal">));<sp/>diag.println(_testSeqNum);</highlight></codeline>
+<codeline lineno="619"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="620"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="621"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="622"><highlight class="normal"></highlight></codeline>
+<codeline lineno="623"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelBridge</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="624"><highlight class="normal"></highlight></codeline>
+<codeline lineno="625"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>PANELBRIDGE_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="626"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref><sp/>{</highlight></codeline>
+<codeline lineno="627"><highlight class="normal"></highlight></codeline>
+<codeline lineno="628"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testDispatchEvt(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="629"><highlight class="normal"><sp/><sp/><sp/><sp/>dispatchEvtSlot(controlId,<sp/>value);</highlight></codeline>
+<codeline lineno="630"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="631"><highlight class="normal"></highlight></codeline>
+<codeline lineno="632"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testDispatchRel(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="633"><highlight class="normal"><sp/><sp/><sp/><sp/>dispatchRelSlot(controlId,<sp/>value);</highlight></codeline>
+<codeline lineno="634"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="635"><highlight class="normal"></highlight></codeline>
+<codeline lineno="636"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testDispatchDir(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="637"><highlight class="normal"><sp/><sp/><sp/><sp/>dispatchDirSlot(controlId,<sp/>value);</highlight></codeline>
+<codeline lineno="638"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="639"><highlight class="normal"></highlight></codeline>
+<codeline lineno="640"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testDispatchAction(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="641"><highlight class="normal"><sp/><sp/><sp/><sp/>dispatchActionSlot(controlId,<sp/>value);</highlight></codeline>
+<codeline lineno="642"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="643"><highlight class="normal"></highlight></codeline>
+<codeline lineno="644"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testFeedCanFrame(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/>uint8_t<sp/>len)<sp/>{</highlight></codeline>
+<codeline lineno="645"><highlight class="normal"><sp/><sp/><sp/><sp/>onCanRx(canId,<sp/>data,<sp/>len);</highlight></codeline>
+<codeline lineno="646"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="647"><highlight class="normal"></highlight></codeline>
+<codeline lineno="648"><highlight class="normal">uint32_t<sp/>testDcsSendCount()<sp/>{</highlight></codeline>
+<codeline lineno="649"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_testDcsSends;</highlight></codeline>
+<codeline lineno="650"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="651"><highlight class="normal"></highlight></codeline>
+<codeline lineno="652"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testHandleExport(uint16_t<sp/>address,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="653"><highlight class="normal"><sp/><sp/><sp/><sp/>handleDcsBiosExport(address,<sp/>value);</highlight></codeline>
+<codeline lineno="654"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="655"><highlight class="normal"></highlight></codeline>
+<codeline lineno="656"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>PANELBRIDGE_NODE_STATUS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="657"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testFeedHeartbeat(uint8_t<sp/>nodeId,<sp/>uint8_t<sp/>flags,<sp/>uint16_t<sp/>uptime,</highlight></codeline>
+<codeline lineno="658"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>rxCount,<sp/>uint16_t<sp/>esr)<sp/>{</highlight></codeline>
+<codeline lineno="659"><highlight class="normal"><sp/><sp/><sp/><sp/>HeartbeatPayload<sp/>hb{<sp/>nodeId,<sp/>flags,<sp/>uptime,<sp/>rxCount,<sp/>esr<sp/>};</highlight></codeline>
+<codeline lineno="660"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(&amp;_nodes[nodeId<sp/>-<sp/>1].last,<sp/>&amp;hb,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(hb));</highlight></codeline>
+<codeline lineno="661"><highlight class="normal"><sp/><sp/><sp/><sp/>markNodeAlive(nodeId,<sp/>millis());</highlight></codeline>
+<codeline lineno="662"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="663"><highlight class="normal"></highlight></codeline>
+<codeline lineno="664"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testFeedHealth(uint8_t<sp/>nodeId,<sp/>int8_t<sp/>dieTempC,</highlight></codeline>
+<codeline lineno="665"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>hFlags,<sp/>uint8_t<sp/>faultMask,<sp/>uint8_t<sp/>faultId,<sp/>uint8_t<sp/>nodeKind)<sp/>{</highlight></codeline>
+<codeline lineno="666"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Mirrors<sp/>the<sp/>HEALTH_n<sp/>branch<sp/>of<sp/>onCanRx:<sp/>no<sp/>liveness<sp/>change;<sp/>a<sp/>kind<sp/>change<sp/>pushes<sp/>a<sp/>delta.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="667"><highlight class="normal"><sp/><sp/><sp/><sp/>NodeState&amp;<sp/>ns<sp/>=<sp/>_nodes[nodeId<sp/>-<sp/>1];</highlight></codeline>
+<codeline lineno="668"><highlight class="normal"><sp/><sp/><sp/><sp/>ns.dieTempC<sp/><sp/><sp/><sp/>=<sp/>dieTempC;</highlight></codeline>
+<codeline lineno="669"><highlight class="normal"><sp/><sp/><sp/><sp/>ns.healthFlags<sp/>=<sp/>hFlags;</highlight></codeline>
+<codeline lineno="670"><highlight class="normal"><sp/><sp/><sp/><sp/>ns.faultMask<sp/><sp/><sp/>=<sp/>faultMask;</highlight></codeline>
+<codeline lineno="671"><highlight class="normal"><sp/><sp/><sp/><sp/>ns.faultId<sp/><sp/><sp/><sp/><sp/>=<sp/>faultId;</highlight></codeline>
+<codeline lineno="672"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeKind<sp/>!=<sp/>ns.nodeKind)<sp/>{</highlight></codeline>
+<codeline lineno="673"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ns.nodeKind<sp/>=<sp/>nodeKind;</highlight></codeline>
+<codeline lineno="674"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ns.alive)<sp/>emitNode(nodeId,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="675"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="676"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="677"><highlight class="normal"></highlight></codeline>
+<codeline lineno="678"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testRequestNodeStatus()<sp/>{<sp/>emitAllNodes();<sp/>}</highlight></codeline>
+<codeline lineno="679"><highlight class="normal"></highlight></codeline>
+<codeline lineno="680"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testCheckTimeouts(uint32_t<sp/>now)<sp/>{<sp/>checkNodeTimeouts(now);<sp/>}</highlight></codeline>
+<codeline lineno="681"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>PANELBRIDGE_NODE_STATUS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="682"><highlight class="normal"></highlight></codeline>
+<codeline lineno="683"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelBridge</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="684"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>PANELBRIDGE_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="685"><highlight class="normal"></highlight></codeline>
+<codeline lineno="686"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp"/>
   </compounddef>

@@ -49,6 +49,8 @@ namespace STM32Board {
 
     void tick();
 
+    void markBootHealthy();
+
     void onCanStatus(CanStatus status);
 
     void setWarning(bool on = true);

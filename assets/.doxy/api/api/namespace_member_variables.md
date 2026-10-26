@@ -11,6 +11,8 @@
 * **ANNOUNCE\_INTERVAL\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **ANNOUNCE\_LEN** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **APP\_OFFSET** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **ATTEMPTS\_BKP\_REGISTER** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
+* **ATTEMPT\_LIMIT** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **ADC\_FULL** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 
 
@@ -32,6 +34,7 @@
 * **CAL\_MAX\_PAYLOAD** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_PROTO\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md), [**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
+* **CATCH\_WINDOW\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **CMD\_ID\_BASE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **CRC\_VECTOR\_BYTES\_00\_0F** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **CRC\_VECTOR\_WORD\_12345678** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
@@ -69,6 +72,7 @@
 
 ## i
 
+* **IDLE\_TIMEOUT\_MS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **IDENTITY\_OFFSET** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
 * **I\_MA\_PER\_MV** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 
@@ -141,6 +145,7 @@
 
 ## u
 
+* **UID\_ADDRESS** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNCONFIGURED\_CMD\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNCONFIGURED\_RSP\_ID** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **UNSTAMPED** ([**OpenSkyhawk::FirmwareImage**](namespaceOpenSkyhawk_1_1FirmwareImage.md))
