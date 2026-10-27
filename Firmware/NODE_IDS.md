@@ -10,7 +10,7 @@ claim the next available NODE_ID here.
 | NODE_ID | Panel Group       | Console | Status |
 |---------|-------------------|---------|--------|
 | 0       | PanelBridge       | —       | Reserved — CAN master, never transmitted on bus |
-| 1       | Center_Armament   | Center  | Active |
+| 1       | Center_Armament   | Center  | Reserved — legacy test sketch removed 2026-10-27; a new sketch takes this ID when the board is built |
 | 2       | Right_Navigation  | Right   | Active |
 | 3       | PDU_Left          | Left    | Active — power distribution + monitoring (#216) |
 | 4       | PDU_Right         | Right   | Active — power distribution + monitoring (#216) |

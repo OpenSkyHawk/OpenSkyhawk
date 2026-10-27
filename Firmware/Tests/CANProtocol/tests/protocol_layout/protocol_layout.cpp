@@ -8,6 +8,7 @@
 
 #include <STM32Board.h>
 #include <CANProtocol.h>
+#include <BootProtocol.h>   // UNCONFIGURED_RSP_ID — the top of the bootloader's range
 #include <stddef.h>   // offsetof
 
 static_assert(sizeof(ControlPacket)     == 4, "ControlPacket must be 4 bytes");
@@ -35,7 +36,11 @@ static_assert(canIdTelem(63) < canIdEvt(1), "TELEM range must stay below EVT");
 static_assert(canIdEcho(1)  == 0x301U, "canIdEcho(1) must be 0x301");
 static_assert(canIdReady(1) == 0x401U, "canIdReady(1) must be 0x401");
 
-static_assert(CAN_ID_CTRL_BCAST == 0x010U, "CTRL_BCAST must be 0x010");
+static_assert(CAN_ID_CTRL_BCAST == 0x7E0U, "CTRL_BCAST must be 0x7E0");
+// Inputs outrank sim output (#389): the export stream loses arbitration to every node frame and to
+// the bootloader's (BOOT_CMD/RSP up to the unconfigured pair).
+static_assert(CAN_ID_CTRL_BCAST > canIdEvtAction(63), "CTRL_BCAST must sit below every input frame");
+static_assert(CAN_ID_CTRL_BCAST > OpenSkyhawk::Boot::UNCONFIGURED_RSP_ID, "CTRL_BCAST must sit below the bootloader's frames");
 static_assert(CAN_ID_TEST_SEQ   == 0x011U, "TEST_SEQ must be 0x011");
 static_assert(CAN_ID_SYNC_REQ   == 0x012U, "SYNC_REQ must be 0x012");
 

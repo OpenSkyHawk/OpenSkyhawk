@@ -203,6 +203,25 @@ def test_a_stale_build_copy_cannot_mask_drift(tmp_path, capsys):
     assert "no longer contains WIDGET_TEST" in capsys.readouterr().out
 
 
+# ── Citation shape ────────────────────────────────────────────────────────────
+
+@pytest.mark.parametrize("cite", ["`Widget.h:2 3 `", "`Widget.h:`", "`Widget.h:2-3`"])
+def test_a_malformed_citation_fails(tmp_path, capsys, cite):
+    # #385 broke a build-flags row into these shapes, and nothing caught it.
+    root = build(tmp_path, source="int a;\nint b;\nint c;\n", page=f"See {cite} for it.\n")
+    assert run(root) == 1
+    assert "is not a citation" in capsys.readouterr().out
+
+
+def test_a_comma_list_checks_every_line(tmp_path, capsys):
+    root = build(tmp_path, source="int a;\nint b;\nint c;\n", page="See `Widget.h:1,3` for both.\n")
+    assert run(root) == 0
+
+    root = build(tmp_path, source="int a;\n\nint c;\n", page="See `Widget.h:1,2` for both.\n")
+    assert run(root) == 1
+    assert "`Widget.h:2` does not point at code" in capsys.readouterr().out
+
+
 def test_no_citations_is_not_an_error(tmp_path):
     root = build(tmp_path, source="int a;\n", page="Prose with no citations.\n")
     assert run(root) == 0

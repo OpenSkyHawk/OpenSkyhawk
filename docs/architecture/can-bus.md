@@ -27,9 +27,8 @@ helper functions — **never hard-code these values**, always use the helper.
 
 | Frame | CAN ID | Helper | Direction | DLC |
 |-------|--------|--------|-----------|-----|
-| `CTRL_BCAST` | `0x010` | `CAN_ID_CTRL_BCAST` | PanelBridge → All | 8 |
 | `TEST_SEQ` | `0x011` | `CAN_ID_TEST_SEQ` | PanelBridge → All | 8 |
-| `SYNC_REQ` | `0x012` | `CAN_ID_SYNC_REQ` | PanelBridge → All | 0 |
+| `SYNC_REQ` | `0x012` | `CAN_ID_SYNC_REQ` | PanelBridge → node *n* | 1 |
 | `HB_n` | `0x100 + n` | `canIdHb(n)` | Node *n* → PanelBridge | 8 |
 | `HEALTH_n` | `0x140 + n` | `canIdHealth(n)` | Node *n* → PanelBridge | 8 |
 | `TELEM_n` | `0x180 + n` | `canIdTelem(n)` | Node *n* → PanelBridge | 8 |
@@ -42,12 +41,17 @@ helper functions — **never hard-code these values**, always use the helper.
 | `BOOT_CMD_n` | `0x740 + n` | `Boot::canIdBootCmd(n)` | PanelBridge → node *n*'s bootloader | ≤8 |
 | `BOOT_RSP_n` | `0x780 + n` | `Boot::canIdBootRsp(n)` | Node *n*'s bootloader → PanelBridge | ≤8 |
 | `BOOT_UNCONF_*` | `0x7C0` / `0x7C1` | `Boot::UNCONFIGURED_CMD_ID` / `_RSP_ID` | PanelBridge ↔ a bootloader with no NODE_ID | ≤8 |
+| `CTRL_BCAST` | `0x7E0` | `CAN_ID_CTRL_BCAST` | PanelBridge → All | 8 |
 
+- **A lower ID wins arbitration**, so the table is also the priority order, highest first. Every
+  input, heartbeat and update frame outranks the sim's output: an input happens once, while a sim
+  value comes back by itself on the next change and on DCS-BIOS's autosync.
 - `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node — the whole export
-  stream, whatever aircraft is flying; each output picks out its own address.
+  stream, whatever aircraft is flying; each output picks out its own address. It is the
+  lowest-priority frame on the bus: under load the sim waits, the cockpit never does.
 - `BOOT_CMD_n` / `BOOT_RSP_n` are the [bootloader](../firmware/bootloader.md)'s frames: a board
   waiting in its bootloader announces itself once a second and takes a new firmware image in 64-byte
-  blocks. They sit at the lowest priority on the bus, so update traffic never delays a control. The
+  blocks. They sit below every control and status frame, so update traffic never delays a control. The
   `0x7C0`/`0x7C1` pair is for a board that has no NODE_ID yet.
 - `EVT_n` carries input events from a node back up to PanelBridge.
 - `HB_n` is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
@@ -133,12 +137,15 @@ The `SYNC_REQ` / `READY` handshake makes input state deterministic:
 
 1. On cold boot a PanelGroup completes its initial input poll, then sends `READY_n`, carrying its
    firmware version so the client can show which build every board runs.
-2. PanelBridge broadcasts `SYNC_REQ` — on its own cold boot, on a DCS session change, when it
-   sees a `READY_n`, or when a node transitions from unseen to alive.
-3. On receiving `SYNC_REQ`, every PanelGroup re-polls all its inputs and re-sends their
-   current state as `EVT_n` frames. Every node also re-sends its `READY_n`, flagged as a resync,
-   so a bridge that started after it still learns its firmware version; a resync READY never
-   triggers another `SYNC_REQ`.
+2. PanelBridge asks for a node's state with a `SYNC_REQ` naming that node — when it first sees
+   the node (its heartbeat after the bridge boots, its `READY_n`, or its return after a timeout),
+   and for every node on a DCS session change. It asks **one node at a time**: all nodes answering
+   at once overflowed the bridge with only three nodes, and a full cockpit would send over a
+   thousand frames in one burst.
+3. The node re-polls all its inputs and re-sends their current state as `EVT_n` frames, then a
+   `READY_n` flagged as a resync. That READY tells the bridge the node is done, so it moves on to
+   the next one (or after 150 ms if a node doesn't answer), and it re-announces the node's
+   firmware version to a bridge that started after it. A resync READY never starts another sync.
 
 This guarantees PanelBridge can request a fresh input snapshot at any time. Missed *outputs*
 (LEDs, gauges) are tolerable — a fresh DCS-BIOS update arrives within ~50 ms. Missed *inputs*
@@ -154,7 +161,9 @@ change, which is why the handshake exists. See
     | `AutoRetransmission` | **DISABLE** | One unACKed frame jams all 3 TX mailboxes → immediate bus-off; the TX queue never drains. |
     | `AutoBusOff` | **ENABLE** | Hardware recovers from bus-off in ~3 ms; with it disabled, firmware must restart the controller by hand. |
 
-    These are not preferences. The full failure analysis is in
+    With retransmission off in hardware, the software decides: a frame that loses arbitration is
+    sent again until it goes out, one that hits a bus error up to 3 times, and frames always leave
+    in order. These are not preferences. The full failure analysis is in
     [Design Decisions D4](design-decisions.md#d4-autoretransmission-disable-this-one-will-catch-you-out).
 
 - **SJW = 4TQ.** Lower values cause intermittent CRC errors from crystal tolerance between

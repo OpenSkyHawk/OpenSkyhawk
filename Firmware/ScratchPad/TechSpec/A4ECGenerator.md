@@ -445,7 +445,7 @@ The `Firmware/Libraries/A4EC/` output is a dependency of:
 
 | Consumer | Headers used | Notes |
 |---|---|---|
-| **PanelGroup sketches** (e.g. `Center_Armament/main.cpp`) | `A4EC_CmdIds.h` | `DCSIN_*` constants used in input object declarations. |
+| **PanelGroup sketches** (e.g. `Panels/<Group>/src/main.cpp`) | `A4EC_CmdIds.h` | `DCSIN_*` constants used in input object declarations. |
 | **PanelGroup sketches with outputs** (LEDs, gauges) | `A4EC_CmdIds.h` + `A4EC_OutputIds.h` | `A_4E_C_*` / `A_4E_C_*_AM` constants used in LED, IntegerOutput, and other output object declarations. Names match DCS-BIOS published identifiers. |
 | **PanelBridge** | `A4EC_CmdIds.h` + `A4EC_InputMap.h` | Full dispatch table required for EVT routing. Does not need `A4EC_OutputIds.h` — forwards native DCS-BIOS addresses directly. See `PanelBridge.md`. |
 

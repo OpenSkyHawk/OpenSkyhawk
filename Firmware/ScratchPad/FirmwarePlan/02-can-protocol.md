@@ -94,9 +94,8 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 
 | Frame | CAN ID | Direction | DLC | Purpose |
 |-------|--------|-----------|-----|---------|
-| `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels — the whole DCS-BIOS export stream (`controlId` = export address, `0x0002`–`0xFFFE`; #295, D24) |
 | `TEST_SEQ` | `0x011` | PanelBridge → All | 8 | CAN throughput / RTT test — 8-byte payload echoed back unchanged by sub-nodes |
-| `SYNC_REQ` | `0x012` | PanelBridge → All | 0 | Request all nodes to re-poll inputs and emit EVTs. Sent on cold boot, on `model_time` backward, in response to `READY`, and when a node transitions from dead/unseen to alive. |
+| `SYNC_REQ` | `0x012` | PanelBridge → node n | 1 | Ask node n (byte 0) to re-poll its inputs and emit EVTs, ending with READY(RESYNC). Sent one node at a time from the bridge's sync queue (#387): a node seen alive (HB, boot READY, recovery) and every alive node on `model_time` backward. An empty `SYNC_REQ` (DLC 0) is for every node — nodes still honour it; the bridge no longer sends it. |
 | `HB_0` | `0x100` | PanelBridge → All | 8 | Master liveness beacon every 500 ms; every other node runs a master-loss watchdog on it (#93) |
 | `HB_n` | `0x100+n` | Node_n → PanelBridge | 8 | Node heartbeat every 500 ms for n=1-63 — see HB payload below |
 | `HEALTH_n` | `0x140+n` | Node_n → PanelBridge | 8 | Internal die-temp + node-health telemetry every 1000 ms (n=0-63, incl. PanelBridge itself) — see HEALTH payload below (#213/#221) |
@@ -107,10 +106,11 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
-| `BOOT_CMD_n` | `0x740+n` | PanelBridge → Node_n's bootloader | ≤8 | Bootloader commands (#363, #364) — CONNECT / BEGIN / BLOCK + DATA / END / GO / SET_NODE_ID; a CONNECT in the 200 ms after a reset also catches a running board, and a running app with a bootloader installed takes a CONNECT as "enter the bootloader" (#365). PanelBridge relays it from the host (`04`); it never acts on `BOOT_CMD_0`. Lowest priority on the bus, so update traffic never delays a control. Values in `BootProtocol.h`; protocol in `12-bootloader.md` |
+| `BOOT_CMD_n` | `0x740+n` | PanelBridge → Node_n's bootloader | ≤8 | Bootloader commands (#363, #364) — CONNECT / BEGIN / BLOCK + DATA / END / GO / SET_NODE_ID; a CONNECT in the 200 ms after a reset also catches a running board, and a running app with a bootloader installed takes a CONNECT as "enter the bootloader" (#365). PanelBridge relays it from the host (`04`); it never acts on `BOOT_CMD_0`. Below every control and status frame, so update traffic never delays a control; only `CTRL_BCAST` is lower (#389). Values in `BootProtocol.h`; protocol in `12-bootloader.md` |
 | `BOOT_RSP_n` | `0x780+n` | Node_n's bootloader → PanelBridge | ≤8 | Bootloader replies and the 1 s announcement (8 bytes, with the chip's UID hash) while a board waits in its bootloader (#363, #364) |
 | `BOOT_UNCONF_CMD` | `0x7C0` | PanelBridge → unconfigured bootloader | ≤8 | Commands to a bootloader with no NODE_ID yet; CONNECT names its UID hash and binds that board alone (#364) |
 | `BOOT_UNCONF_RSP` | `0x7C1` | unconfigured bootloader → PanelBridge | 8 | Announcement and replies of a bootloader with no NODE_ID (option byte Data0 = `0xFF`) and no valid app (#363, #364) |
+| `CTRL_BCAST` | `0x7E0` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels — the whole DCS-BIOS export stream (`controlId` = export address, `0x0002`–`0xFFFE`; #295, D24). **The lowest priority on the bus** (#389, D31): every input, status and update frame wins arbitration against the sim's output |
 
 ---
 
@@ -308,24 +308,22 @@ struct ReadyPayload {          // 8 bytes, DLC 8
 };
 ```
 
-**Resync (#383).** The boot READY is the only time a node announced its version, so a bridge that
-booted after the node — a bridge-only reset, a Gateway update, a cold power-up where the bridge is
-slower — reported it as 0.0.0 until the node restarted. Since #383 every node also answers each
-`SYNC_REQ` with a READY flagged `ReadyFlag::RESYNC` (`0x01`), from `CANProtocol::drain()` once its
-boot READY is out. The bridge caches the version from it but does **not** broadcast `SYNC_REQ` for
-it (that would answer itself forever); a boot READY still triggers `SYNC_REQ` as before. Cost: one
-8-byte frame per node per `SYNC_REQ`. Firmware without the flag reads as a boot READY.
+**Resync (#383, #387).** The boot READY is the only time a node announced its version, so a bridge
+that booted after the node — a bridge-only reset, a Gateway update, a cold power-up where the bridge
+is slower — reported it as 0.0.0 until the node restarted. Since #383 every node also answers each
+`SYNC_REQ` for it with a READY flagged `ReadyFlag::RESYNC` (`0x01`), sent by `CANProtocol::drain()`
+**after** its EVT burst has left (#387: its transmit ring empty and all three mailboxes free, 50 ms
+cap — sent at once, a higher-ID frame of the burst could still go after it). It re-announces the
+version and marks the end of the node's answer: the bridge caches the version and moves its sync
+queue to the next node; it never queues a node for a RESYNC READY (they would answer each other
+forever). Cost: one 8-byte frame per sync. Firmware without the flag reads as a boot READY.
 
 PanelBridge caches the version per node (under `PANELBRIDGE_NODE_STATUS`), keeps it when the node
 times out, and reports it in `_NODE_STATUS` v4 (`04-dcs-bios-integration.md`). A READY from a node
 that is already alive — it rebooted inside the 3 s heartbeat timeout, e.g. a quick reflash — pushes
 a `_NODE_STATUS` delta when the version changed. Firmware older than #295 sends READY with DLC 0:
-the bridge reads that as **not reported** (0.0.0). The bridge's only other use of READY — mark the
-node alive, broadcast `SYNC_REQ` — is unchanged and ignores the payload.
-
-**Known gap (accepted):** READY is one frame per boot. If the bridge boots after a node, it never
-sees that node's READY, and the node reads 0.0.0 until it next reboots. A re-announce on the
-bridge's boot `SYNC_REQ` can be added later without a wire break (`SYNC_REQ` is empty today).
+the bridge reads that as **not reported** (0.0.0). The bridge's other use of a boot READY — mark the
+node alive, queue it for a sync — ignores the payload.
 
 ---
 
@@ -435,22 +433,47 @@ because PanelGroup nodes never transmit outside their assigned ranges.
 
 ## CAN TX Queue
 
-When `CANProtocol::send()` is called and all 3 STM32 CAN TX mailboxes are occupied, the
-frame is placed in a software ring buffer (~16 entries). The queue is drained automatically
-via the TX-complete interrupt — no explicit drain call is required from `loop()`.
+Every `CANProtocol::send()` goes through a software ring (16 frames; 64 on PanelBridge,
+`CAN_TX_RING_SIZE`) and leaves in the order it was sent. The **TX-complete interrupt** keeps the
+three hardware mailboxes loaded, so no explicit drain call is required from `loop()` (#389 — until
+then the interrupt was never enabled in the NVIC and the ring drained only from `loop()`).
 
-**Overflow policy is frame-type dependent:**
+**Every finished mailbox is settled before it is reused** (#389, D32). With `AutoRetransmission`
+off (D4 below) the controller tries each frame once; the software decides what happens next:
+
+| Outcome | Action |
+|---------|--------|
+| Sent (`TXOK`) | Done. |
+| Lost arbitration (`ALST`) | Back to the head of the ring, **always**: the bus works, a higher-priority frame went first. |
+| Bus error (`TERR`) — e.g. no node ACKed | Back to the head of the ring, **up to 3 attempts in all**, then dropped and counted in `txDropCount()`. The bound keeps a lone node from looping (the D4 concern). |
+
+**In order:** at most one frame per CAN ID sits in the mailboxes at a time, so a resend always
+leaves before anything newer from the same source — a pot's last value can't be overtaken by an
+older one. A full ring drops the new frame and counts it in `txDropCount()`.
+
+Before #389 a frame that lost arbitration was simply gone: under a real export stream ~14 % of
+every node's inputs were lost on the bench, uncounted, because `CTRL_BCAST` (then `0x010`) won
+every collision.
 
 | Frame type | Policy |
 |------------|--------|
-| `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
-| `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. No unbounded backlog. |
-| `HB_n`, `HEALTH_n`, `TELEM_n` periodic status | Same bounded retry as the event frames — up to 3 send attempts, then drop and increment the `DIAG_ERR` TX drop counter. Not coalesced: the next period's frame carries fresh state anyway. |
-| `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
+| `CTRL_BCAST` DCS output broadcasts | Queued in order like any frame — **never coalesced** (#389): a frame carries two of ~250 controls, not the whole state, so replacing a queued one lost two others' updates (~19 % of a real stream). The bridge's TX ring is 64 frames (`CAN_TX_RING_SIZE`); a lone packet waits ≤ 2 ms for its partner (1.98 packets per frame on a real stream). **Lowest priority ID on the bus** (D31): it yields to every node frame, and its resends absorb the wait. |
+| Every other frame (`EVT_n` and the encoder/action families, `HB_n`, `HEALTH_n`, `TELEM_n`, `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n`) | The resend rules above. Not coalesced: the next period's status frame carries fresh state anyway. |
 
-This prevents silent frame drops during DCS-BIOS export bursts without stalling the firmware,
-while keeping user input events from being treated like disposable state snapshots. In a
-healthy bus, EVT drops should be effectively zero; any non-zero count is a diagnostic signal.
+In a healthy bus `txDropCount()` stays 0; any non-zero count is a diagnostic signal.
+
+### Receive
+
+RX FIFO 0 is drained by **its own interrupt** into the software RX ring (8 frames; 128 on
+PanelBridge, `CAN_RX_RING_SIZE`); `drain()` hands the frames to the callbacks from `loop()`. Until
+#389 the FIFO was polled from `loop()` only, so a loop pass longer than three frame times — the
+bridge blocked writing lines to the Gateway, an OLED redraw — overran the 3-frame hardware FIFO
+without a trace (656 overruns in one bench run). Overruns are now counted (`rxOverrunCount()`), a
+full software ring in `rxDropCount()`. Both should stay 0.
+
+Both CAN interrupts run at NVIC priority 2: below the UARTs (1), so a serial byte is never late,
+above the timers (14). They share their vectors with USB, which no OpenSkyhawk STM32 build enables
+(`-DUSB_NONE`).
 
 ---
 
@@ -479,6 +502,8 @@ validated in the 2026-05-20 prototype soak and fault-injection tests:
 | `AutoRetransmission` | **DISABLE** | A single unACKed frame fills all 3 TX mailboxes → immediate bus-off; TX queue never drains |
 | `AutoBusOff` | **ENABLE** | Hardware auto-recovery in ~3 ms (1408 recessive bits); with DISABLE firmware must restart the controller manually |
 
+`AutoRetransmission=DISABLE` makes the *hardware* try each frame once; the resend decision is the
+software's (CAN TX Queue above): lost arbitration always, errors at most 3 attempts.
 With `AutoRetransmission=DISABLE`, TEC rises +8 per failed attempt. At TEC=128 the node
 enters Error Passive and limps along — CAN's intended graceful degradation. It self-heals
 when the fault clears without any firmware action.

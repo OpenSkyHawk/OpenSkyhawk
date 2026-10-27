@@ -39,7 +39,7 @@ forwards host→device; the response is ASCII it forwards device→host). PanelB
 | Command name `_BOOT_RSP` (`BOOT_RSP_MSG_NAME`, #365) | device→host | Every `BOOT_RSP_n` / `0x7C1` frame, unread: `_BOOT_RSP <id(3 hex)><length(1 hex)><data(2 hex per byte)>`. Pushed as frames arrive. Protocol: `12-bootloader.md`. |
 
 **Request** — client writes a DCS-BIOS export frame to `0xFF00`. PanelBridge's
-`NodeStatusReqListener` (an `ExportStreamListener`) fires → emits the full roster.
+export dispatcher (its one `ExportStreamListener`, #389) → emits the full roster.
 
 **Response** — `_NODE_STATUS <hex>` where `<hex>` is **38 chars** (proto **v4**, #295 + #365 — the two
 bootloader fields joined v4 before it shipped; v3 was 28 chars without the version, v2 26 without

@@ -376,6 +376,14 @@ always followed by its attach. Health at any point resets the ladder.
 may block in its own `setup()` — and fed by every call. Production builds only. A watchdog reset
 is recorded and survives the reboot.
 
+### USB is serviced from the main loop only (#389, D33)
+
+The same first `loop()` call disables TinyUSB's task IRQ, so `tud_task()` runs only from `yield()`
+after every `loop()`. From interrupt context it could wait forever on the endpoint mutex that
+`yield()`'s CDC flush holds — under heavy host traffic the watchdog then rebooted the Gateway. The
+IRQ is found at run time: the claimed, enabled user IRQ with a handler (SimGateway claims none of
+its own). Production builds only.
+
 ### Diagnostics (`GET_DIAG` / `DIAG`)
 
 `SimGateway::diagnostics()` returns a `GatewayDiag`; the host reads the same data with the

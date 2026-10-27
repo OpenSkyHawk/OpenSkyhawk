@@ -5,9 +5,13 @@ Published pages under ``docs/`` reference firmware source by line number, e.g.
 ``Inputs/AnalogInput/AnalogInput.h:85``. Those citations rot silently whenever the
 cited file gains or loses lines above the target. This script enforces:
 
-  * every ``path.ext:N`` citation resolves to a real, non-blank line (Tier A),
+  * every ``path.ext:N`` citation resolves to a real, non-blank line (Tier A) —
+    ``path.ext:N,M`` cites several lines of one file, and each is checked,
   * in a markdown table row that names an identifier and cites a line, the cited
-    line actually contains one of the identifiers named in that row (Tier B).
+    line actually contains one of the identifiers named in that row (Tier B),
+  * a backticked ``path.ext:`` that isn't followed by line numbers is an error, not a
+    silent skip: #385 broke a row into ``CANProtocol.cpp:466 545 `` and
+    ``CANProtocol.cpp:``, which matched no citation pattern and passed CI.
 
 **Tier B is the one that matters.** A citation can rot into pointing at unrelated
 but perfectly valid code: #267 inserted a constructor parameter above an ``#ifdef``
@@ -52,6 +56,26 @@ SOURCE_EXTS = ("h", "hpp", "c", "cpp", "ini", "py", "yml", "yaml")
 REF_RE = re.compile(
     r"`([A-Za-z0-9_./+-]+\.(?:" + "|".join(SOURCE_EXTS) + r")):(\d+)`"
 )
+
+# Anything backticked that starts like a citation (`File.h:…`). Its tail must be line
+# numbers — one, or a comma list (`File.cpp:112,227`) — or the citation is malformed.
+CITE_RE = re.compile(
+    r"`([A-Za-z0-9_./+-]+\.(?:" + "|".join(SOURCE_EXTS) + r")):([^`]*)`"
+)
+LINES_RE = re.compile(r"\d+(?:,\s*\d+)*")
+
+
+def parse_citations(line: str) -> tuple[list[tuple[str, str]], list[str]]:
+    """Split a page line into (ref, line-number) pairs and the malformed citations."""
+    refs: list[tuple[str, str]] = []
+    malformed: list[str] = []
+    for m in CITE_RE.finditer(line):
+        ref, tail = m.group(1), m.group(2)
+        if LINES_RE.fullmatch(tail):
+            refs.extend((ref, n.strip()) for n in tail.split(","))
+        else:
+            malformed.append(m.group(0))
+    return refs, malformed
 
 # A backticked ALL-CAPS token: build flags, macros, guards. Three chars minimum so
 # short pin names and prose initialisms don't dominate.
@@ -115,7 +139,11 @@ def check_page(
     rel_page = page.relative_to(root).as_posix()
 
     for lineno, line in enumerate(page.read_text(encoding="utf-8").splitlines(), start=1):
-        refs = REF_RE.findall(line)
+        refs, malformed = parse_citations(line)
+        for bad in malformed:
+            errors.append(
+                f"{rel_page}:{lineno}: {bad} is not a citation — write `file:N` or `file:N,M`"
+            )
         if not refs:
             continue
 

@@ -23,7 +23,7 @@
   - `src/main.cpp` boilerplate: `#include <PanelGroup.h>`, empty wiring map section,
     empty outputs/inputs sections, `setup()` and `loop()` calling `PanelGroup::setup()` /
     `PanelGroup::loop()`
-  - `STM32Board::setDebug(true)` in `setup()` with a comment to remove in production
+  - `STM32Board::setDebug(true)` in `setup()`, commented out — bench only; off by default since #389 (it blocks `loop()` at 115200)
   - Template at `Firmware/Templates/PanelGroup/`.
 - [x] Verify templates compile clean against their target toolchains before any library code
       is written.

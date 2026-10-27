@@ -1,4 +1,4 @@
-// PanelGroup — STM32F103CBT6
+// PanelGroup — STM32F103C8
 //
 // CAN sub-node. NODE_ID is set in platformio.ini build_flags, not here.
 // A #define in main.cpp would be invisible to library translation units.
@@ -94,10 +94,10 @@
 // all. Silence is the resting state, not a fault.
 
 void setup() {
-    // Bench only — REMOVE before flying. Every input's emit() then blocks on a ~20-char
-    // USART1 write at 115200, which costs ~1.8 ms per emission and caps the whole node's
-    // dispatch rate around 285 Hz regardless of anything else.
-    STM32Board::setDebug(true);
+    // DiagSerial log off by default (#389). Turn it on for the bench only: every input's emit()
+    // then blocks on a ~20-char USART1 write at 115200, which costs ~1.8 ms per emission and caps
+    // the whole node's dispatch rate around 285 Hz regardless of anything else.
+    // STM32Board::setDebug(true);
     // Wire.begin();              // uncomment if using MCP23017 or ADS1115
     // PanelGroup::registerExpander(exp1, <INTA_pin>, <INTB_pin>);  // interrupt-driven
     // PanelGroup::registerExpander(exp1);                           // polling fallback

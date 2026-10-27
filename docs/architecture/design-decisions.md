@@ -90,9 +90,12 @@ never drain, and the node drives itself straight to bus-off. The whole node goes
 single missed ACK.
 
 **With AutoRetransmission disabled:** A failed send increments the Transmit Error Counter by
-8 and the frame is dropped (the software queue applies its own bounded retry policy — see
-[D6](#d6-controlid-routing-one-format-split-at-the-gateway) and the
-[CAN Bus Protocol](can-bus.md) page). At TEC = 128 the node enters **Error Passive** and
+8, and the hardware lets the frame go. The software decides what happens next (see the
+[CAN Bus Protocol](can-bus.md) page): a frame that **lost arbitration** — the bus works, a
+higher-priority frame went first — is sent again until it gets through; one that hit a **bus
+error** gets at most 3 attempts, so a lone node with nobody to ACK can't loop. Until firmware
+1.0.0 that software half was missing: a frame that lost arbitration was simply gone, and under a
+real sim stream about 1 in 7 inputs never reached DCS. At TEC = 128 the node enters **Error Passive** and
 limps along — CAN's intended graceful degradation — then self-heals when the fault clears.
 No deadlock, no manual recovery.
 

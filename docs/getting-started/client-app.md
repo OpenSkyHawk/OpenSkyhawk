@@ -62,17 +62,16 @@ The **Source Mode**, **DCS Link** (host + transport), and **Record** controls li
 tab too — covered under [Getting started](#getting-started) and
 [Recording and replay](#recording-and-replay).
 
-A **Connected nodes** card lists the PanelGroup controllers reported over the CAN bus — node
-id, uptime, receive count, and bus-health flags (BOFF / EPVF / TEC / REC). This is **Bridge
-mode only** and depends on a firmware node-reporting feature still in progress, so it
-currently shows *"No nodes reported"* until that firmware ships.
+A **Connected nodes** card lists every board the Gateway reports on the CAN bus — node id,
+uptime, receive count, and bus-health flags (BOFF / EPVF / TEC / REC). This is **Bridge mode
+only**; with no boards on the bus it shows *"No nodes reported"*.
 
 ### Overview
 
 The landing tab — a single glance confirms the cockpit is alive. Three status tiles across
-the top show **Link** (idle / connecting / connected), **Aircraft** (the live module name —
-from `_ACFT_NAME` metadata, or inferred from the address range when metadata is absent), and
-**DCS Link** (the active transport and host).
+the top show **Link** (idle / connecting / connected), **Aircraft** (the live module name from
+the sim's `_ACFT_NAME` metadata — **NONE** until the sim sends it), and **DCS Link** (the active
+transport and host).
 
 **Sim Telemetry** below is five live gauges — **RPM, IAS (kt), Flap, Press Alt (ft), Fuel** —
 with a command-activity readout alongside (`commands/sec · total · last command sent`). A

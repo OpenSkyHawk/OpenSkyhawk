@@ -48,7 +48,7 @@ to "app running".
 
 The bridge is a dumb relay between the host and the boards' bootloaders (`12-bootloader.md`):
 
-- **Down:** `BootRelayListener` (an `ExportStreamListener` on `0xFF10`–`0xFF4F`) decodes each record as a
+- **Down:** `BootRelay` (fed by the export dispatcher for `0xFF10`–`0xFF4F`, #389) decodes each record as a
   stream of whole frames (`04`: mark + len, id, data, `0x55` / `0x56` escaped; a record starts on a frame
   boundary, so the decoder resets at the window's first word) and sends each frame as it completes —
   only `BOOT_CMD_1`–`63` and `0x7C0`. `handleDcsBiosExport()` drops the window, so it never reaches
@@ -59,7 +59,7 @@ The bridge is a dumb relay between the host and the boards' bootloaders (`12-boo
   bootloader has been seen for it, so a CONNECT to a board without one (which ignores it) never shows
   it as updating.
 - **Not the bridge itself:** it never acts on `BOOT_CMD_0`. The bridge is updated over USART2 by the
-  Gateway's uploader (#367): `BridgeEnterListener` (an `ExportStreamListener` on `0xFF02`, dropped by
+  Gateway's uploader (#367): the export dispatcher, on a write to `0xFF02` (dropped by
   `handleDcsBiosExport()`) calls `STM32Board::enterBootloader(TRANSPORT_SERIAL)`, and the `bridge`
   bootloader takes it from there (`12-bootloader.md`).
 
@@ -68,7 +68,7 @@ is cleared, a WARNING it held clears, and the roster leaves it out.
 - **Automatic on an ID change:** `onBootRsp()` sees the bootloader's `NODE_SET` reply with status OK
   on the old ID's `BOOT_RSP_n` (the Gateway uploader's `SET_NODE_ID`), forgets that ID and re-sends
   the roster. The board comes back under its new ID through its own announcements.
-- **On request:** `NodeForgetListener` (an `ExportStreamListener` on `NODE_FORGET_REQ_ADDR`, `0xFF04`,
+- **On request:** the export dispatcher, on a write to `NODE_FORGET_REQ_ADDR` (`0xFF04`,
   value = the NODE_ID) forgets a node only while it is dead, then re-sends the roster. A live node
   is ignored, and one that comes back later reappears as new.
 
@@ -76,15 +76,14 @@ is cleared, a WARNING it held clears, and the roster leaves it out.
 
 **Heartbeat recovery handling:** When PanelBridge receives `HB_n` from a node that was
 previously unseen or marked dead, it marks the node alive, fires `onNodeAlive(nodeId)`, and
-broadcasts `SYNC_REQ`. That asks the newly available node to re-poll its inputs and send its
-current state. `SYNC_REQ` is global, so other nodes may re-send their current state too; this
-is acceptable because node joins and recoveries are rare.
+queues it for a sync (§ Sequential sync, #387): a `SYNC_REQ` naming that node alone asks it to
+re-poll its inputs and send its current state. No other node answers.
 
 **READY frame handling:** When PanelBridge receives a READY frame (`0x400+n`) from node n,
 the node is confirmed online and ready to answer a full-state request. PanelBridge logs the
-READY event, updates `lastSeenMs` like a heartbeat, marks the node alive if needed, and
-broadcasts `SYNC_REQ`. The READY frame carries no input state itself; the following EVTs
-emitted in response to `SYNC_REQ` are the state snapshot.
+READY event, updates `lastSeenMs` like a heartbeat, marks the node alive if needed, and queues it
+for a sync. The READY frame carries no input state itself; the EVTs the node emits in answer to its
+`SYNC_REQ` are the state snapshot, and its READY(RESYNC) after them ends the sync.
 
 **Node-status reporting to the host (#86; `PANELBRIDGE_NODE_STATUS`, on by default since #295, `=0` compiles it out):**
 PanelBridge surfaces the roster + per-node health to OpenSkyhawk Client over DCS-BIOS (see
@@ -103,7 +102,7 @@ populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + h
   `SYNC_REQ` of its own — a reflash inside the
   heartbeat timeout, and
 - at boot, and in response to a host request — a DCS-BIOS export write to `NODE_STATUS_REQ_ADDR`
-  (`0xFF00`; `0x86FE` before v4), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
+  (`0xFF00`; `0x86FE` before v4), handled by the export dispatcher (§ ExportStreamListener), excluded from the CAN broadcast. A
   request/boot reply is the bridge's own node-0 row (its live heartbeat state +
   `CANProtocol::lastNodeHealth()`, the `HEALTH_0` it last sent), then the full roster, then
   `_NODE_STATUS_END <count>` (count includes node 0), so the host can tell the burst is complete
@@ -120,8 +119,16 @@ decode, so a new `TelemPage` needs no bridge change. Page-`0x00` and short frame
 
 ## ExportStreamListener
 
-PanelBridge subclasses the DCS-BIOS `ExportStreamListener` to intercept all output values.
-Auto-registers during `PanelBridge::setup()`. No sketch declarations required.
+PanelBridge registers **exactly one** DCS-BIOS `ExportStreamListener` (`ExportDispatcher`, #389),
+covering `0x0002`–`0xFFFE`. It is file-scope, so no sketch declarations are needed.
+
+> **One listener, never more.** The DCS-BIOS library keeps listeners sorted by *last* address and
+> assumes their ranges never overlap: for each word it stops at the first listener that starts above
+> it. Until #389 the reserved-address listeners (`0xFF00` roster, `0xFF02` bridge enter, `0xFF04`
+> forget, the `0xFF10`–`0xFF4F` boot relay) and the model-time `StringBuffer` sat inside the
+> whole-stream range, so every word below `0xFF00` was cut off and only `0xFFFE` reached CAN. The
+> dispatcher routes those addresses itself; a `StringBuffer` / `IntegerBuffer` is a listener too, so
+> none may be added to PanelBridge.
 
 The listener overrides the DCS-BIOS Arduino library callback:
 
@@ -175,20 +182,29 @@ Slot B with `controlId = 0x0000` is the null sentinel and is ignored. Values abo
 
 ---
 
-## SYNC_REQ Broadcast Triggers
+## Sequential sync (#387)
 
-PanelBridge broadcasts `SYNC_REQ` (CAN frame `0x012`) in these cases:
+A node answers `SYNC_REQ` with every input as an EVT frame, then READY(RESYNC). When the bridge
+broadcast `SYNC_REQ` to every node at once, the answers overflowed its RX ring — 3 nodes already
+lost frames (a node's version, and control state), and 20–30 nodes would send ~1,500 frames in one
+burst. So the bridge syncs **one node at a time**:
 
-1. **Cold boot** — immediately after CAN start, before `DcsBios::setup()`. Causes any
-   already-running PanelGroup nodes to re-poll and emit their current input states.
-2. **DCS session change** — when `model_time` in the DCS-BIOS binary stream decreases (goes
-   backward), indicating DCS has loaded a new aircraft or mission.
-3. **READY received** — when a PanelGroup announces that its boot-time input poll and initial
-   EVT burst are complete.
-4. **Node recovery** — when heartbeat tracking observes a transition from dead/unseen to alive.
+- **The queue** (`_syncQueue`, a bit per NODE_ID) gets a node when it is seen alive — its first
+  heartbeat (which covers the bridge's own boot: no broadcast), its boot READY, or a recovery
+  after a timeout — and every alive node on a **DCS session change** (`model_time` backward).
+  A forgotten node (#384) leaves it.
+- **`serviceSync()`** (every `loop()`) sends `SYNC_REQ` naming the lowest queued node, then waits
+  for that node's READY(RESYNC) — the end of its answer — or `SYNC_TIMEOUT_MS` (150 ms) for a node
+  that doesn't answer (older firmware, or busy), and moves to the next. A node's answer takes tens
+  of ms (its EVT burst on the bus, then the bridge forwarding each to the host at 250 kbaud), so a
+  30-node cockpit syncs in ~1–2 s; 4.5 s if none answered.
+- The bridge's RX ring is 128 frames (`CAN_RX_RING_SIZE`, nodes keep 8; ~2 KB of RAM) and
+  `rxDropCount()` counts overflow. Sequential sync alone drops nothing on the bench, even with the old
+  8-frame ring; the 128 is for the bridge's own stalls under load — at 63 nodes the 5 s roster reply
+  holds its loop ~130 ms while ~440 frames/s keep arriving (heartbeats, health, ~500 inputs/s).
 
-Each PanelGroup node that receives `SYNC_REQ` re-polls every registered input object and sends
-a CAN EVT with its current value. PanelBridge routes each EVT normally.
+Each PanelGroup node that receives a `SYNC_REQ` for it re-polls every registered input object and
+sends a CAN EVT with its current value. PanelBridge routes each EVT normally.
 
 > **Note:** `DcsBios::resetAllStates()` re-sends panel input states to DCS and is useful when
 > DCS-BIOS input handlers are registered locally on the running MCU. In the OpenSkyhawk
@@ -203,18 +219,19 @@ The DCS-BIOS binary stream includes a five-character model-time seconds string e
 CommonData as `CommonData_MOD_TIME_A` (`0x0440` in the current generated `Addresses.h`).
 PanelBridge uses the generated symbol, not a hard-coded number:
 
-```cpp
-DcsBios::StringBuffer<5> modelTimeBuffer(CommonData_MOD_TIME_A, onModelTimeChange);
-```
+The export dispatcher assembles its 5 characters (`CommonData_MOD_TIME_A` … `+4`) and latches them
+once the stream has moved past them in the same frame — words arrive in ascending order and
+MetadataEnd closes every frame — so a half-updated value can never read as a rewind (#389; it was a
+`DcsBios::StringBuffer`, which overlapped the whole-stream listener).
 
 `onModelTimeChange(char* value)` converts the string to seconds and compares it with the
 previous value. The first valid value only seeds the previous-value state. When a later value
-decreases, PanelBridge broadcasts `SYNC_REQ`.
+decreases, PanelBridge queues every alive node for a sync (§ Sequential sync).
 
 `SYNC_REQ` only asks PanelGroup nodes to re-send their physical input states. PanelBridge does
 not run an active output refresh task; DCS outputs wait for the next normal DCS-BIOS publishing
 cycle, which is expected within roughly 50 ms. LEDs and gauges then update naturally from the
-usual `ExportStreamListener` path.
+usual export dispatcher path.
 
 ---
 

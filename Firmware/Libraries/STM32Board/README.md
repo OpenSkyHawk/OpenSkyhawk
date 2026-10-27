@@ -2,7 +2,7 @@
 
 Shared STM32F103 hardware initialisation for OpenSkyhawk avionics nodes.
 
-Every OpenSkyhawk CAN avionics board uses the same MCU (STM32F103CBT6) with the same fixed pinout: SN65HVD230 CAN transceiver on PA11/PA12, diagnostic UART on USART1 PA9/PA10, and a bi-color status LED on PB14 (red) / PB15 (green). `STM32Board` defines `HAL_CAN_MspInit` once and provides a consistent API so `PanelGroup` and `PanelBridge` don't duplicate this boilerplate.
+Every OpenSkyhawk CAN avionics board uses the same MCU (STM32F103C8; the 128 KB STM32F103CB is a drop-in fallback) with the same fixed pinout: SN65HVD230 CAN transceiver on PA11/PA12, diagnostic UART on USART1 PA9/PA10, and a bi-color status LED on PB14 (red) / PB15 (green). `STM32Board` defines `HAL_CAN_MspInit` once and provides a consistent API so `PanelGroup` and `PanelBridge` don't duplicate this boilerplate.
 
 ## Dependencies
 
