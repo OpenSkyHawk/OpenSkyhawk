@@ -3,7 +3,7 @@
  * @brief Shared STM32F103 hardware initialisation for OpenSkyhawk avionics nodes.
  *
  * @details Manages the bi-color status LED, DiagSerial, and CAN peripheral
- * configuration — identical on every OpenSkyhawk STM32F103CBT6 board.
+ * configuration — identical on every OpenSkyhawk STM32F103C8 / CB board.
  * All CAN bus operations (send, filter, start) go through CANProtocol.
  *
  * Fixed hardware (same on every board — no constructor arguments):

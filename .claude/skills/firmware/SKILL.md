@@ -43,9 +43,13 @@ committed code under `Firmware/Libraries/`.
 
 ## Durable conventions (always apply)
 
-- **MCU variant:** `STM32F103C8` (64 KB) is the default for CAN avionics nodes; use
-  `STM32F103CB` (128 KB) only where flash demands it (PanelBridge runs the full DCS-BIOS input
-  map). Use full part numbers in prose, never the `CBT6` ordering code or `C8`/`CB` shorthand.
+- **MCU variant:** `STM32F103C8` (64 KB) is the default for **every** CAN board, PanelBridge
+  included (it compiles to ~26 KB; `board = genericSTM32F103C8` in every template and panel).
+  The `STM32F103CB` (128 KB) is a drop-in fallback on the same footprint, used only when a
+  specific build outgrows 64 KB, and no board needs it today. Before moving a build to the CB,
+  try link-time optimisation (`-flto`, as the bootloader uses): it saves a lot of flash. Bench-check
+  ISR timing (ShiftBus) after turning it on. Use full part numbers in prose, never the `C8T6`/`CBT6`
+  ordering codes or the `C8`/`CB` shorthand.
 - **NODE_ID:** compile-time only — `build_flags = -DNODE_ID=N` in `platformio.ini`, never a
   `#define` in `main.cpp`. 0 = PanelBridge; 1–63 = PanelGroup nodes. Claim the next free
   number in `Firmware/NODE_IDS.md` in the same PR that starts the work; never reuse one.

@@ -1,4 +1,4 @@
-// PanelGroup — STM32F103CBT6
+// PanelGroup — STM32F103C8
 //
 // CAN sub-node. NODE_ID is set in platformio.ini build_flags, not here.
 // A #define in main.cpp would be invisible to library translation units.

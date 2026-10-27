@@ -1,4 +1,4 @@
-// PanelBridge — STM32F103CBT6
+// PanelBridge — STM32F103C8
 //
 // CAN master node. Runs the DCS-BIOS library on UART2 (Serial, PA2/PA3 → SimGateway).
 // Broadcasts all DCS output values over CAN (CTRL_BCAST).

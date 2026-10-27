@@ -11,7 +11,7 @@ Scaffold a new OpenSkyhawk KiCad project. The working directory is the project r
 | BoardName | Board folder and file base name | `AWRS_Panel` |
 | Type | `mcu` or `breakout` (default: `breakout`) | `breakout` |
 
-**MCU board** — STM32F103CBT6 host board with CAN, power supply, and panel switches merged.
+**MCU board** — STM32F103C8 host board with CAN, power supply, and panel switches merged.
 **Breakout board** — sub-panel board with MCP23017/ADS1115, harness connector to MCU board.
 
 ## Steps
@@ -138,7 +138,7 @@ List each file created with its full relative path.
 
 **Next steps — MCU board** (if Type == mcu):
 1. Open `<BoardName>.kicad_pro` in KiCad
-2. Add hierarchical sub-sheets: Power, MCU (STM32F103CBT6), CAN (SN65HVD230), I/O (one sheet per MCP23017 instance), Backlighting (one per LED zone)
+2. Add hierarchical sub-sheets: Power, MCU (STM32F103C8; KiCad symbol `MCU_ST_STM32F1:STM32F103CBTx` covers C8 and CB), CAN (SN65HVD230), I/O (one sheet per MCP23017 instance), Backlighting (one per LED zone)
 3. Refer to `docs/_source/hardware-standards.md` Standard Circuit Blocks section for each block's component list
 4. Import templates from `PCB/Libraries/sheets/` via Place → Add Sheet when available
 5. Run ERC (`kicad-cli sch erc`) after wiring each sheet
