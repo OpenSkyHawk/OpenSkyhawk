@@ -5,7 +5,8 @@
 #include <PduNode.h>
 
 void setup() {
-    STM32Board::setDebug(true);   // DiagSerial log + the CAL commands' replies
+    // DiagSerial log off (#389): it blocks loop() at 115200 baud. The CAL commands still answer on
+    // DiagSerial with it off. Bench only: STM32Board::setDebug(true);
     PduNode::setup();
 }
 

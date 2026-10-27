@@ -23,7 +23,9 @@ void onNodeDead(uint8_t nodeId) {
 }
 
 void setup() {
-    STM32Board::setDebug(true);       // remove for production; enables DiagSerial output
+    // DiagSerial stays off: this template is the bridge the Gateway bundles and flashes (#367). With it on,
+    // every input is also logged at 115200 baud, blocking — the bridge then forwards ~300 inputs/s
+    // instead of ~1,450 (#389). Turn it on only on a bench build: STM32Board::setDebug(true);
     PanelBridge::onNodeAlive(onNodeAlive);
     PanelBridge::onNodeDead(onNodeDead);
     PanelBridge::setup();

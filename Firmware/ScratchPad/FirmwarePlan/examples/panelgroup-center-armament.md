@@ -85,7 +85,7 @@ OpenSkyhawk::Switch2Pos trigger  (CTRL_TRIGGER,  PIN_TRIGGER);   // trigger → 
 OpenSkyhawk::Switch2Pos nwsBtn   (CTRL_NWS,      PIN_NWS);       // nose wheel steering button
 
 void setup() {
-    STM32Board::setDebug(true);   // remove in production
+    // STM32Board::setDebug(true);   // bench only: it blocks loop() at 115200 baud (#389)
     Wire.begin();                 // init I2C1 before PanelGroup::setup()
     PanelGroup::registerExpander(exp1, PA4, PA5);    // INTA=PA4, INTB=PA5
     PanelGroup::setup();

@@ -6,16 +6,17 @@
 // the sender enters error state instead of overflowing the TX ring.
 //
 // NODE_ID=0 (tester):
-//   Waits 1 s, then queues 30 canIdHb(0) frames with IRQs disabled so the
-//   TX-complete ISR cannot drain the ring between calls. TX capacity with IRQs
-//   off = 3 mailboxes + 15 ring slots = 18 frames (ring holds TX_RING_SIZE-1).
-//   Frames 19-30 (12 frames) drop immediately with txDropCount() increment.
+//   Waits 1 s, then queues 100 canIdHb(0) frames with IRQs disabled so the
+//   TX-complete ISR cannot drain the ring between calls. One frame per CAN ID sits
+//   in the mailboxes (#389), and NODE_ID 0 has the bridge's 64-frame ring (holds
+//   TX_RING_SIZE-1 = 63): capacity with IRQs off = 1 + 63 = 64 frames.
+//   Frames 65-100 (36 frames) drop immediately with txDropCount() increment.
 //   Reports at t=3 s: drops > 0 → PASS.
 //
 // NODE_ID=1 (ACK node):
 //   Accepts all frames; ACKs on bus so tester completes transmissions cleanly.
 //   Reports received count at t=4 s.
-//   Conservation check: tester drops + ACK rx_count should equal 30.
+//   Conservation check: tester drops + ACK rx_count should equal 100.
 //
 // Flash:
 //   pio run -e test_dual_overflow_tester -t upload   (Board A, NODE_ID=0)
@@ -25,6 +26,8 @@
 
 #include <STM32Board.h>
 #include <CANProtocol.h>
+
+static constexpr uint8_t BURST = 100;
 
 #if NODE_ID == 0  // ── Tester ──────────────────────────────────────────────────
 
@@ -49,28 +52,28 @@ void loop() {
         _burstSent = true;
         // Disable IRQs so TX-complete ISR cannot drain the ring between send() calls.
         // Without this, fast ACKs free mailboxes mid-loop and the ring never fills.
-        // First 3 frames → mailboxes, frames 4-18 → ring (cap=15), frames 19-30 → drop.
+        // Frame 1 → a mailbox, frames 2-64 → ring (cap=63), frames 65-100 → drop.
         __disable_irq();
         _dropsBefore = CANProtocol::txDropCount();
-        for (uint8_t i = 0; i < 30; i++) {
+        for (uint8_t i = 0; i < BURST; i++) {
             uint8_t buf[8] = {i};
             CANProtocol::send(canIdHb(0), buf, 8);
         }
         __enable_irq();
-        STM32Board::log("[TESTER] 30-frame burst queued");
+        STM32Board::log("[TESTER] 100-frame burst queued");
     }
 
     static bool _reported = false;
     if (!_reported && millis() > 3000) {
         _reported = true;
         uint32_t drops   = CANProtocol::txDropCount() - _dropsBefore;
-        uint32_t sentOk  = 30 - drops;
+        uint32_t sentOk  = BURST - drops;
         auto& d = STM32Board::diagSerial();
         d.print(F("[TESTER] drops="));  d.print(drops);
         d.print(F("  sent_ok="));       d.println(sentOk);
         d.print(F("[TESTER] Overflow handled: "));
         d.println(drops > 0 ? F("PASS") : F("FAIL (no overflow — bus drained before ring filled)"));
-        d.println(F("Check: drops + ACK rx_count should == 30"));
+        d.println(F("Check: drops + ACK rx_count should == 100"));
     }
 }
 
@@ -101,7 +104,7 @@ void loop() {
         _reported = true;
         auto& d = STM32Board::diagSerial();
         d.print(F("[ACK] rx_count="));  d.println(_rxCount);
-        d.println(F("Check: tester_drops + rx_count should == 30"));
+        d.println(F("Check: tester_drops + rx_count should == 100"));
     }
 }
 

@@ -17,7 +17,9 @@ Every STM32 board exposes a debug UART, standard across the project:
 
 Connect a USB-to-TTL adapter to the 3-pin header and open a serial monitor at 115200
 (`pio device monitor`). Enable output by calling `STM32Board::setDebug(true)` in `setup()`;
-production builds leave it `false` (default) — the pins stay available but silent.
+production builds leave it `false` (default) — the pins stay available but silent. Keep it off in a
+flying cockpit: every log line waits for the 115200-baud UART, so a board with it on handles only a
+few hundred inputs a second. The templates and panel sketches ship with it off.
 
 USART1 is used because PanelBridge already uses UART2 (`Serial`, PA2/PA3) for the RP2040 link —
 the two never conflict.

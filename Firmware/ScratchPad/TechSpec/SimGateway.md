@@ -301,7 +301,8 @@ namespace SimGateway {
      * @brief Relay bytes and dispatch HID frames. Call once per loop() iteration.
      *
      * Each call:
-     *   0. Arm (first call) or feed the WATCHDOG_MS (3 s) hardware watchdog. Production only.
+     *   0. Arm (first call) or feed the WATCHDOG_MS (3 s) hardware watchdog. The first call also
+     *      switches off TinyUSB's task IRQ (#389, D33). Production only.
      *   1. Forward up to CDC_TO_UART_BUDGET (64) bytes from USB CDC (Serial) to UART — raw
      *      DCS-BIOS stream to PanelBridge.
      *   2. Drain all bytes from UART:
@@ -539,6 +540,16 @@ backoff; else `watchdog_enable_caused_reboot()` → `RESET_WATCHDOG`; else `RESE
 The watchdog (`rp2040.wdt_begin(WATCHDOG_MS)`) is armed by the first `loop()` call, not in `setup()`,
 so production-mode test sketches that `delay()` in `setup()` or never call `loop()`
 (`test_axis_cal_persist`) are not reset by it.
+
+### USB from the main loop only (#389, D33)
+
+The same first `loop()` call runs `_usbTaskFromLoopOnly()`: it disables the user IRQ TinyUSB's rp2040
+port pends on every USB interrupt to run `tud_task()` (the claimed, enabled user IRQ with a handler —
+SimGateway claims none of its own). `tud_task()` then runs only from `yield()` after each `loop()`.
+In interrupt context the CDC callback could wait forever on the endpoint mutex `yield()`'s CDC flush
+(`TinyUSB_Device_FlushCDC`) holds in the main thread; the watchdog then rebooted the Gateway under
+heavy host traffic (caught by PC sampling: IRQ 31 spinning in `mutex_enter_block_until`, called from
+`cdcd_xfer_cb`).
 
 ### HID report batching
 

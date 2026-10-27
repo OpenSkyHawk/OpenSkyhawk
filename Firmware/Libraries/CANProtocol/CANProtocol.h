@@ -141,7 +141,11 @@ enum class CanStatus {
 
 // ── Fixed CAN arbitration IDs (PanelBridge -> All) ───────────────────────────
 
-static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010;  ///< Broadcast ControlPacketPair to all panels
+/// Broadcast ControlPacketPair to all panels: the sim's export stream. The lowest-priority frame on the
+/// bus (#389) — every input, heartbeat and update frame wins arbitration against it. An input is
+/// one-shot; a sim value comes back by itself (each change on the next DCS-BIOS frame, and autosync
+/// re-sends every value every few seconds), so the sim yields, not the cockpit. Was 0x010 (the top).
+static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x7E0;
 static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  ///< RTT throughput test
 static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Request nodes to re-send their state (see below)
 
@@ -193,8 +197,9 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
 // 0x740-0x7BF and 0x7C0-0x7C1: the bootloader's frames (#363) — BOOT_CMD_n = 0x740+n (bridge → node
-// n), BOOT_RSP_n = 0x780+n (node n → bridge), and the unconfigured-board pair. The lowest priority on
-// the bus, so update traffic never delays a control. Defined in BootProtocol.h, not here.
+// n), BOOT_RSP_n = 0x780+n (node n → bridge), and the unconfigured-board pair. Below every control and
+// status frame, so update traffic never delays a control; only CTRL_BCAST (0x7E0) is lower (#389).
+// Defined in BootProtocol.h, not here.
 
 // ── controlId namespace ───────────────────────────────────────────────────────
 // Payload controlIds live inside ControlPacket data bytes. They are intentionally
@@ -250,7 +255,7 @@ namespace CANProtocol {
      * @brief Accept a specific CAN ID. Use for PanelGroup nodes.
      *
      * Adds one ID to the hardware filter list. Call multiple times for multiple IDs.
-     * CTRL_BCAST (0x010), TEST_SEQ (0x011), and SYNC_REQ (0x012) are always included
+     * CTRL_BCAST (0x7E0), TEST_SEQ (0x011), and SYNC_REQ (0x012) are always included
      * automatically by start() — do not add them manually.
      *
      * @param canId 11-bit standard CAN ID to accept.
@@ -308,10 +313,12 @@ namespace CANProtocol {
     /**
      * @brief Send a CAN frame.
      *
-     * Sends immediately if a TX mailbox is free; otherwise enqueues in the TX ring
-     * buffer (~16 entries), drained automatically via TX-complete interrupt.
-     * CTRL_BCAST coalesces stale queued state (newest wins). EVT/control frames
-     * retry up to 3 attempts then drop. All drops increment txDropCount().
+     * Every frame goes through the TX ring (16 entries; 64 on the bridge) and leaves in the order
+     * it was sent; the TX-complete interrupt keeps the three mailboxes loaded. A frame that loses
+     * arbitration is resent until it goes out; one that hits a bus error, up to 3 attempts in all
+     * (#389, D4/D7). At most one frame per CAN ID is in the mailboxes at a time, so a resend never
+     * lands after a newer frame of the same ID. A full ring, or a frame out of error attempts, is
+     * dropped and counted in txDropCount().
      *
      * @param canId  11-bit standard CAN ID.
      * @param data   Pointer to payload bytes.
@@ -450,6 +457,14 @@ namespace CANProtocol {
      *        behind the bus.
      */
     uint32_t rxDropCount();
+
+    /**
+     * @brief Return the cumulative RX FIFO overrun count since startup (#389): frames lost in
+     *        hardware because all three FIFO slots were full when they arrived. RX is
+     *        interrupt-driven, so this needs interrupts held off for three frame times; should
+     *        stay 0.
+     */
+    uint32_t rxOverrunCount();
 
     /**
      * @brief Ask one node to re-send its state: SYNC_REQ naming @p nodeId (#387). PanelBridge only.

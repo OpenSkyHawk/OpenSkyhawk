@@ -134,14 +134,39 @@ static void emitSelf() {
 // _NODE_STATUS per alive node, then _NODE_STATUS_END <count> so the host knows the burst is
 // complete and can reconcile (prune nodes absent from it). count includes the node-0 row, so
 // count=1 = bridge only, no other nodes connected.
+//
+// Written a row at a time (#388, in #389): one call wrote every row, and Serial.write() blocks once
+// the 64-byte UART TX buffer is full — ~130 ms with 63 nodes, every 5 s (the client's poll), while
+// the 256-byte RX buffer overflowed and lost ~100 sim updates. emitAllNodes() only arms the reply;
+// serviceRoster() writes the next row when the TX buffer has room for a whole line, so loop() never
+// waits. A request while a reply is going out restarts it.
+static bool    _rosterPending = false;
+static int16_t _rosterNext    = -1;   // -1: the node-0 row next; 0..MAX_NODE_ID-1: next node; MAX_NODE_ID: END
+static uint8_t _rosterCount   = 0;
+static constexpr int ROSTER_LINE_BYTES = sizeof(NODE_STATUS_MSG_NAME) + 2 * NODE_STATUS_ROW_BYTES + 1;   // "name " + hex + '\n'
+
 static void emitAllNodes() {
-    emitSelf();
-    uint8_t count = 1;
-    for (uint8_t i = 0; i < MAX_NODE_ID; i++)
-        if (_nodes[i].alive) { emitNode(i + 1, true); count++; }
-    char arg[4];
-    snprintf(arg, sizeof(arg), "%u", (unsigned)count);
-    DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
+    _rosterPending = true;
+    _rosterNext    = -1;
+    _rosterCount   = 0;
+}
+
+// @param drain true: write the whole reply now, blocking (tests only).
+static void serviceRoster(bool drain = false) {
+    while (_rosterPending && (drain || Serial.availableForWrite() >= ROSTER_LINE_BYTES)) {
+        if (_rosterNext < 0) { emitSelf(); _rosterCount = 1; _rosterNext = 0; continue; }
+        while (_rosterNext < MAX_NODE_ID && !_nodes[_rosterNext].alive) _rosterNext++;
+        if (_rosterNext < MAX_NODE_ID) {
+            emitNode((uint8_t)(_rosterNext + 1), true);
+            _rosterCount++;
+            _rosterNext++;
+            continue;
+        }
+        char arg[4];
+        snprintf(arg, sizeof(arg), "%u", (unsigned)_rosterCount);
+        DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
+        _rosterPending = false;
+    }
 }
 
 // Forward one TELEM_n frame to the host, unread (#216):
@@ -675,71 +700,39 @@ static void onModelTimeChange(char* value) {
 static constexpr uint16_t EXPORT_FIRST_ADDR = 0x0002;
 static constexpr uint16_t EXPORT_LAST_ADDR  = 0xFFFE;
 
-class BridgeExportListener : public DcsBios::ExportStreamListener {
-public:
-    BridgeExportListener() : DcsBios::ExportStreamListener(EXPORT_FIRST_ADDR, EXPORT_LAST_ADDR) {}
-    void onDcsBiosWrite(unsigned int address, unsigned int data) override {
-        handleDcsBiosExport((uint16_t)address, (uint16_t)data);
-    }
-};
-
-static BridgeExportListener     _exportListener;
-static DcsBios::StringBuffer<5> _modelTimeBuf(CommonData_MOD_TIME_A, onModelTimeChange);
+// The listener itself is ExportDispatcher, below the handlers it calls.
 
 #if PANELBRIDGE_NODE_STATUS
 // Host roster request (#86): the client writes NODE_STATUS_REQ_ADDR on the DCS-BIOS
 // export stream; PanelBridge replies with the full roster. handleDcsBiosExport()
 // drops this address so it is never broadcast onto CAN.
-class NodeStatusReqListener : public DcsBios::ExportStreamListener {
-public:
-    NodeStatusReqListener()
-        : DcsBios::ExportStreamListener(NODE_STATUS_REQ_ADDR, NODE_STATUS_REQ_ADDR) {}
-    void onDcsBiosWrite(unsigned int, unsigned int) override { emitAllNodes(); }
-};
-static NodeStatusReqListener _nodeStatusReqListener;
+// (Handled by ExportDispatcher below — #389.)
 #endif
 
 // Host "forget this node" (#384): value = a NODE_ID that is gone on purpose. Only a dead node is
 // dropped — a live one would just come back — then the roster goes out so the host reconciles.
-class NodeForgetListener : public DcsBios::ExportStreamListener {
-public:
-    NodeForgetListener() : DcsBios::ExportStreamListener(NODE_FORGET_REQ_ADDR, NODE_FORGET_REQ_ADDR) {}
-    void onDcsBiosWrite(unsigned int, unsigned int value) override {
-        const uint8_t nodeId = (uint8_t)value;
-        if (nodeId < 1 || nodeId > MAX_NODE_ID || !_nodes[nodeId - 1].everSeen || _nodes[nodeId - 1].alive) return;
-        forgetNode(nodeId);
+static void onForgetRequest(unsigned int value) {
+    const uint8_t nodeId = (uint8_t)value;
+    if (nodeId < 1 || nodeId > MAX_NODE_ID || !_nodes[nodeId - 1].everSeen || _nodes[nodeId - 1].alive) return;
+    forgetNode(nodeId);
 #if PANELBRIDGE_NODE_STATUS
-        emitAllNodes();
+    emitAllNodes();
 #endif
-    }
-};
-static NodeForgetListener _nodeForgetListener;
+}
 
 // The Gateway asks the bridge itself to update (#367): reset into the bootloader, which then talks to
 // the RP2040 over this same UART. Only with a bootloader that speaks serial installed — otherwise the
 // request is ignored (STM32Board::enterBootloader()).
-class BridgeEnterListener : public DcsBios::ExportStreamListener {
-public:
-    BridgeEnterListener()
-        : DcsBios::ExportStreamListener(OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS,
-                                        OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS) {}
-    void onDcsBiosWrite(unsigned int, unsigned int) override {
-        STM32Board::enterBootloader(OpenSkyhawk::Boot::TRANSPORT_SERIAL);
-    }
-};
-static BridgeEnterListener _bridgeEnterListener;
+// (BRIDGE_ENTER_EXPORT_ADDRESS → STM32Board::enterBootloader(TRANSPORT_SERIAL), in ExportDispatcher.)
 
 // Host → bootloader relay (#365, stream encoding #366): each export record in the reserved window is
 // a byte stream of whole CAN frames — mark|len, id lo, id hi, data, with 0x55 / 0x56 escaped
 // (BootProtocol.h says why). A record always starts on a frame boundary, so a lost record costs only
 // its own frames. Only BOOT_CMD_1-63 and the unconfigured command ID go on the bus: the host can't
 // inject anything else onto CAN.
-class BootRelayListener : public DcsBios::ExportStreamListener {
+class BootRelay {
 public:
-    BootRelayListener()
-        : DcsBios::ExportStreamListener(OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS,
-                                        OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS + 2 * (OpenSkyhawk::Boot::RELAY_EXPORT_WORDS - 1)) {}
-    void onDcsBiosWrite(unsigned int address, unsigned int data) override {
+    void onWrite(unsigned int address, unsigned int data) {
         if (address == OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS) _need = 0;   // a record starts a frame
         feed((uint8_t)data);
         feed((uint8_t)(data >> 8));
@@ -774,7 +767,60 @@ private:
     uint8_t _need = 0, _pos = 0;   // _need = 2 + len while a frame is open, else 0
     bool    _esc  = false;
 };
-static BootRelayListener _bootRelayListener;
+static BootRelay _bootRelay;
+
+// THE one ExportStreamListener on the bridge (#389). The DCS-BIOS library assumes listener ranges
+// never overlap: it keeps them sorted by last address and, for each word, stops at the first one
+// that starts above it — so a reserved-address listener nested inside the whole-stream range cut off
+// every word below it, and almost no sim output reached CAN. Everything the bridge reads from the
+// export stream is therefore routed here. Do NOT register another ExportStreamListener (or a
+// DcsBios::StringBuffer / IntegerBuffer, which are listeners too) in PanelBridge.
+class ExportDispatcher : public DcsBios::ExportStreamListener {
+public:
+    ExportDispatcher() : DcsBios::ExportStreamListener(EXPORT_FIRST_ADDR, EXPORT_LAST_ADDR) {
+        memset(_modelTime, ' ', MODEL_TIME_LEN);
+        _modelTime[MODEL_TIME_LEN] = '\0';
+    }
+    void onDcsBiosWrite(unsigned int address, unsigned int data) override {
+        // Model time (CommonData, 5 chars): latch it once the stream has moved past it — words come
+        // in ascending address order and MetadataEnd closes every frame — so a half-updated value
+        // can never read as a rewind (a false DCS session change).
+        if (_modelTimeDirty && address > MODEL_TIME_LAST) {
+            _modelTimeDirty = false;
+            onModelTimeChange(_modelTime);
+        }
+        if (address >= CommonData_MOD_TIME_A && address <= MODEL_TIME_LAST) {
+            const unsigned int i = address - CommonData_MOD_TIME_A;
+            setChar(i, (char)(data & 0xFF));
+            if (i + 1 < MODEL_TIME_LEN) setChar(i + 1, (char)(data >> 8));
+        }
+#if PANELBRIDGE_NODE_STATUS
+        if (address == NODE_STATUS_REQ_ADDR) { emitAllNodes(); return; }   // the host's roster request (#86)
+#endif
+        if (address == NODE_FORGET_REQ_ADDR) { onForgetRequest(data); return; }   // #384
+        if (address == OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS) {           // #367
+            STM32Board::enterBootloader(OpenSkyhawk::Boot::TRANSPORT_SERIAL);
+            return;
+        }
+        if (address >= OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS
+            && address < OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS + 2 * OpenSkyhawk::Boot::RELAY_EXPORT_WORDS) {
+            _bootRelay.onWrite(address, data);   // #365 / #366
+            return;
+        }
+        handleDcsBiosExport((uint16_t)address, (uint16_t)data);   // everything else → CTRL_BCAST
+    }
+private:
+    static constexpr unsigned int MODEL_TIME_LEN  = 5;
+    static constexpr unsigned int MODEL_TIME_LAST = CommonData_MOD_TIME_A + MODEL_TIME_LEN - 1;
+    void setChar(unsigned int i, char c) {
+        if (_modelTime[i] == c) return;   // DCS-BIOS resends unchanged words (autosync)
+        _modelTime[i] = c;
+        _modelTimeDirty = true;
+    }
+    char _modelTime[MODEL_TIME_LEN + 1];
+    bool _modelTimeDirty = false;
+};
+static ExportDispatcher _exportDispatcher;
 
 } // anonymous namespace
 
@@ -799,10 +845,8 @@ void setup() {
     // No SYNC_REQ here (#387): each node is queued for a sync as its first heartbeat arrives.
 #if PANELBRIDGE_NODE_STATUS
     emitAllNodes();   // seed the host with the current roster (node-0 row only at cold boot) (#86)
-    // Let it finish going out: the sketch calls DcsBios::setup() next, whose Serial.begin() restarts
-    // the UART and stranded all but the first write in the TX buffer (#367 bench) — the host lost
-    // the boot row on every bridge reset.
-    Serial.flush();
+    // It goes out from loop() (serviceRoster), after the sketch's DcsBios::setup() — whose
+    // Serial.begin() restart once stranded a boot row written here (#367 bench).
 #endif
     STM32Board::markBootHealthy();   // the bootloader's crash-loop counter back to 0 (#364)
 }
@@ -818,6 +862,9 @@ void loop() {
     uint32_t now = millis();
     checkNodeTimeouts(now);
     serviceSync(now);
+#if PANELBRIDGE_NODE_STATUS
+    serviceRoster();
+#endif
 
     // Node status (#340): HB_0 every 500 ms and HEALTH_0 every 1 s. HB_0 is an unconditional
     // liveness beacon — unlike CTRL_BCAST, which only moves when a DCS export changes — so nodes
@@ -902,7 +949,7 @@ void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
     }
 }
 
-void testRequestNodeStatus() { emitAllNodes(); }
+void testRequestNodeStatus() { emitAllNodes(); serviceRoster(true); }
 
 void testCheckTimeouts(uint32_t now) { checkNodeTimeouts(now); }
 #endif // PANELBRIDGE_NODE_STATUS

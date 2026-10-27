@@ -367,7 +367,7 @@ namespace PanelGroup {
      *      on one node can read at different rates. PanelGroup imposes no analog cadence
      *      of its own.
      *   4. Drain CANProtocol RX:
-     *        0x010 CTRL_BCAST  → walk OutputBase list; call onControlPacket() for each
+     *        0x7E0 CTRL_BCAST  → walk OutputBase list; call onControlPacket() for each
      *                            non-null slot (controlId != 0x0000).
      *        0x012 SYNC_REQ   → call forceReport() on all InputBase objects; call
      *                            flushBatched(canIdEvt(NODE_ID)).
@@ -605,7 +605,7 @@ owns special-frame interception before PanelGroup callbacks fire:
 
 | CAN ID | Handling |
 |--------|----------|
-| `0x010` CTRL_BCAST | Delivered to PanelGroup's receive callback. Interpret payload as `ControlPacketPair`; walk `OutputBase` list; call `onControlPacket(controlId, value)` on every object for each non-null slot (controlId != 0x0000). |
+| `0x7E0` CTRL_BCAST | Delivered to PanelGroup's receive callback. Interpret payload as `ControlPacketPair`; walk `OutputBase` list; call `onControlPacket(controlId, value)` on every object for each non-null slot (controlId != 0x0000). |
 | `0x012` SYNC_REQ | Intercepted by CANProtocol and delivered via `onSyncReq()`. PanelGroup calls `forceReport()` on all `InputBase` objects, then `CANProtocol::flushBatched(canIdEvt(NODE_ID))`. |
 | `0x011` TEST_SEQ | Intercepted by CANProtocol and echoed automatically as `ECHO_n`; PanelGroup is not called. |
 | Anything else | Delivered to PanelGroup's receive callback and ignored unless future specs claim it. |
