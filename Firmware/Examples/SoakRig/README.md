@@ -15,8 +15,8 @@ verified through) and is not changed by this.
 | `NODE_ID` | 1 | 2 |
 | Base revision | 0.1.0 **or** 0.2.0 | **0.2.0** — it holds the ShiftBus stations |
 | MCU | `genericSTM32F103C8` | `genericSTM32F103C8` — `-flto`, see below |
-| Flash | 48,568 B — 79.0 % | 55,020 B — **89.6 %** |
-| RAM | 18.6 % | 27.1 % |
+| Flash | 48,884 B — 79.6 % | 55,292 B — **90.0 %** |
+| RAM | 19.0 % | 27.5 % |
 
 Flash is measured against the **61,440 B app region**, not the chip's 64 KB: the 4 KB bootloader
 (#362–#367) owns `0x08000000` and apps start at `0x08001000`. PlatformIO still prints a
@@ -47,15 +47,15 @@ need calibrating against real hardware.
 ### If you redistribute stations, watch the flash
 
 Both nodes are C8s, and the flash budget follows the *grouping*, not the board letter. Board A
-links at **48.5 KB with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
+links at **48.9 KB with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
 one node, and keep that node's other stations light. It cannot also carry the full MCP + ADS
 input stack. Re-measure after any move; both projects build in a few seconds.
 
 ## Board B is a C8 with `-flto`
 
 The assembled 0.2.0 base carries an STM32F103**C8**, and once the bootloader took the app region
-to 61,440 B this image no longer fit: it was **2,316 B over**. `-flto` links it at **55,020 B**,
-89.6 % of the region, with 6,420 B spare. The `StepPattern::FULL_4STATE` alternate measures the
+to 61,440 B this image no longer fit: it was **2,316 B over**. `-flto` links it at **55,292 B**,
+90.0 % of the region, with 6,148 B spare. The `StepPattern::FULL_4STATE` alternate measures the
 same, since its config is optimised out until you swap it in.
 
 **LTO was chosen to buy margin, not to clear 2.3 KB once.** Board B's flash grew ~230 bytes per
