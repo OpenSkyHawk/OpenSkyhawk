@@ -79,7 +79,7 @@ _The firmware release version — one source for every board that reports it._ [
 | Type | Name |
 | ---: | :--- |
 | define  | [**OPENSKYHAWK\_FW\_MAJOR**](FirmwareVersion_8h.md#define-openskyhawk_fw_major)  `0`<br> |
-| define  | [**OPENSKYHAWK\_FW\_MINOR**](FirmwareVersion_8h.md#define-openskyhawk_fw_minor)  `1`<br> |
+| define  | [**OPENSKYHAWK\_FW\_MINOR**](FirmwareVersion_8h.md#define-openskyhawk_fw_minor)  `3`<br> |
 | define  | [**OPENSKYHAWK\_FW\_PATCH**](FirmwareVersion_8h.md#define-openskyhawk_fw_patch)  `0`<br> |
 
 ## Detailed Description
@@ -124,7 +124,7 @@ GPL-2.0-only — see Firmware/LICENSE
 ### define OPENSKYHAWK\_FW\_MINOR 
 
 ```C++
-#define OPENSKYHAWK_FW_MINOR `1`
+#define OPENSKYHAWK_FW_MINOR `3`
 ```
 
 

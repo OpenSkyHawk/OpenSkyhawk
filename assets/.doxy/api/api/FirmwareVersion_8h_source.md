@@ -12,7 +12,7 @@
 #pragma once
 
 #define OPENSKYHAWK_FW_MAJOR 0 // x-release-please-major
-#define OPENSKYHAWK_FW_MINOR 1 // x-release-please-minor
+#define OPENSKYHAWK_FW_MINOR 3 // x-release-please-minor
 #define OPENSKYHAWK_FW_PATCH 0 // x-release-please-patch
 ```
 
