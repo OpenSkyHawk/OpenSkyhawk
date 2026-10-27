@@ -179,7 +179,7 @@ build_src_filter = -<*> +<dual_overflow/dual_overflow.cpp>
 
 #### Dual-Board Integration Tests
 
-Require two STM32F103CBT6 boards, two SN65HVD230 CAN transceivers, and a physical CAN bus with 120 Ω
+Require two STM32F103C8 (or CB) boards, two SN65HVD230 CAN transceivers, and a physical CAN bus with 120 Ω
 termination at each end. Role is determined at compile time by `NODE_ID`.
 
 **Startup order:** neither test requires boards to be powered simultaneously. The sender
