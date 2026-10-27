@@ -160,6 +160,31 @@ input event arrives, CANProtocol must flush the half-full EVT batch within two
 full-state polls, PanelGroup calls `CANProtocol::flushBatched(canIdEvt(NODE_ID))` so the odd
 trailing packet flushes immediately at the end of the poll pass.
 
+### Re-reporting: a state, never a command
+
+Every input has a `forceReport()`, and PanelGroup calls it on the boot burst and on **every
+`SYNC_REQ`** to this node. The bridge sends one when it first hears the node (its own boot included),
+when the node comes back from dead or reboots, and on a DCS session change — one node at a time
+(#387). The same answer also carries the node's identity and version: it ends with `READY_n`
+flagged RESYNC (#383). So a re-report happens **any number of times** in a session, whenever the
+bridge needs to know who is there, not only when the sim needs syncing.
+
+**Rule: `forceReport()` emits only the control's current state, or nothing.** What it sends must
+leave the sim unchanged when the sim already matches: an absolute position (`set_state`), never a
+relative step, a `TOGGLE`, or anything whose effect depends on how many times it arrives.
+
+| Input | `forceReport()` |
+|---|---|
+| `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos`, `AnalogMultiPos`, `SwitchWithCover2Pos` | the current position |
+| `AnalogInput`, `AngleSensorInput` | the current value (bypasses the poll throttle and hysteresis) |
+| `ActionButton` | **nothing**: a re-sent `TOGGLE` would flip the sim switch every time; only the baseline is seeded |
+| `RotaryEncoder`, `RotaryAcceleratedEncoder` | **nothing**: a step is relative; only the Gray state is resynced, and DCS owns the position |
+
+A new input class follows the same rule. If its control has no absolute state to send, its
+`forceReport()` seeds its baseline and stays silent. The effect: the physical cockpit is re-asserted
+on the sim (it wins over a mouse change made in the sim meanwhile), and nothing in the sim can be
+flipped or stepped by a re-report.
+
 ### Switch2Pos *(implemented)*
 
 Debounced 2-position switch. VALUE: 1 = active (pin LOW), 0 = inactive. Debounce: 20 ms fixed.
