@@ -72,7 +72,7 @@ actually does.
 | `SHIFTBUS_MOSI` | `PB5` | never set | `ShiftBus.cpp:19` |
 | `SHIFTBUS_LOAD` | `PB8` | never set | `ShiftBus.cpp:22` |
 | `SHIFTBUS_LATCH` | `PB9` | never set | `ShiftBus.cpp:25` |
-| `SHIFTBUS_ISR_HZ` | unset → polled sampling | `Tests/ShiftBus`, `=1000` | `PanelGroup.cpp:112,227` |
+| `SHIFTBUS_ISR_HZ` | unset → polled sampling | `Tests/ShiftBus`, `=1000` | `PanelGroup.cpp:116,231` |
 | `SHIFTBUS_ISR_TIM` | `TIM2` | never set | `PanelGroup.cpp:232` |
 
 **What they do, briefly.** `NODE_ID` is the board's CAN address — see
