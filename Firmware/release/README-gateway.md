@@ -25,11 +25,11 @@ drive itself, then brings the cockpit side up to date. You don't open `${COCKPIT
 ### 1. USB side (RP2040)
 
 1. Close SkyHawkClient and any serial monitor — they hold the USB port.
-2. Plug the Gateway into USB. A new Gateway shows up as a drive named `RPI-RP2` by itself.
+2. Plug the Gateway into USB. A blank Gateway shows up as a drive named `RPI-RP2` by itself.
 3. Drag `${USB_FILE}` onto the `RPI-RP2` drive. The drive disappears and the Gateway restarts.
 
 A Gateway that is already running is updated by SkyHawkClient (above), which restarts it into the
-`RPI-RP2` drive. Hold the **BOOTSEL** button while plugging it in only if its firmware stops before
+`RPI-RP2` drive. Hold the **BOOTSEL** button while plugging it in only if its firmware hangs before
 USB comes up, so neither the drive nor the client can find it.
 
 ### 2. Cockpit side (STM32)

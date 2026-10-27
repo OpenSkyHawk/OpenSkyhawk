@@ -228,13 +228,25 @@ static void testCommitAndReset() {
 
 // ── No upload during a session (#402) ─────────────────────────────────────────
 // UPL_FLASH to the bridge with nothing staged flashes the bundled image, so refusing BEGIN alone
-// isn't enough. Both must be answered by the calibration channel and never reach the uploader
-// (which this test doesn't start), so E3-E6 fail without the guard.
+// isn't enough. Both must be answered by the calibration channel and never reach the uploader.
+// This test never calls SimGateway::begin(), so the uploader gets stub callbacks here: they
+// answer nothing on the CDC and note that the uploader was reached. Without the guard a frame
+// gets past the calibration channel, no BUSY NACK comes back, and E3-E6 FAIL instead of the
+// uploader calling an empty callback and crashing.
+static bool g_uplReached = false;
+
 static void testNoUploadInSession() {
+    Uploader::begin({
+        [](uint8_t, uint8_t, const uint8_t*, uint16_t) { g_uplReached = true; },
+        [](uint8_t, uint8_t)                           { g_uplReached = true; },
+        [](uint8_t, uint8_t, uint8_t, uint8_t)         { g_uplReached = true; },
+        [](const uint8_t*, uint16_t)                   { g_uplReached = true; },
+    });
     SimGateway::calResetForTest();
     openSession(0);
 
-    req(OS::CAL_T_UPL_BEGIN, 0x61, nullptr, 0);
+    uint8_t b[8] = {};   // UPL_BEGIN is 8 bytes; a shorter frame is dropped before the guard
+    req(OS::CAL_T_UPL_BEGIN, 0x61, b, sizeof b);
     checkEq(F("[E1] UPL_BEGIN in a session NACKed"), rxType(), OS::CAL_T_NACK);
     checkEq(F("[E2] reason BUSY"),                   rxPay(1), OS::CAL_NACK_BUSY);
 
@@ -245,7 +257,7 @@ static void testNoUploadInSession() {
     checkEq(F("[E3] UPL_FLASH in a session NACKed"), rxType(), OS::CAL_T_NACK);
     checkEq(F("[E4] NACK names UPL_FLASH"),          rxPay(0), OS::CAL_T_UPL_FLASH);
     checkEq(F("[E5] reason BUSY"),                   rxPay(1), OS::CAL_NACK_BUSY);
-    check  (F("[E6] no flash started"),              !Uploader::busy());
+    check  (F("[E6] uploader never reached"),        !g_uplReached && !Uploader::busy());
     check  (F("[E7] calibration session still open"), SimGateway::calSessionOpen());
 }
 

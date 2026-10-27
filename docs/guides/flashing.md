@@ -68,9 +68,10 @@ No ST-Link needed — the board flashes over the same USB cable it runs on. Eith
 - **From PlatformIO:** `pio run -t upload`. PlatformIO resets the board into its bootloader by
   itself (the 1200-baud touch, which the Adafruit TinyUSB library in every SimGateway build
   handles), then flashes it.
-- **By hand:** a new board shows up as the `RPI-RP2` drive as soon as it is plugged in; a running
-  one needs BOOTSEL held while plugging it in (or while tapping RESET). Drag the `.uf2` onto the
-  drive — from a release, `gateway/gateway-<version>.uf2` in the zip.
+- **By hand:** a blank board shows up as the `RPI-RP2` drive as soon as it is plugged in. Drag the
+  `.uf2` onto the drive — from a release, `gateway/gateway-<version>.uf2` in the zip. A running
+  board is restarted into the drive by the upload above or by SkyHawkClient; hold BOOTSEL while
+  plugging it in only if its firmware hangs before USB comes up.
 
 !!! warning "Upload can't find the board?"
     Something is holding the CDC port open. Close SkyHawkClient, serial monitors, and any

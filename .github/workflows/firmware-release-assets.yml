@@ -284,7 +284,7 @@ jobs:
           done < <(jq -r '.files[] | [.path, .size, .sha256] | @tsv' "$dist/manifest.json")
           unlisted="$(comm -23 <(unzip -Z1 "$dist/$pkg.zip" | grep -v '/$' | sort) <(jq -r '.files[].path' "$dist/manifest.json" | sort) \
             | grep -v -E "^$pkg/(README\.md|CHANGES\.md|LICENSE|manifest\.json|[^/]+/README\.md)$" || true)"
-          [[ -z "$unlisted" ]] || check "images in the zip the manifest doesn't list: $unlisted"
+          [[ -z "$unlisted" ]] || check "images in the zip the manifest doesn't list: ${unlisted//$'\n'/ }"
           for d in "$zipdir"/*/; do
             folder="$(basename "$d")"
             [[ "$folder" == bootloader ]] && continue
@@ -293,8 +293,8 @@ jobs:
             done
           done
           [[ -f "$zipdir/gateway/gateway-$VERSION.uf2" ]] || check "gateway/ has no .uf2"
-          [[ "$failed" == 0 ]]
 
+          # The file list goes in the summary either way, so a failed check can be read against it.
           {
             echo
             echo "## Files"
@@ -305,8 +305,13 @@ jobs:
             (cd "$ziproot" && find "$pkg" -type f | sort)
             echo '```'
             echo
-            echo "manifest.json (schema $(jq .schema "$dist/manifest.json")): every path is in the zip with a matching SHA-256."
+            if [[ "$failed" == 0 ]]; then
+              echo "manifest.json (schema $(jq .schema "$dist/manifest.json")): every path is in the zip with a matching SHA-256."
+            else
+              echo "**The package check failed** — see the errors in the log."
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
+          [[ "$failed" == 0 ]]
 
       - name: Upload the package
         uses: actions/upload-artifact@v7
