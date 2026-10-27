@@ -673,8 +673,10 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
     Uploader::onClientFrame(_calLastRxMs);
 
     // The firmware uploader's messages (#366). One session at a time: no upload while calibrating.
+    // FLASH is refused too, not only BEGIN: with nothing staged it flashes the bundled bridge
+    // image (#367), which would start a flash mid-calibration (#402).
     if (Uploader::handles(type)) {
-        if (_calSession && type == OpenSkyhawk::CAL_T_UPL_BEGIN) {
+        if (_calSession && (type == OpenSkyhawk::CAL_T_UPL_BEGIN || type == OpenSkyhawk::CAL_T_UPL_FLASH)) {
             _calNack(type, seq, OpenSkyhawk::CAL_NACK_BUSY, CAL_AXIS_NONE);
             return;
         }

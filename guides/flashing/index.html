@@ -4895,10 +4895,14 @@ PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
 <code>0x08001000</code>, behind the bootloader, so a board that has never been flashed gets both at once:</p>
 <div class="highlight"><pre><span></span><code>pio<span class="w"> </span>run<span class="w"> </span>-t<span class="w"> </span>bootstrap<span class="w">       </span><span class="c1"># bootloader + firmware, once per new board</span>
 </code></pre></div>
-<p>After that, <code>pio run -t upload</code> flashes the firmware alone and keeps the bootloader. From a release,
-use the board's <code>-full.hex</code> file on a new board and its <code>.elf</code> file on one that already has the
-bootloader. The Gateway's PanelBridge chip takes a different build of the bootloader from the nodes;
-<code>bootstrap</code> and the release files already pick the right one for each board.</p>
+<p>After that, <code>pio run -t upload</code> flashes the firmware alone and keeps the bootloader. A release
+carries every board's firmware in one zip, <code>openskyhawk-firmware-&lt;version&gt;.zip</code>, with a folder per
+board. Each STM32 board's folder has three files: <code>-full.hex</code> (bootloader + firmware) for a new
+board and <code>.elf</code> (firmware alone) for one that already has the bootloader, both for the ST-Link,
+and <code>.bin</code> (firmware alone), which <a href="../../getting-started/client-app/">SkyHawkClient</a>
+loads onto a board that already has the bootloader, with no ST-Link. The Gateway's PanelBridge chip
+takes a different build of the bootloader from the nodes; <code>bootstrap</code> and the release files already
+pick the right one for each board.</p>
 <p>The bootloader write-protects itself, so anything that writes from address 0 — the per-library test
 sketches, or a new bootloader — needs the protection lifted first. The one-line command is on the
 <a href="../../firmware/bootloader/#the-bootloader-protects-itself">Bootloader</a> page.</p>
@@ -4930,8 +4934,10 @@ the write — the projects under <code>Firmware/Tests/</code> all use <code>0</c
 <li><strong>From PlatformIO:</strong> <code>pio run -t upload</code>. PlatformIO resets the board into its bootloader by
   itself (the 1200-baud touch, which the Adafruit TinyUSB library in every SimGateway build
   handles), then flashes it.</li>
-<li><strong>By hand:</strong> hold BOOTSEL while plugging the board in (or while tapping RESET), wait for the
-  <code>RPI-RP2</code> drive, and drag the <code>.uf2</code> onto it.</li>
+<li><strong>By hand:</strong> a blank board shows up as the <code>RPI-RP2</code> drive as soon as it is plugged in. Drag the
+  <code>.uf2</code> onto the drive — from a release, <code>gateway/gateway-&lt;version&gt;.uf2</code> in the zip. A running
+  board is restarted into the drive by the upload above or by SkyHawkClient; hold BOOTSEL while
+  plugging it in only if its firmware hangs before USB comes up.</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Upload can't find the board?</p>
