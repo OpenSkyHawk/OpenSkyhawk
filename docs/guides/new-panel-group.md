@@ -6,7 +6,7 @@ overview; this is the recipe.
 
 ## Step 1 — Claim a NODE_ID
 
-**Always first.** Open `Firmware/NODE_IDS.md`, take the next free number (currently **2**), and
+**Always first.** Open `Firmware/NODE_IDS.md`, take the next free number (currently **6**), and
 add your row (panel group, console, status). Commit it in the same PR that starts the work.
 NODE_IDs are permanent — never reuse one. See [NODE_ID & CAN Addressing](../firmware/node-id.md).
 
