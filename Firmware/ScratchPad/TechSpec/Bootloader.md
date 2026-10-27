@@ -59,8 +59,8 @@ Production projects reach it through `Firmware/shared/`: `stm32.ini` sets the ap
 
 ## Implementation Notes
 
-- **Size — the real footprint (frozen, #367):** `bootloader` 3,684 B (412 free), `bridge` 3,668 B
-  (428 free), of 4,096 — vectors 64 + code + `.data` copy 4 + info block 16. History: ~3,144 after
+- **Size — the real footprint (frozen, #367):** about 3.7 KB, roughly 400 B free, for both builds
+  (`bootloader` and `bridge`), of 4,096 — vectors 64 + code + `.data` copy 4 + info block 16. History: ~3,144 after
   #363, ~3,696 after #364, ~3,828 after #365, ~3,984 after #366; #367's own startup + LTO won back
   ~280 B. PlatformIO's "Flash used" leaves out `.isr_vector` — don't trust it here; the release
   workflow's summary adds the sections up. The info block at `0x08000FF0` is the hard guard (the link

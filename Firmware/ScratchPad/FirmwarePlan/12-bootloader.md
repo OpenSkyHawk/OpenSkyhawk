@@ -275,9 +275,9 @@ replaced only over ST-Link — so every later feature lives in the app or the Ga
 - **The build is pinned:** exact platform, toolchain and CMSIS in `Firmware/Bootloader/platformio.ini`,
   so the same source always builds the same bytes — a newer compiler can move the size by ±100 B.
   Changing any of them is a bootloader change.
-- **Budget: 4 KB, never more.** Real footprints at the freeze (vectors, code, `.data` copy, info block):
-  `bootloader` 3,684 B (412 free), `bridge` 3,668 B (428 free). The release workflow's summary reports
-  both; code that grows into the info block fails the link.
+- **Budget: 4 KB, never more.** Real footprint at the freeze (vectors, code, `.data` copy, info block):
+  about 3.7 KB, roughly 400 B free, for both builds (`bootloader` and `bridge`). The release workflow's
+  summary reports both; code that grows into the info block fails the link.
 - **A bootloader change** (bug fix only) ships in the release where it changed (`bootloader/` in the
   zip, and every `-full.hex`); `manifest.json` names the release that holds the current one.
 

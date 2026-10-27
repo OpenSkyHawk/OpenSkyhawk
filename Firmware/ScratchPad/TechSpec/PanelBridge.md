@@ -372,7 +372,8 @@ are child-node liveness frames. The RX handler validates IDs in software:
 | `0x301`-`0x33F` | `ECHO_1`-`ECHO_63` | Consume TEST_SEQ RTT diagnostic response |
 | `0x401`-`0x43F` | `READY_1`-`READY_63` | Cache version + bootloader, mark alive; a boot READY queues a sync, a `RESYNC` READY ends the node's answer (#383, #387) |
 | `0x501`-`0x53F` / `0x601`-`0x63F` / `0x701`-`0x73F` | `EVT_REL_n` / `EVT_DIR_n` / `EVT_ACTION_n` | Dispatch each non-null slot in that form (#147) |
-| `0x781`-`0x7BF`, `0x7C1` | `BOOT_RSP_n`, unconfigured announce | Relay as `_BOOT_RSP`; keep the node alive in its bootloader, no sync (#365) |
+| `0x781`-`0x7BF` | `BOOT_RSP_n` | Relay as `_BOOT_RSP`; keep the node alive in its bootloader, no sync (#365) |
+| `0x7C1` | Unconfigured announce | Relay as `_BOOT_RSP` only — no NODE_ID yet, so nothing is tracked (#365) |
 
 All other IDs are discarded silently. `HB_0` (`0x100`) is PanelBridge's own transmission, never
 a child-node heartbeat — one that does arrive is another board on node 0, which

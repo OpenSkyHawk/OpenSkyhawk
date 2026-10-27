@@ -16,7 +16,8 @@
 //   4. Send DCS-BIOS binary export frames on the adapter for CommonData_MOD_TIME_A (0x0440):
 //        First: model_time = "100  " (100 seconds) — seeds state; NO SYNC_REQ expected.
 //        Then:  model_time = "200  " (200 seconds) — higher; NO SYNC_REQ expected.
-//        Then:  model_time = "050  " (50 seconds)  — DECREASE; SYNC_REQ expected.
+//        Then:  model_time = "050  " (50 seconds)  — DECREASE; session change logged. Alone on the
+//                                                     bus no node is alive, so no SYNC_REQ goes out.
 //   5. Watch DiagSerial for:
 //        [BRIDGE] DCS session change — sync every node
 //

@@ -459,7 +459,7 @@ every collision.
 
 | Frame type | Policy |
 |------------|--------|
-| `CTRL_BCAST` DCS output broadcasts | Queued in order like any frame — **never coalesced** (#389): a frame carries two of ~250 controls, not the whole state, so replacing a queued one lost two others' updates (~19 % of a real stream). The bridge's TX ring is 64 frames (`CAN_TX_RING_SIZE`); a lone packet waits at least 2 ms (`BATCH_HOLD_MS`, and two `drain()` passes) for its partner before it goes out half empty (1.98 packets per frame on a real stream). **Lowest priority ID on the bus** (D31): it yields to every node frame, and its resends absorb the wait. |
+| `CTRL_BCAST` DCS output broadcasts | Queued in order like any frame — **never coalesced** (#389): a frame carries two of ~250 controls, not the whole state, so replacing a queued one lost two others' updates (about a fifth of a real stream). The bridge's TX ring is 64 frames (`CAN_TX_RING_SIZE`); a lone packet waits at least 2 ms (`BATCH_HOLD_MS`, and two `drain()` passes) for its partner before it goes out half empty (1.98 packets per frame on a real stream). **Lowest priority ID on the bus** (D31): it yields to every node frame, and its resends absorb the wait. |
 | Every other frame (`EVT_n` and the encoder/action families, `HB_n`, `HEALTH_n`, `TELEM_n`, `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n`) | The resend rules above. Not coalesced: the next period's status frame carries fresh state anyway. |
 
 In a healthy bus `txDropCount()` stays 0; any non-zero count is a diagnostic signal. The count is

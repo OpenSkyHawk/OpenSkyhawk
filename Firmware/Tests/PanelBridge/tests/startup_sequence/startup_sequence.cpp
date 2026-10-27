@@ -9,8 +9,9 @@
 //   3. Power on — within 100 ms you should see:
 //        === PanelBridge: startup_sequence ===
 //        [TEST] startup_sequence — setup complete
-//      If CAN bus is absent (no termination / no second node), the CAN controller
-//      may enter BUS_OFF once its own HB_0 goes unACKed. That is expected for a
+//      If CAN bus is absent (no termination / no second node), its own HB_0 goes unACKed
+//      and the CAN controller climbs to error-passive and stays there (an ACK error in
+//      error-passive doesn't raise TEC further, so no bus-off). That is expected for a
 //      single-board test; the log lines still confirm setup() ran to the end.
 //
 // Pass criteria (manual, from DiagSerial):

@@ -127,7 +127,7 @@ struct __attribute__((packed)) ReadyPayload {
 /// ReadyPayload `flags` bits (#383).
 enum class ReadyFlag : uint8_t {
     RESYNC = 0x01,  // an answer to SYNC_REQ, not a boot: the bridge caches the version but must not
-                    // broadcast SYNC_REQ for it (that would answer itself forever)
+                    // queue a sync for it (that would answer itself forever)
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 

@@ -431,8 +431,8 @@ void send(uint32_t canId, const uint8_t* data, uint8_t len) {
     __disable_irq();
 
     // No CTRL_BCAST coalescing (#389): a frame carries two of ~250 controls, not the whole state, so
-    // replacing a queued one with the next dropped two other controls' updates — ~22% of the sim's
-    // output under a real export stream. Every frame queues; the bridge's ring is deep enough.
+    // replacing a queued one with the next dropped two other controls' updates — about a fifth of
+    // the sim's output under a real export stream. Every frame queues; the bridge's ring is deep enough.
     uint8_t next = (_txTail + 1) % TX_RING_SIZE;
     if (next == _txHead) {
         _txDrops++;

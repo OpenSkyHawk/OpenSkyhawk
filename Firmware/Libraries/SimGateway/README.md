@@ -4,9 +4,12 @@ RP2040 USB HID + DCS-BIOS relay gateway library for OpenSkyhawk.
 
 Owns:
 - **USB CDC ↔ UART relay** — forwards the export stream to PanelBridge as-is, and PanelBridge's output to the PC line by line; a line that can't be written whole is dropped and counted, never truncated (#355)
-- **HID frame demultiplexer** — intercepts `0xAA 0x55` binary frames on the UART RX path; dispatches `controlId` + `value` to registered `HIDAxis` / `HIDButton` objects
+- **HID frame demultiplexer** — intercepts `0xAA 0x55` binary frames on the UART RX path; dispatches `controlId` + `value` to registered `HIDAxis` / `HIDButton` / `HIDHatSwitch` objects
 - **HID report batching** — one TinyUSB HID report sent per `loop()` iteration after draining all UART bytes
 - **Status-LED state machine** — drives the two board LEDs (GREEN = GP2, RED = GP3, active-high) with a non-blocking `millis()` animator ticked from `loop()`
+- **Calibration transport** — the client's axis-calibration frames on USB CDC, consumed before the relay; calibration stored in flash (see *Axis calibration*)
+- **Link health and recovery** — per-bit UART error counters, FAULT self-clear, the USB recovery ladder, the hardware watchdog and the `GET_DIAG` reply (#355)
+- **Firmware uploader** — updates boards over the bus and the Gateway's own PanelBridge over USART2 (`Uploader.h`, #366/#367)
 
 Does **not** run DCS-BIOS. Does **not** parse DCS-BIOS addresses. The relay knows no CAN; the built-in
 uploader (#366, #367) drives board bootloaders over CAN through PanelBridge, and reads `_NODE_STATUS` /
@@ -139,6 +142,8 @@ engine; it shares the animation vocabulary with `STM32Board` (PB14/PB15) but not
 | `SimGateway::loop()` | Relay CDC↔UART, parse HID frames, Send(), advance an upload, tick status LEDs, USB recovery. The first call arms a 3 s hardware watchdog: call `loop()` at least that often |
 | `SimGateway::statusLedBegin()` | Configure GP2/GP3 outputs (called by `setup()`) |
 | `SimGateway::statusTick()` | Advance the status-LED state machine (called by `loop()`) |
+| `SimGateway::diagnostics()` | The live link-health counters (`GatewayDiag`) |
+| `SimGateway::calibration()` | The axis calibration in use (`CalBlob`) |
 
 See `SimGateway.h` for full Doxygen documentation.
 
@@ -176,6 +181,22 @@ non-`0x55` byte marks its line corrupt: that line is dropped and the next one fo
 Test builds define `SIMGATEWAY_TEST`, activating no-op stubs for all TinyUSB HID helpers
 directly inside `SimGateway.cpp`. No external shim file is needed. Production builds compile
 the full `Adafruit_USBD_HID` descriptor and report struct in the same file.
+
+`hid_parser`, `parser_resync` and `hid_dispatch` cover the HID frame parser, its resync after a
+bad magic byte, and dispatch to the registered objects. `cdc_relay` covers the never-blocking
+host-bound relay (#355): whole lines or nothing, corrupt and overlong lines dropped and counted.
+`link_health` covers the USB recovery ladder, FAULT self-clear, the UART error counters, the CDC
+stall detector and the `GET_DIAG` reply.
+
+The `axis_cal_*` tests cover axis calibration: `axis_cal_transform` (the two-segment map and blob
+checksum), `axis_cal_framing` (a frame is consumed only on magic + LEN + CRC; anything else reaches
+PanelBridge byte-for-byte), `axis_cal_session` (session commands, replies checked off CDC) and
+`axis_cal_raw_stream` (RAW streaming of the axis under calibration). `axis_cal_persist` builds in
+production mode and is the one test that writes real flash, across a power cycle.
+
+`hid_enumeration` builds in production mode with the real TinyUSB HID stack: flash it and check the
+descriptor in joy.cpl or DCS. `hid_stress` uses its own beyond-production descriptor (16 axes,
+128 buttons, 8 hats) without the SimGateway library, to see what each platform surfaces.
 
 `uart_loopback` verifies the same parser and forwarding behavior through the configured physical
 UART pins by writing bytes to `Serial1` TX and reading them back through `Serial1` RX.

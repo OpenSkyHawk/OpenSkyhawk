@@ -10,10 +10,12 @@
 //   1. Flash both boards.
 //   2. Connect DiagSerial on NODE_ID=0 (USART1 PA9/PA10, 115200 baud).
 //   3. Power both boards. Verify:
-//        [BRIDGE] READY node=1               ← NODE_ID=1's boot READY (or its first HB, if it booted first)
+//        [BRIDGE] READY node=1               ← NODE_ID=1's boot READY
 //        [BRIDGE] node=1 alive
 //        [TEST] PASS alive node=1
 //        [BRIDGE] READY (resync) node=1      ← its answer to the SYNC_REQ(1) the bridge queued (#387)
+//      If NODE_ID=1 booted first, its READY is lost: the first line is missing and "alive" comes
+//      from its first HB.
 //   4. Power-cycle the NODE_ID=1 board. After ~3 s, verify:
 //        [BRIDGE] node=1 dead
 //   5. Power it back on. Verify alive + READY (resync) again (Timeline C reconnect).
