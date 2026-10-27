@@ -18,10 +18,6 @@
 
 ## h
 
-* **HAL\_CAN\_RxFifo0MsgPendingCallback** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
-* **HAL\_CAN\_TxMailbox0CompleteCallback** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
-* **HAL\_CAN\_TxMailbox1CompleteCallback** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
-* **HAL\_CAN\_TxMailbox2CompleteCallback** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **HAL\_CAN\_MspInit** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 
 
@@ -40,6 +36,12 @@
 * **SystemClock\_Config** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 
 
+## u
+
+* **USB\_HP\_CAN1\_TX\_IRQHandler** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **USB\_LP\_CAN1\_RX0\_IRQHandler** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+
+
 ## _
 
 * **\_applyFilters** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
@@ -47,6 +49,8 @@
 * **\_drainTxQueueFromMain** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_enqueueRxFrame** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_pollRxFifo0** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_requeueFront** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_settleMailbox** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_startInternal** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_updateStatus** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_\_attribute\_\_** ([**CANProtocol.h**](CANProtocol_8h.md), [**Uploader.cpp**](Uploader_8cpp.md))

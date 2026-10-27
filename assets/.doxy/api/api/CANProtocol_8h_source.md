@@ -75,7 +75,7 @@ enum class CanStatus {
 
 // ── Fixed CAN arbitration IDs (PanelBridge -> All) ───────────────────────────
 
-static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010;  
+static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x7E0;
 static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  
 static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  
 
@@ -102,8 +102,9 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
 // 0x740-0x7BF and 0x7C0-0x7C1: the bootloader's frames (#363) — BOOT_CMD_n = 0x740+n (bridge → node
-// n), BOOT_RSP_n = 0x780+n (node n → bridge), and the unconfigured-board pair. The lowest priority on
-// the bus, so update traffic never delays a control. Defined in BootProtocol.h, not here.
+// n), BOOT_RSP_n = 0x780+n (node n → bridge), and the unconfigured-board pair. Below every control and
+// status frame, so update traffic never delays a control; only CTRL_BCAST (0x7E0) is lower (#389).
+// Defined in BootProtocol.h, not here.
 
 // ── controlId namespace ───────────────────────────────────────────────────────
 // Payload controlIds live inside ControlPacket data bytes. They are intentionally
@@ -192,6 +193,8 @@ namespace CANProtocol {
     uint32_t txDropCount();
 
     uint32_t rxDropCount();
+
+    uint32_t rxOverrunCount();
 
     void sendSyncReq(uint8_t nodeId);
 

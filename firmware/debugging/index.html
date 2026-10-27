@@ -4935,7 +4935,9 @@ isolation. This page covers both, plus the bench gotchas that cost the most time
 </table>
 <p>Connect a USB-to-TTL adapter to the 3-pin header and open a serial monitor at 115200
 (<code>pio device monitor</code>). Enable output by calling <code>STM32Board::setDebug(true)</code> in <code>setup()</code>;
-production builds leave it <code>false</code> (default) — the pins stay available but silent.</p>
+production builds leave it <code>false</code> (default) — the pins stay available but silent. Keep it off in a
+flying cockpit: every log line waits for the 115200-baud UART, so a board with it on handles only a
+few hundred inputs a second. The templates and panel sketches ship with it off.</p>
 <p>USART1 is used because PanelBridge already uses UART2 (<code>Serial</code>, PA2/PA3) for the RP2040 link —
 the two never conflict.</p>
 <h2 id="the-status-led">The status LED</h2>

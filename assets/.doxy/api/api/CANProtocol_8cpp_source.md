@@ -37,11 +37,17 @@ struct BatchState {
     bool          hasA;
     ControlPacket a;
     uint8_t       loopsWaited;
+    uint32_t      sinceMs;      // when `a` started waiting for a partner (#389)
 };
 
 // ── Private state ─────────────────────────────────────────────────────────────
 
-static constexpr uint8_t TX_RING_SIZE    = 16;
+// The bridge sends the whole sim export stream as CTRL_BCAST, in bursts (one per DCS-BIOS frame):
+// it gets the deep TX ring (#389). Override with -DCAN_TX_RING_SIZE=N (2-255).
+#ifndef CAN_TX_RING_SIZE
+#define CAN_TX_RING_SIZE ((NODE_ID) == GATEWAY_NODE_ID ? 64 : 16)
+#endif
+static constexpr uint8_t TX_RING_SIZE    = CAN_TX_RING_SIZE;
 // The bridge hears every node, so it gets the deep ring; a node hears only the bridge (#387).
 // Override with -DCAN_RX_RING_SIZE=N (2-255).
 #ifndef CAN_RX_RING_SIZE
@@ -50,10 +56,16 @@ static constexpr uint8_t TX_RING_SIZE    = 16;
 static constexpr uint8_t RX_RING_SIZE    = CAN_RX_RING_SIZE;
 static constexpr uint8_t MAX_FILTER_IDS  = 16;
 static constexpr uint8_t MAX_TX_ATTEMPTS = 3;
+// A lone batched packet waits this long for a partner (#389) — the bridge only (CTRL_BCAST, the
+// export stream); nodes keep the two-loop flush so input latency is unchanged.
+static constexpr uint32_t BATCH_HOLD_MS  = (NODE_ID) == GATEWAY_NODE_ID ? 2 : 0;
 
 static TxQueueEntry      _txRing[TX_RING_SIZE];
 static volatile uint8_t  _txHead = 0;
 static volatile uint8_t  _txTail = 0;
+// What each of the three mailboxes was loaded with: a frame that loses arbitration or hits a bus
+// error is resent from here (#389). Written with the mailbox, so it always matches it.
+static TxQueueEntry      _inMailbox[3];
 
 static RxQueueEntry      _rxRing[RX_RING_SIZE];
 static volatile uint8_t  _rxHead = 0;
@@ -70,6 +82,7 @@ static bool               _readySent = false;   // the boot READY is out: answer
 static bool               _resyncPending = false;   // answered a SYNC_REQ: READY(RESYNC) once TX is idle (#387)
 static uint32_t           _resyncSinceMs = 0;
 static uint32_t           _rxDrops = 0;
+static uint32_t           _rxOverruns = 0;   // RX FIFO 0 hardware overruns (#389)
 static CanRxCallback      _rxCb      = nullptr;
 
 static CanStatus          _status         = CanStatus::STARTING;
@@ -103,33 +116,69 @@ static NodeHealthPayload  _lastHealth      = { 0, DIE_TEMP_UNAVAILABLE, 0, 0, 0,
 
 // ── Private helpers ───────────────────────────────────────────────────────────
 
-// Called from TX-complete ISR — drains the TX ring into available mailboxes.
+// ── Transmit (#389) ──
+// AutoRetransmission is off (D4): the controller tries a frame once, so a frame that loses arbitration
+// or hits a bus error would be gone without a trace. Every finished mailbox is settled here first: its
+// frame goes back to the head of the ring — always after lost arbitration (the bus works, someone
+// else just had priority), at most MAX_TX_ATTEMPTS times after an error (the D4/D7 bound: a lone node
+// with nobody to ACK must not loop). In order: at most one frame per CAN ID sits in the mailboxes, so a
+// resend always leaves before anything newer from the same source. Runs from the TX-complete
+// interrupt and from the main loop with interrupts off.
+static const uint32_t TSR_TME[3]  = { CAN_TSR_TME0,  CAN_TSR_TME1,  CAN_TSR_TME2  };
+static const uint32_t TSR_RQCP[3] = { CAN_TSR_RQCP0, CAN_TSR_RQCP1, CAN_TSR_RQCP2 };
+static const uint32_t TSR_TXOK[3] = { CAN_TSR_TXOK0, CAN_TSR_TXOK1, CAN_TSR_TXOK2 };
+static const uint32_t TSR_ALST[3] = { CAN_TSR_ALST0, CAN_TSR_ALST1, CAN_TSR_ALST2 };
+static const uint32_t TSR_TERR[3] = { CAN_TSR_TERR0, CAN_TSR_TERR1, CAN_TSR_TERR2 };
+
+// Back to the head of the ring: it goes out before everything queued after it. Full ring → dropped.
+static void _requeueFront(const TxQueueEntry& e) {
+    const uint8_t h = (uint8_t)((_txHead + TX_RING_SIZE - 1) % TX_RING_SIZE);
+    if (h == _txTail) { _txDrops++; return; }
+    _txRing[h] = e;
+    _txHead    = h;
+}
+
+// The outcome of mailbox i's finished request, from one TSR read. Clears it (RQCP is write-1-to-clear
+// and takes TXOK/ALST/TERR with it), so a mailbox is never reused with its outcome unseen.
+static void _settleMailbox(int i, uint32_t tsr) {
+    if (!(tsr & TSR_RQCP[i])) return;
+    CAN1->TSR = TSR_RQCP[i];
+    if (tsr & TSR_TXOK[i]) return;
+    TxQueueEntry& e = _inMailbox[i];
+    if (tsr & TSR_ALST[i])                    _requeueFront(e);
+    else if (!(tsr & TSR_TERR[i]))            return;              // aborted: never requested here
+    else if (++e.attempts < MAX_TX_ATTEMPTS)  _requeueFront(e);
+    else                                      _txDrops++;
+}
+
 static void _drainTxQueue() {
+    uint32_t tsr = CAN1->TSR;
+    for (int i = 0; i < 3; i++) _settleMailbox(i, tsr);
+
     while (_txHead != _txTail) {
-        TxQueueEntry& e = _txRing[_txHead];
+        tsr = CAN1->TSR;
+        const TxQueueEntry& e = _txRing[_txHead];
 
-        if (HAL_CAN_GetTxMailboxesFreeLevel(STM32Board::canHandle()) == 0) {
-            break;
+        int  free    = -1;
+        bool pending = false;   // a frame with this CAN ID is still in a mailbox
+        for (int i = 0; i < 3; i++) {
+            if (tsr & TSR_TME[i]) { if (free < 0) free = i; }
+            else if (_inMailbox[i].canId == e.canId) pending = true;
         }
+        if (pending || free < 0) break;
+        // Emptied since the settle above: settle it now (a resend lands at the head), then look again.
+        if (tsr & TSR_RQCP[free]) { _settleMailbox(free, tsr); continue; }
 
-        CAN_TxHeaderTypeDef hdr = {};
-        hdr.StdId              = e.canId;
-        hdr.IDE                = CAN_ID_STD;
-        hdr.RTR                = CAN_RTR_DATA;
-        hdr.DLC                = e.len;
-        hdr.TransmitGlobalTime = DISABLE;
-
-        uint32_t mailbox;
-        if (HAL_CAN_AddTxMessage(STM32Board::canHandle(), &hdr, e.data, &mailbox) == HAL_OK) {
-            _txHead = (_txHead + 1) % TX_RING_SIZE;
-        } else {
-            e.attempts++;
-            if (e.attempts >= MAX_TX_ATTEMPTS) {
-                _txHead = (_txHead + 1) % TX_RING_SIZE;
-                _txDrops++;
-            }
-            break;
-        }
+        uint8_t d[8] = {};
+        memcpy(d, e.data, e.len);
+        CAN_TxMailBox_TypeDef& mb = CAN1->sTxMailBox[free];
+        mb.TIR  = e.canId << CAN_TI0R_STID_Pos;
+        mb.TDTR = e.len;
+        mb.TDLR = (uint32_t)d[0] | (uint32_t)d[1] << 8 | (uint32_t)d[2] << 16 | (uint32_t)d[3] << 24;
+        mb.TDHR = (uint32_t)d[4] | (uint32_t)d[5] << 8 | (uint32_t)d[6] << 16 | (uint32_t)d[7] << 24;
+        _inMailbox[free] = e;
+        mb.TIR |= CAN_TI0R_TXRQ;
+        _txHead = (uint8_t)((_txHead + 1) % TX_RING_SIZE);
     }
 }
 
@@ -210,7 +259,7 @@ static void _enqueueRxFrame(uint32_t canId, uint8_t len, const uint8_t* data) {
     _rxTail = next;
 }
 
-// Safe to call from main-loop context — guards against TX-complete ISR preemption.
+// From the main loop: interrupts off, as the TX-complete interrupt runs the same code.
 static void _drainTxQueueFromMain() {
     uint32_t m = __get_PRIMASK();
     __disable_irq();
@@ -223,6 +272,9 @@ static void _pollRxFifo0() {
 
     uint32_t primask = __get_PRIMASK();
     __disable_irq();
+    // A frame arrived with all three FIFO slots full and was lost in hardware. With the RX interrupt
+    // this needs interrupts held off for three frame times; counted so it is never silent (#389).
+    if (CAN1->RF0R & CAN_RF0R_FOVR0) { CAN1->RF0R = CAN_RF0R_FOVR0; _rxOverruns++; }
     while (HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0) > 0) {
         CAN_RxHeaderTypeDef hdr;
         uint8_t data[8] = {};
@@ -242,6 +294,14 @@ static void _startInternal(uint32_t mode) {
     HAL_CAN_Start(hcan);
     HAL_CAN_ActivateNotification(hcan,
         CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_TX_MAILBOX_EMPTY);
+    // The notifications above only reach the CPU through the NVIC (#389). Priority 2: below the
+    // UARTs (1), so a serial byte is never late, and above the timers (14) — both handlers take
+    // microseconds. Until #389 neither was enabled: RX was polled from loop(), so any loop pass longer
+    // than three frame times overran the hardware FIFO silently.
+    HAL_NVIC_SetPriority(USB_LP_CAN1_RX0_IRQn, 2, 0);
+    HAL_NVIC_SetPriority(USB_HP_CAN1_TX_IRQn, 2, 0);
+    HAL_NVIC_EnableIRQ(USB_LP_CAN1_RX0_IRQn);
+    HAL_NVIC_EnableIRQ(USB_HP_CAN1_TX_IRQn);
 
     _batches[0] = { CAN_ID_CTRL_BCAST,    false, {0, 0}, 0 };
     _batches[1] = { canIdEvt(NODE_ID),    false, {0, 0}, 0 };
@@ -260,19 +320,11 @@ static void _startInternal(uint32_t mode) {
     if (_statusCb) _statusCb(_status);
 }
 
-// ── HAL ISR callbacks (weak-symbol overrides) ─────────────────────────────────
+// ── Interrupt handlers ────────────────────────────────────────────────────────
+// The F103 shares these vectors with USB, which no OpenSkyhawk STM32 build enables (-DUSB_NONE).
 
-extern "C" void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef*) { _drainTxQueue(); }
-extern "C" void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef*) { _drainTxQueue(); }
-extern "C" void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef*) { _drainTxQueue(); }
-
-extern "C" void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan) {
-    CAN_RxHeaderTypeDef hdr;
-    uint8_t data[8] = {};
-    if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &hdr, data) != HAL_OK) return;
-
-    _enqueueRxFrame(hdr.StdId, hdr.DLC, data);
-}
+extern "C" void USB_LP_CAN1_RX0_IRQHandler(void) { _pollRxFifo0(); }   // a frame in RX FIFO 0
+extern "C" void USB_HP_CAN1_TX_IRQHandler(void)  { _drainTxQueue(); }  // a mailbox finished
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
@@ -363,8 +415,11 @@ void drain() {
     // Service batch deadlines
     for (auto& b : _batches) {
         if (b.hasA) {
+            // Two loops AND >= BATCH_HOLD_MS: the bridge's loop takes microseconds while the export
+            // stream delivers a word every ~0.25 ms, so two loops alone sent nearly every frame half
+            // empty (1.45 of 2 packets on the bench, #389).
             b.loopsWaited++;
-            if (b.loopsWaited >= 2) {
+            if (b.loopsWaited >= 2 && (uint32_t)(millis() - b.sinceMs) >= BATCH_HOLD_MS) {
                 ControlPacketPair pair;
                 pair.a = b.a;
                 pair.b = { 0x0000, 0 };
@@ -381,49 +436,24 @@ void drain() {
 }
 
 void send(uint32_t canId, const uint8_t* data, uint8_t len) {
-    CAN_TxHeaderTypeDef hdr = {};
-    hdr.StdId              = canId;
-    hdr.IDE                = CAN_ID_STD;
-    hdr.RTR                = CAN_RTR_DATA;
-    hdr.DLC                = len;
-    hdr.TransmitGlobalTime = DISABLE;
-
-    uint32_t mailbox;
-    if (HAL_CAN_AddTxMessage(STM32Board::canHandle(), &hdr,
-                              const_cast<uint8_t*>(data), &mailbox) == HAL_OK) {
-        return;
-    }
-
-    // All mailboxes busy — enqueue in TX ring (protect with critical section)
+    // Always through the ring, so a frame never overtakes one queued before it (#389).
     uint32_t primask = __get_PRIMASK();
     __disable_irq();
 
-    if (canId == CAN_ID_CTRL_BCAST) {
-        // Coalesce: replace existing CTRL_BCAST in ring rather than appending stale state
-        uint8_t i = _txHead;
-        while (i != _txTail) {
-            if (_txRing[i].canId == CAN_ID_CTRL_BCAST) {
-                memcpy(_txRing[i].data, data, len);
-                _txRing[i].len = len;
-                if (!primask) __enable_irq();
-                return;
-            }
-            i = (i + 1) % TX_RING_SIZE;
-        }
-    }
-
+    // No CTRL_BCAST coalescing (#389): a frame carries two of ~250 controls, not the whole state, so
+    // replacing a queued one with the next dropped two other controls' updates — ~22% of the sim's
+    // output under a real export stream. Every frame queues; the bridge's ring is deep enough.
     uint8_t next = (_txTail + 1) % TX_RING_SIZE;
     if (next == _txHead) {
         _txDrops++;
-        if (!primask) __enable_irq();
-        return;
+    } else {
+        _txRing[_txTail].canId    = canId;
+        _txRing[_txTail].len      = len;
+        _txRing[_txTail].attempts = 0;
+        memcpy(_txRing[_txTail].data, data, len);
+        _txTail = next;
+        _drainTxQueue();
     }
-
-    _txRing[_txTail].canId    = canId;
-    _txRing[_txTail].len      = len;
-    _txRing[_txTail].attempts = 0;
-    memcpy(_txRing[_txTail].data, data, len);
-    _txTail = next;
 
     if (!primask) __enable_irq();
 }
@@ -439,6 +469,7 @@ void sendBatched(uint32_t canId, const ControlPacket& pkt) {
         b->a          = pkt;
         b->hasA       = true;
         b->loopsWaited = 0;
+        b->sinceMs    = millis();
     } else {
         ControlPacketPair pair;
         pair.a = b->a;
@@ -528,6 +559,7 @@ void sendReady() {
 
 uint32_t txDropCount() { return _txDrops; }
 uint32_t rxDropCount() { return _rxDrops; }
+uint32_t rxOverrunCount() { return _rxOverruns; }
 
 void sendSyncReq(uint8_t nodeId) {
     const uint8_t d[SYNC_REQ_LEN_TARGETED] = {nodeId};

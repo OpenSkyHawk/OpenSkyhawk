@@ -126,6 +126,7 @@
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
 * **rxDropCount** ([**CANProtocol**](namespaceCANProtocol.md))
+* **rxOverrunCount** ([**CANProtocol**](namespaceCANProtocol.md))
 * **rail12Mv** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **rail5Mv** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **railed** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))

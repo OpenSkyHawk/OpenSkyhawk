@@ -26,6 +26,7 @@
 #include "hardware/structs/uart.h" // uart0_hw — PL011 registers; also used by the status LED
 #include "hardware/regs/uart.h"    // UART_UARTRSR_*_BITS error-flag masks
 #include "hardware/watchdog.h"     // watchdog_enable_caused_reboot(), watchdog_hw->scratch[]
+#include "hardware/irq.h"          // user_irq_is_claimed() — the TinyUSB task IRQ (#389)
 
 namespace {
 
@@ -1090,6 +1091,21 @@ OpenSkyhawk::LinkRecovery _link = {};
 bool _linkWasHealthy = false;   // false at boot, so enumeration is not a "loss"
 #ifndef SIMGATEWAY_TEST
 bool _wdtArmed = false;
+
+// TinyUSB's rp2040 port also runs tud_task() from a user IRQ that every USB interrupt pends. In
+// interrupt context that can wait forever (#389): yield()'s CDC flush (TinyUSB_Device_FlushCDC →
+// tud_cdc_n_write_flush) holds TinyUSB's endpoint mutex in the main thread, data from the host
+// arrives, and the IRQ's CDC callback blocks on that mutex — with its owner preempted beneath it.
+// The watchdog then reboots the board 3 s later. Seen under heavy host traffic on the bench and
+// caught by PC sampling. yield() already runs TinyUSB_Device_Task() after every loop(), so the
+// IRQ path is redundant: switch it off and USB is serviced from the main thread only. SimGateway
+// claims no user IRQ of its own, so a claimed, enabled user IRQ with a handler is TinyUSB's.
+void _usbTaskFromLoopOnly() {
+    for (uint n = FIRST_USER_IRQ; n < NUM_IRQS; ++n) {
+        if (user_irq_is_claimed(n) && irq_is_enabled(n) && irq_get_exclusive_handler(n))
+            irq_set_enabled(n, false);
+    }
+}
 #endif
 
 // CDC stall detector. Progress is "something drained since the last sample": free space now,
@@ -1265,6 +1281,7 @@ void loop() {
     } else {
         rp2040.wdt_begin(WATCHDOG_MS);
         _wdtArmed = true;
+        _usbTaskFromLoopOnly();   // with the watchdog: from here on loop() runs, so yield() services USB
     }
 #endif
 

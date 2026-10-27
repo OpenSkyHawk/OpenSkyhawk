@@ -39,6 +39,7 @@
 |  uint32\_t | [**canId**](#variable-canid)  <br> |
 |  bool | [**hasA**](#variable-hasa)  <br> |
 |  uint8\_t | [**loopsWaited**](#variable-loopswaited)  <br> |
+|  uint32\_t | [**sinceMs**](#variable-sincems)  <br> |
 
 
 
@@ -131,6 +132,19 @@ bool BatchState::hasA;
 
 ```C++
 uint8_t BatchState::loopsWaited;
+```
+
+
+
+
+<hr>
+
+
+
+### variable sinceMs 
+
+```C++
+uint32_t BatchState::sinceMs;
 ```
 
 

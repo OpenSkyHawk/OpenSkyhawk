@@ -641,6 +641,7 @@
 ## c
 
 * **CAN\_RX\_RING\_SIZE** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **CAN\_TX\_RING\_SIZE** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **CTRL\_BRAKE\_L** ([**HIDControls.h**](HIDControls_8h.md))
 * **CTRL\_BRAKE\_R** ([**HIDControls.h**](HIDControls_8h.md))
 * **CTRL\_HAT\_0** ([**HIDControls.h**](HIDControls_8h.md))

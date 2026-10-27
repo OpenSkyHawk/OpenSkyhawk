@@ -71,6 +71,7 @@
 |  void | [**onSyncReq**](#function-onsyncreq) ([**CanSyncReqCallback**](CANProtocol_8h.md#typedef-cansyncreqcallback) cb) <br>_Register a SYNC\_REQ handler._  |
 |  uint8\_t | [**rec**](#function-rec) () <br>_Return the CAN Receive Error Counter (0-255) from ESR._  |
 |  uint32\_t | [**rxDropCount**](#function-rxdropcount) () <br>_Return the cumulative RX drop count since startup (#387): frames lost because the software RX ring was full when they arrived. Should stay 0; nonzero means loop() falls behind the bus._  |
+|  uint32\_t | [**rxOverrunCount**](#function-rxoverruncount) () <br>_Return the cumulative RX FIFO overrun count since startup (#389): frames lost in hardware because all three FIFO slots were full when they arrived. RX is interrupt-driven, so this needs interrupts held off for three frame times; should stay 0._  |
 |  void | [**send**](#function-send) (uint32\_t canId, const uint8\_t \* data, uint8\_t len) <br>_Send a CAN frame._  |
 |  void | [**sendBatched**](#function-sendbatched) (uint32\_t canId, const ControlPacket & pkt) <br>_Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch._  |
 |  void | [**sendReady**](#function-sendready) () <br>_Send this node's boot READY\_n (_ `canIdReady(NODE_ID)` _) carrying_[_**makeReadyPayload()**_](namespaceCANProtocol.md#function-makereadypayload) _._ |
@@ -215,7 +216,7 @@ void CANProtocol::filterAcceptId (
 
 
 
-Adds one ID to the hardware filter list. Call multiple times for multiple IDs. CTRL\_BCAST (0x010), TEST\_SEQ (0x011), and SYNC\_REQ (0x012) are always included automatically by [**start()**](namespaceCANProtocol.md#function-start) — do not add them manually.
+Adds one ID to the hardware filter list. Call multiple times for multiple IDs. CTRL\_BCAST (0x7E0), TEST\_SEQ (0x011), and SYNC\_REQ (0x012) are always included automatically by [**start()**](namespaceCANProtocol.md#function-start) — do not add them manually.
 
 
 
@@ -516,6 +517,20 @@ uint32_t CANProtocol::rxDropCount ()
 
 
 
+### function rxOverrunCount 
+
+_Return the cumulative RX FIFO overrun count since startup (#389): frames lost in hardware because all three FIFO slots were full when they arrived. RX is interrupt-driven, so this needs interrupts held off for three frame times; should stay 0._ 
+```C++
+uint32_t CANProtocol::rxOverrunCount () 
+```
+
+
+
+
+<hr>
+
+
+
 ### function send 
 
 _Send a CAN frame._ 
@@ -529,7 +544,7 @@ void CANProtocol::send (
 
 
 
-Sends immediately if a TX mailbox is free; otherwise enqueues in the TX ring buffer (~16 entries), drained automatically via TX-complete interrupt. CTRL\_BCAST coalesces stale queued state (newest wins). EVT/control frames retry up to 3 attempts then drop. All drops increment [**txDropCount()**](namespaceCANProtocol.md#function-txdropcount).
+Every frame goes through the TX ring (16 entries; 64 on the bridge) and leaves in the order it was sent; the TX-complete interrupt keeps the three mailboxes loaded. A frame that loses arbitration is resent until it goes out; one that hits a bus error, up to 3 attempts in all (#389, D4/D7). At most one frame per CAN ID is in the mailboxes at a time, so a resend never lands after a newer frame of the same ID. A full ring, or a frame out of error attempts, is dropped and counted in [**txDropCount()**](namespaceCANProtocol.md#function-txdropcount).
 
 
 

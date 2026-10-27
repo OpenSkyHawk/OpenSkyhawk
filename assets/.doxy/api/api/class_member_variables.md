@@ -201,12 +201,12 @@
 
 ## s
 
+* **sinceMs** ([**BatchState**](structBatchState.md), [**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **stepThreshold** ([**OpenSkyhawk::AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md))
 * **steps** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **scroll** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **snapThreshold** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **sources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
-* **sinceMs** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **since** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
 * **STOPPED\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **sensor** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))

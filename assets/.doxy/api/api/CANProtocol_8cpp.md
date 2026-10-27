@@ -55,18 +55,25 @@
 
 | Type | Name |
 | ---: | :--- |
+|  constexpr uint32\_t | [**BATCH\_HOLD\_MS**](#variable-batch_hold_ms)   = `(NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 2 : 0`<br> |
 |  constexpr uint32\_t | [**HB\_PERIOD\_MS**](#variable-hb_period_ms)   = `500`<br> |
 |  constexpr uint32\_t | [**HEALTH\_PERIOD\_MS**](#variable-health_period_ms)   = `1000`<br> |
 |  constexpr uint8\_t | [**MAX\_FILTER\_IDS**](#variable-max_filter_ids)   = `16`<br> |
 |  constexpr uint8\_t | [**MAX\_TX\_ATTEMPTS**](#variable-max_tx_attempts)   = `3`<br> |
 |  constexpr uint8\_t | [**RX\_RING\_SIZE**](#variable-rx_ring_size)   = `((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 128 : 8)`<br> |
-|  constexpr uint8\_t | [**TX\_RING\_SIZE**](#variable-tx_ring_size)   = `16`<br> |
+|  const uint32\_t | [**TSR\_ALST**](#variable-tsr_alst)   = `{ CAN\_TSR\_ALST0, CAN\_TSR\_ALST1, CAN\_TSR\_ALST2 }`<br> |
+|  const uint32\_t | [**TSR\_RQCP**](#variable-tsr_rqcp)   = `{ CAN\_TSR\_RQCP0, CAN\_TSR\_RQCP1, CAN\_TSR\_RQCP2 }`<br> |
+|  const uint32\_t | [**TSR\_TERR**](#variable-tsr_terr)   = `{ CAN\_TSR\_TERR0, CAN\_TSR\_TERR1, CAN\_TSR\_TERR2 }`<br> |
+|  const uint32\_t | [**TSR\_TME**](#variable-tsr_tme)   = `{ CAN\_TSR\_TME0,  CAN\_TSR\_TME1,  CAN\_TSR\_TME2  }`<br> |
+|  const uint32\_t | [**TSR\_TXOK**](#variable-tsr_txok)   = `{ CAN\_TSR\_TXOK0, CAN\_TSR\_TXOK1, CAN\_TSR\_TXOK2 }`<br> |
+|  constexpr uint8\_t | [**TX\_RING\_SIZE**](#variable-tx_ring_size)   = `((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 64 : 16)`<br> |
 |  [**BatchState**](structBatchState.md) | [**\_batches**](#variable-_batches)  <br> |
 |  bool | [**\_dupSeen**](#variable-_dupseen)   = `false`<br> |
 |  bool | [**\_everSawMaster**](#variable-_eversawmaster)   = `false`<br> |
 |  uint8\_t | [**\_filterCount**](#variable-_filtercount)   = `0`<br> |
 |  uint32\_t | [**\_filterIds**](#variable-_filterids)  <br> |
 |  bool | [**\_filterPassAll**](#variable-_filterpassall)   = `false`<br> |
+|  [**TxQueueEntry**](structTxQueueEntry.md) | [**\_inMailbox**](#variable-_inmailbox)  <br> |
 |  uint32\_t | [**\_lastDupMs**](#variable-_lastdupms)   = `0`<br> |
 |  uint32\_t | [**\_lastHbMs**](#variable-_lasthbms)   = `0`<br> |
 |  NodeHealthPayload | [**\_lastHealth**](#variable-_lasthealth)   = `{ 0, [**DIE\_TEMP\_UNAVAILABLE**](NodeStatus_8h.md#variable-die_temp_unavailable), 0, 0, 0, 0, { 0, 0 } }`<br> |
@@ -83,6 +90,7 @@
 |  [**CanRxCallback**](CANProtocol_8h.md#typedef-canrxcallback) | [**\_rxCb**](#variable-_rxcb)   = `nullptr`<br> |
 |  uint32\_t | [**\_rxDrops**](#variable-_rxdrops)   = `0`<br> |
 |  volatile uint8\_t | [**\_rxHead**](#variable-_rxhead)   = `0`<br> |
+|  uint32\_t | [**\_rxOverruns**](#variable-_rxoverruns)   = `0`<br> |
 |  [**RxQueueEntry**](structRxQueueEntry.md) | [**\_rxRing**](#variable-_rxring)  <br> |
 |  volatile uint8\_t | [**\_rxTail**](#variable-_rxtail)   = `0`<br> |
 |  [**CanStatus**](CANProtocol_8h.md#enum-canstatus) | [**\_status**](#variable-_status)   = `CanStatus::STARTING`<br> |
@@ -112,10 +120,8 @@
 
 | Type | Name |
 | ---: | :--- |
-|  void | [**HAL\_CAN\_RxFifo0MsgPendingCallback**](#function-hal_can_rxfifo0msgpendingcallback) (CAN\_HandleTypeDef \* hcan) <br> |
-|  void | [**HAL\_CAN\_TxMailbox0CompleteCallback**](#function-hal_can_txmailbox0completecallback) (CAN\_HandleTypeDef \*) <br> |
-|  void | [**HAL\_CAN\_TxMailbox1CompleteCallback**](#function-hal_can_txmailbox1completecallback) (CAN\_HandleTypeDef \*) <br> |
-|  void | [**HAL\_CAN\_TxMailbox2CompleteCallback**](#function-hal_can_txmailbox2completecallback) (CAN\_HandleTypeDef \*) <br> |
+|  void | [**USB\_HP\_CAN1\_TX\_IRQHandler**](#function-usb_hp_can1_tx_irqhandler) (void) <br> |
+|  void | [**USB\_LP\_CAN1\_RX0\_IRQHandler**](#function-usb_lp_can1_rx0_irqhandler) (void) <br> |
 
 
 ## Public Static Functions
@@ -127,6 +133,8 @@
 |  void | [**\_drainTxQueueFromMain**](#function-_draintxqueuefrommain) () <br> |
 |  void | [**\_enqueueRxFrame**](#function-_enqueuerxframe) (uint32\_t canId, uint8\_t len, const uint8\_t \* data) <br> |
 |  void | [**\_pollRxFifo0**](#function-_pollrxfifo0) () <br> |
+|  void | [**\_requeueFront**](#function-_requeuefront) (const [**TxQueueEntry**](structTxQueueEntry.md) & e) <br> |
+|  void | [**\_settleMailbox**](#function-_settlemailbox) (int i, uint32\_t tsr) <br> |
 |  void | [**\_startInternal**](#function-_startinternal) (uint32\_t mode) <br> |
 |  void | [**\_updateStatus**](#function-_updatestatus) () <br> |
 
@@ -159,9 +167,23 @@
 | Type | Name |
 | ---: | :--- |
 | define  | [**CAN\_RX\_RING\_SIZE**](CANProtocol_8cpp.md#define-can_rx_ring_size)  `((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 128 : 8)`<br> |
+| define  | [**CAN\_TX\_RING\_SIZE**](CANProtocol_8cpp.md#define-can_tx_ring_size)  `((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 64 : 16)`<br> |
 
 ## Public Static Attributes Documentation
 
+
+
+
+### variable BATCH\_HOLD\_MS 
+
+```C++
+constexpr uint32_t BATCH_HOLD_MS;
+```
+
+
+
+
+<hr>
 
 
 
@@ -221,6 +243,71 @@ constexpr uint8_t MAX_TX_ATTEMPTS;
 
 ```C++
 constexpr uint8_t RX_RING_SIZE;
+```
+
+
+
+
+<hr>
+
+
+
+### variable TSR\_ALST 
+
+```C++
+const uint32_t TSR_ALST[3];
+```
+
+
+
+
+<hr>
+
+
+
+### variable TSR\_RQCP 
+
+```C++
+const uint32_t TSR_RQCP[3];
+```
+
+
+
+
+<hr>
+
+
+
+### variable TSR\_TERR 
+
+```C++
+const uint32_t TSR_TERR[3];
+```
+
+
+
+
+<hr>
+
+
+
+### variable TSR\_TME 
+
+```C++
+const uint32_t TSR_TME[3];
+```
+
+
+
+
+<hr>
+
+
+
+### variable TSR\_TXOK 
+
+```C++
+const uint32_t TSR_TXOK[3];
 ```
 
 
@@ -312,6 +399,19 @@ uint32_t _filterIds[MAX_FILTER_IDS];
 
 ```C++
 bool _filterPassAll;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_inMailbox 
+
+```C++
+TxQueueEntry _inMailbox[3];
 ```
 
 
@@ -529,6 +629,19 @@ volatile uint8_t _rxHead;
 
 
 
+### variable \_rxOverruns 
+
+```C++
+uint32_t _rxOverruns;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable \_rxRing 
 
 ```C++
@@ -674,11 +787,11 @@ bool _warnAsserted;
 
 
 
-### function HAL\_CAN\_RxFifo0MsgPendingCallback 
+### function USB\_HP\_CAN1\_TX\_IRQHandler 
 
 ```C++
-void HAL_CAN_RxFifo0MsgPendingCallback (
-    CAN_HandleTypeDef * hcan
+void USB_HP_CAN1_TX_IRQHandler (
+    void
 ) 
 ```
 
@@ -689,41 +802,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback (
 
 
 
-### function HAL\_CAN\_TxMailbox0CompleteCallback 
+### function USB\_LP\_CAN1\_RX0\_IRQHandler 
 
 ```C++
-void HAL_CAN_TxMailbox0CompleteCallback (
-    CAN_HandleTypeDef *
-) 
-```
-
-
-
-
-<hr>
-
-
-
-### function HAL\_CAN\_TxMailbox1CompleteCallback 
-
-```C++
-void HAL_CAN_TxMailbox1CompleteCallback (
-    CAN_HandleTypeDef *
-) 
-```
-
-
-
-
-<hr>
-
-
-
-### function HAL\_CAN\_TxMailbox2CompleteCallback 
-
-```C++
-void HAL_CAN_TxMailbox2CompleteCallback (
-    CAN_HandleTypeDef *
+void USB_LP_CAN1_RX0_IRQHandler (
+    void
 ) 
 ```
 
@@ -805,6 +888,37 @@ static void _pollRxFifo0 ()
 
 
 
+### function \_requeueFront 
+
+```C++
+static void _requeueFront (
+    const TxQueueEntry & e
+) 
+```
+
+
+
+
+<hr>
+
+
+
+### function \_settleMailbox 
+
+```C++
+static void _settleMailbox (
+    int i,
+    uint32_t tsr
+) 
+```
+
+
+
+
+<hr>
+
+
+
 ### function \_startInternal 
 
 ```C++
@@ -840,6 +954,19 @@ static void _updateStatus ()
 
 ```C++
 #define CAN_RX_RING_SIZE `((NODE_ID) == GATEWAY_NODE_ID ? 128 : 8)`
+```
+
+
+
+
+<hr>
+
+
+
+### define CAN\_TX\_RING\_SIZE 
+
+```C++
+#define CAN_TX_RING_SIZE `((NODE_ID) == GATEWAY_NODE_ID ? 64 : 16)`
 ```
 
 

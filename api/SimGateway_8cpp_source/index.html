@@ -4734,6 +4734,7 @@
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"hardware/structs/uart.h"</span><span class="w"> </span><span class="c1">// uart0_hw — PL011 registers; also used by the status LED</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"hardware/regs/uart.h"</span><span class="w">    </span><span class="c1">// UART_UARTRSR_*_BITS error-flag masks</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"hardware/watchdog.h"</span><span class="w">     </span><span class="c1">// watchdog_enable_caused_reboot(), watchdog_hw-&gt;scratch[]</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"hardware/irq.h"</span><span class="w">          </span><span class="c1">// user_irq_is_claimed() — the TinyUSB task IRQ (#389)</span>
 
 <span class="k">namespace</span><span class="w"> </span><span class="p">{</span>
 
@@ -5798,6 +5799,21 @@
 <span class="kt">bool</span><span class="w"> </span><span class="n">_linkWasHealthy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">   </span><span class="c1">// false at boot, so enumeration is not a "loss"</span>
 <span class="cp">#ifndef SIMGATEWAY_TEST</span>
 <span class="kt">bool</span><span class="w"> </span><span class="n">_wdtArmed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="c1">// TinyUSB's rp2040 port also runs tud_task() from a user IRQ that every USB interrupt pends. In</span>
+<span class="c1">// interrupt context that can wait forever (#389): yield()'s CDC flush (TinyUSB_Device_FlushCDC →</span>
+<span class="c1">// tud_cdc_n_write_flush) holds TinyUSB's endpoint mutex in the main thread, data from the host</span>
+<span class="c1">// arrives, and the IRQ's CDC callback blocks on that mutex — with its owner preempted beneath it.</span>
+<span class="c1">// The watchdog then reboots the board 3 s later. Seen under heavy host traffic on the bench and</span>
+<span class="c1">// caught by PC sampling. yield() already runs TinyUSB_Device_Task() after every loop(), so the</span>
+<span class="c1">// IRQ path is redundant: switch it off and USB is serviced from the main thread only. SimGateway</span>
+<span class="c1">// claims no user IRQ of its own, so a claimed, enabled user IRQ with a handler is TinyUSB's.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">_usbTaskFromLoopOnly</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">uint</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FIRST_USER_IRQ</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_IRQS</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">user_irq_is_claimed</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">irq_is_enabled</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">irq_get_exclusive_handler</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">            </span><span class="n">irq_set_enabled</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 <span class="cp">#endif</span>
 
 <span class="c1">// CDC stall detector. Progress is "something drained since the last sample": free space now,</span>
@@ -5973,6 +5989,7 @@
 <span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">rp2040</span><span class="p">.</span><span class="n">wdt_begin</span><span class="p">(</span><span class="n">WATCHDOG_MS</span><span class="p">);</span>
 <span class="w">        </span><span class="n">_wdtArmed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_usbTaskFromLoopOnly</span><span class="p">();</span><span class="w">   </span><span class="c1">// with the watchdog: from here on loop() runs, so yield() services USB</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="cp">#endif</span>
 

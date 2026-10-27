@@ -244,6 +244,7 @@
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
 * **rxDropCount** ([**CANProtocol**](namespaceCANProtocol.md))
+* **rxOverrunCount** ([**CANProtocol**](namespaceCANProtocol.md))
 * **RELAY\_ESCAPE** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RELAY\_ESC\_55** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))
 * **RELAY\_ESC\_56** ([**OpenSkyhawk::Boot**](namespaceOpenSkyhawk_1_1Boot.md))

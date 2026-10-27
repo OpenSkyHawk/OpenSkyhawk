@@ -109,6 +109,7 @@
     <member refid="structBatchState_1aafb11af30d0ec7282687fbad89be0c36" kind="variable"><name>hasA</name></member>
     <member refid="structBatchState_1a0a13960dfe76dd7a9d9acb0d08de3759" kind="variable"><name>a</name></member>
     <member refid="structBatchState_1a00971116092e610b778f923f94de1fd7" kind="variable"><name>loopsWaited</name></member>
+    <member refid="structBatchState_1aea09c7905acba48137cb53ed38a5f44f" kind="variable"><name>sinceMs</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1BoardThermal" kind="class"><name>OpenSkyhawk::BoardThermal</name>
     <member refid="classOpenSkyhawk_1_1BoardThermal_1a7a6e59bd5348f73735d774040b99910b" kind="variable"><name>_tempDC</name></member>
@@ -795,6 +796,7 @@
     <member refid="namespaceCANProtocol_1ac41d6775e2db496cfce11e517b5a37c5" kind="function"><name>sendReady</name></member>
     <member refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kind="function"><name>txDropCount</name></member>
     <member refid="namespaceCANProtocol_1a246478d9d0640c78fd32fc11b59f8f33" kind="function"><name>rxDropCount</name></member>
+    <member refid="namespaceCANProtocol_1abea7f1d626721695eb757b29de905d88" kind="function"><name>rxOverrunCount</name></member>
     <member refid="namespaceCANProtocol_1a83faf446fc4ba406cefe3a22361d8664" kind="function"><name>sendSyncReq</name></member>
     <member refid="namespaceCANProtocol_1a598c3f06d60603c4ed497b1133655e49" kind="function"><name>lastNodeHealth</name></member>
     <member refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kind="function"><name>serviceNodeStatus</name></member>
@@ -2083,14 +2085,17 @@
     <member refid="BootProtocol_8h_1a6568eb06825dc3e1be7c56c86452935b" kind="define"><name>BOOT_RSP_MSG_NAME</name></member>
   </compound>
   <compound refid="CANProtocol_8cpp" kind="file"><name>CANProtocol.cpp</name>
+    <member refid="CANProtocol_8cpp_1af356ab1663d2065142497df74c5a96f6" kind="define"><name>CAN_TX_RING_SIZE</name></member>
     <member refid="CANProtocol_8cpp_1a73ba2bfef6f2b54ec4a0c43935cab8af" kind="define"><name>CAN_RX_RING_SIZE</name></member>
     <member refid="CANProtocol_8cpp_1ab8c2b1490b083600ae5be831959f2b46" kind="variable"><name>TX_RING_SIZE</name></member>
     <member refid="CANProtocol_8cpp_1a6ed548630a5d43db6305235cce94116a" kind="variable"><name>RX_RING_SIZE</name></member>
     <member refid="CANProtocol_8cpp_1afe36626a88c1e9b2220f955e2396eaf0" kind="variable"><name>MAX_FILTER_IDS</name></member>
     <member refid="CANProtocol_8cpp_1ad94a2a956940702ac4f942c1f9bc70a4" kind="variable"><name>MAX_TX_ATTEMPTS</name></member>
+    <member refid="CANProtocol_8cpp_1a3b7b1c5781bb26a361306b7cb99c0de1" kind="variable"><name>BATCH_HOLD_MS</name></member>
     <member refid="CANProtocol_8cpp_1a286f62108a8908edee9cb56d064a8b27" kind="variable"><name>_txRing</name></member>
     <member refid="CANProtocol_8cpp_1ac9ed5662be19eaa305259ef38e108bd6" kind="variable"><name>_txHead</name></member>
     <member refid="CANProtocol_8cpp_1ab74538438a87fffa6737f11bd7ec247e" kind="variable"><name>_txTail</name></member>
+    <member refid="CANProtocol_8cpp_1a278028b6a5a5b084521bc86002091ddd" kind="variable"><name>_inMailbox</name></member>
     <member refid="CANProtocol_8cpp_1a9ed7b2fea647e9a1dea3f3ec42585d9c" kind="variable"><name>_rxRing</name></member>
     <member refid="CANProtocol_8cpp_1affe906eef67f71ca3d6d265cdc0a3d67" kind="variable"><name>_rxHead</name></member>
     <member refid="CANProtocol_8cpp_1a3a5a18863444e1f2b3857b697442e399" kind="variable"><name>_rxTail</name></member>
@@ -2101,6 +2106,7 @@
     <member refid="CANProtocol_8cpp_1adf4f9953a89cda860f3b35fbdb60d89a" kind="variable"><name>_resyncPending</name></member>
     <member refid="CANProtocol_8cpp_1a5647d59fbe0eb1738fc35c53b886d4d8" kind="variable"><name>_resyncSinceMs</name></member>
     <member refid="CANProtocol_8cpp_1a5aec1af63a4b742769ca539d1df32e13" kind="variable"><name>_rxDrops</name></member>
+    <member refid="CANProtocol_8cpp_1a3b9dee332d0f5dba94141f7040c7fcfc" kind="variable"><name>_rxOverruns</name></member>
     <member refid="CANProtocol_8cpp_1a2794f36e9a2373b34e11d2b380ea327e" kind="variable"><name>_rxCb</name></member>
     <member refid="CANProtocol_8cpp_1a138fc366b9b00851dbd34f2ef9495e60" kind="variable"><name>_status</name></member>
     <member refid="CANProtocol_8cpp_1ae18bc05d725d5b3c6ecfbdb005c6797e" kind="variable"><name>_txDrops</name></member>
@@ -2123,6 +2129,13 @@
     <member refid="CANProtocol_8cpp_1a0323d2a857ad48d552dec924baf0de41" kind="variable"><name>_dupSeen</name></member>
     <member refid="CANProtocol_8cpp_1a322002fc264607d275c00d2016a689ca" kind="variable"><name>_ownHbLoopPending</name></member>
     <member refid="CANProtocol_8cpp_1a7f5d385be50b6ad91e47378f4a619607" kind="variable"><name>_lastHealth</name></member>
+    <member refid="CANProtocol_8cpp_1aba3a22e0964402e0acf9872abaeaff56" kind="variable"><name>TSR_TME</name></member>
+    <member refid="CANProtocol_8cpp_1a40abbc303371ed2296047b0ee07715cb" kind="variable"><name>TSR_RQCP</name></member>
+    <member refid="CANProtocol_8cpp_1a8e04ea74047826cabe4278794289bbbc" kind="variable"><name>TSR_TXOK</name></member>
+    <member refid="CANProtocol_8cpp_1ab641d0a5d7c6cb5dd424444dac7f0370" kind="variable"><name>TSR_ALST</name></member>
+    <member refid="CANProtocol_8cpp_1a353794b8c5cdc1eddd283bff8a6ee7b8" kind="variable"><name>TSR_TERR</name></member>
+    <member refid="CANProtocol_8cpp_1a8b10efd68f62227f51e9460b3748b704" kind="function"><name>_requeueFront</name></member>
+    <member refid="CANProtocol_8cpp_1ac284ef9ca7afe7a29feb92c730de2906" kind="function"><name>_settleMailbox</name></member>
     <member refid="CANProtocol_8cpp_1a30f93eb192e2bcc94a7223591c4d4554" kind="function"><name>_drainTxQueue</name></member>
     <member refid="CANProtocol_8cpp_1a4b15c6d1739fcc2f6611c7fe635b4019" kind="function"><name>_applyFilters</name></member>
     <member refid="CANProtocol_8cpp_1a8c31ad45b7e95614b7871c4965e594cf" kind="function"><name>_updateStatus</name></member>
@@ -2130,10 +2143,8 @@
     <member refid="CANProtocol_8cpp_1a4a809ff880d002ea107f40f7fe6d088c" kind="function"><name>_drainTxQueueFromMain</name></member>
     <member refid="CANProtocol_8cpp_1a089c6c0be1983774d91c2b8d6443850a" kind="function"><name>_pollRxFifo0</name></member>
     <member refid="CANProtocol_8cpp_1a74abbbd636a12499b258cbba93e31e0a" kind="function"><name>_startInternal</name></member>
-    <member refid="CANProtocol_8cpp_1ad7ae8fb843bba2b420116bbc7c48b538" kind="function"><name>HAL_CAN_TxMailbox0CompleteCallback</name></member>
-    <member refid="CANProtocol_8cpp_1a5a41a025c8cda749aacd16cb5cd55b8b" kind="function"><name>HAL_CAN_TxMailbox1CompleteCallback</name></member>
-    <member refid="CANProtocol_8cpp_1aed9b3dc2aa3b87f873f6bc9e8bf54cf8" kind="function"><name>HAL_CAN_TxMailbox2CompleteCallback</name></member>
-    <member refid="CANProtocol_8cpp_1a7368d39e78009c017d6f81ccf33b9b2c" kind="function"><name>HAL_CAN_RxFifo0MsgPendingCallback</name></member>
+    <member refid="CANProtocol_8cpp_1af57bde854fa2b396f29664995a502b19" kind="function"><name>USB_LP_CAN1_RX0_IRQHandler</name></member>
+    <member refid="CANProtocol_8cpp_1af002aebc5aa5f4f2eb22b093f754ebae" kind="function"><name>USB_HP_CAN1_TX_IRQHandler</name></member>
   </compound>
   <compound refid="CANProtocol_8h" kind="file"><name>CANProtocol.h</name>
     <member refid="CANProtocol_8h_1a35b1db89f5a7cd60ecc21d0d1ee1646a" kind="enum"><name>ReadyFlag</name></member>

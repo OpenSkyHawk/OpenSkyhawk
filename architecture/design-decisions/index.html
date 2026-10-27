@@ -5148,9 +5148,12 @@ three TX mailboxes jammed this way, the transmit path deadlocks: the software TX
 never drain, and the node drives itself straight to bus-off. The whole node goes dark over a
 single missed ACK.</p>
 <p><strong>With AutoRetransmission disabled:</strong> A failed send increments the Transmit Error Counter by
-8 and the frame is dropped (the software queue applies its own bounded retry policy — see
-<a href="#d6-controlid-routing-one-format-split-at-the-gateway">D6</a> and the
-<a href="../can-bus/">CAN Bus Protocol</a> page). At TEC = 128 the node enters <strong>Error Passive</strong> and
+8, and the hardware lets the frame go. The software decides what happens next (see the
+<a href="../can-bus/">CAN Bus Protocol</a> page): a frame that <strong>lost arbitration</strong> — the bus works, a
+higher-priority frame went first — is sent again until it gets through; one that hit a <strong>bus
+error</strong> gets at most 3 attempts, so a lone node with nobody to ACK can't loop. Until firmware
+1.0.0 that software half was missing: a frame that lost arbitration was simply gone, and under a
+real sim stream about 1 in 7 inputs never reached DCS. At TEC = 128 the node enters <strong>Error Passive</strong> and
 limps along — CAN's intended graceful degradation — then self-heals when the fault clears.
 No deadlock, no manual recovery.</p>
 <p><strong>Why AutoBusOff = ENABLE matters too:</strong> When a node does hit bus-off, hardware

@@ -303,6 +303,7 @@
 
 ## s
 
+* **sinceMs** ([**BatchState**](structBatchState.md), [**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **stepThreshold** ([**OpenSkyhawk::AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md))
 * **sample** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md), [**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
 * **shouldEmit** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
@@ -316,7 +317,6 @@
 * **sources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **select** ([**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md))
 * **sampleTick** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
-* **sinceMs** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **save** ([**OpenSkyhawk::Pdu::CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md))
 * **slot** ([**OpenSkyhawk::Pdu::CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md))
 * **since** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))

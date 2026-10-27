@@ -5000,13 +5000,6 @@ helper functions — <strong>never hard-code these values</strong>, always use t
 </thead>
 <tbody>
 <tr>
-<td><code>CTRL_BCAST</code></td>
-<td><code>0x010</code></td>
-<td><code>CAN_ID_CTRL_BCAST</code></td>
-<td>PanelBridge → All</td>
-<td>8</td>
-</tr>
-<tr>
 <td><code>TEST_SEQ</code></td>
 <td><code>0x011</code></td>
 <td><code>CAN_ID_TEST_SEQ</code></td>
@@ -5104,14 +5097,25 @@ helper functions — <strong>never hard-code these values</strong>, always use t
 <td>PanelBridge ↔ a bootloader with no NODE_ID</td>
 <td>≤8</td>
 </tr>
+<tr>
+<td><code>CTRL_BCAST</code></td>
+<td><code>0x7E0</code></td>
+<td><code>CAN_ID_CTRL_BCAST</code></td>
+<td>PanelBridge → All</td>
+<td>8</td>
+</tr>
 </tbody>
 </table>
 <ul>
+<li><strong>A lower ID wins arbitration</strong>, so the table is also the priority order, highest first. Every
+  input, heartbeat and update frame outranks the sim's output: an input happens once, while a sim
+  value comes back by itself on the next change and on DCS-BIOS's autosync.</li>
 <li><code>CTRL_BCAST</code> carries DCS-BIOS output state from PanelBridge to every node — the whole export
-  stream, whatever aircraft is flying; each output picks out its own address.</li>
+  stream, whatever aircraft is flying; each output picks out its own address. It is the
+  lowest-priority frame on the bus: under load the sim waits, the cockpit never does.</li>
 <li><code>BOOT_CMD_n</code> / <code>BOOT_RSP_n</code> are the <a href="../../firmware/bootloader/">bootloader</a>'s frames: a board
   waiting in its bootloader announces itself once a second and takes a new firmware image in 64-byte
-  blocks. They sit at the lowest priority on the bus, so update traffic never delays a control. The
+  blocks. They sit below every control and status frame, so update traffic never delays a control. The
   <code>0x7C0</code>/<code>0x7C1</code> pair is for a board that has no NODE_ID yet.</li>
 <li><code>EVT_n</code> carries input events from a node back up to PanelBridge.</li>
 <li><code>HB_n</code> is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
@@ -5246,7 +5250,9 @@ change, which is why the handshake exists. See
 </tr>
 </tbody>
 </table>
-<p>These are not preferences. The full failure analysis is in
+<p>With retransmission off in hardware, the software decides: a frame that loses arbitration is
+sent again until it goes out, one that hits a bus error up to 3 times, and frames always leave
+in order. These are not preferences. The full failure analysis is in
 <a href="../design-decisions/#d4-autoretransmission-disable-this-one-will-catch-you-out">Design Decisions D4</a>.</p>
 </div>
 <ul>

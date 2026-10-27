@@ -4780,6 +4780,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#variable-batch_hold_ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable BATCH_HOLD_MS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-hb_period_ms" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4828,6 +4839,61 @@
     <span class="md-ellipsis">
       
         variable RX_RING_SIZE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-tsr_alst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable TSR_ALST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-tsr_rqcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable TSR_RQCP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-tsr_terr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable TSR_TERR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-tsr_tme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable TSR_TME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-tsr_txok" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable TSR_TXOK
       
     </span>
   </a>
@@ -4905,6 +4971,17 @@
     <span class="md-ellipsis">
       
         variable _filterPassAll
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_inmailbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _inMailbox
       
     </span>
   </a>
@@ -5088,6 +5165,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-_rxoverruns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _rxOverruns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-_rxring" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5226,10 +5314,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#function-hal_can_rxfifo0msgpendingcallback" class="md-nav__link">
+  <a href="#function-usb_hp_can1_tx_irqhandler" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function HAL_CAN_RxFifo0MsgPendingCallback
+        function USB_HP_CAN1_TX_IRQHandler
       
     </span>
   </a>
@@ -5237,32 +5325,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-hal_can_txmailbox0completecallback" class="md-nav__link">
+  <a href="#function-usb_lp_can1_rx0_irqhandler" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function HAL_CAN_TxMailbox0CompleteCallback
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-hal_can_txmailbox1completecallback" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function HAL_CAN_TxMailbox1CompleteCallback
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-hal_can_txmailbox2completecallback" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function HAL_CAN_TxMailbox2CompleteCallback
+        function USB_LP_CAN1_RX0_IRQHandler
       
     </span>
   </a>
@@ -5342,6 +5408,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-_requeuefront" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function _requeueFront
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-_settlemailbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function _settleMailbox
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-_startinternal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5385,6 +5473,17 @@
     <span class="md-ellipsis">
       
         define CAN_RX_RING_SIZE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-can_tx_ring_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define CAN_TX_RING_SIZE
       
     </span>
   </a>
@@ -5476,6 +5575,10 @@
 <tbody>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-batch_hold_ms"><strong>BATCH_HOLD_MS</strong></a>   = <code>(NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 2 : 0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
 <td style="text-align: left;"><a href="#variable-hb_period_ms"><strong>HB_PERIOD_MS</strong></a>   = <code>500</code><br></td>
 </tr>
 <tr>
@@ -5495,8 +5598,28 @@
 <td style="text-align: left;"><a href="#variable-rx_ring_size"><strong>RX_RING_SIZE</strong></a>   = <code>((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 128 : 8)</code><br></td>
 </tr>
 <tr>
+<td style="text-align: right;">const uint32_t</td>
+<td style="text-align: left;"><a href="#variable-tsr_alst"><strong>TSR_ALST</strong></a>   = <code>{ CAN\_TSR\_ALST0, CAN\_TSR\_ALST1, CAN\_TSR\_ALST2 }</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">const uint32_t</td>
+<td style="text-align: left;"><a href="#variable-tsr_rqcp"><strong>TSR_RQCP</strong></a>   = <code>{ CAN\_TSR\_RQCP0, CAN\_TSR\_RQCP1, CAN\_TSR\_RQCP2 }</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">const uint32_t</td>
+<td style="text-align: left;"><a href="#variable-tsr_terr"><strong>TSR_TERR</strong></a>   = <code>{ CAN\_TSR\_TERR0, CAN\_TSR\_TERR1, CAN\_TSR\_TERR2 }</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">const uint32_t</td>
+<td style="text-align: left;"><a href="#variable-tsr_tme"><strong>TSR_TME</strong></a>   = <code>{ CAN\_TSR\_TME0,  CAN\_TSR\_TME1,  CAN\_TSR\_TME2  }</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">const uint32_t</td>
+<td style="text-align: left;"><a href="#variable-tsr_txok"><strong>TSR_TXOK</strong></a>   = <code>{ CAN\_TSR\_TXOK0, CAN\_TSR\_TXOK1, CAN\_TSR\_TXOK2 }</code><br></td>
+</tr>
+<tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-tx_ring_size"><strong>TX_RING_SIZE</strong></a>   = <code>16</code><br></td>
+<td style="text-align: left;"><a href="#variable-tx_ring_size"><strong>TX_RING_SIZE</strong></a>   = <code>((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 64 : 16)</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../structBatchState/"><strong>BatchState</strong></a></td>
@@ -5521,6 +5644,10 @@
 <tr>
 <td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#variable-_filterpassall"><strong>_filterPassAll</strong></a>   = <code>false</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../structTxQueueEntry/"><strong>TxQueueEntry</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_inmailbox"><strong>_inMailbox</strong></a>  <br></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint32_t</td>
@@ -5587,6 +5714,10 @@
 <td style="text-align: left;"><a href="#variable-_rxhead"><strong>_rxHead</strong></a>   = <code>0</code><br></td>
 </tr>
 <tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#variable-_rxoverruns"><strong>_rxOverruns</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
 <td style="text-align: right;"><a href="../structRxQueueEntry/"><strong>RxQueueEntry</strong></a></td>
 <td style="text-align: left;"><a href="#variable-_rxring"><strong>_rxRing</strong></a>  <br></td>
 </tr>
@@ -5643,19 +5774,11 @@
 <tbody>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-hal_can_rxfifo0msgpendingcallback"><strong>HAL_CAN_RxFifo0MsgPendingCallback</strong></a> (CAN_HandleTypeDef * hcan) <br></td>
+<td style="text-align: left;"><a href="#function-usb_hp_can1_tx_irqhandler"><strong>USB_HP_CAN1_TX_IRQHandler</strong></a> (void) <br></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-hal_can_txmailbox0completecallback"><strong>HAL_CAN_TxMailbox0CompleteCallback</strong></a> (CAN_HandleTypeDef *) <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-hal_can_txmailbox1completecallback"><strong>HAL_CAN_TxMailbox1CompleteCallback</strong></a> (CAN_HandleTypeDef *) <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-hal_can_txmailbox2completecallback"><strong>HAL_CAN_TxMailbox2CompleteCallback</strong></a> (CAN_HandleTypeDef *) <br></td>
+<td style="text-align: left;"><a href="#function-usb_lp_can1_rx0_irqhandler"><strong>USB_LP_CAN1_RX0_IRQHandler</strong></a> (void) <br></td>
 </tr>
 </tbody>
 </table>
@@ -5690,6 +5813,14 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-_requeuefront"><strong>_requeueFront</strong></a> (const <a href="../structTxQueueEntry/"><strong>TxQueueEntry</strong></a> &amp; e) <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-_settlemailbox"><strong>_settleMailbox</strong></a> (int i, uint32_t tsr) <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-_startinternal"><strong>_startInternal</strong></a> (uint32_t mode) <br></td>
 </tr>
 <tr>
@@ -5711,9 +5842,18 @@
 <td style="text-align: right;">define</td>
 <td style="text-align: left;"><a href="./#define-can_rx_ring_size"><strong>CAN_RX_RING_SIZE</strong></a>  <code>((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 128 : 8)</code><br></td>
 </tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-can_tx_ring_size"><strong>CAN_TX_RING_SIZE</strong></a>  <code>((NODE\_ID) == [**GATEWAY\_NODE\_ID**](NodeStatus_8h.md#variable-gateway_node_id) ? 64 : 16)</code><br></td>
+</tr>
 </tbody>
 </table>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-batch_hold_ms">variable BATCH_HOLD_MS</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">BATCH_HOLD_MS</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
 <h3 id="variable-hb_period_ms">variable HB_PERIOD_MS</h3>
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">HB_PERIOD_MS</span><span class="p">;</span>
 </code></pre></div>
@@ -5736,6 +5876,31 @@
 
 <h3 id="variable-rx_ring_size">variable RX_RING_SIZE</h3>
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">RX_RING_SIZE</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-tsr_alst">variable TSR_ALST</h3>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">TSR_ALST</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-tsr_rqcp">variable TSR_RQCP</h3>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">TSR_RQCP</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-tsr_terr">variable TSR_TERR</h3>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">TSR_TERR</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-tsr_tme">variable TSR_TME</h3>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">TSR_TME</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-tsr_txok">variable TSR_TXOK</h3>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">TSR_TXOK</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
 </code></pre></div>
 <hr>
 
@@ -5771,6 +5936,11 @@
 
 <h3 id="variable-_filterpassall">variable _filterPassAll</h3>
 <div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">_filterPassAll</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-_inmailbox">variable _inMailbox</h3>
+<div class="highlight"><pre><span></span><code><span class="n">TxQueueEntry</span><span class="w"> </span><span class="n">_inMailbox</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
 </code></pre></div>
 <hr>
 
@@ -5854,6 +6024,11 @@
 </code></pre></div>
 <hr>
 
+<h3 id="variable-_rxoverruns">variable _rxOverruns</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_rxOverruns</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
 <h3 id="variable-_rxring">variable _rxRing</h3>
 <div class="highlight"><pre><span></span><code><span class="n">RxQueueEntry</span><span class="w"> </span><span class="n">_rxRing</span><span class="p">[</span><span class="n">RX_RING_SIZE</span><span class="p">];</span>
 </code></pre></div>
@@ -5909,30 +6084,16 @@
 </code></pre></div>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
-<h3 id="function-hal_can_rxfifo0msgpendingcallback">function HAL_CAN_RxFifo0MsgPendingCallback</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">HAL_CAN_RxFifo0MsgPendingCallback</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">CAN_HandleTypeDef</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">hcan</span>
+<h3 id="function-usb_hp_can1_tx_irqhandler">function USB_HP_CAN1_TX_IRQHandler</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">USB_HP_CAN1_TX_IRQHandler</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div>
 <hr>
 
-<h3 id="function-hal_can_txmailbox0completecallback">function HAL_CAN_TxMailbox0CompleteCallback</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">HAL_CAN_TxMailbox0CompleteCallback</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">CAN_HandleTypeDef</span><span class="w"> </span><span class="o">*</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div>
-<hr>
-
-<h3 id="function-hal_can_txmailbox1completecallback">function HAL_CAN_TxMailbox1CompleteCallback</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">HAL_CAN_TxMailbox1CompleteCallback</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">CAN_HandleTypeDef</span><span class="w"> </span><span class="o">*</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div>
-<hr>
-
-<h3 id="function-hal_can_txmailbox2completecallback">function HAL_CAN_TxMailbox2CompleteCallback</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">HAL_CAN_TxMailbox2CompleteCallback</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">CAN_HandleTypeDef</span><span class="w"> </span><span class="o">*</span>
+<h3 id="function-usb_lp_can1_rx0_irqhandler">function USB_LP_CAN1_RX0_IRQHandler</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">USB_LP_CAN1_RX0_IRQHandler</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div>
 <hr>
@@ -5966,6 +6127,21 @@
 </code></pre></div>
 <hr>
 
+<h3 id="function-_requeuefront">function _requeueFront</h3>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">_requeueFront</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">TxQueueEntry</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+<hr>
+
+<h3 id="function-_settlemailbox">function _settleMailbox</h3>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">_settleMailbox</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">tsr</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+<hr>
+
 <h3 id="function-_startinternal">function _startInternal</h3>
 <div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">_startInternal</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">mode</span>
@@ -5980,6 +6156,11 @@
 <h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
 <h3 id="define-can_rx_ring_size">define CAN_RX_RING_SIZE</h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#define CAN_RX_RING_SIZE `((NODE_ID) == GATEWAY_NODE_ID ? 128 : 8)`</span>
+</code></pre></div>
+<hr>
+
+<h3 id="define-can_tx_ring_size">define CAN_TX_RING_SIZE</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#define CAN_TX_RING_SIZE `((NODE_ID) == GATEWAY_NODE_ID ? 64 : 16)`</span>
 </code></pre></div>
 <hr>
 

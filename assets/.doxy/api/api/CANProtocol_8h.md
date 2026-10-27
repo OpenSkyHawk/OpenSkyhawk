@@ -54,7 +54,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 
 | Type | Name |
 | ---: | :--- |
-|  constexpr uint32\_t | [**CAN\_ID\_CTRL\_BCAST**](#variable-can_id_ctrl_bcast)   = `0x010`<br>_Broadcast ControlPacketPair to all panels._  |
+|  constexpr uint32\_t | [**CAN\_ID\_CTRL\_BCAST**](#variable-can_id_ctrl_bcast)   = `0x7E0`<br> |
 |  constexpr uint32\_t | [**CAN\_ID\_SYNC\_REQ**](#variable-can_id_sync_req)   = `0x012`<br>_Request nodes to re-send their state (see below)_  |
 |  constexpr uint32\_t | [**CAN\_ID\_TEST\_SEQ**](#variable-can_id_test_seq)   = `0x011`<br>_RTT throughput test._  |
 |  constexpr uint16\_t | [**CTRL\_ID\_DCS\_MAX**](#variable-ctrl_id_dcs_max)   = `0x86FF`<br>_DCS-BIOS range end._  |
@@ -227,13 +227,16 @@ enum ReadyFlag {
 
 ### variable CAN\_ID\_CTRL\_BCAST 
 
-_Broadcast ControlPacketPair to all panels._ 
 ```C++
 constexpr uint32_t CAN_ID_CTRL_BCAST;
 ```
 
 
 
+Broadcast ControlPacketPair to all panels: the sim's export stream. The lowest-priority frame on the bus (#389) — every input, heartbeat and update frame wins arbitration against it. An input is one-shot; a sim value comes back by itself (each change on the next DCS-BIOS frame, and autosync re-sends every value every few seconds), so the sim yields, not the cockpit. Was 0x010 (the top). 
+
+
+        
 
 <hr>
 

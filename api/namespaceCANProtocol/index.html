@@ -4929,6 +4929,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-rxoverruncount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function rxOverrunCount
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-send" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5139,6 +5150,10 @@
 <td style="text-align: left;"><a href="#function-rxdropcount"><strong>rxDropCount</strong></a> () <br><em>Return the cumulative RX drop count since startup (#387): frames lost because the software RX ring was full when they arrived. Should stay 0; nonzero means loop() falls behind the bus.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#function-rxoverruncount"><strong>rxOverrunCount</strong></a> () <br><em>Return the cumulative RX FIFO overrun count since startup (#389): frames lost in hardware because all three FIFO slots were full when they arrived. RX is interrupt-driven, so this needs interrupts held off for three frame times; should stay 0.</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-send"><strong>send</strong></a> (uint32_t canId, const uint8_t * data, uint8_t len) <br><em>Send a CAN frame.</em></td>
 </tr>
@@ -5222,7 +5237,7 @@
 <span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Adds one ID to the hardware filter list. Call multiple times for multiple IDs. CTRL_BCAST (0x010), TEST_SEQ (0x011), and SYNC_REQ (0x012) are always included automatically by <a href="./#function-start"><strong>start()</strong></a> — do not add them manually.</p>
+<p>Adds one ID to the hardware filter list. Call multiple times for multiple IDs. CTRL_BCAST (0x7E0), TEST_SEQ (0x011), and SYNC_REQ (0x012) are always included automatically by <a href="./#function-start"><strong>start()</strong></a> — do not add them manually.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>canId</code> 11-bit standard CAN ID to accept. </li>
@@ -5352,6 +5367,12 @@
 </code></pre></div></p>
 <hr>
 
+<h3 id="function-rxoverruncount">function rxOverrunCount</h3>
+<p><em>Return the cumulative RX FIFO overrun count since startup (#389): frames lost in hardware because all three FIFO slots were full when they arrived. RX is interrupt-driven, so this needs interrupts held off for three frame times; should stay 0.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">rxOverrunCount</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
 <h3 id="function-send">function send</h3>
 <p><em>Send a CAN frame.</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="w"> </span><span class="p">(</span>
@@ -5360,7 +5381,7 @@
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Sends immediately if a TX mailbox is free; otherwise enqueues in the TX ring buffer (~16 entries), drained automatically via TX-complete interrupt. CTRL_BCAST coalesces stale queued state (newest wins). EVT/control frames retry up to 3 attempts then drop. All drops increment <a href="./#function-txdropcount"><strong>txDropCount()</strong></a>.</p>
+<p>Every frame goes through the TX ring (16 entries; 64 on the bridge) and leaves in the order it was sent; the TX-complete interrupt keeps the three mailboxes loaded. A frame that loses arbitration is resent until it goes out; one that hits a bus error, up to 3 attempts in all (#389, D4/D7). At most one frame per CAN ID is in the mailboxes at a time, so a resend never lands after a newer frame of the same ID. A full ring, or a frame out of error attempts, is dropped and counted in <a href="./#function-txdropcount"><strong>txDropCount()</strong></a>.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>canId</code> 11-bit standard CAN ID. </li>
