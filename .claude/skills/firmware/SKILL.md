@@ -92,15 +92,48 @@ committed code under `Firmware/Libraries/`.
 - **Spec-sync in the same PR.** Any change to a public firmware API — struct/enum, class method,
   wire format, `#define` contract — updates the authoritative `FirmwarePlan/` + `TechSpec/` doc in
   the **same PR**, listed as a deliverable and self-checked before push. The spec is source of
-  truth; drift defeats it. Grep the old value/claim before pushing.
+  truth; drift defeats it. Before pushing, grep for the old value **and the old behaviour's
+  wording** (e.g. "coalesc", "broadcast", "once per boot", a renamed class or listener) across
+  `FirmwarePlan/`, `TechSpec/`, `docs/`, library READMEs and header docblocks. A value grep alone
+  missed most of the drift in the 2026-10-27 audit. Update **every** TechSpec that describes the
+  behaviour, not only the one whose API changed. When the change contradicts a decision in
+  `00-decisions.md`, amend or supersede **every** entry it overrides (#392 left D7/D24 describing
+  removed coalescing, and #390 left D5 describing a broadcast `SYNC_REQ`).
 - **Published docs sync too, when the change is visible from them.** A new control class, a new
   CAN frame family, or a change to what an existing frame carries also updates `docs/firmware/`
   and `docs/architecture/` in the **same PR** — at feature/overview altitude, not a second copy
-  of the TechSpec. Three pages go stale fastest: `docs/firmware/index.md` (what is built),
-  `docs/firmware/control-types.md` (per-class status), `docs/architecture/can-bus.md` (the frame
-  table). The weekly docs-drift review is a backstop for what slips through, not the mechanism —
-  in #284 four of five findings had been wrong since #124, #147 and #222 because each feature PR
-  left them behind.
+  of the TechSpec. These pages go stale fastest:
+  - `docs/firmware/index.md` (what is built);
+  - `docs/firmware/control-types.md` (per-class status);
+  - `docs/architecture/can-bus.md` (the frame table and priorities);
+  - `docs/firmware/compatibility.md` (every reserved export address, PC message and contract
+    between the Gateway's two chips);
+  - `docs/guides/bring-up.md` (boot and sync behaviour);
+  - `docs/guides/new-control-type.md` (the `InputBase`/`OutputBase` contract);
+  - `docs/firmware/build-flags.md` (any new `-D` override);
+  - FirmwarePlan `09` (any added or reordered boot step).
+
+  The weekly docs-drift review is a backstop for what slips through, not the mechanism: in #284
+  four of five findings had been wrong since #124, #147 and #222, because each feature PR left
+  them behind.
+- **Closing a ticket.** Before a PR closes a ticket, closing secondary ones included, tick each
+  Done-when box with where its evidence is ("— #PR", a bench table), or move the unmet item to a
+  named follow-up and say so on the ticket. When a bench check was swapped for an equivalent, or
+  not re-run after the code path changed, say that too. In the 2026-10-27 audit every closed
+  firmware ticket had unticked boxes and unrecorded or substituted checks.
+- **Release facts come from the tag.** Never write "in firmware vX" from a milestone or from
+  timing. Check it: `git merge-base --is-ancestor <commit> firmware-vX`. `firmware-v0.2.0` was cut
+  7 minutes before #359, and client tickets built on the wrong guess. Releases before 1.0.0 are
+  test-only; 1.0.0 is the first public one.
+- **No new reporting without a need.** Don't add frames, payload fields, flag bits or `DIAG`
+  fields for visibility's sake, because every report costs bus or link time. Loss counters
+  (`rxOverrunCount()`, `txDropCount()`, `rxDropCount()`) stay on the board, readable in debug or
+  bench builds and through SoakRig. Docs never claim more than that: "never lost silently" means
+  *counted on the board*, not reported.
+- **Responsive inputs first.** An input (switch or knob → sim) must register promptly and never
+  be lost. A sim → cockpit update that arrives late or drops once is acceptable, because DCS-BIOS
+  resends every value. Judge bus and loop changes, and write pass criteria, on that basis: input
+  loss or input latency fails; a recorded output drop that catches up doesn't (D31).
 - **Toolchain:** PlatformIO. STM32 = `platform = ststm32@^20.0.0`, `framework = arduino`. RP2040 =
   `earlephilhower` core with `-DUSE_TINYUSB`.
 - **C++ standard:** any project using `DrumDisplay` needs `-std=gnu++20` +
