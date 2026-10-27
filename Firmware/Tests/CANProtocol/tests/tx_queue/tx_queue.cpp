@@ -1,7 +1,7 @@
 // CANProtocol — TX ring buffer test
 //
 // Test 1: Payload bytes preserved end-to-end (loopback).
-// Test 2: CTRL_BCAST coalescing — requires dual-board real bus; SKIP in loopback.
+// Test 2: CTRL_BCAST burst arrives whole and in order (#389) — dual-board, see dual_order; SKIP in loopback.
 // Test 3: TX overflow drops — requires dual-board real bus; SKIP in loopback.
 //
 // In CAN_MODE_SILENT_LOOPBACK the hardware frees TX mailboxes (TSR.TME) faster
@@ -11,7 +11,7 @@
 //
 // Expected output (single board):
 //   Payload preserved:    PASS
-//   CTRL_BCAST coalesced: SKIP (loopback)
+//   CTRL_BCAST in order:  SKIP (loopback)
 //   TX overflow drops:    SKIP (loopback)
 
 #include <STM32Board.h>
@@ -50,7 +50,7 @@ void loop() {
         auto& d = STM32Board::diagSerial();
         d.println(F("--- tx_queue results ---"));
         d.print(F("Payload preserved:    ")); d.println(_payloadOk ? F("PASS") : F("FAIL"));
-        d.println(F("CTRL_BCAST coalesced: SKIP (loopback)"));
+        d.println(F("CTRL_BCAST in order:  SKIP (loopback)"));
         d.println(F("TX overflow drops:    SKIP (loopback)"));
     }
 }
