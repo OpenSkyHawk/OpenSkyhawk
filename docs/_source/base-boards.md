@@ -209,8 +209,12 @@ direction, which is what matters for the cross-over.
 | `BRIDGE_TO_SIMGW` | STM32 PA2 (USART2 TX) | → | RP2040 GP1 (UART0 RX) | PanelBridge → SimGateway |
 | `GND` | RP2040 GND | — | STM32 VSS | common reference (required) |
 
-3.3 V logic both sides, no level shifter. Optional 33 Ω series on each line (label the
-resistor-to-resistor trunk with the net name). 250000 baud. Cross-over: each MCU's TX drives the
+3.3 V logic both sides, no level shifter. **1 kΩ series on each line** (R16/R17; label the
+resistor-to-resistor trunk with the net name). The two MCUs are on separate supplies — the RP2040
+only from USB, the STM32 from the bus — so either can be unpowered while the other drives an
+idle-high TX into it. With 33 Ω the unpowered chip is back-fed through its ESD diode at tens of
+mA (half-powered rail, messy power-on reset); 1 kΩ caps that at ~3 mA. The edge cost is ~10 ns
+(1 kΩ × pin capacitance) against a 4 µs bit. 250000 baud. Cross-over: each MCU's TX drives the
 *other's* RX — `SIMGW_TO_BRIDGE` is the SimGateway transmit net, `BRIDGE_TO_SIMGW` the Bridge transmit net.
 
 ### STM32 pin assignment (LQFP48)
@@ -350,7 +354,7 @@ vocabulary, not the engine.
 | R_i2c_ser | 33 Ω ×4 | `Device:R` | SDA/SCL series (2/bus) |
 | R_term | 120 Ω | `Device:R` | + J_TERM jumper |
 | R_boot | 10 kΩ | `Device:R` | BOOT0 pull-down |
-| R_uart | 33 Ω ×2 (opt.) | `Device:R` | UART series |
+| R_uart | 1 kΩ ×2 (R16/R17) | `Device:R` | UART series between the two power domains (RP2040 on USB, STM32 on the bus) — limits back-feed into whichever side is unpowered to ~3 mA; edge τ ≈ 10 ns, negligible at 250 kbaud |
 | R_led | ≈2.2 k–10 k ×5 | `Device:R` | status/power LEDs, dim (PB R/G + PWR + SimGW R/G) |
 | C_xtal | 22 pF ×2 (C0G/NP0) | `Device:C` | crystal load — stable dielectric |
 | C_dec | 100 nF ×~5 | `Device:C` | per VDD/VDDA + IC decoupling |
