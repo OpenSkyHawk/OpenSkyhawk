@@ -29,8 +29,10 @@ OpenSkyhawk/
 │   ├── Right_Console/
 │   └── Libraries/              # Shared KiCad symbols and footprints
 │
-├── Firmware/                   # PlatformIO projects, one folder per STM32 controller
-│   ├── Center_Armament/
+├── Firmware/                   # PlatformIO projects
+│   ├── Panels/                 # Production sketches, one folder per node
+│   ├── Templates/              # Starting points for new sketches
+│   ├── Examples/               # Bench and end-to-end test sketches
 │   └── Libraries/              # Shared firmware code
 │
 └── docs/
