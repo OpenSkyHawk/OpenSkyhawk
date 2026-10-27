@@ -4808,7 +4808,7 @@
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Owns the USB CDC ↔ UART relay, 0xAA 0x55 HID frame demultiplexer, and HID report batching. HIDAxis, HIDButton, and HIDHatSwitch objects are declared in the sketch at file scope and self-register into linked lists at construction. <a href="../namespaceSimGateway/#function-loop"><strong>SimGateway::loop()</strong></a> walks those lists and dispatches matching HID frames into the USB HID report.</p>
-<p>Does NOT run DCS-BIOS, parse DCS-BIOS addresses, or interact with CAN. Platform: RP2040 only.</p>
+<p>Does NOT run DCS-BIOS or parse DCS-BIOS addresses. The relay knows no CAN; the uploader (<a href="../Uploader_8h/"><strong>Uploader.h</strong></a>, #366/#367) drives board bootloaders over CAN through <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>. Platform: RP2040 only.</p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />

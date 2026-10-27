@@ -164,7 +164,7 @@ See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
 ## Detailed Description
 
 
-Owns what every member shares, so a subclass is only its sink: controlId matching on each CTRL\_BCAST packet, (value & mask) &gt;&gt; shift decoding — the same address/mask/shift triple DCS-BIOS uses, so packed fields work as well as whole-word outputs — and change dedup, so [**apply()**](classOpenSkyhawk_1_1AnalogOutput.md#function-apply) runs only when the decoded value differs from the last one applied. DCS-BIOS re-broadcasts full state after SYNC\_REQ; without the dedup every subclass would repeat the same work on every resync.
+Owns what every member shares, so a subclass is only its sink: controlId matching on each CTRL\_BCAST packet, (value & mask) &gt;&gt; shift decoding — the same address/mask/shift triple DCS-BIOS uses, so packed fields work as well as whole-word outputs — and change dedup, so [**apply()**](classOpenSkyhawk_1_1AnalogOutput.md#function-apply) runs only when the decoded value differs from the last one applied. DCS-BIOS re-sends unchanged values (its autosync re-sends every value every few seconds); without the dedup every subclass would repeat the same work each time.
 
 
 Does not know what the value means or where it goes — that is the subclass's [**apply()**](classOpenSkyhawk_1_1AnalogOutput.md#function-apply). Does not configure pins: a subclass with hardware overrides [**configure()**](classOpenSkyhawk_1_1OutputBase.md#function-configure).

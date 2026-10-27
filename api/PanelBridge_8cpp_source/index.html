@@ -4947,19 +4947,19 @@
 <span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="c1">// Internal helper called by BridgeExportListener — separated for testability.</span>
+<span class="c1">// Internal helper called by ExportDispatcher — separated for testability.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">handleDcsBiosExport</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">   </span><span class="c1">// the ControlPacket empty-slot sentinel; never carried</span>
 <span class="cp">#if PANELBRIDGE_NODE_STATUS</span>
-<span class="w">    </span><span class="c1">// Reserved: the host's node-status request — handled by NodeStatusReqListener,</span>
+<span class="w">    </span><span class="c1">// Reserved: the host's node-status request — routed by ExportDispatcher,</span>
 <span class="w">    </span><span class="c1">// never broadcast onto CAN.</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NODE_STATUS_REQ_ADDR</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
 <span class="cp">#endif</span>
-<span class="w">    </span><span class="c1">// Reserved: the host's "forget this node" (#384) — handled by NodeForgetListener.</span>
+<span class="w">    </span><span class="c1">// Reserved: the host's "forget this node" (#384) — routed by ExportDispatcher.</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NODE_FORGET_REQ_ADDR</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="c1">// Reserved: the host's "bridge, enter your bootloader" (#367) — handled by BridgeEnterListener.</span>
+<span class="w">    </span><span class="c1">// Reserved: the host's "bridge, enter your bootloader" (#367) — routed by ExportDispatcher.</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">BRIDGE_ENTER_EXPORT_ADDRESS</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="c1">// Reserved: the bootloader relay window (#365, #366) — handled by BootRelayListener.</span>
+<span class="w">    </span><span class="c1">// Reserved: the bootloader relay window (#365, #366) — routed by ExportDispatcher to BootRelay.</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_ADDRESS</span>
 <span class="w">        </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_ADDRESS</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">RELAY_EXPORT_WORDS</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
 <span class="w">    </span><span class="c1">// A real DCS-BIOS export → data is flowing → CONNECTED (green solid). The reserved</span>
@@ -5100,7 +5100,7 @@
 <span class="p">}</span>
 
 <span class="c1">// Update liveness state and fire alive callback on dead/unseen → alive transition.</span>
-<span class="c1">// Returns true if this call caused a transition (caller responsible for SYNC_REQ).</span>
+<span class="c1">// Returns true if this call caused a transition (caller queues the sync — queueSync()).</span>
 <span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">markNodeAlive</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">idx</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">nodeId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">wasAlive</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">_nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">alive</span><span class="p">;</span>
@@ -5210,7 +5210,7 @@
 <span class="w">        </span><span class="k">return</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="c1">// HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition</span>
+<span class="w">    </span><span class="c1">// HB_1 – HB_63: update liveness; queue a sync (#387) only on a dead/unseen → alive transition</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdHb</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdHb</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">canId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">canIdHb</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
 <span class="cp">#if PANELBRIDGE_NODE_STATUS</span>

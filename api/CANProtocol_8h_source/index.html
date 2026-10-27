@@ -4769,7 +4769,7 @@
 
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ReadyFlag</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">RESYNC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w">  </span><span class="c1">// an answer to SYNC_REQ, not a boot: the bridge caches the version but must not</span>
-<span class="w">                    </span><span class="c1">// broadcast SYNC_REQ for it (that would answer itself forever)</span>
+<span class="w">                    </span><span class="c1">// queue a sync for it (that would answer itself forever)</span>
 <span class="p">};</span>
 <span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">ReadyPayload</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s">"ReadyPayload must fill one classic CAN frame"</span><span class="p">);</span>
 
@@ -4822,8 +4822,9 @@
 <span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MIN</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x8000</span><span class="p">;</span><span class="w">  </span>
 <span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MAX</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x86FF</span><span class="p">;</span><span class="w">  </span>
 
-<span class="c1">// ── UART diagnostic framing constants (PanelBridge -&gt; SimGateway) ─────────────</span>
-<span class="c1">// Used by SimGateway to parse the UART diagnostic stream from PanelBridge.</span>
+<span class="c1">// ── UART diagnostic framing constants (retired) ───────────────────────────────</span>
+<span class="c1">// From an early plan for framed diagnostics. Nothing sends or parses them: DiagSerial carries</span>
+<span class="c1">// plain-text log lines, and the CAN counters stay on the board (txDropCount() etc.) — FirmwarePlan 09.</span>
 
 <span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DIAG_MAGIC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xAA</span><span class="p">;</span><span class="w">  </span>
 <span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DIAG_RTT</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span><span class="w">  </span>

@@ -5221,7 +5221,7 @@
 * The node's own <code>HB_NODE_ID</code>: stamped for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s duplicate NODE_ID check (#344), then <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
 * The node's own <code>BOOT_CMD_n</code> (not on the bridge): a CONNECT resets into the bootloader when one is installed (<a href="../namespaceSTM32Board/#function-enterbootloader"><strong>STM32Board::enterBootloader()</strong></a>, #365); never forwarded.
 * All other frames: fires <a href="./#function-onreceive"><strong>onReceive()</strong></a>.</p>
-<p>Also services <a href="./#function-sendbatched"><strong>sendBatched()</strong></a> deadlines: a half-full ControlPacketPair that has waited two <a href="./#function-drain"><strong>drain()</strong></a> calls is flushed with slot B set to the null sentinel. </p>
+<p>Also services <a href="./#function-sendbatched"><strong>sendBatched()</strong></a> deadlines: a half-full ControlPacketPair that has waited two <a href="./#function-drain"><strong>drain()</strong></a> calls — and, on <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>, at least 2 ms (#389) — is flushed with slot B set to the null sentinel. </p>
 <hr>
 
 <h3 id="function-filteracceptall">function filterAcceptAll</h3>
@@ -5381,7 +5381,7 @@
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Every frame goes through the TX ring (16 entries; 64 on the bridge) and leaves in the order it was sent; the TX-complete interrupt keeps the three mailboxes loaded. A frame that loses arbitration is resent until it goes out; one that hits a bus error, up to 3 attempts in all (#389, D4/D7). At most one frame per CAN ID is in the mailboxes at a time, so a resend never lands after a newer frame of the same ID. A full ring, or a frame out of error attempts, is dropped and counted in <a href="./#function-txdropcount"><strong>txDropCount()</strong></a>.</p>
+<p>Every frame goes through the TX ring (16 entries; 64 on the bridge) and leaves in the order it was sent; the TX-complete interrupt keeps the three mailboxes loaded. A frame that loses arbitration is resent until it goes out; one that hits a bus error, up to 3 attempts in all (#389, D4/D7). At most one frame per CAN ID is in the mailboxes at a time, so a resend never lands after a newer frame of the same ID. A full ring, or a frame out of error attempts, is dropped and counted in <a href="./#function-txdropcount"><strong>txDropCount()</strong></a> — on the board; not reported over the bus.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>canId</code> 11-bit standard CAN ID. </li>
@@ -5397,7 +5397,7 @@
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">ControlPacket</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">pkt</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Valid only for CAN_ID_CTRL_BCAST and the batched event frames — canIdEvt(n) (absolute), canIdEvtRel(n) (RotaryEncoder REL), canIdEvtDir(n) (RotaryEncoder DIR), and canIdEvtAction(n) (ActionButton) — each with its own pending slot. Pairs two consecutive packets into one 8-byte frame. If slot B does not arrive within two <a href="./#function-drain"><strong>drain()</strong></a> calls, slot A is sent with slot B set to the null sentinel (controlId == 0x0000).</p>
+<p>Valid only for CAN_ID_CTRL_BCAST and the batched event frames — canIdEvt(n) (absolute), canIdEvtRel(n) (RotaryEncoder REL), canIdEvtDir(n) (RotaryEncoder DIR), and canIdEvtAction(n) (ActionButton) — each with its own pending slot. Pairs two consecutive packets into one 8-byte frame. If slot B does not arrive within two <a href="./#function-drain"><strong>drain()</strong></a> calls (and, on <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>, 2 ms — #389), slot A is sent with slot B set to the null sentinel (controlId == 0x0000).</p>
 <p>A frame ID with no batch slot is <strong>silently discarded</strong> — adding a batched frame means registering it in _batches[] in begin(), not just defining its canId helper.</p>
 <p><strong>Parameters:</strong></p>
 <ul>

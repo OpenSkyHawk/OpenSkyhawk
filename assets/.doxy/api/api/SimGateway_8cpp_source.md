@@ -418,7 +418,7 @@ uint16_t _calRxPos      = 0;
 
 bool     _calSession    = false;
 uint32_t _calLastRxMs   = 0;
-uint8_t  _calStreamAxis = CAL_AXIS_NONE;  // axis whose RAW is streamed; emission lands in PR 4
+uint8_t  _calStreamAxis = CAL_AXIS_NONE;  // axis whose RAW is streamed
 uint8_t  _calRawSeq     = 0;              // free-running per-session counter for RAW
 
 constexpr uint32_t CAL_SESSION_TIMEOUT_MS = 30000;

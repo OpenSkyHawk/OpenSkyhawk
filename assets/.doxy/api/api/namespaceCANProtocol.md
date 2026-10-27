@@ -178,7 +178,7 @@ Drains all frames received since the last call:
 
 
 
-Also services [**sendBatched()**](namespaceCANProtocol.md#function-sendbatched) deadlines: a half-full ControlPacketPair that has waited two [**drain()**](namespaceCANProtocol.md#function-drain) calls is flushed with slot B set to the null sentinel. 
+Also services [**sendBatched()**](namespaceCANProtocol.md#function-sendbatched) deadlines: a half-full ControlPacketPair that has waited two [**drain()**](namespaceCANProtocol.md#function-drain) calls — and, on [**PanelBridge**](namespacePanelBridge.md), at least 2 ms (#389) — is flushed with slot B set to the null sentinel. 
 
 
         
@@ -544,7 +544,7 @@ void CANProtocol::send (
 
 
 
-Every frame goes through the TX ring (16 entries; 64 on the bridge) and leaves in the order it was sent; the TX-complete interrupt keeps the three mailboxes loaded. A frame that loses arbitration is resent until it goes out; one that hits a bus error, up to 3 attempts in all (#389, D4/D7). At most one frame per CAN ID is in the mailboxes at a time, so a resend never lands after a newer frame of the same ID. A full ring, or a frame out of error attempts, is dropped and counted in [**txDropCount()**](namespaceCANProtocol.md#function-txdropcount).
+Every frame goes through the TX ring (16 entries; 64 on the bridge) and leaves in the order it was sent; the TX-complete interrupt keeps the three mailboxes loaded. A frame that loses arbitration is resent until it goes out; one that hits a bus error, up to 3 attempts in all (#389, D4/D7). At most one frame per CAN ID is in the mailboxes at a time, so a resend never lands after a newer frame of the same ID. A full ring, or a frame out of error attempts, is dropped and counted in [**txDropCount()**](namespaceCANProtocol.md#function-txdropcount) — on the board; not reported over the bus.
 
 
 
@@ -577,7 +577,7 @@ void CANProtocol::sendBatched (
 
 
 
-Valid only for CAN\_ID\_CTRL\_BCAST and the batched event frames — canIdEvt(n) (absolute), canIdEvtRel(n) (RotaryEncoder REL), canIdEvtDir(n) (RotaryEncoder DIR), and canIdEvtAction(n) (ActionButton) — each with its own pending slot. Pairs two consecutive packets into one 8-byte frame. If slot B does not arrive within two [**drain()**](namespaceCANProtocol.md#function-drain) calls, slot A is sent with slot B set to the null sentinel (controlId == 0x0000).
+Valid only for CAN\_ID\_CTRL\_BCAST and the batched event frames — canIdEvt(n) (absolute), canIdEvtRel(n) (RotaryEncoder REL), canIdEvtDir(n) (RotaryEncoder DIR), and canIdEvtAction(n) (ActionButton) — each with its own pending slot. Pairs two consecutive packets into one 8-byte frame. If slot B does not arrive within two [**drain()**](namespaceCANProtocol.md#function-drain) calls (and, on [**PanelBridge**](namespacePanelBridge.md), 2 ms — #389), slot A is sent with slot B set to the null sentinel (controlId == 0x0000).
 
 
 A frame ID with no batch slot is **silently discarded** — adding a batched frame means registering it in \_batches[] in begin(), not just defining its canId helper.

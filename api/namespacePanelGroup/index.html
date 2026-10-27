@@ -4955,10 +4955,10 @@
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">loop</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
 <p>Each call:
-* Check interrupt flags; read INTCAP; update expander port caches.
-* Polling fallback (~20 ms): read ports for chips registered without interrupt.
+* Check interrupt flags; clear INTCAP; refresh the flagged ports' caches from a live read.
+* Polling fallback (~20 ms): read ports for chips registered without interrupt. 2b. Service every ShiftBus (transfer, or flush pending outputs when ISR sampling runs).
 * poll() on all InputBase objects.
-* <a href="../namespaceCANProtocol/#function-drain"><strong>CANProtocol::drain()</strong></a> — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.
+* <a href="../namespaceCANProtocol/#function-drain"><strong>CANProtocol::drain()</strong></a> — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo; then <a href="../namespaceSTM32Board/#function-tick"><strong>STM32Board::tick()</strong></a> (status LED).
 * update() on all OutputBase objects.
 * <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a>: HB_n every 500 ms, HEALTH_n every 1 s (board kind PANEL_GROUP, #344), master-loss watchdog. </p>
 <hr>
@@ -5071,15 +5071,16 @@
 <p><em>Initialise</em> <a href="./"><em><strong>PanelGroup</strong></em></a> <em>. Call from sketch</em><a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>after Wire.begin().</em>
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">setup</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Performs the 8-step boot sequence:
+<p>Performs the boot sequence, in this order:
 * <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a>
-* For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON, enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR.
-* configure() on all InputBase and OutputBase objects.
+* For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON.
+* configure() on all InputBase and OutputBase objects; then begin() every ShiftBus they announced. Then, for each expander: enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR (after configure(), so IODIR is set).
 * Register CAN callbacks.
 * <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a>.
-* forceReport() burst — one EVT per registered input.
+* forceReport() burst — each input's current state (none from an input without one).
 * flushBatched(canIdEvt(NODE_ID)).
-* READY_n frame (<a href="../namespaceCANProtocol/#function-sendready"><strong>CANProtocol::sendReady()</strong></a>: the firmware version, #295). (Heartbeat/HEALTH timers arm on the first <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a> call in <a href="./#function-loop"><strong>loop()</strong></a>.)</p>
+* READY_n frame (<a href="../namespaceCANProtocol/#function-sendready"><strong>CANProtocol::sendReady()</strong></a>: the firmware version, #295). (Heartbeat/HEALTH timers arm on the first <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a> call in <a href="./#function-loop"><strong>loop()</strong></a>.)
+* <a href="../namespaceSTM32Board/#function-markboothealthy"><strong>STM32Board::markBootHealthy()</strong></a> — the bootloader's crash-loop counter back to 0 (#364).</p>
 <p><strong>Note:</strong></p>
 <p>Wire.begin() must be called by the sketch before this function. <a href="./"><strong>PanelGroup</strong></a> never calls Wire.begin() — only start buses in use. </p>
 <hr>

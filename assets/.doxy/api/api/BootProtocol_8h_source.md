@@ -17,7 +17,8 @@ namespace Boot {
 constexpr uint8_t PROTOCOL_VERSION = 1;
 
 // ── CAN frame IDs (11-bit) ────────────────────────────────────────────────────
-// The lowest priority on the bus, so update traffic never delays a control.
+// Below every control and status frame, so update traffic never delays a control; only CTRL_BCAST
+// (0x7E0) is lower (#389).
 
 constexpr uint16_t CMD_ID_BASE = 0x740;  
 constexpr uint16_t RSP_ID_BASE = 0x780;  

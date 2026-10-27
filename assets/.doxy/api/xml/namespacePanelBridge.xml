@@ -90,14 +90,14 @@
 <para>Initialise STM32 board services, UART2, <ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref>, and <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> internals. </para>
         </briefdescription>
         <detaileddescription>
-<para>Performs in order: <ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin()</ref>, Serial.begin(250000), DCS-BIOS export listener registration, <ref refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kindref="member">CANProtocol::filterAcceptAll()</ref>, <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">CANProtocol::onReceive()</ref> registration, <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref>, and cold-boot SYNC_REQ broadcast.</para>
+<para>Performs in order: <ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin()</ref>, Serial.begin(250000), <ref refid="namespaceCANProtocol_1a438f275b91eb5d34ae85eeaa2a3505ea" kindref="member">CANProtocol::onStatusChange()</ref>, <ref refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kindref="member">CANProtocol::filterAcceptAll()</ref>, <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">CANProtocol::onReceive()</ref> registration, <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref>, arming the boot roster reply (written from loop()), and <ref refid="namespaceSTM32Board_1a5bd5eca4fdf29f15d237a990aa52fbf1" kindref="member">STM32Board::markBootHealthy()</ref> (#364). No SYNC_REQ: each node is queued for a sync as its first heartbeat arrives (#387). The DCS-BIOS export listener is a file-scope object, registered before setup() runs.</para>
 <para><simplesect kind="note"><para>Sketch must call DcsBios::setup() immediately after this. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="832" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="832" bodyend="852" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="74" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="832" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="832" bodyend="852" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="76" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -109,14 +109,14 @@
 <para>Run <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> work not owned by DcsBios::loop(). </para>
         </briefdescription>
         <detaileddescription>
-<para>Drains <ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref> RX, dispatches EVT packets, services <ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref> batching deadlines, checks node heartbeat timeouts (3 s), sends its own HB_0 / HEALTH_0 through <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">CANProtocol::serviceNodeStatus()</ref> (#340), and handles DiagSerial &apos;T&apos; bytes for TEST_SEQ.</para>
+<para>Drains <ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref> RX, dispatches EVT packets, services <ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref> batching deadlines, checks node heartbeat timeouts (3 s), sends the next queued SYNC_REQ (one node at a time, #387), writes the next roster row when the UART has room (#388), sends its own HB_0 / HEALTH_0 through <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">CANProtocol::serviceNodeStatus()</ref> (#340), and handles DiagSerial &apos;T&apos; bytes for TEST_SEQ.</para>
 <para><simplesect kind="note"><para>Call after DcsBios::loop() each iteration. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="854" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="854" bodyend="895" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="85" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="854" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="854" bodyend="895" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="89" declcolumn="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

@@ -56,7 +56,7 @@
 
 | Type | Name |
 | ---: | :--- |
-|  void | [**begin**](#function-begin) (const [**Io**](structUploader_1_1Io.md) & io) <br>_Install the callbacks. Call once from SimGateway::begin()._  |
+|  void | [**begin**](#function-begin) (const [**Io**](structUploader_1_1Io.md) & io) <br>_Install the callbacks. Call once from_ [_**SimGateway::setup()**_](namespaceSimGateway.md#function-setup) _._ |
 |  bool | [**busy**](#function-busy) () <br>_An upload session is open or a flash runs — the calibration session must answer BUSY._  |
 |  bool | [**handles**](#function-handles) (uint8\_t type) <br>_True for the CAL\_T\_UPL\_\* request types the uploader answers._  |
 |  bool | [**onBridgeLine**](#function-onbridgeline) (const char \* line, uint16\_t len, uint32\_t now) <br> |
@@ -101,7 +101,7 @@
 
 ### function begin 
 
-_Install the callbacks. Call once from SimGateway::begin()._ 
+_Install the callbacks. Call once from_ [_**SimGateway::setup()**_](namespaceSimGateway.md#function-setup) _._
 ```C++
 void Uploader::begin (
     const Io & io

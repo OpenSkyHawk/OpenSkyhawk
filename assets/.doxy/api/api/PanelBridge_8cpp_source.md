@@ -239,19 +239,19 @@ static void sendHidFrame(uint16_t controlId, uint16_t value) {
     Serial.write(frame, 6);
 }
 
-// Internal helper called by BridgeExportListener — separated for testability.
+// Internal helper called by ExportDispatcher — separated for testability.
 void handleDcsBiosExport(uint16_t address, uint16_t value) {
     if (address == 0x0000) return;   // the ControlPacket empty-slot sentinel; never carried
 #if PANELBRIDGE_NODE_STATUS
-    // Reserved: the host's node-status request — handled by NodeStatusReqListener,
+    // Reserved: the host's node-status request — routed by ExportDispatcher,
     // never broadcast onto CAN.
     if (address == NODE_STATUS_REQ_ADDR) return;
 #endif
-    // Reserved: the host's "forget this node" (#384) — handled by NodeForgetListener.
+    // Reserved: the host's "forget this node" (#384) — routed by ExportDispatcher.
     if (address == NODE_FORGET_REQ_ADDR) return;
-    // Reserved: the host's "bridge, enter your bootloader" (#367) — handled by BridgeEnterListener.
+    // Reserved: the host's "bridge, enter your bootloader" (#367) — routed by ExportDispatcher.
     if (address == OpenSkyhawk::Boot::BRIDGE_ENTER_EXPORT_ADDRESS) return;
-    // Reserved: the bootloader relay window (#365, #366) — handled by BootRelayListener.
+    // Reserved: the bootloader relay window (#365, #366) — routed by ExportDispatcher to BootRelay.
     if (address >= OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS
         && address < OpenSkyhawk::Boot::RELAY_EXPORT_ADDRESS + 2 * OpenSkyhawk::Boot::RELAY_EXPORT_WORDS) return;
     // A real DCS-BIOS export → data is flowing → CONNECTED (green solid). The reserved
@@ -392,7 +392,7 @@ static void dispatchActionSlot(uint16_t controlId, uint16_t value) {
 }
 
 // Update liveness state and fire alive callback on dead/unseen → alive transition.
-// Returns true if this call caused a transition (caller responsible for SYNC_REQ).
+// Returns true if this call caused a transition (caller queues the sync — queueSync()).
 static bool markNodeAlive(uint8_t nodeId, uint32_t now) {
     uint8_t idx     = nodeId - 1;
     bool wasAlive   = _nodes[idx].alive;
@@ -502,7 +502,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         return;
     }
 
-    // HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition
+    // HB_1 – HB_63: update liveness; queue a sync (#387) only on a dead/unseen → alive transition
     if (canId >= canIdHb(1) && canId <= canIdHb(MAX_NODE_ID)) {
         uint8_t nodeId = (uint8_t)(canId - canIdHb(0));
 #if PANELBRIDGE_NODE_STATUS

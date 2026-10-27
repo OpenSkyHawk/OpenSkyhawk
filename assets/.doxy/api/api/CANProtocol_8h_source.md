@@ -62,7 +62,7 @@ struct __attribute__((packed)) ReadyPayload {
 
 enum class ReadyFlag : uint8_t {
     RESYNC = 0x01,  // an answer to SYNC_REQ, not a boot: the bridge caches the version but must not
-                    // broadcast SYNC_REQ for it (that would answer itself forever)
+                    // queue a sync for it (that would answer itself forever)
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 
@@ -115,8 +115,9 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  
 static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  
 
-// ── UART diagnostic framing constants (PanelBridge -> SimGateway) ─────────────
-// Used by SimGateway to parse the UART diagnostic stream from PanelBridge.
+// ── UART diagnostic framing constants (retired) ───────────────────────────────
+// From an early plan for framed diagnostics. Nothing sends or parses them: DiagSerial carries
+// plain-text log lines, and the CAN counters stay on the board (txDropCount() etc.) — FirmwarePlan 09.
 
 static constexpr uint8_t DIAG_MAGIC = 0xAA;  
 static constexpr uint8_t DIAG_RTT   = 0x01;  

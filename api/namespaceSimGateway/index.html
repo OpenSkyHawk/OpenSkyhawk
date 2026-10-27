@@ -4872,10 +4872,10 @@
 <p><em>Relay bytes and dispatch HID frames. Call once per</em> <a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em>
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">SimGateway</span><span class="o">::</span><span class="n">loop</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Per call:
-* Forward up to CDC_TO_UART_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>.
-* Drain all UART bytes: 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists any other byte → append to the host-bound line; on <code>\n</code> the whole line is written to USB CDC, or dropped and counted (see below) 0xAA + non-0x55 → both bytes go to the line, which makes it corrupt; resume IDLE
-* If any HID setter fired, send the HID report exactly once.
+<p>Per call: 0. Feed the watchdog (the first call arms it and hands USB servicing to yield() only, D33).
+* Forward up to CDC_TO_UART_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>. Calibration frames are consumed; while the uploader flashes, the client's bytes are dropped (<a href="../namespaceUploader/#function-ownsuart"><strong>Uploader::ownsUart()</strong></a>).
+* Drain all UART bytes: 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists any other byte → append to the host-bound line; on <code>\n</code> the whole line is written to USB CDC, or dropped and counted (see below) 0xAA + non-0x55 → both bytes go to the line, which makes it corrupt; resume IDLE While the uploader flashes the bridge (#367) it reads the UART itself (<a href="../namespaceUploader/#function-onuartbyte"><strong>Uploader::onUartByte()</strong></a>) instead.
+* If any HID setter fired, send the HID report exactly once. Then end an abandoned calibration session, and advance an upload (<a href="../namespaceUploader/#function-tick"><strong>Uploader::tick()</strong></a>).
 * Status LEDs, UART error counters, FAULT self-clear.
 * USB recovery ladder (<a href="../LinkRecovery_8h/"><strong>LinkRecovery.h</strong></a>).</p>
 <p><strong>Never blocks on the host.</strong> A line is written only if the CDC FIFO has room for all of it; otherwise it is dropped whole — never truncated — and counted in GatewayDiag::linesDropped. A line holding anything but printable ASCII (0x20–0x7E) and its <code>\n</code> is dropped as corrupt, and one longer than RELAY_LINE_MAX as overlong. Everything <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> sends the host is a newline-framed DCS-BIOS message, so neither happens on a healthy link. Calibration frames are written whole or not at all in the same way.</p>

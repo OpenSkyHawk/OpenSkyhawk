@@ -5554,7 +5554,7 @@
 <h3 id="variable-attempts_bkp_register">variable ATTEMPTS_BKP_REGISTER</h3>
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Boot</span><span class="o">::</span><span class="n">ATTEMPTS_BKP_REGISTER</span><span class="p">;</span>
 </code></pre></div>
-<p>Crash-loop counter (#364): the bootloader adds one before every jump to the app; the app sets it back to 0 once it is healthy (<a href="../namespaceSTM32Board/#function-markboothealthy"><strong>STM32Board::markBootHealthy()</strong></a>). At ATTEMPT_LIMIT the bootloader stays (BootState::APP_UNSTABLE). Cleared by a committed image; lost on a power cycle. </p>
+<p>Crash-loop counter (#364): the bootloader adds one before every jump to the app; the app sets it back to 0 once it is healthy (<a href="../namespaceSTM32Board/#function-markboothealthy"><strong>STM32Board::markBootHealthy()</strong></a>). At ATTEMPT_LIMIT the bootloader stays (BootState::APP_UNSTABLE). Cleared by a committed image and by GO; lost on a power cycle. </p>
 <hr>
 
 <h3 id="variable-attempt_limit">variable ATTEMPT_LIMIT</h3>

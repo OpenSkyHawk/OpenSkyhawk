@@ -22,7 +22,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="115" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="115" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="117" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="117" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -38,7 +38,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="116" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="116" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="118" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="118" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -101,14 +101,14 @@
         <reimplementedby refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13">forceReport</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891">forceReport</reimplementedby>
         <briefdescription>
-<para>Read hardware state and emit a CAN EVT unconditionally. </para>
+<para>Re-assert the control&apos;s current absolute state, or emit nothing. </para>
         </briefdescription>
         <detaileddescription>
-<para>Called during the boot EVT burst and on every SYNC_REQ. Bypasses debounce. Establishes the current reading as the new baseline so subsequent <ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll()</ref> calls have a valid comparison point. </para>
+<para>Called during the boot EVT burst and on every SYNC_REQ for this node. Bypasses debounce. Sends only a state (set_state), never a relative step or TOGGLE: a control with no absolute state (<ref refid="classOpenSkyhawk_1_1ActionButton" kindref="compound">ActionButton</ref>, the encoders) sends nothing (FirmwarePlan 05, Re-reporting). Establishes the current reading as the new baseline so subsequent <ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll()</ref> calls have a valid comparison point. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="91" column="18"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="93" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1addb3ef7b8d33fee0bcdd6db53f504040" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -125,7 +125,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="103" column="18" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="103" bodyend="103"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="105" column="18" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="105" bodyend="105"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> *</type>
@@ -140,7 +140,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="109" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="138" bodyend="138"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="111" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="138" bodyend="138"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-func">
@@ -157,7 +157,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="106" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="137" bodyend="137"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="108" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="137" bodyend="137"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -174,7 +174,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="112" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="134" bodyend="134"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="114" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="134" bodyend="134"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -255,7 +255,7 @@
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="62" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="62" bodyend="117"/>
+    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="62" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="62" bodyend="119"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1InputBase_1a142fd89c2bdb94646013b04f6c107aaf" prot="private" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>_head</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1a3622edc9b321fe7abc09b54bf087e45c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>_next</name></member>

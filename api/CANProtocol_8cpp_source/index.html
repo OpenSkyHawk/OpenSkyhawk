@@ -4981,7 +4981,7 @@
 <span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">primask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__get_PRIMASK</span><span class="p">();</span>
 <span class="w">    </span><span class="n">__disable_irq</span><span class="p">();</span>
 <span class="w">    </span><span class="c1">// A frame arrived with all three FIFO slots full and was lost in hardware. With the RX interrupt</span>
-<span class="w">    </span><span class="c1">// this needs interrupts held off for three frame times; counted so it is never silent (#389).</span>
+<span class="w">    </span><span class="c1">// this needs interrupts held off for three frame times; counted on the board (#389).</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CAN1</span><span class="o">-&gt;</span><span class="n">RF0R</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">CAN_RF0R_FOVR0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">CAN1</span><span class="o">-&gt;</span><span class="n">RF0R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CAN_RF0R_FOVR0</span><span class="p">;</span><span class="w"> </span><span class="n">_rxOverruns</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 <span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_CAN_GetRxFifoFillLevel</span><span class="p">(</span><span class="n">hcan</span><span class="p">,</span><span class="w"> </span><span class="n">CAN_RX_FIFO0</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">CAN_RxHeaderTypeDef</span><span class="w"> </span><span class="n">hdr</span><span class="p">;</span>
@@ -5149,8 +5149,8 @@
 <span class="w">    </span><span class="n">__disable_irq</span><span class="p">();</span>
 
 <span class="w">    </span><span class="c1">// No CTRL_BCAST coalescing (#389): a frame carries two of ~250 controls, not the whole state, so</span>
-<span class="w">    </span><span class="c1">// replacing a queued one with the next dropped two other controls' updates — ~22% of the sim's</span>
-<span class="w">    </span><span class="c1">// output under a real export stream. Every frame queues; the bridge's ring is deep enough.</span>
+<span class="w">    </span><span class="c1">// replacing a queued one with the next dropped two other controls' updates — about a fifth of</span>
+<span class="w">    </span><span class="c1">// the sim's output under a real export stream. Every frame queues; the bridge's ring is deep enough.</span>
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">_txTail</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">TX_RING_SIZE</span><span class="p">;</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">_txHead</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">_txDrops</span><span class="o">++</span><span class="p">;</span>

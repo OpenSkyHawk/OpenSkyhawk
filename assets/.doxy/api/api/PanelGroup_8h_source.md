@@ -93,9 +93,9 @@ namespace PanelGroup {
     //
     // MCP23017 reads go through the cache (no live I2C per poll) because:
     //   • A full readPort() at 400 kHz takes ~100 µs — too slow for every poll().
-    //   • INTCAP captures port state at interrupt time; a subsequent readPort()
-    //     may return an already-transitioned value, losing the captured snapshot.
-    //   • All poll() calls after an interrupt must see the same captured snapshot.
+    //   • All poll() calls in one loop() must see the same snapshot. The interrupt path reads
+    //     INTCAP only to clear the line, then refreshes the cache from a live port read: a fast
+    //     bounce can leave INTCAP stale by the time loop() runs.
 
     bool readCachedPin(const MCP23017& chip, uint8_t port, uint8_t bit);
 

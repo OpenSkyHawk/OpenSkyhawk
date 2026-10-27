@@ -4800,9 +4800,9 @@
 <span class="w">    </span><span class="c1">//</span>
 <span class="w">    </span><span class="c1">// MCP23017 reads go through the cache (no live I2C per poll) because:</span>
 <span class="w">    </span><span class="c1">//   • A full readPort() at 400 kHz takes ~100 µs — too slow for every poll().</span>
-<span class="w">    </span><span class="c1">//   • INTCAP captures port state at interrupt time; a subsequent readPort()</span>
-<span class="w">    </span><span class="c1">//     may return an already-transitioned value, losing the captured snapshot.</span>
-<span class="w">    </span><span class="c1">//   • All poll() calls after an interrupt must see the same captured snapshot.</span>
+<span class="w">    </span><span class="c1">//   • All poll() calls in one loop() must see the same snapshot. The interrupt path reads</span>
+<span class="w">    </span><span class="c1">//     INTCAP only to clear the line, then refreshes the cache from a live port read: a fast</span>
+<span class="w">    </span><span class="c1">//     bounce can leave INTCAP stale by the time loop() runs.</span>
 
 <span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readCachedPin</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">);</span>
 

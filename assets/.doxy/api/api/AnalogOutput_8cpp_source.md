@@ -18,7 +18,7 @@ OpenSkyhawk::AnalogOutput::AnalogOutput(uint16_t controlId, uint16_t mask, uint8
 void OpenSkyhawk::AnalogOutput::onControlPacket(uint16_t controlId, uint16_t value) {
     if (controlId != _controlId) return;
     const uint16_t v = (uint16_t)((value & _mask) >> _shift);
-    if (_hasValue && v == _lastValue) return;   // change dedup — SYNC_REQ re-broadcasts full state
+    if (_hasValue && v == _lastValue) return;   // change dedup — DCS-BIOS autosync re-sends unchanged values
     _lastValue = v;
     _hasValue  = true;
     apply(v);

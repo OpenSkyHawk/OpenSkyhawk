@@ -54,7 +54,7 @@ Inherited by the following classes: [OpenSkyhawk::ActionButton](classOpenSkyhawk
 | Type | Name |
 | ---: | :--- |
 | virtual void | [**configure**](#function-configure) () <br>_Configure hardware pins for this input._  |
-| virtual void | [**forceReport**](#function-forcereport) () = 0<br>_Read hardware state and emit a CAN EVT unconditionally._  |
+| virtual void | [**forceReport**](#function-forcereport) () = 0<br>_Re-assert the control's current absolute state, or emit nothing._  |
 |  [**InputBase**](classOpenSkyhawk_1_1InputBase.md) \* | [**next**](#function-next) () const<br>_Next input in the list; nullptr at end._  |
 | virtual void | [**poll**](#function-poll) () = 0<br>_Read hardware state and emit a CAN EVT if state changed._  |
 | virtual void | [**sampleTick**](#function-sampletick) () <br>_High-rate sample hook — called from a sampling ISR when the node runs one (e.g._ [_**ShiftBus**_](classOpenSkyhawk_1_1ShiftBus.md) _timer sampling, -DSHIFTBUS\_ISR\_HZ). Default no-op._ |
@@ -131,14 +131,14 @@ Default is a no-op. Override in every input class that owns a [**PinRef**](class
 
 ### function forceReport 
 
-_Read hardware state and emit a CAN EVT unconditionally._ 
+_Re-assert the control's current absolute state, or emit nothing._ 
 ```C++
 virtual void OpenSkyhawk::InputBase::forceReport () = 0
 ```
 
 
 
-Called during the boot EVT burst and on every SYNC\_REQ. Bypasses debounce. Establishes the current reading as the new baseline so subsequent [**poll()**](classOpenSkyhawk_1_1InputBase.md#function-poll) calls have a valid comparison point. 
+Called during the boot EVT burst and on every SYNC\_REQ for this node. Bypasses debounce. Sends only a state (set\_state), never a relative step or TOGGLE: a control with no absolute state ([**ActionButton**](classOpenSkyhawk_1_1ActionButton.md), the encoders) sends nothing (FirmwarePlan 05, Re-reporting). Establishes the current reading as the new baseline so subsequent [**poll()**](classOpenSkyhawk_1_1InputBase.md#function-poll) calls have a valid comparison point. 
 
 
         

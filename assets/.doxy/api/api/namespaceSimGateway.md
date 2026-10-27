@@ -138,10 +138,10 @@ void SimGateway::loop ()
 
 
 
-Per call:
-* Forward up to CDC\_TO\_UART\_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to [**PanelBridge**](namespacePanelBridge.md).
-* Drain all UART bytes: 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists any other byte → append to the host-bound line; on `\n` the whole line is written to USB CDC, or dropped and counted (see below) 0xAA + non-0x55 → both bytes go to the line, which makes it corrupt; resume IDLE
-* If any HID setter fired, send the HID report exactly once.
+Per call: 0. Feed the watchdog (the first call arms it and hands USB servicing to yield() only, D33).
+* Forward up to CDC\_TO\_UART\_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to [**PanelBridge**](namespacePanelBridge.md). Calibration frames are consumed; while the uploader flashes, the client's bytes are dropped ([**Uploader::ownsUart()**](namespaceUploader.md#function-ownsuart)).
+* Drain all UART bytes: 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists any other byte → append to the host-bound line; on `\n` the whole line is written to USB CDC, or dropped and counted (see below) 0xAA + non-0x55 → both bytes go to the line, which makes it corrupt; resume IDLE While the uploader flashes the bridge (#367) it reads the UART itself ([**Uploader::onUartByte()**](namespaceUploader.md#function-onuartbyte)) instead.
+* If any HID setter fired, send the HID report exactly once. Then end an abandoned calibration session, and advance an upload ([**Uploader::tick()**](namespaceUploader.md#function-tick)).
 * Status LEDs, UART error counters, FAULT self-clear.
 * USB recovery ladder ([**LinkRecovery.h**](LinkRecovery_8h.md)).
 

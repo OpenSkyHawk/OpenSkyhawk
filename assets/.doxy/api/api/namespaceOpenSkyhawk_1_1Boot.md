@@ -295,7 +295,7 @@ constexpr uint8_t OpenSkyhawk::Boot::ATTEMPTS_BKP_REGISTER;
 
 
 
-Crash-loop counter (#364): the bootloader adds one before every jump to the app; the app sets it back to 0 once it is healthy ([**STM32Board::markBootHealthy()**](namespaceSTM32Board.md#function-markboothealthy)). At ATTEMPT\_LIMIT the bootloader stays (BootState::APP\_UNSTABLE). Cleared by a committed image; lost on a power cycle. 
+Crash-loop counter (#364): the bootloader adds one before every jump to the app; the app sets it back to 0 once it is healthy ([**STM32Board::markBootHealthy()**](namespaceSTM32Board.md#function-markboothealthy)). At ATTEMPT\_LIMIT the bootloader stays (BootState::APP\_UNSTABLE). Cleared by a committed image and by GO; lost on a power cycle. 
 
 
         

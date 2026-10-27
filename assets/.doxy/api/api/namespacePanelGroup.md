@@ -137,10 +137,10 @@ void PanelGroup::loop ()
 
 
 Each call:
-* Check interrupt flags; read INTCAP; update expander port caches.
-* Polling fallback (~20 ms): read ports for chips registered without interrupt.
+* Check interrupt flags; clear INTCAP; refresh the flagged ports' caches from a live read.
+* Polling fallback (~20 ms): read ports for chips registered without interrupt. 2b. Service every ShiftBus (transfer, or flush pending outputs when ISR sampling runs).
 * poll() on all InputBase objects.
-* [**CANProtocol::drain()**](namespaceCANProtocol.md#function-drain) — dispatches CTRL\_BCAST, SYNC\_REQ, TEST\_SEQ echo.
+* [**CANProtocol::drain()**](namespaceCANProtocol.md#function-drain) — dispatches CTRL\_BCAST, SYNC\_REQ, TEST\_SEQ echo; then [**STM32Board::tick()**](namespaceSTM32Board.md#function-tick) (status LED).
 * update() on all OutputBase objects.
 * [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus): HB\_n every 500 ms, HEALTH\_n every 1 s (board kind PANEL\_GROUP, #344), master-loss watchdog. 
 
@@ -391,15 +391,16 @@ void PanelGroup::setup ()
 
 
 
-Performs the 8-step boot sequence:
+Performs the boot sequence, in this order:
 * [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin)
-* For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON, enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR.
-* configure() on all InputBase and OutputBase objects.
+* For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON.
+* configure() on all InputBase and OutputBase objects; then begin() every ShiftBus they announced. Then, for each expander: enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR (after configure(), so IODIR is set).
 * Register CAN callbacks.
 * [**CANProtocol::start()**](namespaceCANProtocol.md#function-start).
-* forceReport() burst — one EVT per registered input.
+* forceReport() burst — each input's current state (none from an input without one).
 * flushBatched(canIdEvt(NODE\_ID)).
 * READY\_n frame ([**CANProtocol::sendReady()**](namespaceCANProtocol.md#function-sendready): the firmware version, #295). (Heartbeat/HEALTH timers arm on the first [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus) call in [**loop()**](namespacePanelGroup.md#function-loop).)
+* [**STM32Board::markBootHealthy()**](namespaceSTM32Board.md#function-markboothealthy) — the bootloader's crash-loop counter back to 0 (#364).
 
 
 

@@ -1978,7 +1978,7 @@ LinkAction OpenSkyhawk::linkRecoveryStep (
 
 * `s` Ladder state. 
 * `now` millis(). 
-* `healthy` The host link is usable: mounted, and not suspended with a recent UART fault. 
+* `healthy` The host link is usable: mounted, not suspended with a recent UART fault, and the CDC IN endpoint not stalled. 
 
 
 

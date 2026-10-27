@@ -62,7 +62,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="146" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="146" bodyend="155" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="203" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="146" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="146" bodyend="155" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="205" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a94edaa385234b8678e9dab702db44eb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -120,7 +120,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="157" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="157" bodyend="169" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="224" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="157" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="157" bodyend="169" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="226" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a71d0e62897c1db5e39ce932ea8455ca6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -150,7 +150,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="171" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="171" bodyend="173" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="234" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="171" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="171" bodyend="173" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="236" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -162,15 +162,16 @@
 <para>Initialise <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>. Call from sketch <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup()</ref> after Wire.begin(). </para>
         </briefdescription>
         <detaileddescription>
-<para>Performs the 8-step boot sequence:<orderedlist>
+<para>Performs the boot sequence, in this order:<orderedlist>
 <listitem><para><ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin()</ref></para>
-</listitem><listitem><para>For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON, enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR.</para>
-</listitem><listitem><para>configure() on all InputBase and OutputBase objects.</para>
+</listitem><listitem><para>For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON.</para>
+</listitem><listitem><para>configure() on all InputBase and OutputBase objects; then begin() every ShiftBus they announced. Then, for each expander: enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR (after configure(), so IODIR is set).</para>
 </listitem><listitem><para>Register CAN callbacks.</para>
 </listitem><listitem><para><ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref>.</para>
-</listitem><listitem><para>forceReport() burst — one EVT per registered input.</para>
+</listitem><listitem><para>forceReport() burst — each input&apos;s current state (none from an input without one).</para>
 </listitem><listitem><para>flushBatched(canIdEvt(NODE_ID)).</para>
 </listitem><listitem><para>READY_n frame (<ref refid="namespaceCANProtocol_1ac41d6775e2db496cfce11e517b5a37c5" kindref="member">CANProtocol::sendReady()</ref>: the firmware version, #295). (Heartbeat/HEALTH timers arm on the first <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">CANProtocol::serviceNodeStatus()</ref> call in <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">loop()</ref>.)</para>
+</listitem><listitem><para><ref refid="namespaceSTM32Board_1a5bd5eca4fdf29f15d237a990aa52fbf1" kindref="member">STM32Board::markBootHealthy()</ref> — the bootloader&apos;s crash-loop counter back to 0 (#364).</para>
 </listitem></orderedlist>
 </para>
 <para><simplesect kind="note"><para>Wire.begin() must be called by the sketch before this function. <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> never calls Wire.begin() — only start buses in use. </para>
@@ -179,7 +180,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="177" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="177" bodyend="311" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="255" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="177" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="177" bodyend="311" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="259" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -192,10 +193,10 @@
         </briefdescription>
         <detaileddescription>
 <para>Each call:<orderedlist>
-<listitem><para>Check interrupt flags; read INTCAP; update expander port caches.</para>
-</listitem><listitem><para>Polling fallback (~20 ms): read ports for chips registered without interrupt.</para>
+<listitem><para>Check interrupt flags; clear INTCAP; refresh the flagged ports&apos; caches from a live read.</para>
+</listitem><listitem><para>Polling fallback (~20 ms): read ports for chips registered without interrupt. 2b. Service every ShiftBus (transfer, or flush pending outputs when ISR sampling runs).</para>
 </listitem><listitem><para>poll() on all InputBase objects.</para>
-</listitem><listitem><para><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">CANProtocol::drain()</ref> — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.</para>
+</listitem><listitem><para><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">CANProtocol::drain()</ref> — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo; then <ref refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kindref="member">STM32Board::tick()</ref> (status LED).</para>
 </listitem><listitem><para>update() on all OutputBase objects.</para>
 </listitem><listitem><para><ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">CANProtocol::serviceNodeStatus()</ref>: HB_n every 500 ms, HEALTH_n every 1 s (board kind PANEL_GROUP, #344), master-loss watchdog. </para>
 </listitem></orderedlist>
@@ -203,7 +204,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="315" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="315" bodyend="382" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="269" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="315" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="315" bodyend="382" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="275" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1ae901405cd77bc1596e8894df9cd3e662" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -375,7 +376,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="430" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="430" bodyend="439" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="311" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="430" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="430" bodyend="439" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="317" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a311ffdd9e1637bdc133ec29760716eeb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
