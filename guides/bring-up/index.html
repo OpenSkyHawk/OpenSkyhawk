@@ -3557,6 +3557,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#recovering-from-a-power-cut-during-an-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovering from a power cut during an update
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4881,6 +4892,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#recovering-from-a-power-cut-during-an-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovering from a power cut during an update
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4970,9 +4992,11 @@ needs 120 Ω at the two end nodes. Confirm bus wiring before chasing firmware.</
 NODE_ID matches what you claimed.</p>
 <h2 id="4-join-the-bus">4. Join the bus</h2>
 <p>Connect PanelBridge and the SimGateway. On a healthy bus the node settles to <strong>green blinking</strong>.
-PanelBridge broadcasts <code>SYNC_REQ</code>; the node completes its input poll and replies <code>READY</code>, then
-re-sends its current input state. Gauge steppers home to position 0 at boot (mechanical-stop
-homing) before any DCS data arrives — so no random needle motion.</p>
+At boot the node completes its input poll, sends its current input state, then <code>READY</code>. When
+PanelBridge first sees the node (its <code>READY</code>, or its heartbeat if the node was already running), it
+asks that node alone for its state with a <code>SYNC_REQ</code>, and the node sends it again. Gauge steppers
+home to position 0 at boot (mechanical-stop homing) before any DCS data arrives — so no random
+needle motion.</p>
 <h2 id="5-end-to-end-in-dcs">5. End-to-end in DCS</h2>
 <p>Start DCS-BIOS export and load the A-4E-C. Then:</p>
 <ul>
@@ -4981,6 +5005,23 @@ homing) before any DCS data arrives — so no random needle motion.</p>
 </ul>
 <p>The <a href="../first-panel/">E2E_DCS_Test</a> example is the simplest case — Master Test lights the gear
 light through the full loop.</p>
+<h2 id="recovering-from-a-power-cut-during-an-update">Recovering from a power cut during an update</h2>
+<p>A firmware update is safe to interrupt: a board switches to its new firmware only once all of it
+has arrived and checked out. If the power goes off partway through:</p>
+<ol>
+<li><strong>Power the cockpit back up.</strong> If the Gateway stayed connected to the PC and the power came back
+   within a few seconds, the update may finish by itself: wait for the LEDs to settle. Otherwise the
+   board whose update was cut short shows <strong>red and green blinking together</strong>: it is waiting in its
+   <a href="../../firmware/bootloader/">bootloader</a>, with no firmware to start. A board cut off before its
+   old firmware was erased starts the old version instead, and one cut off after all of the new
+   firmware had arrived starts the new one.</li>
+<li><strong>Open SkyHawkClient</strong> with the Gateway connected. If it reports the update as failed, or lists
+   the board as waiting in its bootloader, the board still needs its firmware.</li>
+<li><strong>If it does, run the update for that board again.</strong> When it finishes, the board restarts on
+   the new firmware and its LEDs go back to the normal patterns above.</li>
+</ol>
+<p>The same steps apply when the board cut short was the Gateway's own PanelBridge chip: update the
+Gateway again.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <table>
 <thead>

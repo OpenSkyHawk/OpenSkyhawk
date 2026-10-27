@@ -2356,15 +2356,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ours-behavioural-13" class="md-nav__link">
+  <a href="#ours-behavioural" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ours — behavioural (13)
+        Ours — behavioural
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Ours — behavioural (13)">
+    <nav class="md-nav" aria-label="Ours — behavioural">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2384,10 +2384,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pdu-node-thresholds-pdu_" class="md-nav__link">
+  <a href="#pdu-node-settings-pdu_" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PDU node thresholds (PDU_*)
+        PDU node settings (PDU_*)
       
     </span>
   </a>
@@ -2395,10 +2395,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#third-party-set-by-us-7" class="md-nav__link">
+  <a href="#third-party-set-by-us" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Third-party, set by us (7)
+        Third-party, set by us
       
     </span>
   </a>
@@ -2406,10 +2406,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#test-seams-12" class="md-nav__link">
+  <a href="#test-seams" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Test seams (12)
+        Test seams
       
     </span>
   </a>
@@ -4954,15 +4954,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ours-behavioural-13" class="md-nav__link">
+  <a href="#ours-behavioural" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ours — behavioural (13)
+        Ours — behavioural
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Ours — behavioural (13)">
+    <nav class="md-nav" aria-label="Ours — behavioural">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -4982,10 +4982,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pdu-node-thresholds-pdu_" class="md-nav__link">
+  <a href="#pdu-node-settings-pdu_" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PDU node thresholds (PDU_*)
+        PDU node settings (PDU_*)
       
     </span>
   </a>
@@ -4993,10 +4993,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#third-party-set-by-us-7" class="md-nav__link">
+  <a href="#third-party-set-by-us" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Third-party, set by us (7)
+        Third-party, set by us
       
     </span>
   </a>
@@ -5004,10 +5004,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#test-seams-12" class="md-nav__link">
+  <a href="#test-seams" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Test seams (12)
+        Test seams
       
     </span>
   </a>
@@ -5047,7 +5047,7 @@
 
 <h1 id="build-flags">Build Flags</h1>
 <p>Every OpenSkyhawk firmware project is configured by <code>-D</code> flags in its <code>platformio.ini</code>. There are
-<strong>32 of them</strong>, and they come from three different places. That mixed provenance is the first
+<strong>63 of them</strong>, and they come from three different places. That mixed provenance is the first
 thing to understand, because it decides who you have to convince before you change one:</p>
 <table>
 <thead>
@@ -5059,19 +5059,24 @@ thing to understand, because it decides who you have to convince before you chan
 </thead>
 <tbody>
 <tr>
-<td><a href="#ours-behavioural-13"><strong>Ours — behavioural</strong></a></td>
-<td>13</td>
+<td><a href="#ours-behavioural"><strong>Ours — behavioural</strong></a></td>
+<td>16</td>
 <td>a local decision — we own the code that reads it</td>
 </tr>
 <tr>
-<td><a href="#third-party-set-by-us-7"><strong>Third-party, set by us</strong></a></td>
+<td><a href="#pdu-node-settings-pdu_"><strong>PDU node settings</strong></a></td>
+<td>24</td>
+<td>a local decision, for the power-distribution node only</td>
+</tr>
+<tr>
+<td><a href="#third-party-set-by-us"><strong>Third-party, set by us</strong></a></td>
 <td>7</td>
 <td><strong>not</strong> a local decision — STM32duino, arduino-pico, and DCS-BIOS own these</td>
 </tr>
 <tr>
-<td><a href="#test-seams-12"><strong>Test seams</strong></a></td>
-<td>12</td>
-<td>bench-only — never present in a shipped build</td>
+<td><a href="#test-seams"><strong>Test seams</strong></a></td>
+<td>16</td>
+<td>bench-only — 14 seams plus 2 test-sketch pin values, never present in a shipped build</td>
 </tr>
 </tbody>
 </table>
@@ -5162,9 +5167,9 @@ this is just the flags.</p>
 <h3 id="never-in-a-panel">Never in a panel</h3>
 <p><code>FORCE_CLOCK_FALLBACK</code>, <code>PINREF_DEBUG</code>, <code>NODE_OVERHEAT_C</code>, and any <code>*_TEST</code> seam. These are bench
 and debug instruments. If one appears in a panel's <code>platformio.ini</code>, it is a mistake — see
-<a href="#test-seams-12">Test seams</a> and <a href="#deliberate-non-defaults">Deliberate non-defaults</a> for what each
+<a href="#test-seams">Test seams</a> and <a href="#deliberate-non-defaults">Deliberate non-defaults</a> for what each
 actually does.</p>
-<h2 id="ours-behavioural-13">Ours — behavioural (13)</h2>
+<h2 id="ours-behavioural">Ours — behavioural</h2>
 <table>
 <thead>
 <tr>
@@ -5253,6 +5258,24 @@ actually does.</p>
 <td>never set</td>
 <td><code>PanelGroup.cpp:232</code></td>
 </tr>
+<tr>
+<td><code>CAN_TX_RING_SIZE</code></td>
+<td>64 frames on PanelBridge, 16 on a node</td>
+<td>never set</td>
+<td><code>CANProtocol.cpp:37</code></td>
+</tr>
+<tr>
+<td><code>CAN_RX_RING_SIZE</code></td>
+<td>128 frames on PanelBridge, 8 on a node</td>
+<td>never set</td>
+<td><code>CANProtocol.cpp:43</code></td>
+</tr>
+<tr>
+<td><code>OSH_BOOT_BRIDGE</code></td>
+<td>off — the CAN bootloader</td>
+<td><code>Firmware/Bootloader</code> env <code>bridge</code></td>
+<td><code>Bootloader/src/main.cpp:77</code></td>
+</tr>
 </tbody>
 </table>
 <p><strong>What they do, briefly.</strong> <code>NODE_ID</code> is the board's CAN address — see
@@ -5265,7 +5288,11 @@ heartbeat rate.
 fault path as well as its verified-72 MHz path (#263).
 <code>PINREF_DEBUG</code> adds assertions to the pin abstraction. The <code>SHIFTBUS_*</code> pin flags relocate the
 shift-register bus off its default SPI1-remap pins; <code>SHIFTBUS_ISR_HZ</code> switches that bus from
-polled to timer-ISR sampling (encoder feel) on the timer named by <code>SHIFTBUS_ISR_TIM</code>.</p>
+polled to timer-ISR sampling (encoder feel) on the timer named by <code>SHIFTBUS_ISR_TIM</code>.
+<code>CAN_TX_RING_SIZE</code> / <code>CAN_RX_RING_SIZE</code> size CANProtocol's software queues (2–255 frames); PanelBridge
+gets the deep ones because it sends the whole export stream and hears every node. <code>OSH_BOOT_BRIDGE</code>
+builds the bootloader for the Gateway's PanelBridge chip, which takes updates over the link to the
+Gateway's USB chip instead of CAN; <code>bootstrap</code> and the release files pick the right build for you.</p>
 <div class="admonition warning">
 <p class="admonition-title">Set <code>NODE_ID</code> in <code>platformio.ini</code>, never in <code>main.cpp</code></p>
 <p>A <code>#define NODE_ID</code> in a sketch is invisible to library translation units — <code>CANProtocol</code> and
@@ -5302,9 +5329,9 @@ calibration data. See <code>FirmwarePlan/00-decisions.md</code>.</p>
 telemetry and the bridge's node reporting; you need an explicit <code>=0</code> to turn either off. The
 client depends on both, so a shipped build keeps them on.</p>
 </div>
-<h2 id="pdu-node-thresholds-pdu_">PDU node thresholds (<code>PDU_*</code>)</h2>
-<p>The power-distribution node (<code>PowerMonitor</code> library, <code>Panels/PDU_*</code>) takes every limit as a
-<code>PDU_*</code> macro with a default in <code>Firmware/Libraries/PowerMonitor/PduConfig.h</code>. The defaults are
+<h2 id="pdu-node-settings-pdu_">PDU node settings (<code>PDU_*</code>)</h2>
+<p>The power-distribution node (<code>PowerMonitor</code> library, <code>Panels/PDU_*</code>) takes its ADC pins and every
+limit as a <code>PDU_*</code> macro with a default in <code>Firmware/Libraries/PowerMonitor/PduConfig.h</code>. The defaults are
 starting points to tune on the bench against the real load; override one per build, e.g.
 <code>-DPDU_12V_UV_MV=11200</code>, with no code change.</p>
 <table>
@@ -5316,6 +5343,11 @@ starting points to tune on the bench against the real load; override one per bui
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>PDU_PIN_V12</code> / <code>PDU_PIN_V5</code> / <code>PDU_PIN_I12</code> / <code>PDU_PIN_I5</code> / <code>PDU_PIN_NTC</code></td>
+<td><code>PA0</code> / <code>PA1</code> / <code>PA2</code> / <code>PA3</code> / <code>PA6</code></td>
+<td>ADC pins, as wired on the PDU board; change them only for a board wired differently</td>
+</tr>
 <tr>
 <td><code>PDU_12V_UV_MV</code> / <code>PDU_12V_OV_MV</code></td>
 <td>11400 / 13200</td>
@@ -5375,7 +5407,7 @@ starting points to tune on the bench against the real load; override one per bui
 </table>
 <p><code>PANELBRIDGE_NODE_STATUS</code> (above) also gates the bridge's <code>_NODE_TELEM</code> forwarding of these
 readings to the host.</p>
-<h2 id="third-party-set-by-us-7">Third-party, set by us (7)</h2>
+<h2 id="third-party-set-by-us">Third-party, set by us</h2>
 <p>These belong to <strong>STM32duino</strong>, <strong>arduino-pico</strong>, and the <strong>DCS-BIOS</strong> library. We only set them —
 we don't own the code that reads them, and a framework update can move a default out from under
 us. Two of these have already cost real debugging time.</p>
@@ -5469,7 +5501,7 @@ the CAN transceiver uses, so CAN genuinely does own them and USB must stay off. 
 it off is that <code>USBCON</code> is never defined, and no build config or source under <code>Firmware/</code>
 defines it.</strong> The flag documents the decision; it does not enforce it.</p>
 </div>
-<h2 id="test-seams-12">Test seams (12)</h2>
+<h2 id="test-seams">Test seams</h2>
 <p>Each of these widens a library's visibility so its on-target tests can assert against internal
 state. <strong>A seam never changes shipped behaviour, and no shipped environment defines one</strong> — each
 is set only by its own <code>Firmware/Tests/&lt;Library&gt;/platformio.ini</code>.</p>
@@ -5491,6 +5523,11 @@ is set only by its own <code>Firmware/Tests/&lt;Library&gt;/platformio.ini</code
 <td><code>ANALOGMULTIPOS_TEST</code></td>
 <td>AnalogMultiPos</td>
 <td><code>Inputs/AnalogMultiPos/AnalogMultiPos.h:93</code></td>
+</tr>
+<tr>
+<td><code>DIMMER_TEST</code></td>
+<td>Dimmer</td>
+<td><code>Outputs/Dimmer/Dimmer.h:71</code></td>
 </tr>
 <tr>
 <td><code>DRUMDISPLAY_TEST</code></td>
@@ -5542,40 +5579,52 @@ is set only by its own <code>Firmware/Tests/&lt;Library&gt;/platformio.ini</code
 <td>STM32Board</td>
 <td><code>STM32Board/STM32Board.h:31</code></td>
 </tr>
+<tr>
+<td><code>SWITCHWITHCOVER_TEST</code></td>
+<td>SwitchWithCover2Pos</td>
+<td><code>Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h:62</code></td>
+</tr>
 </tbody>
 </table>
 <p>Paths are relative to <code>Firmware/Libraries/</code>, and the PanelGroup ones to
 <code>Firmware/Libraries/PanelGroup/</code>. Most seams are read in several places; the column gives the
 first, which is where the guarded block starts.</p>
-<p>Two test projects set a second library's seam because they drive it: <code>Tests/NeedleGauge</code> also sets
-<code>STEPPERMOTOR_TEST</code>, and <code>Tests/AnalogMultiPos</code> also sets <code>MULTIPOS_TEST</code>. Five test projects have
-no seam of their own at all — <code>Tests/PinRef</code>, <code>Tests/CANProtocol</code>, <code>Tests/NodeStatus</code>,
-<code>Tests/Switch2Pos</code> and <code>Tests/PanelGroup</code> test through the public API.</p>
+<p>Several test projects set another library's seam because they drive or extend it — for example
+<code>Tests/NeedleGauge</code> also sets <code>STEPPERMOTOR_TEST</code>, <code>Tests/CANProtocol</code> sets <code>STM32BOARD_TEST</code>, and the
+<code>MultiPosInput</code> family's tests set <code>MULTIPOS_TEST</code>. Seven test projects set no seam at all and test
+through the public API: <code>Tests/ActionButton</code>, <code>Tests/IntegerOutput</code>, <code>Tests/NodeStatus</code>,
+<code>Tests/PanelGroup</code>, <code>Tests/PinRef</code>, <code>Tests/PowerMonitor</code> and <code>Tests/Switch2Pos</code>.</p>
+<p>Two more flags are bench values rather than seams: <code>I2C_TEST_SCL</code> / <code>I2C_TEST_SDA</code> (<code>PB10</code> / <code>PB11</code>)
+pick the I²C pins for the test sketches in <code>Tests/PinRef</code>, <code>Tests/PanelGroup</code>, <code>Tests/StepperMotor</code>
+and <code>Tests/DrumDisplay</code>. No library reads them.</p>
 <p><code>SIMGATEWAY_TEST</code> is the one that does more than widen visibility: it swaps the real HID backend
 for no-op stubs so SimGateway logic can be tested without a USB host.</p>
 <h2 id="re-verifying-this-page">Re-verifying this page</h2>
 <p>Rather than trust the tables, re-derive them. Run both blocks from the repo root — <strong>their union
-must be 32</strong>. If it isn't, this page is stale.</p>
+must be 63</strong>. If it isn't, this page is stale.</p>
 <p>Be clear about what that proves. Both lists come from greps of the same shape, so the union
 check catches <strong>drift</strong> — a flag added, removed, or renamed after this page was written. It does
 not prove the inventory is <strong>complete</strong>: a flag consumed in some way neither grep looks for would
-be missed by the check exactly as it was missed by the page. Treat 32 as the current count, not a
-guarantee.</p>
+be missed by the check exactly as it was missed by the page. Treat 63 as the current count, not a
+guarantee. Knobs that a single test sketch defines for itself and no environment sets (such as
+<code>STALL_MS</code> in the ShiftBus encoder bench gate) are not counted: the read grep covers
+<code>Firmware/Libraries</code> only.</p>
 <div class="highlight"><pre><span></span><code>grep<span class="w"> </span>-rhE<span class="w"> </span><span class="s1">'^[^;#]*-D[A-Za-z_]'</span><span class="w"> </span>--include<span class="o">=</span>platformio.ini<span class="w"> </span>Firmware<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-E<span class="w"> </span><span class="s1">'s/[;#].*//'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">'[[:space:]]-D[A-Za-z_][A-Za-z0-9_]*'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">'s/.*-D//'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u
 </code></pre></div>
-<p>That's every flag <strong>set</strong> by some environment — 22 of them.</p>
+<p>That's every flag <strong>set</strong> by some environment — 28 of them.</p>
 <div class="highlight"><pre><span></span><code>grep<span class="w"> </span>-rhoE<span class="w"> </span><span class="s1">'#[[:space:]]*(ifdef|ifndef|if|elif)[^A-Za-z_]*defined[^A-Za-z_]*[A-Za-z_][A-Za-z0-9_]*|#[[:space:]]*(ifdef|ifndef)[[:space:]]+[A-Za-z_][A-Za-z0-9_]*'</span><span class="w"> </span>--include<span class="o">=</span><span class="s1">'*.h'</span><span class="w"> </span>--include<span class="o">=</span><span class="s1">'*.cpp'</span><span class="w"> </span>Firmware/Libraries<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">'[A-Za-z_][A-Za-z0-9_]*$'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-vE<span class="w"> </span><span class="s1">'^(ARDUINO_ARCH_|STM32F1xx$|ATEMP$|guard$|_)'</span>
 </code></pre></div>
-<p>That's every flag <strong>read</strong> by a library conditional — 25 of them. The trailing filter drops
+<p>That's every flag <strong>read</strong> by a library conditional — 53 of them. The trailing filter drops
 architecture macros, the <code>ATEMP</code> pin macro, and internal include guards; none are build flags.</p>
 <p>The two lists deliberately don't match, and the differences are the interesting part:</p>
 <ul>
 <li><strong>Set but not read</strong> — <code>NODE_ID</code> (used as a <em>value</em>, <code>canIdEvt(NODE_ID)</code>, never in a
-  conditional) plus the six framework flags, which are read inside STM32duino and arduino-pico
-  rather than in our tree.</li>
-<li><strong>Read but never set</strong> — the nine flags whose defaults always apply in every committed
-  environment (the five ShiftBus pins, <code>SHIFTBUS_ISR_TIM</code>, <code>NODE_HEALTH_TELEM</code>,
-  <code>FORCE_CLOCK_FALLBACK</code>, <code>PINREF_DEBUG</code>), plus <code>DCSBIOS_DEFAULT_SERIAL</code>, which is <code>#define</code>d in
+  conditional), the six framework flags, which are read inside STM32duino and arduino-pico
+  rather than in our tree, <code>OSH_BOOT_BRIDGE</code>, which is read by the bootloader outside
+  <code>Firmware/Libraries</code>, and the two <code>I2C_TEST_*</code> pins, which are read as values in test sketches.</li>
+<li><strong>Read but never set</strong> — the 34 flags whose defaults always apply in every committed
+  environment (the five ShiftBus pins, <code>SHIFTBUS_ISR_TIM</code>, <code>NODE_HEALTH_TELEM</code>, <code>PINREF_DEBUG</code>, the
+  two CAN ring sizes and all 24 <code>PDU_*</code> flags), plus <code>DCSBIOS_DEFAULT_SERIAL</code>, which is <code>#define</code>d in
   sketch source instead of passed as <code>-D</code>.</li>
 </ul>
 <p>To check the <code>USB_NONE</code> claim specifically, both of these must return nothing:</p>

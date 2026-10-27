@@ -4900,7 +4900,7 @@ an object registers it — <code>PanelGroup::setup()</code> and <code>PanelGroup
 </tr>
 <tr>
 <td><code>forceReport()</code></td>
-<td>at start-up and on every <code>SYNC_REQ</code> — send the current state, unconditionally</td>
+<td>at start-up and on every <code>SYNC_REQ</code> for this node — send the control's current state (a position or value), unconditionally; a control with no state of its own (an action button, <code>ActionButton</code>, or an encoder) sends nothing, never a step or <code>TOGGLE</code></td>
 </tr>
 <tr>
 <td><code>poll()</code></td>

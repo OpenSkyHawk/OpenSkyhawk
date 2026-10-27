@@ -5811,7 +5811,7 @@ vocabulary, not the engine.</p>
 <td>R_uart</td>
 <td>1 kΩ ×2 (R16/R17)</td>
 <td><code>Device:R</code></td>
-<td>UART series between the two power domains (RP2040 on USB, STM32 on the bus) — limits back-feed into whichever side is unpowered to ~3 mA; edge τ ≈ 10 ns, negligible at 250 kbaud</td>
+<td>UART series between the two power domains (RP2040 on USB, STM32 on the bus) — limits back-feed into whichever side is unpowered to ~3 mA (calculated). <strong>Measured 2026-10-27 (#290)</strong> on a built 0.2.0 Gateway with 33 Ω on R16/R17: bridge powered from an ST-Link, RP2040-Zero USB unplugged → Zero GP1 (bridge TX via R17) ≈ 3.3 V, GP0 ≈ 3.3 V, Zero 3V3 = 0.3 mV — no back-feed into the unpowered RP2040 even at 33 Ω, so 0.2.0 boards need no rework. Rev 0.2.1 uses 1 kΩ for extra margin. <strong>Not measured:</strong> the reverse direction (Zero on USB, bridge unpowered) and the 12 V bus / regulator path; edge τ ≈ 10 ns, negligible at 250 kbaud</td>
 </tr>
 <tr>
 <td>R_led</td>
