@@ -5092,15 +5092,14 @@ data flowing, <strong>green slow blink</strong> = connected but idle, <strong>re
 <p>The <strong>Source Mode</strong>, <strong>DCS Link</strong> (host + transport), and <strong>Record</strong> controls live on this
 tab too — covered under <a href="#getting-started">Getting started</a> and
 <a href="#recording-and-replay">Recording and replay</a>.</p>
-<p>A <strong>Connected nodes</strong> card lists the PanelGroup controllers reported over the CAN bus — node
-id, uptime, receive count, and bus-health flags (BOFF / EPVF / TEC / REC). This is <strong>Bridge
-mode only</strong> and depends on a firmware node-reporting feature still in progress, so it
-currently shows <em>"No nodes reported"</em> until that firmware ships.</p>
+<p>A <strong>Connected nodes</strong> card lists every board the Gateway reports on the CAN bus — node id,
+uptime, receive count, and bus-health flags (BOFF / EPVF / TEC / REC). This is <strong>Bridge mode
+only</strong>; with no boards on the bus it shows <em>"No nodes reported"</em>.</p>
 <h3 id="overview">Overview</h3>
 <p>The landing tab — a single glance confirms the cockpit is alive. Three status tiles across
-the top show <strong>Link</strong> (idle / connecting / connected), <strong>Aircraft</strong> (the live module name —
-from <code>_ACFT_NAME</code> metadata, or inferred from the address range when metadata is absent), and
-<strong>DCS Link</strong> (the active transport and host).</p>
+the top show <strong>Link</strong> (idle / connecting / connected), <strong>Aircraft</strong> (the live module name from
+the sim's <code>_ACFT_NAME</code> metadata — <strong>NONE</strong> until the sim sends it), and <strong>DCS Link</strong> (the active
+transport and host).</p>
 <p><strong>Sim Telemetry</strong> below is five live gauges — <strong>RPM, IAS (kt), Flap, Press Alt (ft), Fuel</strong> —
 with a command-activity readout alongside (<code>commands/sec · total · last command sent</code>). A
 gauge reads <strong>—</strong> for any value the sim isn't exporting.</p>
