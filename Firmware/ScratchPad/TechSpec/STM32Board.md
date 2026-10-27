@@ -509,7 +509,7 @@ _hcan.Init.TimeTriggeredMode = DISABLE;
 _hcan.Init.AutoBusOff        = ENABLE;         // hardware recovery ~3 ms, no firmware action needed
 _hcan.Init.AutoWakeUp        = DISABLE;
 _hcan.Init.AutoRetransmission = DISABLE;       // prevent runaway bus-off — see CANProtocol HAL notes
-_hcan.Init.ReceiveFifoLocked  = DISABLE;       // overwrite oldest on FIFO full (consistent with drop-oldest policy)
+_hcan.Init.ReceiveFifoLocked  = DISABLE;       // FIFO full: a new frame overwrites the last; CANProtocol counts the overrun (#389)
 _hcan.Init.TransmitFifoPriority = DISABLE;     // TX priority by message ID (standard CAN arbitration)
 ```
 

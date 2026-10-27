@@ -116,14 +116,15 @@ During operation:
    minimal — no I2C.
 2. `PanelGroup::loop()` checks all registered interrupt pins each iteration.
 3. For each flagged pin: iterate all chips on that pin, read `INTFLAG_A`/`INTFLAG_B`. For each
-   chip with non-zero flag, read `INTCAP` to get captured port state at moment of interrupt.
-4. Compare captured state to last-known; dispatch changed pins to all `InputBase` objects
-   referencing that chip+port+bit.
+   chip with non-zero flag, read `INTCAP` to clear the line, then refresh the flagged ports' cache
+   from a live port read — `INTCAP` holds the state at interrupt time, and a fast bounce can have
+   cleared before `loop()` runs.
+4. Each input's `poll()` reads its pin from that cache and debounces any change itself.
 
 ### Polling Fallback
 
-For boards with no interrupt pins wired (e.g. initial bringup), `PanelGroup::loop()` polls all
-chips' `INTF` registers at ~20 ms intervals. Automatic — if no interrupt pin is registered for
+For boards with no interrupt pins wired (e.g. initial bringup), `PanelGroup::loop()` reads both
+GPIO ports of each such chip into the cache at ~20 ms intervals. Automatic — if no interrupt pin is registered for
 a chip, it is polled.
 
 ---
@@ -179,6 +180,10 @@ relative step, a `TOGGLE`, or anything whose effect depends on how many times it
 | `AnalogInput`, `AngleSensorInput` | the current value (bypasses the poll throttle and hysteresis) |
 | `ActionButton` | **nothing**: a re-sent `TOGGLE` would flip the sim switch every time; only the baseline is seeded |
 | `RotaryEncoder`, `RotaryAcceleratedEncoder` | **nothing**: a step is relative; only the Gray state is resynced, and DCS owns the position |
+
+`SwitchWithCover2Pos` re-asserts its pair from later `poll()`s, `COVER_DELAY_MS` apart, so its frames
+can trail the READY(RESYNC) that ends the answer. Harmless: the bridge routes an EVT from any node at
+any time; it only moves on to sync the next node sooner.
 
 A new input class follows the same rule. If its control has no absolute state to send, its
 `forceReport()` seeds its baseline and stays silent. The effect: the physical cockpit is re-asserted

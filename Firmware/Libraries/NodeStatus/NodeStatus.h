@@ -32,7 +32,7 @@
 // ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────
 // PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump
 // NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.
-// Full 34-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
+// Full 38-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
 #define NODE_STATUS_PROTO_VERSION 4
 // Host→device roster-request export address (#295, v4). No DCS-BIOS module exports here: every
 // aircraft ends by 0xB2FB and MetadataEnd is 0xFFFE (checked against DCS-BIOS v0.11.8). The old

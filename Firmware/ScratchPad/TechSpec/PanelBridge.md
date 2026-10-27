@@ -57,7 +57,7 @@ Firmware/Tests/PanelBridge/
     ├── startup_sequence.cpp     — setup order, pass-all filter, CAN start (no SYNC_REQ: nodes queue on first HB, #387)
     ├── node_tracking.cpp        — READY sync, alive/dead callbacks, heartbeat timeout/recovery
     ├── input_dispatch_dcs.cpp   — 0x8000-0x86FF routing; 0x8700 and 0xFFFF rejected;
-    │                             SWITCH/ACTION/ENCODER/ACCEL_ENCODER/MULTIPOS formatting
+    │                             ABS / REL / DIR / ACTION formatting by frame (#147)
     ├── input_dispatch_hid.cpp   — controlId < 0x8000 becomes exact 6-byte HID frame
     ├── output_submission.cpp    — DCS output listener submits ControlPackets to
     │                             CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, ...)
@@ -81,24 +81,24 @@ Three timelines must all produce the same end state — see `FirmwarePlan/09-sta
 
 ```
 Timeline A — PanelBridge first:
-  PanelBridge boots → broadcasts SYNC_REQ
+  PanelBridge boots (no SYNC_REQ)
   PanelGroup boots → initial EVT burst → READY
-  PanelBridge: receives EVTs, receives READY → broadcasts SYNC_REQ again
-  PanelGroup: re-polls, sends current EVTs
+  PanelBridge: receives EVTs, receives READY → marks alive → queues the node → SYNC_REQ(1)
+  PanelGroup: re-reports, sends current EVTs → READY(RESYNC)
   → End state: PanelBridge has current input state
 
 Timeline B — PanelGroup first:
   PanelGroup boots → EVT burst → READY (PanelBridge not listening yet, frames lost)
-  PanelBridge boots → broadcasts SYNC_REQ
-  PanelGroup receives SYNC_REQ → re-polls → sends EVTs
+  PanelBridge boots → the node's next HB → marks alive → queues it → SYNC_REQ(1)
+  PanelGroup receives SYNC_REQ(1) → re-reports → sends EVTs → READY(RESYNC)
   → End state: PanelBridge has current input state
 
 Timeline C — Reconnect after dropout:
   Both running → PanelGroup power-cycled or disconnected
   PanelBridge: marks node dead after 3 s no HB → fires onNodeDead
   PanelGroup reconnects → boots → EVT burst → READY
-  PanelBridge: receives HB or READY → marks alive → fires onNodeAlive → broadcasts SYNC_REQ
-  PanelGroup receives SYNC_REQ → re-polls → sends current EVTs
+  PanelBridge: receives READY (or HB) → marks alive → fires onNodeAlive → SYNC_REQ(1)
+  PanelGroup receives SYNC_REQ(1) → re-reports → sends current EVTs → READY(RESYNC)
   → End state: same as Timeline A
 ```
 
@@ -107,7 +107,7 @@ Firmware/Tests/PanelBridge/tests/
 └── dual_integration/
     └── dual_integration.cpp    — hardware integration test for all three timelines
                                   NODE_ID=0: PanelBridge role — setup(), loop(); logs
-                                    SYNC_REQ broadcasts, onNodeAlive/Dead events, EVT receipts
+                                    READY / READY (resync) receipts, onNodeAlive/Dead events
                                   NODE_ID=1: PanelGroup role — setup(), loop(); logs
                                     READY send, SYNC_REQ receipts, EVT re-poll bursts
                                   Test is open-ended: user reads DiagSerial on both boards
@@ -116,10 +116,10 @@ Firmware/Tests/PanelBridge/tests/
 ```
 
 **Key assertions (verified manually from DiagSerial output):**
-- `[BRIDGE] SYNC_REQ broadcast` appears: at start AND after each READY/node-alive event
 - `[BRIDGE] node=1 alive` appears after PanelGroup boots (any order)
+- `[NODE] SYNC_REQ received, re-polling` follows each alive transition and each boot READY, and
+  `[BRIDGE] READY (resync) node=1` follows it — the bridge itself logs no line for a `SYNC_REQ`
 - `[BRIDGE] node=1 dead` appears if PanelGroup is power-cycled; `alive` reappears after reconnect
-- `[NODE] SYNC_REQ received, re-polling` appears in response to each SYNC_REQ
 - `[NODE] READY sent` appears once per boot, after initial EVT burst
 
 ```ini
@@ -217,7 +217,8 @@ namespace PanelBridge {
      *
      * Calls STM32Board::begin(), starts Serial at 250000 baud for the SimGateway link,
      * configures CANProtocol with a pass-all receive filter, registers the CAN RX callback,
-     * starts CAN, and broadcasts cold-boot SYNC_REQ.
+     * starts CAN, arms the boot roster reply and calls STM32Board::markBootHealthy() (#364).
+     * No SYNC_REQ: each node is queued for a sync on its first heartbeat (#387).
      *
      * @note DcsBios::setup() is called by the sketch after PanelBridge::setup().
      */
@@ -227,8 +228,9 @@ namespace PanelBridge {
      * @brief Run PanelBridge work that is not owned by DcsBios::loop().
      *
      * Drains CANProtocol RX, dispatches EVT packets, services CANProtocol batching deadlines,
-     * checks node heartbeat timeouts, sends its own HB_0 / HEALTH_0 (kind BRIDGE, #344) through
-     * CANProtocol::serviceNodeStatus() (#340), and handles DiagSerial TEST_SEQ trigger bytes.
+     * checks node heartbeat timeouts, sends the next queued SYNC_REQ (#387), writes the next
+     * roster row when the UART has room (#388), sends its own HB_0 / HEALTH_0 (kind BRIDGE, #344)
+     * through CANProtocol::serviceNodeStatus() (#340), and handles DiagSerial TEST_SEQ trigger bytes.
      */
     void loop();
 
@@ -289,10 +291,11 @@ struct NodeState {
 Rules:
 
 - `READY_n` updates `lastSeenMs`, marks node n as seen/alive, fires `onNodeAlive(n)` if it
-  was previously dead or unseen, and broadcasts `SYNC_REQ`.
+  was previously dead or unseen, and — a boot READY — queues it for a sync. A READY flagged
+  `RESYNC` ends the node's answer instead: the bridge moves to the next queued node.
 - `HB_n` updates `lastSeenMs` and `lastHeartbeat`.
-- `HB_n` from a dead or unseen node marks it alive, fires `onNodeAlive(n)`, and broadcasts
-  `SYNC_REQ`.
+- `HB_n` from a dead or unseen node marks it alive, fires `onNodeAlive(n)`, and queues it for a
+  sync (#387).
 - A live node with no heartbeat for 3000 ms is marked dead and fires `onNodeDead(n)` once.
 - No `SYNC_REQ` is sent when a node merely becomes dead; the recovery sync happens when it
   announces it is alive again.
@@ -342,13 +345,15 @@ locally; it does not publish diagnostic frames onto CAN.
 
 1. `STM32Board::begin()`.
 2. `Serial.begin(250000)` for the UART2 link to SimGateway.
-3. Register the DCS-BIOS export listener / adapter.
+3. `CANProtocol::onStatusChange(STM32Board::onCanStatus)`.
 4. `CANProtocol::filterAcceptAll()`.
 5. Register `CANProtocol::onReceive()` callback.
 6. `CANProtocol::start()`.
-7. Send cold-boot `SYNC_REQ` with DLC 0.
+7. Arm the boot roster reply (`emitAllNodes()`); `serviceRoster()` writes it from `loop()`.
+8. `STM32Board::markBootHealthy()` (#364).
 
-The sketch then calls `DcsBios::setup()`.
+No `SYNC_REQ` is sent here (#387). The DCS-BIOS export listener (`ExportDispatcher`) is a
+file-scope object, registered before `setup()` runs. The sketch then calls `DcsBios::setup()`.
 
 ### CAN RX Validation
 
@@ -363,9 +368,12 @@ are child-node liveness frames. The RX handler validates IDs in software:
 | `0x101`-`0x13F` | `HB_1`-`HB_63` | Update node heartbeat/liveness |
 | `0x141`-`0x17F` | `HEALTH_1`-`HEALTH_63` | Cache die temp + health/fault + `nodeKind` for `_NODE_STATUS` (not liveness); push a `_NODE_STATUS` delta when an alive node's kind changes (#344) |
 | `0x181`-`0x1BF` | `TELEM_1`-`TELEM_63` | Forward unread as `_NODE_TELEM` (#216; not liveness; page 0 / short dropped) |
-| `0x201`-`0x23F` | `EVT_1`-`EVT_63` | Dispatch each non-null ControlPacket slot |
+| `0x201`-`0x23F` | `EVT_1`-`EVT_63` | Dispatch each non-null ControlPacket slot (ABS) |
 | `0x301`-`0x33F` | `ECHO_1`-`ECHO_63` | Consume TEST_SEQ RTT diagnostic response |
-| `0x401`-`0x43F` | `READY_1`-`READY_63` | Mark node ready and broadcast `SYNC_REQ` |
+| `0x401`-`0x43F` | `READY_1`-`READY_63` | Cache version + bootloader, mark alive; a boot READY queues a sync, a `RESYNC` READY ends the node's answer (#383, #387) |
+| `0x501`-`0x53F` / `0x601`-`0x63F` / `0x701`-`0x73F` | `EVT_REL_n` / `EVT_DIR_n` / `EVT_ACTION_n` | Dispatch each non-null slot in that form (#147) |
+| `0x781`-`0x7BF` | `BOOT_RSP_n` | Relay as `_BOOT_RSP`; keep the node alive in its bootloader, no sync (#365) |
+| `0x7C1` | Unconfigured announce | Relay as `_BOOT_RSP` only — no NODE_ID yet, so nothing is tracked (#365) |
 
 All other IDs are discarded silently. `HB_0` (`0x100`) is PanelBridge's own transmission, never
 a child-node heartbeat — one that does arrive is another board on node 0, which
@@ -384,8 +392,11 @@ feeds it from the cache and `emitSelf()` from the bridge's own state — `makeHe
 plus `CANProtocol::lastNodeHealth()` (its last `HEALTH_0`, kind `BRIDGE`) and its own
 `OPENSKYHAWK_FW_*` version. `emitAllNodes()` (boot
 seed + host request) sends the node-0 row, every alive node, then `_NODE_STATUS_END <count>` with
-node 0 counted; `setup()` then `Serial.flush()`es it, because the sketch's `DcsBios::setup()` calls
-`Serial.begin()` again and a restart mid-send stranded all but the first write (#367). Live deltas: alive/dead transitions, a `nodeKind` change on an alive node, and a
+node 0 counted. It only arms the reply: `serviceRoster()` writes the next row from `loop()` when
+the UART TX buffer has room for a whole line, so `loop()` never blocks on it (#388; one call used to
+write every row, ~130 ms with 63 nodes). The boot reply goes out from `loop()` too, after the
+sketch's `DcsBios::setup()` — whose `Serial.begin()` once stranded a row written from `setup()`
+(#367). A request while a reply is going out restarts it. Live deltas: alive/dead transitions, a `nodeKind` change on an alive node, and a
 `READY_n` that changes an alive node's version (a reflash inside the heartbeat timeout — the READY
 branch caches the version before `markNodeAlive()`, so an alive delta already carries it).
 Contract: FirmwarePlan `04-dcs-bios-integration.md`.
@@ -415,7 +426,7 @@ PanelBridge projects set `[osh] bootloader_env = bridge`, so `pio run -t bootstr
 build.
 
 **Sequential sync (#387).** `_syncQueue` (a bit per NODE_ID) fills from `queueSync()`: a node seen
-alive (`markNodeAlive()` true on HB / HEALTH) or a boot READY, and every alive node on a
+alive (`markNodeAlive()` true on HB) or a boot READY, and every alive node on a
 `model_time` rewind; `forgetNode()` clears its bit. `serviceSync(now)` runs every `loop()`: with no
 node outstanding (`_syncing` 0, or `SYNC_TIMEOUT_MS` = 150 ms elapsed) it sends
 `CANProtocol::sendSyncReq()` for the lowest queued node. A READY flagged RESYNC from `_syncing`
@@ -434,16 +445,17 @@ faultMask, faultId, nodeKind)` (mirrors the `HEALTH_n` branch, incl. the kind de
 
 READY is a signal that a PanelGroup completed its boot-time input poll and can answer a
 full-state request. READY carries no input data — its payload is the node's firmware version
-(`ReadyPayload`, #295), cached for node-status reporting. On READY, PanelBridge updates `lastSeenMs`,
-marks the node alive if needed, and broadcasts `SYNC_REQ`.
+(`ReadyPayload`, #295), cached for node-status reporting. On a boot READY, PanelBridge updates
+`lastSeenMs`, marks the node alive if needed, and queues it for a sync (§ Sequential sync).
 
 Heartbeat recovery uses the same mechanism. If a node was unseen or marked dead and later
-sends HB, PanelBridge marks it alive and broadcasts `SYNC_REQ`.
+sends HB, PanelBridge marks it alive and queues it for a sync.
 
-`SYNC_REQ` is currently a global frame. Every PanelGroup that receives it re-polls only the
-input objects registered on that specific PanelGroup and emits EVTs for those inputs. Duplicate
-snapshots are acceptable because READY and recovery events are rare, and each EVT is routed
-idempotently by the normal input dispatch path.
+`SYNC_REQ` names one node (byte 0, #387); only that node answers. It re-reports the inputs
+registered on it — each one's current state, never a command (FirmwarePlan 05 § Re-reporting) —
+then sends READY flagged `RESYNC`, which ends the answer and lets the bridge sync the next node.
+Each EVT is routed idempotently by the normal input dispatch path, so a repeated snapshot is
+harmless.
 
 ### DCS-BIOS Output Listener
 
@@ -501,11 +513,12 @@ The model-time buffer remains internal to `PanelBridge.cpp`; no model-time API i
 
 ### EVT Input Dispatch
 
-PanelBridge drains CANProtocol in `loop()`. For each valid `EVT_n` frame, payload length must
-be exactly 8 bytes and is interpreted as a `ControlPacketPair`. Slot A is processed first.
-Slot B is processed only when `b.controlId != 0x0000`.
+PanelBridge drains CANProtocol in `loop()`. Each event frame — `EVT_n`, `EVT_REL_n`, `EVT_DIR_n`,
+`EVT_ACTION_n` — needs at least 8 bytes (a shorter one is dropped) and is interpreted as a
+`ControlPacketPair`. Slot A is processed first. Slot B is processed only when
+`b.controlId != 0x0000`.
 
-Dispatch is based only on `controlId`:
+The frame decides the dispatch form (below); the route is based only on `controlId`:
 
 | `controlId` range | Destination |
 |-------------------|-------------|
@@ -514,26 +527,27 @@ Dispatch is based only on `controlId`:
 | `0x8000`-`0x86FF` | Binary search `A4EC_INPUT_MAP`, then `sendDcsBiosMessage()` |
 | anything else | Drop and report locally for diagnostics/tests |
 
+HID routing is for `EVT_n` only; a HID-range `controlId` on a REL / DIR / ACTION frame is dropped.
+
 PanelBridge does not care which physical node sent a DCS-BIOS input. Multiple PanelGroup
 inputs may use the same `DCSIN_*` constant if they intentionally trigger the same DCS command.
 
 ### DCS-BIOS Input Formatting
 
-For `controlId` in `0x8000`-`0x86FF`, PanelBridge finds the matching `DcsBiosInputEntry` by
-binary search over `A4EC_INPUT_MAP`.
+For `controlId` in `0x8000`-`0x86FF`, PanelBridge finds the matching `DcsBiosInputEntry`
+(`{cmdId, name}`) by binary search over `A4EC_INPUT_MAP`. The map carries only the name; the
+**argument is chosen by the frame** the value arrived on (#147):
 
-| Input type | Valid values | Argument passed to `sendDcsBiosMessage()` |
-|------------|--------------|-------------------------------------------|
-| `InputType::SWITCH` | 0, 1 | `arg0` for 0, `arg1` for 1 |
-| `InputType::ACTION` | non-zero press | `arg0`; value 0 is ignored |
-| `InputType::ENCODER` | 0, 1 | `arg0` for 0, `arg1` for 1 |
-| `InputType::ACCEL_ENCODER` | 0, 1, 2, 3 | `arg0`, `arg1`, `arg0fast`, `arg1fast` |
-| `InputType::MULTIPOS` | 0-65535 | decimal string representation of `value` |
+| Frame | Value | Argument passed to `sendDcsBiosMessage()` | DCS-BIOS interface |
+|-------|-------|-------------------------------------------|--------------------|
+| `EVT_n` (ABS) | 0-65535 | the value as a decimal string (`"%u"`) | `set_state` |
+| `EVT_REL_n` | signed int16 step | `"%+d"` (e.g. `"+3200"`) | `variable_step` |
+| `EVT_DIR_n` | ±1 | `"INC"` / `"DEC"`; any other value dropped | `fixed_step` |
+| `EVT_ACTION_n` | 0 | `"TOGGLE"`; any other value dropped | `action` |
 
-Invalid values, unknown `controlId`s, or entries with null required arguments are dropped and
-counted/logged locally for diagnostics/tests. PanelBridge does not publish diagnostic frames
-onto CAN. `MULTIPOS` formatting uses a local buffer of at least 6 bytes (`"65535"` plus null
-terminator).
+An unknown `controlId` or a malformed value is dropped and, with debug on, logged on DiagSerial;
+`PANELBRIDGE_TEST` builds also count the commands actually sent (`testDcsSendCount()`).
+PanelBridge does not publish diagnostic frames onto CAN.
 
 ### HID Frame Forwarding
 
@@ -573,6 +587,8 @@ PanelGroup HB/ECHO diagnostic data and optionally logs locally.
 |---|---|---|
 | DCS-BIOS Arduino library | Firmware dependency | PanelBridge runs DCS-BIOS on `Serial` via `DCSBIOS_DEFAULT_SERIAL` |
 | CANProtocol | `Firmware/Libraries/CANProtocol` | Frame IDs, ControlPacketPair, HeartbeatPayload, send/sendBatched/drain API |
+| NodeStatus | `Firmware/Libraries/NodeStatus` | `_NODE_STATUS` contract, `NODE_STATUS_REQ_ADDR` / `NODE_FORGET_REQ_ADDR`, `NodeKind` |
+| BootProtocol, FirmwareImage, FirmwareVersion | `Firmware/Libraries/` | Bootloader relay IDs and `_BOOT_RSP`; the image identity block; the node-0 row's version |
 | STM32Board | `Firmware/Libraries/STM32Board` | Board init, DiagSerial, CAN HAL init, status LED |
 | A4EC generated headers | `tools/gen_a4ec` output | `A4EC_InputMap.h` included by PanelBridge only |
 | SimGateway UART contract | FirmwarePlan/03 | HID frame format and raw ASCII forwarding assumptions |

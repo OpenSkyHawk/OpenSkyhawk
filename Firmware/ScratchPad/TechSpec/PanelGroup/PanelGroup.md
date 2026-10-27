@@ -34,7 +34,7 @@ Platform: **STM32 only** (STM32F103Cx — C8T6 64 KB or CBT6 128 KB). Not used o
 ```
 Firmware/Libraries/PanelGroup/
 ├── PanelGroup.h    ← PanelGroup namespace, InputBase, OutputBase
-├── PanelGroup.cpp  ← expander management, interrupt dispatch, CAN RX, heartbeat
+├── PanelGroup.cpp  ← expander management, interrupt dispatch, CAN RX (HB/HEALTH: CANProtocol::serviceNodeStatus(), #340)
 ├── PinRef.h        ← PinRef class (specified in PinRef.md)
 ├── PinRef.cpp      ← PinRef backend dispatch (specified in PinRef.md)
 └── library.json    ← platform: ststm32
@@ -107,8 +107,9 @@ rather than in a PanelGroup-only test, because it requires two boards on a live 
 
 - PanelGroup boots in any order relative to PanelBridge — see `FirmwarePlan/09` Timelines A and B.
 - PanelGroup sends initial EVT burst + READY frame once on every boot, before the heartbeat timer starts.
-- PanelGroup responds to SYNC_REQ at any time after boot by re-polling all registered inputs and
-  flushing all pending EVT batches via `flushBatched(canIdEvt(NODE_ID))`.
+- PanelGroup responds to a SYNC_REQ addressed to it (byte 0 = its `NODE_ID`, or an empty one) at
+  any time after boot by re-reporting all registered inputs and flushing all pending EVT batches via
+  `flushBatched(canIdEvt(NODE_ID))`; CANProtocol then ends the answer with READY(RESYNC) (#383, #387).
 - PanelGroup does not need to know whether PanelBridge is alive — it simply broadcasts on the CAN bus
   and trusts that PanelBridge will re-request via SYNC_REQ whenever it reconnects.
 - Heartbeat continues regardless of whether PanelBridge is alive. PanelBridge's watchdog detects
@@ -209,10 +210,12 @@ public:
     virtual void poll() = 0;
 
     /**
-     * @brief Read current hardware state and emit a CAN EVT unconditionally.
+     * @brief Re-assert the control's current absolute state, or emit nothing.
      *
-     * Called by PanelGroup during the boot EVT burst (setup()) and on every SYNC_REQ.
-     * Bypasses debounce — hardware is assumed stable at these call sites. Confirms the
+     * Called by PanelGroup during the boot EVT burst (setup()) and on every SYNC_REQ for
+     * this node. Sends only a state, never a relative step or TOGGLE — a control with no
+     * absolute state (ActionButton, the encoders) sends nothing (FirmwarePlan 05,
+     * Re-reporting). Bypasses debounce — hardware is assumed stable at these call sites. Confirms the
      * current reading as the new last-known state so subsequent poll() calls use it as
      * the baseline. Also initialises internal state so poll() becomes active.
      */
@@ -322,20 +325,23 @@ namespace PanelGroup {
     /**
      * @brief Initialise PanelGroup. Call from sketch setup().
      *
-     * Performs the 8-step PanelGroup boot sequence:
+     * Performs the PanelGroup boot sequence (§ Boot Sequence below):
      *   1. STM32Board::begin() — status LED, DiagSerial, CAN HAL.
-     *   2. For each registered expander: init chip, read baseline port state into cache,
-     *      configure IOCON (MIRROR / open-drain as needed), call attachInterrupt().
-     *   3. Register CAN callbacks.
-     *   4. CANProtocol::start(). Mandatory CTRL_BCAST, TEST_SEQ, and SYNC_REQ filters
-     *      are included by CANProtocol automatically.
-     *   5. Poll all registered InputBase objects; submit EVTs via
+     *   2. begin() each registered ADC; for each registered expander: init chip, configure
+     *      IOCON (MIRROR / open-drain as needed).
+     *   3. configure() every InputBase / OutputBase, then begin() each ShiftBus they announced;
+     *      then per expander: enable interrupt-on-change, read baseline port state into cache,
+     *      call attachInterrupt() (after configure(), so IODIR is set).
+     *   4. Register CAN callbacks; CANProtocol::start(). Mandatory CTRL_BCAST, TEST_SEQ, and
+     *      SYNC_REQ filters are included by CANProtocol automatically.
+     *   5. forceReport() every registered InputBase; EVTs go via
      *      CANProtocol::sendBatched(canIdEvt(NODE_ID), ...).
      *   6. CANProtocol::flushBatched(canIdEvt(NODE_ID)) — flush any trailing odd packet
      *      before READY.
      *   7. Send READY_n frame (CANProtocol::sendReady() — the firmware version, #295).
-     *   8. (Heartbeat/HEALTH timers arm on the first CANProtocol::serviceNodeStatus() call
-     *      in loop() — first HB_n ~500 ms after boot completes.)
+     *   8. STM32Board::markBootHealthy() — the bootloader's crash-loop counter back to 0 (#364).
+     *   (Heartbeat/HEALTH timers arm on the first CANProtocol::serviceNodeStatus() call
+     *   in loop() — first HB_n ~500 ms after boot completes.)
      *
      * @note Wire.begin() / Wire1.begin() must be called by the sketch before setup().
      *       PanelGroup never calls begin() on any I2C bus. Only start buses in use.
@@ -369,8 +375,10 @@ namespace PanelGroup {
      *   4. Drain CANProtocol RX:
      *        0x7E0 CTRL_BCAST  → walk OutputBase list; call onControlPacket() for each
      *                            non-null slot (controlId != 0x0000).
-     *        0x012 SYNC_REQ   → call forceReport() on all InputBase objects; call
-     *                            flushBatched(canIdEvt(NODE_ID)).
+     *        0x012 SYNC_REQ   → for this node only (byte 0 = NODE_ID, or empty): call
+     *                            forceReport() on all InputBase objects; call
+     *                            flushBatched(canIdEvt(NODE_ID)). CANProtocol then sends
+     *                            READY(RESYNC) once TX is idle (≤ 50 ms) — #383, #387.
      *        0x011 TEST_SEQ   → handled internally by CANProtocol::drain(); PanelGroup
      *                            does not receive this callback.
      *        0x100 HB_0       → stamped for the master-loss watchdog by CANProtocol::drain(),
@@ -396,13 +404,13 @@ namespace PanelGroup {
     //
     // MCP23017 pins require a cache because:
     //   • A live I2C readPort() on every poll() call is slow (~100 µs at 400 kHz).
-    //   • The interrupt path reads INTCAP, capturing port state at the exact moment
-    //     the pin changed. A subsequent live read may return an already-transitioned
-    //     value, bypassing the interrupt capture entirely.
-    //   • All poll() calls after an interrupt must see the same captured snapshot.
+    //   • All poll() calls in one loop() must see the same snapshot.
+    //   • The interrupt path reads INTCAP only to clear the line, then refreshes the
+    //     flagged ports from a live read: a fast bounce can leave INTCAP stale by the
+    //     time loop() runs.
     //
-    // readCachedPin() returns the bit from the ExpanderEntry cache last updated by
-    // INTCAP (interrupt path) or a full port read (polling fallback / baseline).
+    // readCachedPin() returns the bit from the ExpanderEntry cache last updated by a
+    // port read (interrupt path, polling fallback, or baseline).
     // No I2C occurs inside this call.
     //
     // writeCachedPin() writes the pin via I2C and updates the cache so that a
@@ -520,9 +528,10 @@ Each ISR is a minimal one-liner: `_intFlags[idx] = true`. No I2C inside an ISR.
 ### Poll Timers
 
 ```cpp
-uint32_t _lastFallbackPollMs;  // last time polling-fallback chips were scanned (~20 ms)
-uint32_t _lastHeartbeatMs;     // last time HB_n was sent (500 ms interval)
+uint32_t _lastFallbackMs;      // last time polling-fallback chips were scanned (~20 ms)
 ```
+
+The HB_n / HEALTH_n timers live in `CANProtocol::serviceNodeStatus()` (#340), not here.
 
 All timers use `millis()` directly. No shared clock.
 
@@ -570,14 +579,13 @@ Each `loop()` iteration:
       `intfA` is non-zero if any GPA pin changed; `intfB` is non-zero if any GPB pin changed.
    b. If both `intfA` and `intfB` are zero, the chip did not fire — skip to the next chip on
       the shared line. No INTCAP read, no cache update.
-   c. Call `chip.clearInterrupts(capA, capB)` — reads INTCAP for both ports (capturing port
-      state at the moment of interrupt) and clears the interrupt line. Must be called whenever
-      `intfA || intfB` is non-zero, even if only one port fired — INTCAP must be read to
-      deassert the open-drain interrupt line and allow the STM32 pin to go HIGH again.
-   d. If `intfA != 0`: update `portAcache = capA`.
-      If `intfB != 0`: update `portBcache = capB`.
-      Unchanged ports keep their existing cache value — `clearInterrupts()` returns both
-      INTCAP bytes but we only apply the ones flagged by INTF.
+   c. Call `chip.clearInterrupts(capA, capB)` — reads INTCAP for both ports and clears the
+      interrupt line. Must be called whenever `intfA || intfB` is non-zero, even if only one
+      port fired — INTCAP must be read to deassert the open-drain interrupt line and allow the
+      STM32 pin to go HIGH again.
+   d. If `intfA != 0`: `portAcache = readPort(A)`; if `intfB != 0`: `portBcache = readPort(B)` —
+      a live read, not INTCAP: INTCAP holds the pin state at interrupt time, and a fast bounce
+      can have cleared before `loop()` runs. Unchanged ports keep their existing cache value.
 
 3. Once all chips on all flagged pins have been scanned and their caches updated, call
    `poll()` on all registered `InputBase` objects. Each `poll()` reads the cached state
@@ -606,7 +614,7 @@ owns special-frame interception before PanelGroup callbacks fire:
 | CAN ID | Handling |
 |--------|----------|
 | `0x7E0` CTRL_BCAST | Delivered to PanelGroup's receive callback. Interpret payload as `ControlPacketPair`; walk `OutputBase` list; call `onControlPacket(controlId, value)` on every object for each non-null slot (controlId != 0x0000). |
-| `0x012` SYNC_REQ | Intercepted by CANProtocol and delivered via `onSyncReq()`. PanelGroup calls `forceReport()` on all `InputBase` objects, then `CANProtocol::flushBatched(canIdEvt(NODE_ID))`. |
+| `0x012` SYNC_REQ | Intercepted by CANProtocol; delivered via `onSyncReq()` only when empty or byte 0 = `NODE_ID` (#387). PanelGroup calls `forceReport()` on all `InputBase` objects, then `CANProtocol::flushBatched(canIdEvt(NODE_ID))`. CANProtocol then sends READY(RESYNC) once TX is idle (≤ 50 ms), and only after the boot READY (#383). |
 | `0x011` TEST_SEQ | Intercepted by CANProtocol and echoed automatically as `ECHO_n`; PanelGroup is not called. |
 | Anything else | Delivered to PanelGroup's receive callback and ignored unless future specs claim it. |
 
@@ -623,17 +631,19 @@ CANProtocol::flushBatched(canIdEvt(NODE_ID));
 ```
 
 Every object that self-registered at construction is visited — none are skipped. Each
-`forceReport()` reads current hardware state and emits unconditionally, regardless of whether
-state changed since the last EVT. This produces a full-state snapshot identical in content to
-the boot EVT burst. `flushBatched()` is called after the loop so no trailing half-full batch
-is left pending.
+`forceReport()` re-asserts its control's current absolute state, whether or not it changed since
+the last EVT; an action or relative input (`ActionButton`, the encoders) stays silent
+(FirmwarePlan 05 § Re-reporting). This produces the same snapshot as the boot EVT burst.
+`flushBatched()` is called after the loop so no trailing half-full batch is left pending; READY
+flagged `RESYNC` follows from CANProtocol once the answer has left (#383, #387).
 
 ### READY Frame
 
-Sent once during `setup()`, after the initial EVT burst and `flushBatched()`, by
+The boot READY is sent once during `setup()`, after the initial EVT burst and `flushBatched()`, by
 `CANProtocol::sendReady()`. DLC = 8: `ReadyPayload`, the firmware release version (#295).
-CAN ID = `canIdReady(NODE_ID)`. PanelBridge marks the node online and broadcasts
-`SYNC_REQ` on receipt.
+CAN ID = `canIdReady(NODE_ID)`. PanelBridge marks the node online and queues a `SYNC_REQ` naming
+it (#387). After that, `CANProtocol::drain()` closes every answer to a `SYNC_REQ` with a READY
+flagged `RESYNC` (#383) — PanelGroup does nothing for it; the bridge never queues a sync for it.
 
 ### Heartbeat, HEALTH and master watchdog
 
@@ -682,7 +692,11 @@ for (auto& entry : _expanders) {
 for (InputBase*  p = InputBase::head();  p; p = p->next()) { p->configure(); }
 for (OutputBase* p = OutputBase::head(); p; p = p->next()) { p->configure(); }
 
-// 3b (step 2d). Enable interrupt-on-change on input pins only; read baseline; attach ISRs.
+// 3b. begin() every ShiftBus the configure() calls announced (none → SPI never started);
+//     it primes the '165 cache so the step-5 burst reads real input state.
+for (ShiftBus* b : _shiftBuses) { b->begin(); }
+
+// 3c (step 2d). Enable interrupt-on-change on input pins only; read baseline; attach ISRs.
 //     Must run AFTER configure() so IODIR is set correctly.
 //     GPA7/GPB7 excluded from GPINTEN (MCP23017 silicon erratum Rev D — SDA corruption).
 //     If MAX_INT_PINS (8) is exceeded, chip falls back to 20 ms polling and a warning
@@ -705,7 +719,7 @@ CANProtocol::onSyncReq(onSyncReq);
 // 4. Start CAN
 CANProtocol::start();
 
-// 5. Initial EVT burst — force-report every registered input (no debounce)
+// 5. Initial EVT burst — force-report every registered input (no debounce; a state, or nothing)
 for (InputBase* p = InputBase::head(); p; p = p->next()) { p->forceReport(); }
 
 // 6. Flush trailing batch
@@ -713,6 +727,9 @@ CANProtocol::flushBatched(canIdEvt(NODE_ID));
 
 // 7. READY frame — carries the firmware version (#295)
 CANProtocol::sendReady();
+
+// 8. The bootloader's crash-loop counter back to 0 (#364)
+STM32Board::markBootHealthy();
 
 // (HB/HEALTH timers arm on the first CANProtocol::serviceNodeStatus() call in loop().)
 ```

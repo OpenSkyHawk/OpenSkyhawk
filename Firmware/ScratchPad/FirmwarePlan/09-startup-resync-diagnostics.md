@@ -1,7 +1,7 @@
 # 09 — Startup, Resync, and Diagnostics
 
 **Owns:** boot sequence steps for all three node types, SYNC_REQ/READY handshake protocol,
-DIAG frame definitions.
+DiagSerial diagnostics.
 **Does not own:** what triggers SYNC_REQ (→ 06), CAN frame IDs (→ 02), hardware pin
 assignments (→ 08), HID frame format (→ 03).
 
@@ -38,7 +38,9 @@ app asked for it or the app fails its check, and announces on `BOOT_RSP_n`. See 
    signals PanelBridge that the initial input poll and EVT burst are complete, and that this node
    is ready to answer a full-state `SYNC_REQ`. Its payload is the node's firmware version
    (`ReadyPayload`, #295). From here on the node answers every `SYNC_REQ` with a READY flagged
-   `RESYNC` too (#383), so a bridge that boots later still learns its version.
+   `RESYNC` too (#383), so a bridge that boots later still learns its version. Then
+   `STM32Board::markBootHealthy()` sets the bootloader's crash-loop counter back to 0 (#364) — the
+   last line of `setup()`.
 8. Heartbeat begins — `CANProtocol::serviceNodeStatus()` arms its timers on its first call, in
    the first `loop()` after boot, so the first HB goes out ~500 ms after boot completes (#340).
 
@@ -46,14 +48,19 @@ app asked for it or the app fails its check, and announces on `BOOT_RSP_n`. See 
 
 ## PanelGroup — SYNC_REQ Response
 
-On receipt of `SYNC_REQ` (0x012) at any time after boot: re-poll all registered input objects
-and emit batched CAN EVTs — identical to step 6 above. This is the PanelGroup's response to
-cold boot, READY-triggered requests, heartbeat recovery requests, and DCS session change
-requests.
+On receipt of a `SYNC_REQ` (0x012) for this node — byte 0 = its `NODE_ID`, or an empty one (every
+node) — at any time after boot: re-report every registered input and emit batched CAN EVTs, as in
+step 6 above (an input with no absolute state sends nothing, `05` § Re-reporting). A `SYNC_REQ`
+naming another node is ignored. Once the answer has left — the TX ring empty and all three
+mailboxes free, or after 50 ms at most — `CANProtocol::drain()` sends READY flagged `RESYNC`, the end
+of the answer (#383, #387); not before the node's own boot READY. This is the PanelGroup's response
+to every sync the bridge queues: its boot READY, its first heartbeat after the bridge booted or after
+a timeout, and a DCS session change.
 
-No state-sync is requested for outputs. PanelGroup waits passively for the next DCS-BIOS update
-cycle (~50 ms) to receive current output values. Outputs may be at default (zero/off) for up to
-~50 ms after a resync — this is acceptable.
+No state-sync is requested for outputs. PanelGroup waits passively for the export stream to carry
+each output's value: a changed value on the next DCS-BIOS frame, an unchanged one with DCS-BIOS's
+autosync, every few seconds. After a reboot an output may sit at its default (zero/off) until then —
+late outputs that catch up are acceptable.
 
 ---
 
@@ -64,11 +71,15 @@ cycle (~50 ms) to receive current output values. Outputs may be at default (zero
 3. Configure CAN receive filter (pass-all mask — accepts all IDs; software range check in RX
    handler validates HB/EVT/ECHO/READY ranges, discards everything else).
    See `02-can-protocol.md#panelbridge-receive-filter` for range validation rules.
-4. `canStart()`.
+4. `CANProtocol::start()`.
 5. No `SYNC_REQ` broadcast (#387): each already-running node is queued for a sync as its first
    heartbeat arrives, and synced one at a time (`06` § Sequential sync). Handles the case where
    PanelGroup nodes booted before PanelBridge.
-6. `DcsBios::setup()` is called by the sketch.
+6. Arm the boot roster reply (`_NODE_STATUS`, node-0 row only at cold boot); it goes out a row at a
+   time from `loop()` (#388).
+7. `STM32Board::markBootHealthy()` — the bootloader's crash-loop counter back to 0 (#364), the last
+   line of `PanelBridge::setup()`.
+8. `DcsBios::setup()` is called by the sketch.
 
 ---
 
@@ -136,22 +147,25 @@ movement; buttons are transient and not held at power-on.
 
 ---
 
-## DIAG Frames
+## DiagSerial Diagnostics
 
-DIAG frames carry diagnostic telemetry. Output on **USART1 (DiagSerial) on each STM32 board
-only** — not forwarded to SimGateway, not available on USB CDC.
+Each STM32 board writes human-readable diagnostic lines (`[BRIDGE] …`, `[NODE] …`, `[PDU] …`) on
+**USART1 (DiagSerial) only** — not forwarded to SimGateway, not available on USB CDC. Most of them
+appear only with `STM32Board::setDebug(true)`; the templates and panel sketches ship with it off
+(#389).
 
 Connect a USB-to-TTL adapter to the 3-pin DiagSerial header (GND/RX/TX at PA9/PA10) on any
 STM32 board to observe its output at 115200 baud, independently of the DCS data path.
 
-| Frame type | Content |
-|------------|---------|
-| `DIAG_RTT` | RTT ping-pong result (seq, sent timestamp) |
-| `DIAG_HB` | Sub-node heartbeat (nodeId, rxCount) |
-| `DIAG_ERR` | CAN error counters (TEC, REC, busOff flag, CAN TX queue drop count) |
+**No framed DIAG messages.** `CANProtocol.h` still defines `DIAG_MAGIC` and the `DIAG_RTT` /
+`DIAG_HB` / `DIAG_ERR` / `DIAG_EVT` frame types from an early plan, but nothing sends them — they are
+retired. Of the CAN counters `DIAG_ERR` was meant to carry, TEC, REC and bus-off already travel in
+every `HB_n` (and so in `_NODE_STATUS`); the drop counters — `txDropCount()`, `rxDropCount()`,
+`rxOverrunCount()` — are counted on the board and not reported over the bus (D32).
 
-Each board's DIAG output is independent. There is no aggregated bus-wide diagnostic stream
-routed to SimGateway. SimGateway has no DIAG callbacks.
+Each board's diagnostic output is independent. There is no aggregated bus-wide diagnostic stream
+routed to SimGateway. (SimGateway's own `DIAG` report to the host, #355, is about the Gateway's USB
+and UART link, not the CAN bus — `07-simgateway-api.md`.)
 
 PanelBridge does not publish diagnostic frames onto CAN. It consumes PanelGroup heartbeat and
 ECHO diagnostic information and may report local human-readable/test diagnostics only on its

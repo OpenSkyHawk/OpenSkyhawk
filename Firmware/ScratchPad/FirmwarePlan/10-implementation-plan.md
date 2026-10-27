@@ -47,7 +47,8 @@
       frames. PanelBridge and PanelGroup submit individual `ControlPacket`s via
       `sendBatched()`. Slot B uses `controlId = 0x0000` when only one packet is present.
       Flush half-full batches no later than two owning firmware `loop()` iterations after
-      slot A is queued; implementations may flush sooner. Do not apply pairing to
+      slot A is queued; implementations may flush sooner. *(Since #389 the bridge's `CTRL_BCAST`
+      slot also waits at least 2 ms — D11.)* Do not apply pairing to
       special/control/diagnostic frames unless that frame type explicitly defines a
       `ControlPacketPair` payload.
 - [x] Implement SW CAN TX queue policy in `CANProtocol`: when all 3 STM32 CAN TX mailboxes
@@ -55,6 +56,9 @@
       dependent overflow: `CTRL_BCAST` may drop/coalesce stale state; `EVT_n`, `READY_n`,
       `SYNC_REQ`, `TEST_SEQ`, and `ECHO_n` use bounded retry up to 3 attempts, then drop and
       increment the `DIAG_ERR` TX drop counter; `HB_n` takes the same bounded retry.
+      *(As built since #389, D32: nothing is coalesced; lost arbitration always resends, a bus
+      error up to 3 attempts; drops are counted on the board in `txDropCount()` — `DIAG_ERR` is
+      never sent.)*
 - [x] Build A-4E-C input map generator: parse A-4E-C DCS-BIOS JSON → assign sequential
       `DCSIN_*` IDs from 0x8001; emit **three headers plus gap report**:
       - `A4EC_CmdIds.h` — `#define DCSIN_*` constants, included by PanelGroup sketches
@@ -84,7 +88,8 @@
       add software range validation in CAN RX handler (valid child-node frames: HB_1-HB_63
       0x101–0x13F, EVT 0x201–0x23F, ECHO 0x301–0x33F, READY 0x401–0x43F — discard else).
 - [x] Broadcast `SYNC_REQ` on READY and when heartbeat tracking observes a node transition
-      from dead/unseen to alive. *(PanelBridge later began publishing `HB_0` as a master beacon — #93.)*
+      from dead/unseen to alive. *(PanelBridge later began publishing `HB_0` as a master beacon — #93.
+      Since #387 the bridge sends a `SYNC_REQ` naming one node at a time, never a broadcast.)*
 - [x] Implement TEST_SEQ trigger on PanelBridge: a single command byte (e.g. `'T'`) received
       on DiagSerial causes PanelBridge to broadcast TEST_SEQ (0x011) and collect ECHO responses
       for RTT measurement. SimGateway is not involved.
@@ -93,7 +98,7 @@
       `controlId < 0x8000` → wrap in HID frame → UART to SimGateway.
 - [x] Add PanelBridge tests for DCS routing boundaries (`0x86FF` routes, `0x8700` and
       `0xFFFF` are dropped) and model-time resync (first value seeds state; later decrease
-      broadcasts `SYNC_REQ`).
+      syncs every alive node — one `SYNC_REQ` per node since #387).
 
 ### SimGateway
 
@@ -239,7 +244,8 @@ it; anything that doesn't (#269, #132, #228) can land after without breaking any
 class is locked in v0.1.0. The gate itself is tracked in #290 and runs on the hardware from the
 "Base boards Rev 2 + soak test rig" milestone (#209, #95, #291):
 
-- [ ] Multi-node live-DCS soak, 2–3 h: no false offline, `DIAG_ERR` TX-drop counters at zero,
+- [ ] Multi-node live-DCS soak, 2–3 h: no false offline, the on-board drop counters
+      (`txDropCount()`, `rxDropCount()`, `rxOverrunCount()`) at zero,
       reconnect / `SYNC_REQ` keeps mission presets.
 - [ ] #291 smoke test passed — the single live check for every in-scope class.
 - [ ] CAN verified at 500 kbps against the scope (#209's pre-order checks).

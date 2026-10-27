@@ -79,7 +79,7 @@ request (CAN broken, hung before READY): the host sends `CONNECT` repeatedly and
 power-cycled or the board reset.
 
 **Idle timeout** — `REQUESTED` or `CAUGHT`, the old app still valid, and no command for
-`IDLE_TIMEOUT_MS` (30 s): reset into the app. Never after a BEGIN (the app is gone) and never for
+`IDLE_TIMEOUT_MS` (30 s): reset into the app. Never after a successful BEGIN (the app is gone) and never for
 `APP_UNSTABLE` (it would only crash again).
 
 **Status LEDs — red and green together = "in the bootloader"** (#365). The app never lights both at
@@ -152,8 +152,9 @@ keeps Data0 / Data1; `stm32f1x options_write` re-applies the WRP it read.)
 - **Entering:** the host (the Gateway's uploader) writes `BRIDGE_ENTER_EXPORT_ADDRESS` (`0xFF02`) on the
   export stream. PanelBridge calls `enterBootloader(TRANSPORT_SERIAL)` and resets; the bootloader
   announces on USART2 and the uploader sends `CONNECT`.
-- **Catch at boot:** while it waits, the uploader sends `CONNECT` every 100 ms, so pressing the
-  Gateway's reset button catches a bridge app that never takes the request.
+- **Catch at boot:** the uploader asks the app (`0xFF02`, every 500 ms); once it hears an announcement,
+  or after 2 s without one, it sends `CONNECT` every 100 ms, so pressing the Gateway's reset button
+  catches a bridge app that never takes the request.
 - **The jump** leaves TX idle-high (PA2 input, pull-up) for the app: with USART2 in reset an
   alternate-function pin pulls the line low — a break on the Gateway's UART at every boot.
 - **Updated by:** only the Gateway's uploader (`07` § Uploader, target `0`) — the bridge app it carries
@@ -163,7 +164,7 @@ keeps Data0 / Data1; `stm32f1x options_write` re-applies the WRP it read.)
 
 ## Update Protocol
 
-All frames standard 11-bit, lowest bus priority. Multi-byte fields little-endian. Byte 0 is the
+All frames standard 11-bit, below every control and status frame; only `CTRL_BCAST` (`0x7E0`) is lower (#389, D31). Multi-byte fields little-endian. Byte 0 is the
 command (host → bootloader, `BOOT_CMD_n` `0x740+n`) or the reply (bootloader → host, `BOOT_RSP_n`
 `0x780+n`).
 
@@ -173,9 +174,12 @@ command (host → bootloader, `BOOT_CMD_n` `0x740+n`) or the reply (bootloader �
 | `BEGIN` `0x02` | `len:u32` | `BEGUN` `0x82` `[status]` |
 | `BLOCK` `0x10` | `index:u16, crc16:u16` | — (the 10 DATA frames follow) |
 | `DATA_k` `0x20+k` (k = 0–9) | 7 bytes of the block, bytes 7k…7k+6 | after `DATA_9`: `BLOCK_ACK` `0x90` `[index:u16, status, next:u16]` |
-| `END` `0x30` | `crc:u32` (the identity block's `imageCrc`) | `ENDED` `0xB0` `[status, crc:u32 computed]` |
+| `END` `0x30` | `crc:u32` (the identity block's `imageCrc`) | `ENDED` `0xB0` `[status, crc:u32 computed]` — `crc` 0 when END fails before the CRC pass |
 | `GO` `0x40` | — | `GOING` `0xC0` `[status]`, then the board resets into the app |
 | `SET_NODE_ID` `0x50` | `id` (1–63) | `NODE_SET` `0xD0` `[status]`, then the board resets as node `id` |
+
+`BEGIN`'s `len` is the image length unpadded (the bootloader pads it to whole blocks); a `BEGIN` or
+`END` shorter than 5 bytes is ignored, with no reply.
 
 **Announce** (`ANNOUNCE` `0xA0`, every 1 s while no image is arriving — and during a transfer idle for
 over 1 s, so the bridge still sees the node alive; `CONNECTED` carries the same),
@@ -236,7 +240,11 @@ A board with no NODE_ID (Data0 = `0xFF`) and no valid app announces on `UNCONFIG
 board binds the session and answers, and only a bound board takes the commands that follow. Its first
 image may carry any `nodeId` — the NODE_ID rule has nothing to compare against — and the next boot
 adopts it into Data0 / Data1 (it becomes an ordinary node). **One unconfigured board on the bus at a
-time** — the host says so; two announcing at once collide rarely and only lose an announcement.
+time** — a host rule, not a bootloader one: the uploader binds the first announcement it hears.
+Announcements are not randomized — a fixed `ANNOUNCE_INTERVAL_MS` (1 s), the first one at once — so
+two blank boards powered together can start a frame in the same bit. Same ID, different data: a bit
+error, so error frames and a retransmit (the bootloader keeps automatic retransmission), not a lost
+board.
 
 ---
 
@@ -267,9 +275,9 @@ replaced only over ST-Link — so every later feature lives in the app or the Ga
 - **The build is pinned:** exact platform, toolchain and CMSIS in `Firmware/Bootloader/platformio.ini`,
   so the same source always builds the same bytes — a newer compiler can move the size by ±100 B.
   Changing any of them is a bootloader change.
-- **Budget: 4 KB, never more.** Real footprints at the freeze (vectors, code, `.data` copy, info block):
-  `bootloader` 3,684 B (412 free), `bridge` 3,668 B (428 free). The release workflow's summary reports
-  both; code that grows into the info block fails the link.
+- **Budget: 4 KB, never more.** Real footprint at the freeze (vectors, code, `.data` copy, info block):
+  about 3.7 KB, roughly 400 B free, for both builds (`bootloader` and `bridge`). The release workflow's
+  summary reports both; code that grows into the info block fails the link.
 - **A bootloader change** (bug fix only) ships in the release where it changed (`bootloader/` in the
   zip, and every `-full.hex`); `manifest.json` names the release that holds the current one.
 

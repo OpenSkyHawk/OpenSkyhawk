@@ -93,12 +93,20 @@ when a PanelGroup sends `READY`, and when a node transitions from dead/unseen to
 PanelGroup sends a `READY` frame (`0x400+n`) after completing its initial input poll.
 PanelGroup also re-polls on any subsequent `SYNC_REQ` it receives.
 
+*(As built since #387: the bridge syncs **one node at a time**. `SYNC_REQ` byte 0 names the node;
+the node ends its answer with a `READY` flagged `RESYNC` (#383), and the bridge moves to the next
+queued node on that READY or after 150 ms. There is no broadcast and no cold-boot `SYNC_REQ` — a
+bridge that boots after the nodes queues each one on its first heartbeat. An empty `SYNC_REQ` still
+means every node, but the bridge no longer sends one. See `06` § Sequential sync.)*
+
 **Rationale:** PanelGroup nodes may boot before PanelBridge (power sequencing). Without a
 handshake, the boot-time input EVT burst is lost and DCS starts with stale switch positions.
 The SYNC_REQ mechanism ensures PanelBridge can request a fresh input snapshot at any time —
 whether after READY, on cold boot, after a node reconnect, or after a DCS session change.
 
 Missed outputs (LEDs, gauges) are tolerable — a fresh DCS-BIOS update arrives within ~50 ms.
+*(As built: a changed value comes on the next DCS-BIOS frame; an unchanged one with DCS-BIOS's
+autosync, every few seconds. Late outputs that catch up are accepted.)*
 Missed inputs (switch positions) would leave DCS in the wrong state until the next physical
 change — this is not tolerable.
 
@@ -127,16 +135,18 @@ forwards whole lines rather than single bytes.)*
 
 | Frame type | Policy |
 |------------|--------|
-| `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
-| `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. Never build an unbounded backlog. *(As built until #389 the "attempts" only counted a full mailbox set; a frame that lost arbitration or hit an error was gone. Since D32: lost arbitration always resends, an error up to 3 attempts.)* |
-| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. *(As built, heartbeats — and the later `HEALTH_n` / `TELEM_n` — take the same bounded retry as event frames; only `CTRL_BCAST` coalesces. See `02-can-protocol.md`.)* |
-| `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
+| `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. *(Superseded by #389: `CTRL_BCAST` is never coalesced. A frame carries two of ~250 controls, not the whole state, so replacing a queued one lost two other controls' updates. It queues in order like every frame — the bridge's TX ring is 64 frames — and a full ring drops the new frame and counts it in `txDropCount()`.)* |
+| `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. Never build an unbounded backlog. *(As built until #389 the "attempts" only counted a full mailbox set; a frame that lost arbitration or hit an error was gone. Since D32: lost arbitration always resends, an error up to 3 attempts. The drop counter is `txDropCount()`, kept on the board; `DIAG_ERR` is never sent.)* |
+| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. *(As built, heartbeats — and the later `HEALTH_n` / `TELEM_n` — take the same bounded retry as event frames; only `CTRL_BCAST` coalesces. See `02-can-protocol.md`.)* *(Since #389 no frame is coalesced, `CTRL_BCAST` included, and these take the D32 resend rules.)* |
+| `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. *(As built: `txDropCount()`, as above.)* |
 
 **Rationale:** output broadcasts are state snapshots; the newest value is always more useful
 than stale intermediate gauge/LED values. Input events are discrete user actions and should
 not use stale-output drop-oldest semantics, but they also must not create an unbounded backlog
 when the bus is unhealthy. Three attempts is enough to ride out transient mailbox contention;
-if drops occur in normal traffic, the diagnostic counter exposes a bus/load problem.
+if drops occur in normal traffic, the diagnostic counter exposes a bus/load problem. *(The
+counters are counted on the board — `txDropCount()`, `rxDropCount()`, `rxOverrunCount()` — and
+read from a test or a debugger. By decision they are not reported over the bus.)*
 
 **Affects:** `02-can-protocol.md`, `06-panelbridge-api.md`.
 
@@ -201,6 +211,11 @@ then it must be flushed with a null slot B. Here "cycle" means main firmware loo
 not an MCU clock cycle.
 Input snapshot bursts, such as boot and `SYNC_REQ` re-polls, flush any odd trailing slot-A
 packet immediately at the end of the poll pass.
+
+*(As built since #389: on PanelBridge a lone `CTRL_BCAST` packet waits two loop iterations **and**
+at least 2 ms (`BATCH_HOLD_MS`). The bridge's loop takes microseconds while the export stream
+delivers a word every ~0.25 ms, so two loops alone sent nearly every frame half empty. Nodes keep
+the two-loop deadline (`BATCH_HOLD_MS` 0), so input latency is unchanged.)*
 
 Batching is only required for input/output routing frames (`EVT_n` and `CTRL_BCAST`). Special
 frames use their own explicitly defined DLC and payload. A future/special frame may carry a
@@ -543,6 +558,10 @@ node's version changes, and reports it in `_NODE_STATUS` **v4** (34 hex), the no
 its own. An empty READY (older firmware) and a READY the bridge never saw both read 0.0.0, "not
 reported".
 
+*(As built: the v4 row is 19 bytes = **38 hex** — #365 appended the bootloader version and boot
+state before v4 shipped. Two reserved bytes are now spent: byte 3 = the installed bootloader's
+protocol version (#365), byte 4 = `ReadyFlag` bits (#383); bytes 5–7 stay reserved.)*
+
 **Rationale:**
 - *v1.0 has a mixed-version rule* — nodes on one bus share a major version — and until now nothing
   on the bus said which firmware a board runs. A missed board in a reflash stayed invisible.
@@ -556,7 +575,8 @@ reported".
   payload can't be mistaken for a real version.
 - *Accepted gap:* READY is once per boot, so a bridge that boots after a node reads it as not
   reported until that node reboots. A re-announce on the bridge's boot `SYNC_REQ` can follow as a
-  minor change — `SYNC_REQ` is empty today.
+  minor change — `SYNC_REQ` is empty today. *(Closed by #383: a node answers every `SYNC_REQ` with
+  a READY flagged `RESYNC`, so a bridge that boots later learns the version on its first sync.)*
 - *One version source.* The same header feeds SimGateway's `HELLO_ACK`, so the Gateway's two MCUs
   can't report different versions for one build.
 
@@ -620,6 +640,9 @@ nodes decide what they use — each output matches its own address. Only `0x0000
 the `ControlPacket` empty-slot sentinel, so CAN can't carry it (it holds the first two characters of
 `_ACFT_NAME`).
 
+*(As built since #389: the listener is `ExportDispatcher`, the bridge's one listener — it also routes
+the reserved host addresses itself, see `06` § ExportStreamListener.)*
+
 **Rationale:**
 - *The old window was the input-ID range by accident.* It was `0x8000`–`0x86FF` — the `DCSIN_*`
   range — not the A-4E's export block (`0x8400`–`0x8555`), so it already passed parts of the AH-64D,
@@ -631,7 +654,8 @@ the `ControlPacket` empty-slot sentinel, so CAN can't carry it (it holds the fir
 **Cost — confirm on the #290 soak:** `CTRL_BCAST` (then the highest-priority frame; the lowest since D31) now also carries
 CommonData (position, heading, model time) and the per-frame update counters, so bus load rises.
 The soak's "no false offline / zero TX drops" checks are the guard; `CTRL_BCAST` keeps the newest
-state when its queue is full.
+state when its queue is full. *(As built since #389: `CTRL_BCAST` is never coalesced — a full queue
+drops the new frame and counts it on the board, `txDropCount()`.)*
 
 **Affects:** `PanelBridge.cpp`, `02-can-protocol.md`, `06-panelbridge-api.md`, `10-implementation-plan.md`,
 TechSpec `PanelBridge`, PanelBridge README, `docs/architecture/can-bus.md`.
@@ -830,7 +854,7 @@ cut order if it ever has to shrink (`12` § Freeze).
 
 **Affects:** `Firmware/Bootloader` (startup, USART2 + DMA transport, `bridge` env, pins), `BootProtocol.h`
 (`transports`, serial framing, `BRIDGE_ENTER_EXPORT_ADDRESS`), `STM32Board::enterBootloader(via)`,
-`CANProtocol`, `PanelBridge` (`BridgeEnterListener`), `SimGateway` (`Uploader` target 0, UART hand-over),
+`CANProtocol`, `PanelBridge` (`BridgeEnterListener`, folded into `ExportDispatcher` by #389), `SimGateway` (`Uploader` target 0, UART hand-over),
 `Firmware/shared/bundle_bridge.py` + `osh_image.py` (`bootloader_env`), the release workflow, `03`, `04`, `06`,
 `07`, `12`, TechSpec, `docs/firmware/bootloader.md`, `docs/architecture/sim-gateway.md`, the flashing guide.
 
@@ -870,6 +894,10 @@ software ring from its interrupt. TX loads the mailboxes from the TX-complete in
 every finished mailbox first: lost arbitration → resent, always; a bus error → resent up to 3
 attempts in all, then dropped and counted. At most one frame per CAN ID is in the mailboxes at a
 time. `send()` always goes through the ring. Hardware retransmission stays off (D4).
+
+*(As built: a frame that is still lost — a full TX or RX ring, a hardware RX overrun, a frame out of
+error attempts — is counted on the board (`txDropCount()`, `rxDropCount()`, `rxOverrunCount()`). By
+decision the counters are not reported over the bus: no new frames, no frame-structure change.)*
 
 **Rationale:**
 - *The interrupts were never on.* `HAL_CAN_ActivateNotification()` set the controller's interrupt

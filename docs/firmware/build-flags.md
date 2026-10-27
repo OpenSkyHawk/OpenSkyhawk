@@ -215,7 +215,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 | `LED_TEST` | LED | `Outputs/LED/LED.h:67` |
 | `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:59` |
 | `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:77` |
-| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:92` |
+| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:96` |
 | `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:108` |
 | `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:141` |
 | `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:13` (no-op HID stubs) |

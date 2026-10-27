@@ -26,7 +26,7 @@ struct Io {
     void (*writeUart)(const uint8_t* p, uint16_t n);                                  ///< bytes to PanelBridge
 };
 
-/// Install the callbacks. Call once from SimGateway::begin().
+/// Install the callbacks. Call once from SimGateway::setup().
 void begin(const Io& io);
 
 /// True for the CAL_T_UPL_* request types the uploader answers.

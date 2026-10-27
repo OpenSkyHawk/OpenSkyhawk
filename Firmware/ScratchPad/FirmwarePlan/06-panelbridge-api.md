@@ -1,7 +1,7 @@
 # 06 — PanelBridge API
 
 **Owns:** Node tracking, `ExportStreamListener` contract, input dispatch orchestration,
-SYNC_REQ broadcast triggers, DCS session change detection, and DCS output submission to CAN.
+sequential `SYNC_REQ` (one node at a time), DCS session change detection, and DCS output submission to CAN.
 **Does not own:** CAN frame IDs or queue implementation details (→ 02), DCS-BIOS entry struct
 and generator rules (→ 04), boot sequence steps (→ 09), UART/HID protocol (→ 03).
 
@@ -199,17 +199,19 @@ burst. So the bridge syncs **one node at a time**:
   of ms (its EVT burst on the bus, then the bridge forwarding each to the host at 250 kbaud), so a
   30-node cockpit syncs in ~1–2 s; 4.5 s if none answered.
 - The bridge's RX ring is 128 frames (`CAN_RX_RING_SIZE`, nodes keep 8; ~2 KB of RAM) and
-  `rxDropCount()` counts overflow. Sequential sync alone drops nothing on the bench, even with the old
-  8-frame ring; the 128 is for the bridge's own stalls under load — at 63 nodes the 5 s roster reply
-  holds its loop ~130 ms while ~440 frames/s keep arriving (heartbeats, health, ~500 inputs/s).
+  `rxDropCount()` counts overflow on the board (not reported over the bus). Sequential sync alone
+  drops nothing on the bench, even with the old 8-frame ring; the 128 is for the bridge's own stalls
+  under load — at 63 nodes ~440 frames/s keep arriving (heartbeats, health, ~500 inputs/s). The 5 s
+  roster reply that once held its loop ~130 ms is written a row at a time since #388.
 
-Each PanelGroup node that receives a `SYNC_REQ` for it re-polls every registered input object and
-sends a CAN EVT with its current value. PanelBridge routes each EVT normally.
+Each PanelGroup node that receives a `SYNC_REQ` for it re-reports every registered input's current
+state as CAN EVTs — an input with no absolute state (`ActionButton`, the encoders) sends nothing
+(`05` § Re-reporting) — then ends with READY(RESYNC). PanelBridge routes each EVT normally.
 
 > **Note:** `DcsBios::resetAllStates()` re-sends panel input states to DCS and is useful when
 > DCS-BIOS input handlers are registered locally on the running MCU. In the OpenSkyhawk
-> architecture, input handling is distributed across PanelGroup nodes, so the `SYNC_REQ` CAN
-> broadcast is the correct equivalent.
+> architecture, input handling is distributed across PanelGroup nodes, so a `SYNC_REQ` to each
+> node is the correct equivalent.
 
 ---
 
@@ -229,9 +231,10 @@ previous value. The first valid value only seeds the previous-value state. When 
 decreases, PanelBridge queues every alive node for a sync (§ Sequential sync).
 
 `SYNC_REQ` only asks PanelGroup nodes to re-send their physical input states. PanelBridge does
-not run an active output refresh task; DCS outputs wait for the next normal DCS-BIOS publishing
-cycle, which is expected within roughly 50 ms. LEDs and gauges then update naturally from the
-usual export dispatcher path.
+not run an active output refresh task; a DCS output arrives when the export stream next carries
+it — on its next change, or DCS-BIOS's autosync, which re-sends every value every few seconds. LEDs
+and gauges then update naturally from the usual export dispatcher path. Late outputs that catch up
+are accepted.
 
 ---
 

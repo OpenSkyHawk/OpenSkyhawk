@@ -2,7 +2,7 @@
 //
 // Purpose: verify DCS session change detection via model-time string buffer.
 // First valid model-time value seeds state (no SYNC_REQ). Later value that decreases
-// triggers SYNC_REQ broadcast.
+// queues every alive node for a sync (one SYNC_REQ per node, #387).
 //
 // Hardware: single STM32F103CB board.
 //   - Serial (UART2 PA2/PA3) → USB-UART adapter @ 250000 baud (sends DCS-BIOS export bytes)
@@ -16,17 +16,17 @@
 //   4. Send DCS-BIOS binary export frames on the adapter for CommonData_MOD_TIME_A (0x0440):
 //        First: model_time = "100  " (100 seconds) — seeds state; NO SYNC_REQ expected.
 //        Then:  model_time = "200  " (200 seconds) — higher; NO SYNC_REQ expected.
-//        Then:  model_time = "050  " (50 seconds)  — DECREASE; SYNC_REQ expected.
+//        Then:  model_time = "050  " (50 seconds)  — DECREASE; session change logged. Alone on the
+//                                                     bus no node is alive, so no SYNC_REQ goes out.
 //   5. Watch DiagSerial for:
-//        [BRIDGE] DCS session change — SYNC_REQ
-//        [BRIDGE] SYNC_REQ broadcast
+//        [BRIDGE] DCS session change — sync every node
 //
 // DCS-BIOS binary export frame format (see DCS-BIOS protocol docs):
 //   0x55 0x55 <count_hi> <count_lo> <address_lo> <address_hi> <len_lo> <len_hi> <data...> 0x55 0x55 <count> <count>
 //   For model_time string at 0x0440 (5 bytes): address=0x0440, len=5, data="100  "
 //
 // Pass criteria (manual, DiagSerial):
-//   - "[BRIDGE] DCS session change — SYNC_REQ" appears only on the third send (decrease)
+//   - "[BRIDGE] DCS session change — sync every node" appears only on the third send (decrease)
 //
 // DEFERRED (2026-06-11): USB-UART adapters available during Phase 2 testing cannot open
 // at 250000 baud (macOS stty rejects the rate). Injection requires a sender at 250000.

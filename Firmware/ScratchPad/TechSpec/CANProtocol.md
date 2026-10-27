@@ -308,7 +308,8 @@ enum class CanStatus {
 
 static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x7E0;  ///< Broadcast ControlPacketPair to all panels — the lowest priority on the bus (#389, D31)
 static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  ///< RTT throughput test
-static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Request all nodes to re-poll inputs
+static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Ask a node to re-send its state (byte 0 = its NODE_ID, #387)
+static constexpr uint8_t  SYNC_REQ_LEN_TARGETED = 1;  ///< DLC of a targeted SYNC_REQ; an empty one (DLC 0) is for every node
 
 // ── CAN ID functions (per-node IDs computed from NODE_ID) ─────────────────────
 
@@ -450,8 +451,8 @@ namespace CANProtocol {
      * HB_NODE_ID is first stamped for the duplicate NODE_ID check (#344), then passed on too.
      *
      * Also services sendBatched() deadlines: any half-full ControlPacketPair
-     * that has waited two owning firmware loop iterations is flushed with
-     * slot B set to the null sentinel.
+     * that has waited two owning firmware loop iterations — and, on PanelBridge, at least
+     * BATCH_HOLD_MS (2 ms, #389) — is flushed with slot B set to the null sentinel.
      */
     void drain();
 
@@ -467,7 +468,7 @@ namespace CANProtocol {
      * A full ring drops the new frame. CTRL_BCAST and EVT_n payloads are
      * ControlPacketPair batches; a single input/output packet uses slot B controlId == 0x0000
      * as the null sentinel. Special/control/diagnostic frames use their explicit DLC and
-     * payload. All drops increment the DIAG_ERR TX drop counter.
+     * payload. Every drop is counted on the board in txDropCount() — not reported over the bus.
      *
      * @param canId  11-bit standard CAN ID.
      * @param data   Pointer to payload bytes.
@@ -524,8 +525,10 @@ namespace CANProtocol {
     /**
      * @brief Register a SYNC_REQ handler.
      *
-     * Fired by drain() when a SYNC_REQ frame (0x012) is received. PanelGroup
-     * registers this to trigger a re-poll of all registered input objects.
+     * Fired by drain() when a SYNC_REQ frame (0x012) for this node is received — byte 0 = its
+     * NODE_ID, or an empty frame (every node); one naming another node is ignored (#387).
+     * PanelGroup registers this to re-report every registered input. After the boot READY,
+     * drain() then ends the answer with a READY flagged RESYNC (see sendReady()).
      *
      * @param cb Callback to invoke on SYNC_REQ receipt.
      */
@@ -723,10 +726,12 @@ submit individual packets through `sendBatched()`; they never allocate or queue
 Each active batched CAN ID stores:
 
 ```cpp
-struct PacketBatchState {
+struct BatchState {
+    uint32_t canId;
     bool hasA;
     ControlPacket a;
     uint8_t loopsWaited;
+    uint32_t sinceMs;      // when `a` started waiting (#389)
 };
 ```
 
@@ -734,7 +739,9 @@ Supported batched IDs are `CAN_ID_CTRL_BCAST`, `canIdEvt(n)`, `canIdEvtRel(n)`, 
 and `canIdEvtAction(n)` — five slots, one per frame. When a second packet arrives, CANProtocol
 sends `{a, b}` as one 8-byte frame. If no second packet arrives by the deadline serviced from
 `drain()`, or if the caller explicitly calls `flushBatched(canId)`, CANProtocol sends `{a, null}`
-where `null.controlId == 0x0000`.
+where `null.controlId == 0x0000`. The deadline is two `drain()` calls **and** `BATCH_HOLD_MS`: 0 on
+a node, so input latency stays two loops; 2 ms on PanelBridge (#389), whose loop takes microseconds —
+two loops alone sent nearly every `CTRL_BCAST` frame half empty.
 
 **A batched frame ID must have a slot registered in `_batches[]` during `begin()`.** `sendBatched()`
 looks the ID up there and returns silently when it is absent — no log, no fault. Adding a batched
@@ -862,7 +869,7 @@ frame type says so.
 
 The protocol allows CANProtocol to wait briefly for slot B, but not indefinitely. CANProtocol
 owns the batch state for `CTRL_BCAST` and `EVT_n`, and `drain()` services the two-loop
-deadline. PanelBridge and PanelGroup call `sendBatched()` with individual `ControlPacket`s.
+deadline (plus 2 ms on PanelBridge, above). PanelBridge and PanelGroup call `sendBatched()` with individual `ControlPacket`s.
 PanelGroup snapshot bursts call `flushBatched(canIdEvt(NODE_ID))` at the end of the poll pass
 so an odd trailing packet is sent immediately.
 
@@ -883,8 +890,12 @@ The TEST_SEQ frame is not forwarded to the `onReceive` callback.
 
 ### SYNC_REQ handling
 
-SYNC_REQ is intercepted by `drain()` and fires `onSyncReq()` callback. Not forwarded
-to `onReceive`. PanelGroup registers `onSyncReq` to trigger input re-poll.
+SYNC_REQ is intercepted by `drain()`. One naming another node (DLC ≥ 1, byte 0 ≠ `NODE_ID`) is
+dropped; one naming this node, or an empty one, fires `onSyncReq()`. Not forwarded to `onReceive`.
+PanelGroup registers `onSyncReq` to re-report its inputs. Once the boot READY is out, `drain()` then
+sends READY flagged `RESYNC` when the answer has left — the TX ring empty and all three mailboxes
+free, or after 50 ms (#383, #387). PanelBridge sends `SYNC_REQ` one node at a time
+(`sendSyncReq()`); it never sends the empty form.
 
 ### CAN status monitoring
 

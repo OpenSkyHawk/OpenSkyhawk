@@ -18,7 +18,8 @@ PanelBridge (STM32F103C8T6)    ← this library
     └── PanelGroup #N
 ```
 
-**DCS-BIOS exports (sim → cockpit):** `BridgeExportListener` forwards the whole DCS-BIOS export
+**DCS-BIOS exports (sim → cockpit):** `ExportDispatcher`, the bridge's one DCS-BIOS listener (#389),
+forwards the whole DCS-BIOS export
 stream — every address of whatever aircraft is flying, plus CommonData and the metadata, except
 `0x0000` (the CAN empty-slot sentinel) — and batches each value as a `ControlPacket` to
 `CANProtocol::sendBatched(CAN_ID_CTRL_BCAST)`. PanelGroup nodes subscribe to these frames
@@ -36,7 +37,8 @@ to drive LEDs, gauges, and other outputs.
 - [STM32Board](../STM32Board/README.md)
 - [CANProtocol](../CANProtocol/CANProtocol.h)
 - A4EC — input map and command IDs
-- DCS-BIOS — `ExportStreamListener`, `StringBuffer`, `sendDcsBiosMessage()`
+- DCS-BIOS — `ExportStreamListener` (exactly one; no `StringBuffer` / `IntegerBuffer`, #389),
+  `sendDcsBiosMessage()`
 
 ## UART wiring
 
@@ -60,7 +62,8 @@ void onAlive(uint8_t nodeId) { /* node came online */ }
 void onDead(uint8_t nodeId)  { /* node timed out  */ }
 
 void setup() {
-    STM32Board::setDebug(true);          // optional — enables DiagSerial output
+    // STM32Board::setDebug(true);       // bench only — off by default; with it on every input is
+                                         // also logged, blocking (~300 inputs/s instead of ~1,450, #389)
     PanelBridge::onNodeAlive(onAlive);   // optional
     PanelBridge::onNodeDead(onDead);     // optional
     PanelBridge::setup();
@@ -80,21 +83,27 @@ It makes the DCS-BIOS library own `Serial` (UART2). `PanelBridge.h` must be incl
 ## Node tracking
 
 PanelBridge tracks up to 63 PanelGroup nodes. A node is marked alive on first heartbeat
-or READY frame; dead after 3 s without a heartbeat. On each alive transition, PanelBridge
-broadcasts `SYNC_REQ` so the node re-polls and sends its current input state.
+or READY frame; dead after 3 s without a heartbeat. On each alive transition, and on a boot
+READY, PanelBridge queues the node for a sync: it sends `SYNC_REQ` naming one node at a time, and
+the node re-reports its current input state and ends with READY(RESYNC) (#383, #387). A DCS session
+change queues every alive node.
 
 ### Reporting nodes to the host (#86)
 
 On by default (`-DPANELBRIDGE_NODE_STATUS=0` compiles it out), PanelBridge surfaces the roster + per-node
 health to OpenSkyhawk Client over DCS-BIOS — no bespoke sideband, SimGateway untouched:
 
-- **Response:** a DCS-BIOS command message `_NODE_STATUS <hex>` per node (`hex` =
-  `nodeId present flags uptime rxCount esr`, 18 chars). A bare message is a live delta (on each
+- **Response:** a DCS-BIOS command message `_NODE_STATUS <hex>` per node (proto v4: 19 bytes =
+  38 hex chars — heartbeat, health, board kind, firmware version and bootloader fields; layout in
+  `NodeStatusField`). A bare message is a live delta (on each
   alive/dead transition; a 3 s heartbeat timeout reports `present=00` for silent death). A
   request/boot reply is the full roster terminated by `_NODE_STATUS_END <count>` so the host can
-  reconcile/prune. PanelBridge caches the last `HeartbeatPayload` for the health bytes.
+  reconcile/prune; it goes out a row at a time as the UART has room (#388). The node-0 row is the
+  bridge itself. PanelBridge caches each node's last `HB_n`, `HEALTH_n` and `READY_n`.
 - **Request:** the client writes a DCS-BIOS export to the reserved address `0xFF00`
-  (`NODE_STATUS_REQ_ADDR`); a dedicated `ExportStreamListener` replies with the full roster.
+  (`NODE_STATUS_REQ_ADDR`); `ExportDispatcher` routes it and the bridge replies with the full roster.
+- **Forget:** a write to `0xFF04` (`NODE_FORGET_REQ_ADDR`, value = a NODE_ID) drops a dead node that
+  is gone on purpose, then re-sends the roster (#384).
 
 Reserved IDs live in `NodeStatus.h`. See `FirmwarePlan/04-dcs-bios-integration.md`.
 
@@ -109,7 +118,7 @@ See [`PanelBridge.h`](PanelBridge.h) for full Doxygen documentation.
 
 | Function | Description |
 |---|---|
-| `PanelBridge::setup()` | Init board services, UART, CAN, cold-boot SYNC_REQ |
-| `PanelBridge::loop()` | Drain CAN, check heartbeat timeouts, handle DiagSerial |
+| `PanelBridge::setup()` | Init board services, UART, CAN; arm the boot roster reply; clear the bootloader's crash-loop counter |
+| `PanelBridge::loop()` | Drain CAN, check heartbeat timeouts, sync nodes one at a time, write roster rows, send HB_0/HEALTH_0, handle DiagSerial |
 | `PanelBridge::onNodeAlive(cb)` | Callback fired when a node transitions to alive |
 | `PanelBridge::onNodeDead(cb)` | Callback fired after 3 s with no heartbeat |

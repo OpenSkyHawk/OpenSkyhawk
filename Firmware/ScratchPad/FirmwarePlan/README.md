@@ -32,7 +32,7 @@ STM32F103 — PanelBridge  [one per cockpit — runs DCS-BIOS library]
 | `06-panelbridge-api.md` | Node tracking, `ExportStreamListener`, input dispatch, SYNC_REQ triggers |
 | `07-simgateway-api.md` | `HIDAxis`, `HIDButton`, relay contract, HID dispatch logic |
 | `08-hardware-firmware-contracts.md` | STM32 pin assignments, DRV8833 ~SLEEP contract, ADS1115 assumptions |
-| `09-startup-resync-diagnostics.md` | Boot sequences (all three nodes), SYNC_REQ/READY handshake, DIAG frames |
+| `09-startup-resync-diagnostics.md` | Boot sequences (all three nodes), SYNC_REQ/READY handshake, DiagSerial diagnostics |
 | `10-implementation-plan.md` | Phased task list (Phases 1–6) |
 | `11-open-issues.md` | Deferred decisions, conditional revisit items, cross-document discrepancies |
 | `12-bootloader.md` | The CAN bootloader — flash layout, boot flow, NODE_ID copy in the option bytes, update protocol |

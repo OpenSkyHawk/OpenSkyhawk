@@ -10,7 +10,7 @@
 
 RP2040 firmware library. Owns:
 
-- **USB CDC ↔ UART relay** — forwards the DCS-BIOS stream in both directions without parsing or interpreting its content; the host-bound side is line-granular and never blocks (#355)
+- **USB CDC ↔ UART relay** — forwards the DCS-BIOS stream in both directions without interpreting its content; the host-bound side is line-granular and never blocks (#355)
 - **Link health** — per-bit UART error counters, FAULT self-clear, USB recovery ladder (`LinkRecovery`), hardware watchdog, and the `GET_DIAG` reply (#355)
 - **HID frame demultiplexer** — intercepts binary HID frames (identified by `0xAA 0x55` magic) on the UART RX path; routes controlIds to `HIDAxis`, `HIDButton`, and `HIDHatSwitch` registered objects
 - **`HIDAxis`, `HIDButton`, `HIDHatSwitch` classes** — declared in the sketch; self-register into linked lists at construction
@@ -18,7 +18,7 @@ RP2040 firmware library. Owns:
 - **TinyUSB HID descriptor** — 8 axes, 128 buttons, 4 hat switches; embedded in `SimGateway.cpp` under `#ifndef SIMGATEWAY_TEST`
 - **Status-LED state machine** — drives the two board-mounted `Gateway_Bridge` LEDs (GREEN = GP2, RED = GP3, active-high) with a non-blocking `millis()` animator ticked from `loop()`; reports USB / data / fault state (issue #94)
 
-Does **not** run the DCS-BIOS library. Does **not** parse DCS-BIOS addresses or control names. Has no knowledge of CAN frame formats, PanelBridge internals, or the CAN cluster topology.
+Does **not** run the DCS-BIOS library. Does **not** parse DCS-BIOS addresses or control names. The relay knows nothing of CAN; the uploader (§ Uploader, #366/#367) is the one part that does — it builds bootloader frames for the bridge to relay and reads `_NODE_STATUS` / `_BOOT_RSP` lines.
 
 Platform: **RP2040 only.** Not used on STM32 boards.
 
@@ -38,9 +38,9 @@ Firmware/Libraries/SimGateway/
 ├── UploadProtocol.h ← the uploader's USB contract (#366): states, phases, results, UPL_* payload offsets
 ├── Uploader.h/.cpp  ← the firmware uploader (#366): 124 KB staging, the flash state machine, relay
 │                      encoding, `_BOOT_RSP` / `_NODE_STATUS` parsing — portable, I/O via callbacks
-└── library.json     ← platform: raspberrypi; dep: adafruit/Adafruit TinyUSB Library
+└── library.json     ← platform: raspberrypi (version and dependencies: see the file)
 
-Firmware/SimGateway/
+Firmware/Templates/SimGateway/
 ├── platformio.ini
 └── src/
     └── main.cpp     ← HIDAxis/HIDButton/HIDHatSwitch declarations + setup()/loop()
@@ -48,17 +48,8 @@ Firmware/SimGateway/
 
 ### library.json
 
-```json
-{
-  "name": "SimGateway",
-  "version": "0.1.0",
-  "frameworks": "arduino",
-  "platforms": "raspberrypi",
-  "dependencies": {
-    "adafruit/Adafruit TinyUSB Library": "^3.7.7"
-  }
-}
-```
+`Firmware/Libraries/SimGateway/library.json` is the source for the library's version and its
+dependencies — not copied here, so it can't go stale.
 
 Included in the SimGateway sketch:
 
@@ -73,8 +64,6 @@ Included in the SimGateway sketch:
 Firmware/Tests/SimGateway/
 ├── platformio.ini
 └── tests/
-    ├── _support/
-    │       (no shim files — test builds use #ifdef SIMGATEWAY_TEST stubs in SimGateway.cpp)
     ├── hid_parser.cpp       — valid 6-byte HID frame (0xAA 0x55 + controlId + value) parsed
     │                          and dispatched; DCS-BIOS bytes (≤ 0x7F) do not trigger setters;
     │                          HID report sent exactly once after drain if any setter fired
@@ -99,7 +88,20 @@ Firmware/Tests/SimGateway/
                                priority precedence, STREAMING↔USB_IDLE 500 ms decay, INIT→NO_HOST
                                2 s window, FAULT latch/recovery, animation phase timing.
                                Pure logic via SIMGATEWAY_TEST hooks — no GPIO/TinyUSB/registers
+    ├── axis_cal_transform.cpp — two-segment calibration map, validity predicate, blob checksum
+    ├── axis_cal_framing.cpp   — calibration frame parser: consumed only on magic + LEN + CRC;
+    │                            anything else reaches PanelBridge byte-for-byte, in order
+    ├── axis_cal_session.cpp   — calibration session and commands, replies checked off CDC
+    ├── axis_cal_raw_stream.cpp — RAW streaming of the axis under calibration during a session
+    ├── axis_cal_persist.cpp   — production mode: the one test that writes real flash (two
+    │                            phases across a power cycle)
+    ├── hid_enumeration.cpp    — production mode: the real descriptor enumerates as a DirectInput
+    │                            joystick; axis sweep for joy.cpl / DCS
+    └── hid_stress.cpp         — beyond-production descriptor (16 axes, 128 buttons, 8 hats), no
+                                 SimGateway library: what each platform surfaces
 ```
+
+Each test is a directory under `tests/` (`tests/<name>/<name>.cpp`).
 
 Tests are intended to run on a real RP2040 board as on-device harness tests. They simulate
 PanelBridge-originated UART data by feeding synthetic bytes into the SimGateway parser; they do
@@ -154,51 +156,19 @@ UART pin loopback tests must cover:
    drained by `SimGateway::loop()`, proving the public UART path reaches the same parser and CDC
    forwarding capture as `feedByte()`.
 3. Valid HID frames sent through the loopback are consumed by HID dispatch and not forwarded to CDC.
-4. Bad magic sent through the loopback still forwards `0xAA` plus the mismatched byte and returns to
-   scanning.
+4. Bad magic sent through the loopback puts `0xAA` plus the mismatched byte into the line, which is
+   dropped as corrupt; the parser returns to scanning and the next line forwards.
 
 No USB host is required. USB CDC is used only as the on-device test report console.
 
-**`platformio.ini`:**
-
-```ini
-[env_base]
-platform = https://github.com/maxgerhardt/platform-raspberrypi.git#79ce473e1a8010ed8096388690222fd2c94858a6
-board = rpipico
-board_build.core = earlephilhower
-framework = arduino
-build_flags =
-    -DSIMGATEWAY_TEST
-    -Itests/_support
-lib_extra_dirs = ${PROJECT_DIR}/../../Libraries
-lib_deps =
-    SimGateway
-    HIDControls
-
-[env:test_hid_parser]
-extends = env_base
-build_src_filter = -<*> +<hid_parser/hid_parser.cpp>
-
-[env:test_parser_resync]
-extends = env_base
-build_src_filter = -<*> +<parser_resync/parser_resync.cpp>
-
-[env:test_hid_dispatch]
-extends = env_base
-build_src_filter = -<*> +<hid_dispatch/hid_dispatch.cpp>
-
-[env:test_cdc_forwarding]
-extends = env_base
-build_src_filter = -<*> +<cdc_forwarding/cdc_forwarding.cpp>
-
-[env:test_uart_loopback]
-extends = env_base
-build_src_filter = -<*> +<uart_loopback/uart_loopback.cpp>
-
-[env:test_led_state]
-extends = env_base
-build_src_filter = -<*> +<led_state/led_state.cpp>
-```
+**`platformio.ini`** (`Firmware/Tests/SimGateway/platformio.ini`): `[env_base]` builds with
+`-DSIMGATEWAY_TEST` against `SimGateway` + `HIDControls`; one env per test —
+`test_hid_parser`, `test_parser_resync`, `test_hid_dispatch`, `test_cdc_forwarding`,
+`test_uart_loopback`, `test_led_state`, `test_axis_cal_transform`, `test_axis_cal_framing`,
+`test_axis_cal_session`, `test_axis_cal_raw_stream`, `test_cdc_relay`, `test_link_health`.
+Three envs build in production mode, without `SIMGATEWAY_TEST`: `test_hid_enumeration` (the real
+TinyUSB HID stack), `test_axis_cal_persist` (real flash) and `test_hid_stress` (its own descriptor,
+no SimGateway library).
 
 ---
 
@@ -272,6 +242,35 @@ private:
     uint8_t           _buttonIndex;
 };
 
+/**
+ * @brief HID hat switch handler. Declared at sketch scope for each hat switch.
+ *
+ * Self-registers into a static linked list at construction.
+ * Writes the HID hat nibble with direction clamped to 0–8.
+ */
+class HIDHatSwitch {
+public:
+    /**
+     * @brief Register a HID hat switch handler.
+     * @param controlId  CTRL_* constant from HIDControls.h (0x0020–0x002F range).
+     * @param hatIndex   HID report hat index (0–3).
+     */
+    HIDHatSwitch(uint16_t controlId, uint8_t hatIndex);
+
+    // ── Linked list traversal — used internally by SimGateway ────────────────
+    static HIDHatSwitch* head();
+    uint16_t controlId() const;
+    /// 0 = centered, 1 = N, 2 = NE, 3 = E, 4 = SE, 5 = S, 6 = SW, 7 = W, 8 = NW; > 8 → centered.
+    void          dispatch(uint16_t value);
+    HIDHatSwitch* next() const;
+
+private:
+    static HIDHatSwitch* _head;
+    HIDHatSwitch*        _next;
+    uint16_t             _controlId;
+    uint8_t              _hatIndex;
+};
+
 } // namespace OpenSkyhawk
 
 namespace SimGateway {
@@ -304,14 +303,18 @@ namespace SimGateway {
      *   0. Arm (first call) or feed the WATCHDOG_MS (3 s) hardware watchdog. The first call also
      *      switches off TinyUSB's task IRQ (#389, D33). Production only.
      *   1. Forward up to CDC_TO_UART_BUDGET (64) bytes from USB CDC (Serial) to UART — raw
-     *      DCS-BIOS stream to PanelBridge.
+     *      DCS-BIOS stream to PanelBridge. Calibration frames are consumed; while the uploader
+     *      flashes, the client's bytes are dropped (Uploader::ownsUart(), #366).
      *   2. Drain all bytes from UART:
      *        byte == 0xAA, next == 0x55 → HID frame: read 4 more bytes, parse controlId + value,
      *                                     walk HIDAxis, HIDButton, HIDHatSwitch linked lists, dispatch matches.
      *        any other byte             → append to the host-bound line; on '\n' write the whole
      *                                     line to USB CDC, or drop and count it (never blocks).
      *        byte == 0xAA, next != 0x55 → both bytes go to the line (now corrupt); resume.
-     *   3. If any HID setter fired this iteration, send the HID report exactly once.
+     *      While the uploader flashes the bridge it takes the UART bytes itself
+     *      (Uploader::onUartByte(), #367); both parsers reset at each hand-over.
+     *   3. If any HID setter fired this iteration, send the HID report exactly once. Then end
+     *      an abandoned calibration session, and Uploader::tick().
      *   4. statusTick(): LEDs, per-bit UART error counters, FAULT self-clear.
      *   5. USB recovery ladder.
      *
@@ -553,7 +556,7 @@ heavy host traffic (caught by PC sampling: IRQ 31 spinning in `mutex_enter_block
 
 ### HID report batching
 
-A local `bool _anyFired = false` flag is reset at the top of `loop()`. Any matching HIDAxis, HIDButton, or HIDHatSwitch dispatch sets it `true`. After UART is fully drained, `_hidSend()` is called once if `_anyFired`. This prevents redundant USB HID reports when multiple HID frames arrive in the same iteration.
+A local `bool anyFired = false` is declared at step 2 of `loop()`. Any matching HIDAxis, HIDButton, or HIDHatSwitch dispatch sets it `true`. After UART is fully drained, `_hidSend()` is called once if `_anyFired`. This prevents redundant USB HID reports when multiple HID frames arrive in the same iteration.
 
 ### USB enumeration race
 
@@ -677,7 +680,8 @@ OFF / SOLID / SLOW 1 Hz / FAST 4 Hz / ALT 500 ms / PULSE ~50 ms (PULSE disabled 
 
 Signal sources:
 
-- **STREAMING / USB_IDLE** — CDC→UART forward (relay step 1) timestamps the last PC byte;
+- **STREAMING / USB_IDLE** — relay step 1 timestamps the last PC byte, forwarded or not (a consumed
+  calibration frame is host traffic too);
   STREAMING while `now − lastCdcRx ≤ 500 ms`.
 - **NO_HOST / INIT** — `TinyUSBDevice.mounted()` polled each tick; a sticky ever-mounted flag
   splits INIT (never mounted, `now < 2000 ms`) from NO_HOST (unplugged after a mount, or init
@@ -740,7 +744,7 @@ void loop() {
 }
 ```
 
-SimGateway has no boot handshake with the CAN cluster. It is stateless with respect to PanelBridge or PanelGroup boot state.
+SimGateway has no boot handshake with the CAN cluster. The relay is stateless with respect to PanelBridge or PanelGroup boot state; only the uploader tracks each node's `_NODE_STATUS` boot state while it flashes.
 
 ---
 
@@ -751,6 +755,7 @@ SimGateway has no boot handshake with the CAN cluster. It is stateless with resp
 | earlephilhower/arduino-pico | PlatformIO platform | TinyUSB CDC (`Serial`), `HardwareSerial`, RP2040 Arduino core |
 | Adafruit TinyUSB Library | `adafruit/Adafruit TinyUSB Library` | Custom HID descriptor; 8 axes, 128 buttons, 4 hats; embedded in SimGateway.cpp |
 | HIDControls | `Firmware/Libraries/HIDControls` | Standalone platform-agnostic library; CTRL_* constants for sketch declarations |
+| FirmwareVersion, FirmwareImage, BootProtocol, NodeStatus | `Firmware/Libraries/` | The version in `HELLO_ACK`; the uploader's identity-block checks, bootloader frames and `_NODE_STATUS` parsing (#366/#367) |
 | EEPROM | framework-arduinopico (bundled) | Flash-sector-backed emulation for the calibration blob. Resolved by PlatformIO's LDF from a plain `#include <EEPROM.h>` — no `lib_deps` entry needed, unlike Adafruit TinyUSB. Production builds only. |
 
 
@@ -762,7 +767,7 @@ upload.
 ```cpp
 struct Io { void (*send)(type, seq, payload, len); void (*ack)(type, seq);
             void (*nack)(type, seq, reason, detail); void (*writeUart)(p, n); };
-void begin(const Io&);                               // SimGateway::begin()
+void begin(const Io&);                               // SimGateway::setup()
 bool handles(uint8_t type);                          // CAL_T_UPL_* requests
 void onFrame(type, seq, payload, len, now);          // a verified client frame of those types
 void onClientFrame(uint32_t now);                    // any verified client frame — the client is there

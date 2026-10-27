@@ -30,7 +30,7 @@ Open the one relevant doc via the maps below rather than reading everything.
 - `06-panelbridge-api.md` — node tracking, export listener, input dispatch, SYNC_REQ
 - `07-simgateway-api.md` — `HIDAxis`/`HIDButton`, relay contract, HID dispatch
 - `08-hardware-firmware-contracts.md` — STM32 pin assignments, DRV8833 ~SLEEP, ADS1115
-- `09-startup-resync-diagnostics.md` — boot sequences, SYNC_REQ/READY, DIAG frames
+- `09-startup-resync-diagnostics.md` — boot sequences, SYNC_REQ/READY, DiagSerial diagnostics
 - `10-implementation-plan.md` / `11-open-issues.md` — phased plan / deferred items
 
 **TechSpec:** one file per library/class (`CANProtocol`, `STM32Board`, `PanelBridge`,

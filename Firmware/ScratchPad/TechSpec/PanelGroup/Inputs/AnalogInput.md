@@ -207,7 +207,7 @@ Three preconditions, each of which binds:
 - **HID routing.** See the note below on DCS-BIOS-routed values.
 
 2 ms is not arbitrary: SimGateway declares its HID endpoint with `interval_ms = 2`
-(`SimGateway.cpp:80-81`), so 500 Hz is exactly the USB report rate and a faster axis is discarded at
+(`SimGateway.cpp:82-83`), so 500 Hz is exactly the USB report rate and a faster axis is discarded at
 the USB boundary. The gain is **latency, not throughput** — real flying sits at 40–200 Hz per axis,
 below even the shipped 125 Hz, so a faster poll buys up to ~6 ms less sampling delay on every
 movement rather than more updates.

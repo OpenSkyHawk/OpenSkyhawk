@@ -11,9 +11,10 @@ descriptor and report layout.
 
 SimGateway is the single RP2040 module that bridges the PC to the CAN cluster:
 
-- **USB CDC ↔ UART relay:** raw DCS-BIOS byte stream forwarded transparently in both
-  directions. SimGateway does **not** run the DCS-BIOS library — it never parses or
-  interprets the DCS-BIOS stream.
+- **USB CDC ↔ UART relay:** the export stream goes to PanelBridge as-is; PanelBridge's output
+  comes back line by line (below). SimGateway does **not** run the DCS-BIOS library and the relay
+  never interprets the stream — only the uploader (§ Uploader, #366) reads `_NODE_STATUS` /
+  `_BOOT_RSP` lines.
 - **HID dispatch:** intercepts HID frames on UART RX (identified by `HID_MAGIC` — see
   `03-uart-usb-hid-protocol.md`); routes controlIds to `HIDAxis`, `HIDButton`, or `HIDHatSwitch`.
 
@@ -239,8 +240,9 @@ and the status LEDs.
 | as above, no CDC room | dropped whole | `LINES_DROPPED` |
 | contains any other byte (incl. `\r`, or an `0xAA` that began no HID frame) | dropped | `LINES_CORRUPT` |
 | longer than `RELAY_LINE_MAX` | dropped | `LINES_OVERLONG` |
+| a non-printable byte before a line starts (#367) | dropped on its own | — |
 
-The longest real line is a `_NODE_STATUS` row at about 42 bytes. A healthy link never drops a
+The longest real line is a `_NODE_STATUS` row at about 52 bytes (v4: 38 hex). A healthy link never drops a
 line; the counters exist to tell a host that stopped reading from line noise.
 
 **One exception, inbound only: calibration frames are consumed** (see
@@ -414,7 +416,7 @@ algorithm, CRC word skipped) and that the identity block matches `UPL_BEGIN`.
 
 | Phase | Does | Ends |
 |---|---|---|
-| ENTERING_BOOT | `CONNECT` every 100 ms on `BOOT_CMD_n` (a running app with a bootloader resets into it; a reset board is caught). Unconfigured target: waits for a `0x7C1` announcement for the UID hash, then `CONNECT [uid16]` on `0x7C0` | `CONNECTED`; 10 s → `NO_BOOTLOADER` (its `_NODE_STATUS` row shows bootloader 00) or `NO_RESPONSE` |
+| ENTERING_BOOT | `CONNECT` every 100 ms on `BOOT_CMD_n` (a running app with a bootloader resets into it; a reset board is caught). Unconfigured target: waits for a `0x7C1` announcement for the UID hash, then `CONNECT [uid16]` on `0x7C0` | `CONNECTED`; 10 s → `NO_BOOTLOADER` (its `_NODE_STATUS` row shows bootloader 00) or `NO_RESPONSE` on the first attempt; on a retry (the board was mid-flash), it retries again (`UPL_RETRIES` in all) and ends `WRITE_FAILED` when they run out |
 | CONNECTED | Checks the bootloader's answer: kind (`KIND_MISMATCH`), room = flash − 4 KB (`TOO_BIG_FOR_BOARD`), NODE_ID (`ID_MISMATCH` unless `newNodeId` = the image's) — **before anything is erased** | → SETTING_ID or ERASING |
 | SETTING_ID | `SET_NODE_ID` → the board resets as the new node, app invalid | → ENTERING_BOOT at the new ID |
 | ERASING | `BEGIN` (the bootloader erases the image's pages first) | `BEGUN`; 6 s → retry |
@@ -444,7 +446,8 @@ relayed. Calibration and upload exclude each other (`NACK BUSY`).
   `NACK NOT_STAGED`.
 - **ENTERING_BOOT:** a write to `BRIDGE_ENTER_EXPORT_ADDRESS` (`0xFF02`) every 500 ms until the
   bootloader announces (2 s at most), then `CONNECT` every 100 ms — pressing the Gateway's reset button
-  catches an app that ignores the request. 10 s → `NO_RESPONSE`.
+  catches an app that ignores the request. 10 s → `NO_RESPONSE` (`NO_BOOTLOADER` when the node-0 row
+  shows bootloader 00; on a retry, it retries again and ends `WRITE_FAILED` when the retries run out).
 - **The UART is the uploader's both ways** from ENTERING_BOOT to CONFIRMING: every byte PanelBridge sends
   goes to `Uploader::onUartByte()` (the `0xAA` serial frames), not the line / HID parsers. SimGateway
   resets both parsers at each hand-over, so a line cut off at the switch can't swallow the next one.

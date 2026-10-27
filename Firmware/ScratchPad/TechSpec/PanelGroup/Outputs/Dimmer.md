@@ -234,8 +234,8 @@ void Dimmer::apply(uint16_t value) {
 ```
 
 `analogWrite()` on the stm32duino core reconfigures the timer channel on each call; the
-dedup avoids that churn for repeated CTRL_BCAST values (DCS-BIOS re-broadcasts full state
-after SYNC_REQ). No `update()` override — the timer generates PWM in hardware with no
+dedup avoids that churn for repeated CTRL_BCAST values (DCS-BIOS autosync re-sends unchanged
+values). No `update()` override — the timer generates PWM in hardware with no
 per-loop work.
 
 ### PWM frequency and resolution

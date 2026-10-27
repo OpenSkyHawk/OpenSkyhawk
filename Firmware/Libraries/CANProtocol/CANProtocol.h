@@ -127,7 +127,7 @@ struct __attribute__((packed)) ReadyPayload {
 /// ReadyPayload `flags` bits (#383).
 enum class ReadyFlag : uint8_t {
     RESYNC = 0x01,  // an answer to SYNC_REQ, not a boot: the bridge caches the version but must not
-                    // broadcast SYNC_REQ for it (that would answer itself forever)
+                    // queue a sync for it (that would answer itself forever)
 };
 static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 
@@ -210,8 +210,9 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  ///< DCS-BIOS range start
 static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  ///< DCS-BIOS range end
 
-// ── UART diagnostic framing constants (PanelBridge -> SimGateway) ─────────────
-// Used by SimGateway to parse the UART diagnostic stream from PanelBridge.
+// ── UART diagnostic framing constants (retired) ───────────────────────────────
+// From an early plan for framed diagnostics. Nothing sends or parses them: DiagSerial carries
+// plain-text log lines, and the CAN counters stay on the board (txDropCount() etc.) — FirmwarePlan 09.
 
 static constexpr uint8_t DIAG_MAGIC = 0xAA;  ///< Frame sync byte
 static constexpr uint8_t DIAG_RTT   = 0x01;  ///< Round-trip time measurement frame
@@ -304,7 +305,8 @@ namespace CANProtocol {
      * - All other frames: fires onReceive().
      *
      * Also services sendBatched() deadlines: a half-full ControlPacketPair that has
-     * waited two drain() calls is flushed with slot B set to the null sentinel.
+     * waited two drain() calls — and, on PanelBridge, at least 2 ms (#389) — is flushed with
+     * slot B set to the null sentinel.
      */
     void drain();
 
@@ -318,7 +320,7 @@ namespace CANProtocol {
      * arbitration is resent until it goes out; one that hits a bus error, up to 3 attempts in all
      * (#389, D4/D7). At most one frame per CAN ID is in the mailboxes at a time, so a resend never
      * lands after a newer frame of the same ID. A full ring, or a frame out of error attempts, is
-     * dropped and counted in txDropCount().
+     * dropped and counted in txDropCount() — on the board; not reported over the bus.
      *
      * @param canId  11-bit standard CAN ID.
      * @param data   Pointer to payload bytes.
@@ -333,7 +335,8 @@ namespace CANProtocol {
      * (absolute), canIdEvtRel(n) (RotaryEncoder REL), canIdEvtDir(n) (RotaryEncoder
      * DIR), and canIdEvtAction(n) (ActionButton) — each with its own pending slot. Pairs
      * two consecutive packets into one 8-byte frame. If slot B does not arrive within two
-     * drain() calls, slot A is sent with slot B set to the null sentinel (controlId == 0x0000).
+     * drain() calls (and, on PanelBridge, 2 ms — #389), slot A is sent with slot B set to the null
+     * sentinel (controlId == 0x0000).
      *
      * A frame ID with no batch slot is **silently discarded** — adding a batched frame means
      * registering it in _batches[] in begin(), not just defining its canId helper.

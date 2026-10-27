@@ -1,7 +1,7 @@
 // IntegerOutput — dedup test
 //
 // The base only calls apply() when the decoded value changed, so a callback that drives a slow
-// display is not re-run on every CTRL_BCAST. DCS-BIOS re-broadcasts full state after SYNC_REQ,
+// display is not re-run on every CTRL_BCAST. DCS-BIOS re-sends unchanged values (autosync),
 // which is exactly the repeat this suppresses.
 //
 // Hardware: STM32 alone — logic only, no pins, no CAN.

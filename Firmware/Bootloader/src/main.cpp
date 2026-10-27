@@ -12,14 +12,14 @@
  *      healthy.
  *   5. Catch at boot: a CONNECT within CATCH_WINDOW_MS → stay. Otherwise count the attempt and jump.
  * Staying: announce every second on BOOT_RSP_n (n = Data0) — or, with no NODE_ID yet, on
- * UNCONFIGURED_RSP_ID — and take an image over CAN. Entered on request or caught with the app still
+ * UNCONFIGURED_RSP_ID — and take an image over CAN (the bridge build: over USART2). Entered on request or caught with the app still
  * valid, IDLE_TIMEOUT_MS without a command goes back to the app.
  *
  * Transfer (BootProtocol.h): CONNECT → BEGIN → BLOCK + 10×DATA per 64-byte block → END → GO.
- * BEGIN erases the app's first page, so the old app is invalid from then on. Block 0 (the vector
- * table) is held in RAM and written only after END's CRC check — commit last: an interrupted
- * transfer always leaves "in bootloader, flashable". Pages are erased only as blocks reach them, so
- * flash past the image (the PDU calibration page) is kept.
+ * BEGIN erases every page the image covers, page 0 first, so the old app is invalid from then on
+ * (#366). Block 0 (the vector table) is held in RAM and written only after END's CRC check — commit
+ * last: an interrupted transfer always leaves "in bootloader, flashable". Pages past the image (the
+ * PDU calibration page) are never touched.
  *
  * Protocol and boot flow: FirmwarePlan/12-bootloader.md. Layout: FirmwarePlan/08 (identity block).
  *
