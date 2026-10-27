@@ -292,8 +292,12 @@ can be merged by accident.
   resolved to as a `dependencies.txt` release asset, rather than pinning them.
 - **Each release carries prebuilt firmware**, built by CI from the release tag, for the boards
   that need no per-build setup: the Gateway (both halves) and the production panels in
-  `Firmware/Panels/`. Tools get one `.bin` / `.uf2` per board and a `manifest.json` (sizes,
-  SHA-256); people get one zip with a folder per board, `.elf` files and flashing READMEs.
+  `Firmware/Panels/`. It ships as two files (#402): one zip with a folder per board — every
+  image and a flashing README — and a `manifest.json` listing each image's path in the zip, size
+  and SHA-256, plus the zip's own. Each STM32 board has a `-full.hex` (bootloader + firmware, for
+  a new board) and an `.elf` (firmware alone), both for an ST-Link, and a `.bin` that
+  SkyHawkClient loads onto a board that already has the bootloader; the Gateway adds its USB
+  side's `.uf2`. Tools fetch the zip and read only the paths the manifest lists.
 
 ### Hardware
 

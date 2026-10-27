@@ -780,8 +780,8 @@ void onUartByte(uint8_t b, uint32_t now);            // …each byte, parsed as 
 ```
 
 SimGateway wiring: `_calRx` grows to `CAL_MAX_INBOUND_FRAME` (270, `UPL_DATA`); `calLenValidForType()`
-knows the `UPL_*` lengths; `_calHandleFrame()` hands `UPL_*` to `onFrame()` (BUSY during a calibration
-session) and NACKs `SESSION_OPEN` with BUSY while `busy()`; the CDC → UART path and `_calFlushHeld()`
+knows the `UPL_*` lengths; `_calHandleFrame()` hands `UPL_*` to `onFrame()` (`UPL_BEGIN` and `UPL_FLASH`
+NACKed BUSY during a calibration session) and NACKs `SESSION_OPEN` with BUSY while `busy()`; the CDC → UART path and `_calFlushHeld()`
 drop bytes while `ownsUart()`; `_relayByte()` offers every complete line to `onBridgeLine()`; `loop()`
 step 3c calls `tick()`. RAM: 146 KB of 256 KB with the staging buffer.
 

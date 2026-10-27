@@ -418,10 +418,10 @@ NACKs). Behaviour: `07-simgateway-api.md` § Uploader.
   or not a whole number of words); `UPL_DATA` chunks at any offset, in any order, resendable
   (`BAD_OFFSET`); `UPL_END` checks the staged bytes against `UPL_BEGIN`'s CRC (`IMAGE_CRC`) and the
   identity block against both (`BAD_IMAGE`). `UPL_FLASH` needs a verified image (`NOT_STAGED`, or
-  `NO_SESSION` with none open). Idle 30 s without a frame (staging / staged) → the session and the
+  `NO_SESSION` with none open; `BUSY` while calibrating or flashing). Idle 30 s without a frame (staging / staged) → the session and the
   image are dropped. `UPL_ABORT` drops them (`BUSY` while flashing). `UPL_INFO` works any time.
 - **One session at a time:** calibration `SESSION_OPEN` answers `BUSY` while an upload session is open
-  or a flash runs, and `UPL_BEGIN` answers `BUSY` during a calibration session.
+  or a flash runs, and `UPL_BEGIN` and `UPL_FLASH` answer `BUSY` during a calibration session.
 - **During a flash** the client sends `KEEPALIVE` (~1 s) and gets `UPL_STATUS` (each phase change, and
   every 250 ms while writing) then one `UPL_RESULT`. No client frame for 5 s → the Gateway stops sending
   them, finishes anyway, and keeps the result for the next `UPL_INFO_ACK` (`lastTarget`, `lastResult`,

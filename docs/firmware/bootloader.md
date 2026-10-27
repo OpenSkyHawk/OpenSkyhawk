@@ -73,8 +73,10 @@ and the PanelBridge project picks the one that talks to the Gateway's USB chip â
 right one, and so does each board's `-full.hex`. After that, `pio run -t upload` updates the firmware alone and leaves the bootloader in
 place.
 
-From a release, flash the board's `-full.hex` file (bootloader plus firmware) on a new board, and its
-`.elf` file (firmware alone) on a board that already has the bootloader. See
+A release's zip has a folder per board with three files for each STM32 board: flash the `-full.hex`
+file (bootloader plus firmware) on a new board, and the `.elf` file (firmware alone) on a board that
+already has the bootloader, both with an ST-Link. The `.bin` file (firmware alone) is the one the
+bootloader takes over the bus: SkyHawkClient sends it through the Gateway. See
 [Flashing Firmware](../guides/flashing.md).
 
 !!! note "Your own sketch works too"

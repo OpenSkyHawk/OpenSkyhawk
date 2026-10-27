@@ -15,6 +15,7 @@
 //   - COMMIT validation: index, deadzone, ordering — each with its own NACK reason and axis
 //   - COMMIT carries exactly one axis; a rejected axis leaves the others alone
 //   - RESET clears an axis and needs no following COMMIT
+//   - no firmware upload during a session: UPL_BEGIN and UPL_FLASH NACKed BUSY (#402)
 //
 // Flash:
 //   pio run -e test_axis_cal_session -t upload
@@ -22,6 +23,8 @@
 
 #include <Arduino.h>
 #include <SimGateway.h>
+#include <UploadProtocol.h>   // UPL_TARGET_BRIDGE, UPL_NODE_ID_KEEP, UPL_FLASH payload fields
+#include <Uploader.h>         // Uploader::busy()
 
 using OpenSkyhawk::CAL_MAX_FRAME;
 namespace OS = OpenSkyhawk;
@@ -223,6 +226,41 @@ static void testCommitAndReset() {
     checkEq(F("[D11] RESET all clears every axis"), rxPay(1), 0x00);
 }
 
+// ── No upload during a session (#402) ─────────────────────────────────────────
+// UPL_FLASH to the bridge with nothing staged flashes the bundled image, so refusing BEGIN alone
+// isn't enough. Both must be answered by the calibration channel and never reach the uploader.
+// This test never calls SimGateway::begin(), so the uploader gets stub callbacks here: they
+// answer nothing on the CDC and note that the uploader was reached. Without the guard a frame
+// gets past the calibration channel, no BUSY NACK comes back, and E3-E6 FAIL instead of the
+// uploader calling an empty callback and crashing.
+static bool g_uplReached = false;
+
+static void testNoUploadInSession() {
+    Uploader::begin({
+        [](uint8_t, uint8_t, const uint8_t*, uint16_t) { g_uplReached = true; },
+        [](uint8_t, uint8_t)                           { g_uplReached = true; },
+        [](uint8_t, uint8_t, uint8_t, uint8_t)         { g_uplReached = true; },
+        [](const uint8_t*, uint16_t)                   { g_uplReached = true; },
+    });
+    SimGateway::calResetForTest();
+    openSession(0);
+
+    uint8_t b[8] = {};   // UPL_BEGIN is 8 bytes; a shorter frame is dropped before the guard
+    req(OS::CAL_T_UPL_BEGIN, 0x61, b, sizeof b);
+    checkEq(F("[E1] UPL_BEGIN in a session NACKed"), rxType(), OS::CAL_T_NACK);
+    checkEq(F("[E2] reason BUSY"),                   rxPay(1), OS::CAL_NACK_BUSY);
+
+    uint8_t f[2];
+    f[OS::UPL_FLASH_TARGET]      = OS::UPL_TARGET_BRIDGE;
+    f[OS::UPL_FLASH_NEW_NODE_ID] = OS::UPL_NODE_ID_KEEP;
+    req(OS::CAL_T_UPL_FLASH, 0x62, f, sizeof(f));
+    checkEq(F("[E3] UPL_FLASH in a session NACKed"), rxType(), OS::CAL_T_NACK);
+    checkEq(F("[E4] NACK names UPL_FLASH"),          rxPay(0), OS::CAL_T_UPL_FLASH);
+    checkEq(F("[E5] reason BUSY"),                   rxPay(1), OS::CAL_NACK_BUSY);
+    check  (F("[E6] uploader never reached"),        !g_uplReached && !Uploader::busy());
+    check  (F("[E7] calibration session still open"), SimGateway::calSessionOpen());
+}
+
 void setup() {
     Serial.begin(115200);
     delay(2000);
@@ -231,6 +269,7 @@ void setup() {
     testLifecycle();
     testCommitValidation();
     testCommitAndReset();
+    testNoUploadInSession();
     Serial.println(g_allPass ? F("=== ALL PASS ===") : F("=== FAILURES PRESENT ==="));
 }
 
