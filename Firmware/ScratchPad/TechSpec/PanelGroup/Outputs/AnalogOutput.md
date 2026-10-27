@@ -15,8 +15,8 @@ share, so each subclass is only its sink:
   address / mask / shift triple DCS-BIOS uses (`IntegerBuffer(address, mask, shift, …)`), so packed
   fields work as well as full-word outputs.
 - **Change dedup** on the decoded value: `apply()` runs only when it differs from the last one
-  applied (the first matching packet always applies). DCS-BIOS re-broadcasts full state after
-  `SYNC_REQ`, so without this every subclass would repeat the same work.
+  applied (the first matching packet always applies). DCS-BIOS re-sends unchanged values (its
+  autosync), so without this every subclass would repeat the same work.
 - Self-registration into PanelGroup's `OutputBase` list (inherited from `OutputBase`).
 
 Does **not** know what the value means or where it goes — that is the subclass's `apply()`. Does

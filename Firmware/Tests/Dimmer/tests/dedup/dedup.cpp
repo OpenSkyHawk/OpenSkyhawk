@@ -1,6 +1,6 @@
 // Dimmer — dedup test
 //
-// Two layers of dedup have to hold, because DCS-BIOS re-broadcasts full state after SYNC_REQ and
+// Two layers of dedup have to hold, because DCS-BIOS re-sends unchanged values (autosync) and
 // analogWrite() reconfigures the timer channel on every call:
 //   base  — the same decoded value never reaches apply() twice in a row
 //   class — different values that land on the same 8-bit duty write once
@@ -31,7 +31,7 @@ void setup() {
 
     gDim.configure();
 
-    // Base dedup: the identical value repeated (a SYNC_REQ re-broadcast) writes once.
+    // Base dedup: the identical value repeated (an autosync re-send) writes once.
     gDim.onControlPacket(CTRL_ID, 0x8000);
     gDim.onControlPacket(CTRL_ID, 0x8000);
     gDim.onControlPacket(CTRL_ID, 0x8000);

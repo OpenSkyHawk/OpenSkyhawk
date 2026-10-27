@@ -263,7 +263,7 @@ static void _pollRxFifo0() {
     uint32_t primask = __get_PRIMASK();
     __disable_irq();
     // A frame arrived with all three FIFO slots full and was lost in hardware. With the RX interrupt
-    // this needs interrupts held off for three frame times; counted so it is never silent (#389).
+    // this needs interrupts held off for three frame times; counted on the board (#389).
     if (CAN1->RF0R & CAN_RF0R_FOVR0) { CAN1->RF0R = CAN_RF0R_FOVR0; _rxOverruns++; }
     while (HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0) > 0) {
         CAN_RxHeaderTypeDef hdr;

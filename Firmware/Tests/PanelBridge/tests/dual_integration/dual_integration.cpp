@@ -12,35 +12,39 @@
 //   2. Connect DiagSerial (USART1 PA9/PA10, 115200 baud) on BOTH boards simultaneously.
 //   3. Power both boards. Observe the following event sequence.
 //
+// The bridge sends no SYNC_REQ at boot and logs none: it queues a node for a sync when it sees it
+// alive (boot READY, or first HB) and sends SYNC_REQ naming that node; the node's answer ends with
+// READY flagged RESYNC (#383, #387).
+//
 // ── Timeline A: PanelBridge boots first ──────────────────────────────────────
-//   NODE_ID=0: [BRIDGE] SYNC_REQ broadcast    ← cold boot
-//   NODE_ID=1: [NODE] SYNC_REQ received, re-polling
-//   NODE_ID=1: [NODE] EVT burst (initial state)
+//   NODE_ID=1: [NODE] EVT burst sent          ← initial state
 //   NODE_ID=1: [NODE] READY sent
 //   NODE_ID=0: [BRIDGE] READY node=1
 //   NODE_ID=0: [BRIDGE] node=1 alive
-//   NODE_ID=0: [BRIDGE] SYNC_REQ broadcast    ← after READY
 //   NODE_ID=1: [NODE] SYNC_REQ received, re-polling
+//   NODE_ID=1: [NODE] EVT burst sent
+//   NODE_ID=0: [BRIDGE] READY (resync) node=1 ← end of the node's answer
 //
 // ── Timeline B: PanelGroup boots first ───────────────────────────────────────
 //   NODE_ID=1: boots, sends EVT burst and READY (lost — bridge not yet listening)
-//   NODE_ID=0: [BRIDGE] SYNC_REQ broadcast    ← cold boot
+//   NODE_ID=0: [BRIDGE] node=1 alive           ← its next HB
 //   NODE_ID=1: [NODE] SYNC_REQ received, re-polling
-//   NODE_ID=0: [BRIDGE] node=1 alive (after HB or READY received)
+//   NODE_ID=0: [BRIDGE] READY (resync) node=1
 //   → same end state as Timeline A
 //
 // ── Timeline C: Reconnect after dropout ──────────────────────────────────────
 //   Both running → power-cycle NODE_ID=1 board
 //   NODE_ID=0: [BRIDGE] node=1 dead           ← after ~3 s no HB
-//   NODE_ID=1: (reconnects, sends READY + HBs)
+//   NODE_ID=1: (reboots, sends EVT burst + READY, then HBs)
+//   NODE_ID=0: [BRIDGE] READY node=1
 //   NODE_ID=0: [BRIDGE] node=1 alive
-//   NODE_ID=0: [BRIDGE] SYNC_REQ broadcast    ← recovery sync
 //   NODE_ID=1: [NODE] SYNC_REQ received, re-polling
+//   NODE_ID=0: [BRIDGE] READY (resync) node=1
 //
 // Pass criteria (manual, both DiagSerials):
-//   - All three timelines produce correct alive/dead/SYNC_REQ sequence
-//   - "[BRIDGE] SYNC_REQ broadcast" appears at startup AND after each READY/node-alive
-//   - "[NODE] SYNC_REQ received, re-polling" appears in response to each SYNC_REQ
+//   - All three timelines produce the alive/dead/sync sequence above
+//   - "[NODE] SYNC_REQ received, re-polling" follows each alive transition / boot READY, and
+//     "[BRIDGE] READY (resync) node=1" follows it
 //   - "[BRIDGE] node=1 dead" appears if PanelGroup is power-cycled; alive reappears after reconnect
 
 #define DCSBIOS_DEFAULT_SERIAL

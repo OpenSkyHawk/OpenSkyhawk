@@ -6,7 +6,7 @@
 // ControlPacket empty-slot sentinel.
 //
 // NOTE: testHandleExport() calls handleDcsBiosExport() directly, bypassing
-// BridgeExportListener, so the listener's registration (0x0002-0xFFFE) is NOT exercised here.
+// ExportDispatcher, so the listener's registration (0x0002-0xFFFE) is NOT exercised here.
 //
 // Hardware: single STM32F103CB board.
 //   - DiagSerial (USART1 PA9/PA10) at 115200 baud

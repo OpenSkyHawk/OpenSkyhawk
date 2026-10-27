@@ -19,8 +19,8 @@ namespace OpenSkyhawk {
  * controlId matching on each CTRL_BCAST packet, (value & mask) >> shift decoding — the same
  * address/mask/shift triple DCS-BIOS uses, so packed fields work as well as whole-word
  * outputs — and change dedup, so apply() runs only when the decoded value differs from the
- * last one applied. DCS-BIOS re-broadcasts full state after SYNC_REQ; without the dedup every
- * subclass would repeat the same work on every resync.
+ * last one applied. DCS-BIOS re-sends unchanged values (its autosync re-sends every value every
+ * few seconds); without the dedup every subclass would repeat the same work each time.
  *
  * Does not know what the value means or where it goes — that is the subclass's apply().
  * Does not configure pins: a subclass with hardware overrides configure().

@@ -82,9 +82,11 @@ public:
     virtual void poll() = 0;
 
     /**
-     * @brief Read hardware state and emit a CAN EVT unconditionally.
+     * @brief Re-assert the control's current absolute state, or emit nothing.
      *
-     * Called during the boot EVT burst and on every SYNC_REQ. Bypasses debounce.
+     * Called during the boot EVT burst and on every SYNC_REQ for this node. Bypasses debounce.
+     * Sends only a state (set_state), never a relative step or TOGGLE: a control with no
+     * absolute state (ActionButton, the encoders) sends nothing (FirmwarePlan 05, Re-reporting).
      * Establishes the current reading as the new baseline so subsequent poll()
      * calls have a valid comparison point.
      */
@@ -236,18 +238,20 @@ namespace PanelGroup {
     /**
      * @brief Initialise PanelGroup. Call from sketch setup() after Wire.begin().
      *
-     * Performs the 8-step boot sequence:
+     * Performs the boot sequence, in this order:
      *   1. STM32Board::begin()
      *   2. For each registered ADC: begin(addr, wire). For each registered expander:
-     *      init(), configure IOCON, enable interrupt-on-change on input pins,
-     *      read baseline port state, attach STM32 ISR.
-     *   3. configure() on all InputBase and OutputBase objects.
+     *      init(), configure IOCON.
+     *   3. configure() on all InputBase and OutputBase objects; then begin() every ShiftBus
+     *      they announced. Then, for each expander: enable interrupt-on-change on input pins,
+     *      read baseline port state, attach STM32 ISR (after configure(), so IODIR is set).
      *   4. Register CAN callbacks.
      *   5. CANProtocol::start().
-     *   6. forceReport() burst — one EVT per registered input.
+     *   6. forceReport() burst — each input's current state (none from an input without one).
      *   7. flushBatched(canIdEvt(NODE_ID)).
      *   8. READY_n frame (CANProtocol::sendReady(): the firmware version, #295). (Heartbeat/HEALTH timers arm on
      *      the first CANProtocol::serviceNodeStatus() call in loop().)
+     *   9. STM32Board::markBootHealthy() — the bootloader's crash-loop counter back to 0 (#364).
      *
      * @note Wire.begin() must be called by the sketch before this function.
      *       PanelGroup never calls Wire.begin() — only start buses in use.
@@ -258,10 +262,12 @@ namespace PanelGroup {
      * @brief Run all PanelGroup work. Call once per loop() iteration.
      *
      * Each call:
-     *   1. Check interrupt flags; read INTCAP; update expander port caches.
+     *   1. Check interrupt flags; clear INTCAP; refresh the flagged ports' caches from a live read.
      *   2. Polling fallback (~20 ms): read ports for chips registered without interrupt.
+     *      2b. Service every ShiftBus (transfer, or flush pending outputs when ISR sampling runs).
      *   3. poll() on all InputBase objects.
-     *   4. CANProtocol::drain() — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.
+     *   4. CANProtocol::drain() — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo; then
+     *      STM32Board::tick() (status LED).
      *   5. update() on all OutputBase objects.
      *   6. CANProtocol::serviceNodeStatus(): HB_n every 500 ms, HEALTH_n every 1 s (board kind
      *      PANEL_GROUP, #344), master-loss watchdog.
@@ -275,9 +281,9 @@ namespace PanelGroup {
     //
     // MCP23017 reads go through the cache (no live I2C per poll) because:
     //   • A full readPort() at 400 kHz takes ~100 µs — too slow for every poll().
-    //   • INTCAP captures port state at interrupt time; a subsequent readPort()
-    //     may return an already-transitioned value, losing the captured snapshot.
-    //   • All poll() calls after an interrupt must see the same captured snapshot.
+    //   • All poll() calls in one loop() must see the same snapshot. The interrupt path reads
+    //     INTCAP only to clear the line, then refreshes the cache from a live port read: a fast
+    //     bounce can leave INTCAP stale by the time loop() runs.
 
     /**
      * @brief Return cached MCP23017 pin state. Called by PinRef::read(). No I2C.

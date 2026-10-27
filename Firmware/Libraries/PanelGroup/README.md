@@ -37,7 +37,7 @@ OpenSkyhawk::LED gearLight(A_4E_C_GEAR_LIGHT, A_4E_C_GEAR_LIGHT_AM, PinRef(PB0))
 OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PinRef(PB5));
 
 void setup() {
-    STM32Board::setDebug(true);   // optional
+    // STM32Board::setDebug(true);   // bench only — off by default; caps node dispatch ~285 Hz (#389)
     PanelGroup::setup();
 }
 
@@ -95,7 +95,7 @@ See [`PanelGroup.h`](PanelGroup.h) for the full Doxygen documentation.
 | Function | Description |
 |---|---|
 | `PanelGroup::setup()` | Configure registered inputs/outputs and expanders, start CAN |
-| `PanelGroup::loop()` | Drain CAN, dispatch outputs, poll inputs, send heartbeat |
+| `PanelGroup::loop()` | Poll inputs, drain CAN (outputs, SYNC_REQ), update outputs, send HB/HEALTH |
 | `PanelGroup::registerExpander(chip, intaPin, intbPin)` | Register an MCP23017 with interrupt pins (per sketch) |
 | `PanelGroup::registerExpander(chip)` | Register an MCP23017 in polling mode |
 | `PanelGroup::registerADC(adc, addr, wire)` | Register an ADS1115 |

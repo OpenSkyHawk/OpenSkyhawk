@@ -65,9 +65,11 @@ namespace PanelBridge {
     /**
      * @brief Initialise STM32 board services, UART2, CANProtocol, and PanelBridge internals.
      *
-     * Performs in order: STM32Board::begin(), Serial.begin(250000), DCS-BIOS export listener
-     * registration, CANProtocol::filterAcceptAll(), CANProtocol::onReceive() registration,
-     * CANProtocol::start(), and cold-boot SYNC_REQ broadcast.
+     * Performs in order: STM32Board::begin(), Serial.begin(250000), CANProtocol::onStatusChange(),
+     * CANProtocol::filterAcceptAll(), CANProtocol::onReceive() registration, CANProtocol::start(),
+     * arming the boot roster reply (written from loop()), and STM32Board::markBootHealthy() (#364).
+     * No SYNC_REQ: each node is queued for a sync as its first heartbeat arrives (#387). The
+     * DCS-BIOS export listener is a file-scope object, registered before setup() runs.
      *
      * @note Sketch must call DcsBios::setup() immediately after this.
      */
@@ -77,8 +79,10 @@ namespace PanelBridge {
      * @brief Run PanelBridge work not owned by DcsBios::loop().
      *
      * Drains CANProtocol RX, dispatches EVT packets, services CANProtocol batching deadlines,
-     * checks node heartbeat timeouts (3 s), sends its own HB_0 / HEALTH_0 through
-     * CANProtocol::serviceNodeStatus() (#340), and handles DiagSerial 'T' bytes for TEST_SEQ.
+     * checks node heartbeat timeouts (3 s), sends the next queued SYNC_REQ (one node at a time,
+     * #387), writes the next roster row when the UART has room (#388), sends its own HB_0 /
+     * HEALTH_0 through CANProtocol::serviceNodeStatus() (#340), and handles DiagSerial 'T' bytes
+     * for TEST_SEQ.
      *
      * @note Call after DcsBios::loop() each iteration.
      */
@@ -140,7 +144,7 @@ namespace PanelBridge {
     /**
      * @brief Submit one DCS-BIOS export update directly, bypassing DcsBios::loop().
      *
-     * Equivalent to the BridgeExportListener receiving address/value from DCS-BIOS.
+     * Equivalent to the ExportDispatcher receiving an ordinary address/value from DCS-BIOS.
      * Calls CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, ...) with the given pair.
      *
      * @param address  DCS-BIOS export address — any address the export stream carries (#295);

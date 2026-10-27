@@ -15,12 +15,14 @@ the PDU are all nodes. Split out of `HIDControls.h` (HID controlId constants onl
 
 Owns:
 - **`NODE_STATUS_*`** — the reserved DCS-BIOS identifiers for the `_NODE_STATUS` host report (proto
-  version, request address, message names). **The canonical contract source the client's
+  version, request address, message names) — and **`NODE_FORGET_REQ_ADDR`** (`0xFF04`, #384), the
+  host's "forget this node" export address in the same reserved block. **The canonical contract source the client's
   `sync-a4ec.ts` parses**; `reference.test.ts` asserts the proto version so a firmware bump fails
   the client loudly.
-- **`GATEWAY_NODE_ID`** (0) and the `_NODE_STATUS` row layout — `NODE_STATUS_ROW_BYTES` (17) and
+- **`GATEWAY_NODE_ID`** (0) and the `_NODE_STATUS` row layout — `NODE_STATUS_ROW_BYTES` (19 = 38 hex) and
   `NodeStatusField` (byte offset of each row field; hex index = 2 × offset). Fields are only ever
-  appended (v4 added the firmware version from READY_n, #295).
+  appended (v4 added the firmware version from READY_n, #295, and the bootloader version + boot
+  state, #365, before it shipped).
 - **`HeartbeatFlag`** (BOFF, EPVF) + **`HB_ESR_TEC_SHIFT` / `HB_ESR_REC_SHIFT`** — the HB_n `flags`
   bits and `esr` byte split.
 - **`NodeHealthFlag`** — HEALTH_n flag bits (OVERHEAT, DEGRADED) mirroring `NodeHealthPayload.flags`;
@@ -66,6 +68,7 @@ Firmware/Libraries/NodeStatus/
 ```cpp
 #define NODE_STATUS_PROTO_VERSION 4      // bump on ANY _NODE_STATUS wire change (v3: nodeKind + node-0 row, #344; v4: firmware version, #295)
 #define NODE_STATUS_REQ_ADDR      0xFF00     // v4 (#295): no DCS-BIOS module exports here; 0x86FE was AH-64D/MirageF1
+#define NODE_FORGET_REQ_ADDR      0xFF04     // #384: value = a NODE_ID gone on purpose; dropped only while dead, roster re-sent
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
 #define NODE_TELEM_PROTO_VERSION  1      // bump on a _NODE_TELEM framing / existing-page layout change

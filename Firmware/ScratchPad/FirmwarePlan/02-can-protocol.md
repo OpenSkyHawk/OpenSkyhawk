@@ -352,7 +352,9 @@ build or queue pairs themselves.
 For each batched CAN ID, CANProtocol may hold a single slot-A packet briefly while waiting
 for a second packet, but must flush the half-full batch no later than two owning firmware
 `loop()` iterations after slot A is queued. This is a firmware loop deadline, not a literal
-MCU clock-cycle deadline. Implementations may flush sooner. Snapshot-style EVT bursts flush
+MCU clock-cycle deadline. Implementations may flush sooner. *(As built since #389: PanelBridge's
+`CTRL_BCAST` slot also waits at least 2 ms (`BATCH_HOLD_MS`) — its loop takes microseconds, so two
+loops alone sent nearly every frame half empty. Nodes keep the plain two-loop deadline.)* Snapshot-style EVT bursts flush
 their odd trailing packet immediately when the snapshot pass ends by asking CANProtocol to
 flush that batched CAN ID.
 
@@ -457,10 +459,11 @@ every collision.
 
 | Frame type | Policy |
 |------------|--------|
-| `CTRL_BCAST` DCS output broadcasts | Queued in order like any frame — **never coalesced** (#389): a frame carries two of ~250 controls, not the whole state, so replacing a queued one lost two others' updates (~19 % of a real stream). The bridge's TX ring is 64 frames (`CAN_TX_RING_SIZE`); a lone packet waits ≤ 2 ms for its partner (1.98 packets per frame on a real stream). **Lowest priority ID on the bus** (D31): it yields to every node frame, and its resends absorb the wait. |
+| `CTRL_BCAST` DCS output broadcasts | Queued in order like any frame — **never coalesced** (#389): a frame carries two of ~250 controls, not the whole state, so replacing a queued one lost two others' updates (~19 % of a real stream). The bridge's TX ring is 64 frames (`CAN_TX_RING_SIZE`); a lone packet waits at least 2 ms (`BATCH_HOLD_MS`, and two `drain()` passes) for its partner before it goes out half empty (1.98 packets per frame on a real stream). **Lowest priority ID on the bus** (D31): it yields to every node frame, and its resends absorb the wait. |
 | Every other frame (`EVT_n` and the encoder/action families, `HB_n`, `HEALTH_n`, `TELEM_n`, `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n`) | The resend rules above. Not coalesced: the next period's status frame carries fresh state anyway. |
 
-In a healthy bus `txDropCount()` stays 0; any non-zero count is a diagnostic signal.
+In a healthy bus `txDropCount()` stays 0; any non-zero count is a diagnostic signal. The count is
+kept on the board (read from a test or a debugger) — it is not reported over the bus.
 
 ### Receive
 
@@ -468,8 +471,9 @@ RX FIFO 0 is drained by **its own interrupt** into the software RX ring (8 frame
 PanelBridge, `CAN_RX_RING_SIZE`); `drain()` hands the frames to the callbacks from `loop()`. Until
 #389 the FIFO was polled from `loop()` only, so a loop pass longer than three frame times — the
 bridge blocked writing lines to the Gateway, an OLED redraw — overran the 3-frame hardware FIFO
-without a trace (656 overruns in one bench run). Overruns are now counted (`rxOverrunCount()`), a
-full software ring in `rxDropCount()`. Both should stay 0.
+without a trace (656 overruns in one bench run). Overruns are now counted on the board
+(`rxOverrunCount()`), a full software ring in `rxDropCount()`; like `txDropCount()`, neither is
+reported over the bus. Both should stay 0.
 
 Both CAN interrupts run at NVIC priority 2: below the UARTs (1), so a serial byte is never late,
 above the timers (14). They share their vectors with USB, which no OpenSkyhawk STM32 build enables

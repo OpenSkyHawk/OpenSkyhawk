@@ -22,7 +22,8 @@ namespace Boot {
 constexpr uint8_t PROTOCOL_VERSION = 1;
 
 // ── CAN frame IDs (11-bit) ────────────────────────────────────────────────────
-// The lowest priority on the bus, so update traffic never delays a control.
+// Below every control and status frame, so update traffic never delays a control; only CTRL_BCAST
+// (0x7E0) is lower (#389).
 
 constexpr uint16_t CMD_ID_BASE = 0x740;  ///< BOOT_CMD_n = 0x740 + n — host (bridge) → node n's bootloader
 constexpr uint16_t RSP_ID_BASE = 0x780;  ///< BOOT_RSP_n = 0x780 + n — node n's bootloader → host
@@ -43,7 +44,7 @@ constexpr uint16_t UNCONFIGURED_CMD_ID = 0x7C0;
 
 enum class Cmd : uint8_t {
     CONNECT = 0x01,  ///< open a session → Reply::CONNECTED. On UNCONFIGURED_CMD_ID: [uid16:u16]
-    BEGIN   = 0x02,  ///< [len:u32] image length; checks capacity, erases the app's first page → Reply::BEGUN
+    BEGIN   = 0x02,  ///< [len:u32] image length; checks capacity, erases every page the image needs (page 0 first) → Reply::BEGUN
     BLOCK   = 0x10,  ///< [index:u16, crc16:u16] header of a 64-byte block; DATA_0..DATA_9 follow
     DATA_0  = 0x20,  ///< 7 data bytes of the current block; DATA_k = DATA_0 + k carries bytes 7k..7k+6
     DATA_9  = 0x29,  ///< the last DATA frame of a block (bytes 63..69; only byte 63 is used)
@@ -59,7 +60,8 @@ enum class Reply : uint8_t {
     BEGUN       = 0x82,  ///< [status]
     BLOCK_ACK   = 0x90,  ///< [index:u16, status, next:u16] after DATA_9 — next = the first block not yet
                          ///< written, where a host resumes after a loss (#366)
-    ANNOUNCE    = 0xA0,  ///< every ANNOUNCE_INTERVAL_MS while no session: [AnnounceField bytes 1-5]
+    ANNOUNCE    = 0xA0,  ///< every ANNOUNCE_INTERVAL_MS while no image is arriving, and during a transfer
+                         ///< idle that long: [AnnounceField bytes 1-5]
     ENDED       = 0xB0,  ///< [status, crc:u32 computed]
     GOING       = 0xC0,  ///< [status]; on OK the board resets into the app
     NODE_SET    = 0xD0,  ///< [status]; on OK the board resets and answers on its new BOOT_RSP_n
@@ -93,7 +95,7 @@ enum class Status : uint8_t {
     OK           = 0x00,
     BAD_CRC      = 0x01,  ///< block CRC-16 or image CRC-32 mismatch
     FLASH_ERROR  = 0x02,  ///< erase / program / verify failed
-    OUT_OF_RANGE = 0x03,  ///< image or block past the end of flash, or zero length
+    OUT_OF_RANGE = 0x03,  ///< image past the end of flash, zero length, or a SET_NODE_ID id outside 1-63 / on the bridge
     OUT_OF_ORDER = 0x04,  ///< no BEGIN, a block skipped, or END before the last block
     NO_APP       = 0x05,  ///< GO without a valid app
     BAD_IMAGE    = 0x06,  ///< no identity block, or its length / CRC disagree with the transfer
@@ -180,7 +182,7 @@ constexpr uint16_t BRIDGE_ENTER_EXPORT_ADDRESS = 0xFF02;
 
 /// Crash-loop counter (#364): the bootloader adds one before every jump to the app; the app sets it
 /// back to 0 once it is healthy (STM32Board::markBootHealthy()). At ATTEMPT_LIMIT the bootloader stays
-/// (BootState::APP_UNSTABLE). Cleared by a committed image; lost on a power cycle.
+/// (BootState::APP_UNSTABLE). Cleared by a committed image and by GO; lost on a power cycle.
 constexpr uint8_t ATTEMPTS_BKP_REGISTER = 2;
 constexpr uint8_t ATTEMPT_LIMIT         = 3;
 

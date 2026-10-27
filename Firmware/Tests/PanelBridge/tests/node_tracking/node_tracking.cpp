@@ -10,17 +10,18 @@
 //   1. Flash both boards.
 //   2. Connect DiagSerial on NODE_ID=0 (USART1 PA9/PA10, 115200 baud).
 //   3. Power both boards. Verify:
-//        [BRIDGE] SYNC_REQ broadcast         ← cold boot
-//        [BRIDGE] node=1 alive               ← after NODE_ID=1 sends first HB
-//        [BRIDGE] SYNC_REQ broadcast         ← recovery broadcast after alive
+//        [BRIDGE] READY node=1               ← NODE_ID=1's boot READY (or its first HB, if it booted first)
+//        [BRIDGE] node=1 alive
+//        [TEST] PASS alive node=1
+//        [BRIDGE] READY (resync) node=1      ← its answer to the SYNC_REQ(1) the bridge queued (#387)
 //   4. Power-cycle the NODE_ID=1 board. After ~3 s, verify:
 //        [BRIDGE] node=1 dead
-//   5. Power it back on. Verify alive/SYNC_REQ again (Timeline C reconnect).
+//   5. Power it back on. Verify alive + READY (resync) again (Timeline C reconnect).
 //
 // Pass criteria (manual, DiagSerial on NODE_ID=0):
 //   - alive appears after NODE_ID=1 boots
 //   - dead appears ~3 s after NODE_ID=1 is unplugged
-//   - alive + SYNC_REQ appear again after NODE_ID=1 reconnects
+//   - alive + "READY (resync)" appear again after NODE_ID=1 reconnects
 
 #define DCSBIOS_DEFAULT_SERIAL
 #include <DcsBios.h>

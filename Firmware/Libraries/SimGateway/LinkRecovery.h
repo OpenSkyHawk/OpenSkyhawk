@@ -59,7 +59,8 @@ void linkRecoveryBegin(LinkRecovery& s, bool afterRecoveryReboot);
  * @brief Advance the ladder one tick.
  * @param s        Ladder state.
  * @param now      millis().
- * @param healthy  The host link is usable: mounted, and not suspended with a recent UART fault.
+ * @param healthy  The host link is usable: mounted, not suspended with a recent UART fault, and
+ *                 the CDC IN endpoint not stalled.
  * @return The action to apply now. At most one per tick.
  *
  * @note A DETACH is always followed by its ATTACH, whatever `healthy` says in between — a

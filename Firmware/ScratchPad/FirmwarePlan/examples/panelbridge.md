@@ -29,8 +29,8 @@ void setup() {
     PanelBridge::setup();
     // PanelBridge::setup() does:
     //   - CAN init with pass-all filter + software range validation
-    //   - Registers ExportStreamListener (auto-broadcasts DCS outputs over CAN)
-    //   - Broadcasts cold-boot SYNC_REQ (0x012) to re-poll any running PanelGroup nodes
+    //   - Its one ExportStreamListener (file-scope, ExportDispatcher) forwards DCS outputs over CAN
+    //   - No SYNC_REQ here: each running node is queued for a sync as its first heartbeat arrives
     DcsBios::setup();
 }
 
@@ -38,14 +38,14 @@ void loop() {
     DcsBios::loop();
     // Receives DCS-BIOS binary stream from SimGateway via Serial (UART2).
     // Fires ExportStreamListener for each address update.
-    // Detects model_time backward → broadcasts SYNC_REQ.
+    // Detects model_time backward → queues every alive node for a sync.
 
     PanelBridge::loop();
     // Services CANProtocol batching deadlines.
     // Drains CAN RX: for each EVT frame:
     //   0x8000 <= controlId <= 0x86FF → binary search in A4EC_InputMap → sendDcsBiosMessage()
     //   controlId < 0x8000  → wrap in HID frame (0xAA 0x55 + controlId + value) → UART
-    // Handles READY / node recovery → broadcasts SYNC_REQ.
+    // Handles READY / node recovery → queues that node for a sync; sends SYNC_REQ one node at a time.
     // Checks heartbeat timeouts → fires onNodeDead if needed.
 }
 ```

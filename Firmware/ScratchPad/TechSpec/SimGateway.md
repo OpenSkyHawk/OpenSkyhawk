@@ -10,7 +10,7 @@
 
 RP2040 firmware library. Owns:
 
-- **USB CDC ↔ UART relay** — forwards the DCS-BIOS stream in both directions without parsing or interpreting its content; the host-bound side is line-granular and never blocks (#355)
+- **USB CDC ↔ UART relay** — forwards the DCS-BIOS stream in both directions without interpreting its content; the host-bound side is line-granular and never blocks (#355)
 - **Link health** — per-bit UART error counters, FAULT self-clear, USB recovery ladder (`LinkRecovery`), hardware watchdog, and the `GET_DIAG` reply (#355)
 - **HID frame demultiplexer** — intercepts binary HID frames (identified by `0xAA 0x55` magic) on the UART RX path; routes controlIds to `HIDAxis`, `HIDButton`, and `HIDHatSwitch` registered objects
 - **`HIDAxis`, `HIDButton`, `HIDHatSwitch` classes** — declared in the sketch; self-register into linked lists at construction
@@ -18,7 +18,7 @@ RP2040 firmware library. Owns:
 - **TinyUSB HID descriptor** — 8 axes, 128 buttons, 4 hat switches; embedded in `SimGateway.cpp` under `#ifndef SIMGATEWAY_TEST`
 - **Status-LED state machine** — drives the two board-mounted `Gateway_Bridge` LEDs (GREEN = GP2, RED = GP3, active-high) with a non-blocking `millis()` animator ticked from `loop()`; reports USB / data / fault state (issue #94)
 
-Does **not** run the DCS-BIOS library. Does **not** parse DCS-BIOS addresses or control names. Has no knowledge of CAN frame formats, PanelBridge internals, or the CAN cluster topology.
+Does **not** run the DCS-BIOS library. Does **not** parse DCS-BIOS addresses or control names. The relay knows nothing of CAN; the uploader (§ Uploader, #366/#367) is the one part that does — it builds bootloader frames for the bridge to relay and reads `_NODE_STATUS` / `_BOOT_RSP` lines.
 
 Platform: **RP2040 only.** Not used on STM32 boards.
 
@@ -154,8 +154,8 @@ UART pin loopback tests must cover:
    drained by `SimGateway::loop()`, proving the public UART path reaches the same parser and CDC
    forwarding capture as `feedByte()`.
 3. Valid HID frames sent through the loopback are consumed by HID dispatch and not forwarded to CDC.
-4. Bad magic sent through the loopback still forwards `0xAA` plus the mismatched byte and returns to
-   scanning.
+4. Bad magic sent through the loopback puts `0xAA` plus the mismatched byte into the line, which is
+   dropped as corrupt; the parser returns to scanning and the next line forwards.
 
 No USB host is required. USB CDC is used only as the on-device test report console.
 
@@ -304,14 +304,18 @@ namespace SimGateway {
      *   0. Arm (first call) or feed the WATCHDOG_MS (3 s) hardware watchdog. The first call also
      *      switches off TinyUSB's task IRQ (#389, D33). Production only.
      *   1. Forward up to CDC_TO_UART_BUDGET (64) bytes from USB CDC (Serial) to UART — raw
-     *      DCS-BIOS stream to PanelBridge.
+     *      DCS-BIOS stream to PanelBridge. Calibration frames are consumed; while the uploader
+     *      flashes, the client's bytes are dropped (Uploader::ownsUart(), #366).
      *   2. Drain all bytes from UART:
      *        byte == 0xAA, next == 0x55 → HID frame: read 4 more bytes, parse controlId + value,
      *                                     walk HIDAxis, HIDButton, HIDHatSwitch linked lists, dispatch matches.
      *        any other byte             → append to the host-bound line; on '\n' write the whole
      *                                     line to USB CDC, or drop and count it (never blocks).
      *        byte == 0xAA, next != 0x55 → both bytes go to the line (now corrupt); resume.
-     *   3. If any HID setter fired this iteration, send the HID report exactly once.
+     *      While the uploader flashes the bridge it takes the UART bytes itself
+     *      (Uploader::onUartByte(), #367); both parsers reset at each hand-over.
+     *   3. If any HID setter fired this iteration, send the HID report exactly once. Then end
+     *      an abandoned calibration session, and Uploader::tick().
      *   4. statusTick(): LEDs, per-bit UART error counters, FAULT self-clear.
      *   5. USB recovery ladder.
      *
@@ -677,7 +681,8 @@ OFF / SOLID / SLOW 1 Hz / FAST 4 Hz / ALT 500 ms / PULSE ~50 ms (PULSE disabled 
 
 Signal sources:
 
-- **STREAMING / USB_IDLE** — CDC→UART forward (relay step 1) timestamps the last PC byte;
+- **STREAMING / USB_IDLE** — relay step 1 timestamps the last PC byte, forwarded or not (a consumed
+  calibration frame is host traffic too);
   STREAMING while `now − lastCdcRx ≤ 500 ms`.
 - **NO_HOST / INIT** — `TinyUSBDevice.mounted()` polled each tick; a sticky ever-mounted flag
   splits INIT (never mounted, `now < 2000 ms`) from NO_HOST (unplugged after a mount, or init
@@ -740,7 +745,7 @@ void loop() {
 }
 ```
 
-SimGateway has no boot handshake with the CAN cluster. It is stateless with respect to PanelBridge or PanelGroup boot state.
+SimGateway has no boot handshake with the CAN cluster. The relay is stateless with respect to PanelBridge or PanelGroup boot state; only the uploader tracks each node's `_NODE_STATUS` boot state while it flashes.
 
 ---
 
@@ -751,6 +756,7 @@ SimGateway has no boot handshake with the CAN cluster. It is stateless with resp
 | earlephilhower/arduino-pico | PlatformIO platform | TinyUSB CDC (`Serial`), `HardwareSerial`, RP2040 Arduino core |
 | Adafruit TinyUSB Library | `adafruit/Adafruit TinyUSB Library` | Custom HID descriptor; 8 axes, 128 buttons, 4 hats; embedded in SimGateway.cpp |
 | HIDControls | `Firmware/Libraries/HIDControls` | Standalone platform-agnostic library; CTRL_* constants for sketch declarations |
+| FirmwareVersion, FirmwareImage, BootProtocol, NodeStatus | `Firmware/Libraries/` | The version in `HELLO_ACK`; the uploader's identity-block checks, bootloader frames and `_NODE_STATUS` parsing (#366/#367) |
 | EEPROM | framework-arduinopico (bundled) | Flash-sector-backed emulation for the calibration blob. Resolved by PlatformIO's LDF from a plain `#include <EEPROM.h>` — no `lib_deps` entry needed, unlike Adafruit TinyUSB. Production builds only. |
 
 
@@ -762,7 +768,7 @@ upload.
 ```cpp
 struct Io { void (*send)(type, seq, payload, len); void (*ack)(type, seq);
             void (*nack)(type, seq, reason, detail); void (*writeUart)(p, n); };
-void begin(const Io&);                               // SimGateway::begin()
+void begin(const Io&);                               // SimGateway::setup()
 bool handles(uint8_t type);                          // CAL_T_UPL_* requests
 void onFrame(type, seq, payload, len, now);          // a verified client frame of those types
 void onClientFrame(uint32_t now);                    // any verified client frame — the client is there

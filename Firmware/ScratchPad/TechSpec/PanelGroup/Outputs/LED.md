@@ -288,8 +288,9 @@ is synchronous — the I2C transaction completes before `write()` returns.
 LED caches the last decoded on/off state (`_lastOn`, guarded by `_hasState`) and **skips the pin
 write when the state is unchanged** — a repeated CTRL_BCAST value costs no I2C traffic. This is a
 write dedup, not value persistence: on power-cycle, `_hasState` resets, all LEDs return to off (from
-`configure()`), and they stay off until PanelBridge re-broadcasts DCS state after a node READY
-frame. LED needs no recovery logic of its own. (Covered by the `test_dedup` scenario — a repeated
+`configure()`), and they stay off until the sim's export stream carries their value again — on
+its next change, or DCS-BIOS's autosync, which re-sends every value every few seconds. Nothing is
+re-requested after a node READY (`SYNC_REQ` only asks the node for its inputs). LED needs no recovery logic of its own. (Covered by the `test_dedup` scenario — a repeated
 value writes the pin exactly once.)
 
 ---

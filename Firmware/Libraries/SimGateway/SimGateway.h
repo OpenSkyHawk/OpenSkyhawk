@@ -8,7 +8,8 @@
  * construction. SimGateway::loop() walks those lists and dispatches matching HID
  * frames into the USB HID report.
  *
- * Does NOT run DCS-BIOS, parse DCS-BIOS addresses, or interact with CAN.
+ * Does NOT run DCS-BIOS or parse DCS-BIOS addresses. The relay knows no CAN; the uploader
+ * (Uploader.h, #366/#367) drives board bootloaders over CAN through PanelBridge.
  * Platform: RP2040 only.
  *
  * @copyright GPL-2.0-only — see Firmware/LICENSE
@@ -182,7 +183,7 @@ void setup(SerialUART& uart,
 static constexpr size_t UART_RX_QUEUE_BYTES = 1024;
 
 /// Host-bound bytes per line the relay buffers. The longest real line is a `_NODE_STATUS`
-/// row at ~42 bytes; anything longer is not a line PanelBridge sends, and is dropped.
+/// row at ~52 bytes (v4: 38 hex); anything longer is not a line PanelBridge sends, and is dropped.
 static constexpr uint16_t RELAY_LINE_MAX = 128;
 
 /// Host→PanelBridge bytes forwarded per loop() call. The UART write blocks once its 32-byte
@@ -203,14 +204,19 @@ static constexpr uint32_t WATCHDOG_MS = 3000;
  * @brief Relay bytes and dispatch HID frames. Call once per loop() iteration.
  *
  * Per call:
+ *   0. Feed the watchdog (the first call arms it and hands USB servicing to yield() only, D33).
  *   1. Forward up to CDC_TO_UART_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to
- *      PanelBridge.
+ *      PanelBridge. Calibration frames are consumed; while the uploader flashes, the client's
+ *      bytes are dropped (Uploader::ownsUart()).
  *   2. Drain all UART bytes:
  *        0xAA 0x55 + 4 bytes     → parse controlId + value LE; dispatch to HID lists
  *        any other byte          → append to the host-bound line; on `\n` the whole line is
  *                                  written to USB CDC, or dropped and counted (see below)
  *        0xAA + non-0x55         → both bytes go to the line, which makes it corrupt; resume IDLE
- *   3. If any HID setter fired, send the HID report exactly once.
+ *      While the uploader flashes the bridge (#367) it reads the UART itself
+ *      (Uploader::onUartByte()) instead.
+ *   3. If any HID setter fired, send the HID report exactly once. Then end an abandoned
+ *      calibration session, and advance an upload (Uploader::tick()).
  *   4. Status LEDs, UART error counters, FAULT self-clear.
  *   5. USB recovery ladder (LinkRecovery.h).
  *
@@ -356,6 +362,7 @@ void diagUartErrorsForTest(uint32_t now, bool oe, bool fe, bool be, bool pe);
  * @param suspended  Fake TinyUSBDevice.suspended().
  * @return The action production would apply. Also updates the USB-loss times and the
  *         re-attach counter in diagnostics(), exactly as production does.
+ * @param cdcStalled Fake CDC IN stall (the stall detector's output); a stalled link is unhealthy.
  * @note "Recent UART fault" comes from diagnostics().lastUartErrMs — drive it with
  *       diagUartErrorsForTest().
  */
