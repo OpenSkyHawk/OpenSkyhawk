@@ -916,4 +916,3 @@ runs only from `yield()` after every `loop()`, as the core already does.
   own, so the claimed, enabled user IRQ with a handler is TinyUSB's.
 
 **Affects:** `SimGateway.cpp`, `07-simgateway-api.md`, TechSpec `SimGateway`.
-
