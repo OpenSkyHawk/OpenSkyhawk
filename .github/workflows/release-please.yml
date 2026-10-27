@@ -103,7 +103,8 @@ jobs:
         run: gh release upload "$TAG" "$RUNNER_TEMP/dependencies.txt" --clobber
 
   firmware-assets:
-    # The prebuilt firmware: per-board images, manifest.json and the zip with READMEs (#360).
+    # The prebuilt firmware: the zip (every image, a folder per board with its README) and
+    # manifest.json (#360, #402) — exactly what the build puts in its artifact.
     # Builds read-only; firmware-assets-publish attaches the result.
     name: Build the firmware
     needs: release-please

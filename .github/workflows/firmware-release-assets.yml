@@ -1,11 +1,15 @@
 name: Firmware release assets
 
-# Builds the stock firmware images and packages them for a firmware release (#360):
-#   - flat files for the client: manifest.json, one .bin per STM32 board, the Gateway .uf2;
-#   - one zip for people: a folder per board with its README; for STM32 the app .elf (the flash
-#     address is built in) and <board>-<v>-full.hex (bootloader + app, for a blank board, #363);
-#     the Gateway .uf2 (which carries the cockpit side's app, so it can update it, #367); plus the
-#     top README, CHANGES, LICENSE and manifest.json.
+# Builds the stock firmware images and packages them for a firmware release (#360, #402). The
+# package is two files, the zip and manifest.json:
+#   - openskyhawk-firmware-<v>.zip: a folder per board with its README. Each STM32 board has
+#     <board>-<v>-full.hex (bootloader + app, ST-Link on a blank board, #363), the app .elf (ST-Link
+#     on a board with the bootloader; the flash address is built in) and the app .bin (loaded over
+#     the bus by SkyHawkClient). The Gateway folder also has the .uf2, which carries the cockpit
+#     side's app so it can update it (#367). Plus the top README, CHANGES, LICENSE and manifest.json.
+#   - manifest.json (schema 2): every file in the zip with its path there, size and SHA-256, plus the
+#     zip's own name, size and SHA-256. The copy inside the zip leaves out that zip record — a file
+#     can't hold its own checksum. The client reads only the paths the manifest lists.
 # The bootloader has two builds from one source (#367): the CAN one for the nodes and the USART2 one
 # for the Gateway's cockpit side; each board's -full.hex holds its own. On their own
 # (bootloader/bootloader-<v>.elf, bootloader/bootloader-bridge-<v>.elf) they ship only in a release
@@ -140,8 +144,9 @@ jobs:
           }
 
           pkg="openskyhawk-firmware-$VERSION"
-          dist="$RUNNER_TEMP/dist"            # flat release files
-          zipdir="$RUNNER_TEMP/zip/$pkg"      # the zip's contents
+          dist="$RUNNER_TEMP/dist"            # the release files: the zip and manifest.json, nothing else
+          ziproot="$RUNNER_TEMP/zip"
+          zipdir="$ziproot/$pkg"              # the zip's contents
           mkdir -p "$dist" "$zipdir"
           entries="$RUNNER_TEMP/manifest-entries.jsonl"
           : > "$entries"
@@ -168,12 +173,14 @@ jobs:
           echo "| Bootloader, CAN (nodes) | $(bl_footprint Firmware/Bootloader/.pio/build/bootloader/firmware.elf) | — |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Bootloader, USART2 (Gateway cockpit side) | $(bl_footprint Firmware/Bootloader/.pio/build/bridge/firmware.elf) | — |" >> "$GITHUB_STEP_SUMMARY"
 
-          # add_entry file folder node format → one manifest line (node: a NODE_ID, "usb" for the
-          # Gateway's RP2040 half, "-" for none)
+          # add_entry file folder node format → one manifest line for a file in the zip (node: a
+          # NODE_ID, "usb" for the Gateway's RP2040 half, "-" for none). path is the file's exact
+          # entry name in the zip, top folder included.
           add_entry() {
-            jq -cn --arg name "$(basename "$1")" --arg board "$2" --arg node "$3" --arg format "$4" \
+            jq -cn --arg name "$(basename "$1")" --arg path "${1#"$ziproot/"}" --arg board "$2" \
+              --arg node "$3" --arg format "$4" \
               --argjson size "$(stat -c %s "$1")" --arg sha256 "$(sha256sum "$1" | cut -d' ' -f1)" \
-              '{name: $name, board: $board, format: $format, size: $size, sha256: $sha256}
+              '{name: $name, path: $path, board: $board, format: $format, size: $size, sha256: $sha256}
                + (if $node == "usb" then {side: "usb"} elif $node == "-" then {} else {nodeId: ($node | tonumber)} end)' \
               >> "$entries"
           }
@@ -187,16 +194,15 @@ jobs:
 
             mkdir -p "$zipdir/$folder"
             if [[ "$node" == "usb" ]]; then
-              cp "$out/firmware.uf2" "$dist/$base-$VERSION.uf2"
               cp "$out/firmware.uf2" "$zipdir/$folder/$base-$VERSION.uf2"
-              add_entry "$dist/$base-$VERSION.uf2" "$folder" "$node" uf2
+              add_entry "$zipdir/$folder/$base-$VERSION.uf2" "$folder" "$node" uf2
             else
-              cp "$out/firmware.bin" "$dist/$base-$VERSION.bin"
+              cp "$out/firmware.bin" "$zipdir/$folder/$base-$VERSION.bin"
               cp "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION.elf"
               bl_hex="$RUNNER_TEMP/bootloader.hex"
               [[ "$node" == 0 ]] && bl_hex="$RUNNER_TEMP/bridge.hex"   # the cockpit side: USART2 (#367)
               full_hex "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION-full.hex" "$bl_hex"
-              add_entry "$dist/$base-$VERSION.bin" "$folder" "$node" bin
+              add_entry "$zipdir/$folder/$base-$VERSION.bin" "$folder" "$node" bin
               add_entry "$zipdir/$folder/$base-$VERSION.elf" "$folder" "$node" elf
               add_entry "$zipdir/$folder/$base-$VERSION-full.hex" "$folder" "$node" hex
             fi
@@ -213,32 +219,32 @@ jobs:
             BOOTLOADER_NOTE="The bootloader didn't change in this release; the \`-full.hex\` files include it. On its own (both builds) it is in release $bl_holder."
           fi
 
+          # The zip's copy of the manifest; the release's own copy adds the zip record once it exists.
           jq -s --arg version "$VERSION" --arg tag "$TAG" --arg bl_tag "$bl_holder" --argjson bl_protocol "$bl_protocol" \
-            '{schema: 1, version: $version, tag: $tag, bootloader: {protocol: $bl_protocol, tag: $bl_tag}, files: .}' \
-            "$entries" > "$dist/manifest.json"
-          cp "$dist/manifest.json" "$zipdir/manifest.json"
+            '{schema: 2, version: $version, tag: $tag, bootloader: {protocol: $bl_protocol, tag: $bl_tag}, files: .}' \
+            "$entries" > "$zipdir/manifest.json"
 
           # READMEs: the templates in Firmware/release, filled in with envsubst. Only the named
           # variables are replaced, so any other "$" in a template stays as written.
           export VERSION TAG BOOTLOADER_NOTE
-          export BOARD_TABLE="| \`gateway/\` | Gateway — RP2040 (USB side) + STM32F103C8 (cockpit side) | \`gateway-$VERSION.uf2\`, \`gateway-bridge-$VERSION-full.hex\`, \`gateway-bridge-$VERSION.elf\` |
-          | \`pdu-left/\` | PDU Left — node 3 | \`pdu-left-$VERSION-full.hex\`, \`pdu-left-$VERSION.elf\` |
-          | \`pdu-right/\` | PDU Right — node 4 | \`pdu-right-$VERSION-full.hex\`, \`pdu-right-$VERSION.elf\` |
-          | \`pdu-center/\` | PDU Center — node 5 | \`pdu-center-$VERSION-full.hex\`, \`pdu-center-$VERSION.elf\` |"
+          export BOARD_TABLE="| \`gateway/\` | Gateway — RP2040 (USB side) + STM32F103C8 (cockpit side) | \`gateway-$VERSION.uf2\`, \`gateway-bridge-$VERSION-full.hex\`, \`gateway-bridge-$VERSION.elf\`, \`gateway-bridge-$VERSION.bin\` |
+          | \`pdu-left/\` | PDU Left — node 3 | \`pdu-left-$VERSION-full.hex\`, \`pdu-left-$VERSION.elf\`, \`pdu-left-$VERSION.bin\` |
+          | \`pdu-right/\` | PDU Right — node 4 | \`pdu-right-$VERSION-full.hex\`, \`pdu-right-$VERSION.elf\`, \`pdu-right-$VERSION.bin\` |
+          | \`pdu-center/\` | PDU Center — node 5 | \`pdu-center-$VERSION-full.hex\`, \`pdu-center-$VERSION.elf\`, \`pdu-center-$VERSION.bin\` |"
           BOARD_TABLE="$(sed -E 's/^[[:space:]]+//' <<< "$BOARD_TABLE")"
           envsubst '$VERSION $TAG $BOARD_TABLE $BOOTLOADER_NOTE' < Firmware/release/README.md > "$zipdir/README.md"
 
           USB_FILE="gateway-$VERSION.uf2" COCKPIT_FILE="gateway-bridge-$VERSION.elf" \
-            COCKPIT_FULL_FILE="gateway-bridge-$VERSION-full.hex" \
-            envsubst '$VERSION $USB_FILE $COCKPIT_FILE $COCKPIT_FULL_FILE' \
+            COCKPIT_FULL_FILE="gateway-bridge-$VERSION-full.hex" COCKPIT_BIN_FILE="gateway-bridge-$VERSION.bin" \
+            envsubst '$VERSION $USB_FILE $COCKPIT_FILE $COCKPIT_FULL_FILE $COCKPIT_BIN_FILE' \
             < Firmware/release/README-gateway.md > "$zipdir/gateway/README.md"
 
           pdu_notes="The PDU's calibration is stored on the board and survives a firmware update. A full chip erase removes it — recalibrate afterwards: https://openskyhawk.github.io/OpenSkyhawk/hardware/pdu/#bring-up-and-calibration"
           for p in "pdu-left|PDU Left|3" "pdu-right|PDU Right|4" "pdu-center|PDU Center|5"; do
             IFS='|' read -r folder title node <<< "$p"
-            FILE="$folder-$VERSION.elf" FULL_FILE="$folder-$VERSION-full.hex" BOARD_TITLE="$title" \
-              NODE_ID="$node" BOARD_NOTES="$pdu_notes" \
-              envsubst '$VERSION $FILE $FULL_FILE $BOARD_TITLE $NODE_ID $BOARD_NOTES' \
+            FILE="$folder-$VERSION.elf" FULL_FILE="$folder-$VERSION-full.hex" BIN_FILE="$folder-$VERSION.bin" \
+              BOARD_TITLE="$title" NODE_ID="$node" BOARD_NOTES="$pdu_notes" \
+              envsubst '$VERSION $FILE $FULL_FILE $BIN_FILE $BOARD_TITLE $NODE_ID $BOARD_NOTES' \
               < Firmware/release/README-node.md > "$zipdir/$folder/README.md"
           done
 
@@ -249,7 +255,45 @@ jobs:
           fi
           cp Firmware/LICENSE "$zipdir/LICENSE"
 
-          (cd "$RUNNER_TEMP/zip" && zip -qr "$dist/$pkg.zip" "$pkg")
+          (cd "$ziproot" && zip -qr "$dist/$pkg.zip" "$pkg")
+
+          # The release's manifest: the zip's copy plus the zip itself.
+          jq --arg name "$pkg.zip" --argjson size "$(stat -c %s "$dist/$pkg.zip")" \
+            --arg sha256 "$(sha256sum "$dist/$pkg.zip" | cut -d' ' -f1)" \
+            '{schema, version, tag, zip: {name: $name, size: $size, sha256: $sha256}} + .' \
+            "$zipdir/manifest.json" > "$dist/manifest.json"
+
+          # Check the package the way the client will read it: only the zip and the manifest are
+          # released; the zip's size and SHA-256 match; every listed path is in the zip with the
+          # listed size and SHA-256; and nothing in the zip but the READMEs, CHANGES, LICENSE and the
+          # manifest itself goes unlisted.
+          check() { echo "::error::$1"; failed=1; }
+          failed=0
+          released="$(cd "$dist" && ls | sort | tr '\n' ' ')"
+          [[ "$released" == "manifest.json $pkg.zip " ]] || check "the release holds $released"
+          [[ "$(jq -r .zip.sha256 "$dist/manifest.json")" == "$(sha256sum "$dist/$pkg.zip" | cut -d' ' -f1)" ]] \
+            || check "the manifest's zip SHA-256 doesn't match the zip"
+          [[ "$(jq -r .zip.size "$dist/manifest.json")" == "$(stat -c %s "$dist/$pkg.zip")" ]] \
+            || check "the manifest's zip size doesn't match the zip"
+          [[ "$(jq -c 'del(.zip)' "$dist/manifest.json")" == "$(unzip -p "$dist/$pkg.zip" "$pkg/manifest.json" | jq -c .)" ]] \
+            || check "the zip's manifest isn't the release's manifest without its zip record"
+          while IFS=$'\t' read -r path size sha; do
+            if ! unzip -l "$dist/$pkg.zip" "$path" > /dev/null 2>&1; then check "$path is not in the zip"; continue; fi
+            [[ "$(unzip -p "$dist/$pkg.zip" "$path" | wc -c)" == "$size" ]] || check "$path: size doesn't match"
+            [[ "$(unzip -p "$dist/$pkg.zip" "$path" | sha256sum | cut -d' ' -f1)" == "$sha" ]] || check "$path: SHA-256 doesn't match"
+          done < <(jq -r '.files[] | [.path, .size, .sha256] | @tsv' "$dist/manifest.json")
+          unlisted="$(comm -23 <(unzip -Z1 "$dist/$pkg.zip" | grep -v '/$' | sort) <(jq -r '.files[].path' "$dist/manifest.json" | sort) \
+            | grep -v -E "^$pkg/(README\.md|CHANGES\.md|LICENSE|manifest\.json|[^/]+/README\.md)$" || true)"
+          [[ -z "$unlisted" ]] || check "images in the zip the manifest doesn't list: $unlisted"
+          for d in "$zipdir"/*/; do
+            folder="$(basename "$d")"
+            [[ "$folder" == bootloader ]] && continue
+            for ext in -full.hex .elf .bin; do
+              compgen -G "$d*-$VERSION$ext" > /dev/null || check "$folder/ has no $ext"
+            done
+          done
+          [[ -f "$zipdir/gateway/gateway-$VERSION.uf2" ]] || check "gateway/ has no .uf2"
+          [[ "$failed" == 0 ]]
 
           {
             echo
@@ -258,8 +302,10 @@ jobs:
             echo '```'
             (cd "$dist" && ls -l)
             echo
-            (cd "$RUNNER_TEMP/zip" && find "$pkg" -type f | sort)
+            (cd "$ziproot" && find "$pkg" -type f | sort)
             echo '```'
+            echo
+            echo "manifest.json (schema $(jq .schema "$dist/manifest.json")): every path is in the zip with a matching SHA-256."
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload the package

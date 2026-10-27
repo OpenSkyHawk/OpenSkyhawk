@@ -24,10 +24,14 @@ PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
 pio run -t bootstrap       # bootloader + firmware, once per new board
 ```
 
-After that, `pio run -t upload` flashes the firmware alone and keeps the bootloader. From a release,
-use the board's `-full.hex` file on a new board and its `.elf` file on one that already has the
-bootloader. The Gateway's PanelBridge chip takes a different build of the bootloader from the nodes;
-`bootstrap` and the release files already pick the right one for each board.
+After that, `pio run -t upload` flashes the firmware alone and keeps the bootloader. A release
+carries every board's firmware in one zip, `openskyhawk-firmware-<version>.zip`, with a folder per
+board. Each STM32 board's folder has three files: `-full.hex` (bootloader + firmware) for a new
+board and `.elf` (firmware alone) for one that already has the bootloader, both for the ST-Link,
+and `.bin` (firmware alone), which [SkyHawkClient](../getting-started/client-app.md)
+loads onto a board that already has the bootloader, with no ST-Link. The Gateway's PanelBridge chip
+takes a different build of the bootloader from the nodes; `bootstrap` and the release files already
+pick the right one for each board.
 
 The bootloader write-protects itself, so anything that writes from address 0 — the per-library test
 sketches, or a new bootloader — needs the protection lifted first. The one-line command is on the
@@ -64,8 +68,9 @@ No ST-Link needed — the board flashes over the same USB cable it runs on. Eith
 - **From PlatformIO:** `pio run -t upload`. PlatformIO resets the board into its bootloader by
   itself (the 1200-baud touch, which the Adafruit TinyUSB library in every SimGateway build
   handles), then flashes it.
-- **By hand:** hold BOOTSEL while plugging the board in (or while tapping RESET), wait for the
-  `RPI-RP2` drive, and drag the `.uf2` onto it.
+- **By hand:** a new board shows up as the `RPI-RP2` drive as soon as it is plugged in; a running
+  one needs BOOTSEL held while plugging it in (or while tapping RESET). Drag the `.uf2` onto the
+  drive — from a release, `gateway/gateway-<version>.uf2` in the zip.
 
 !!! warning "Upload can't find the board?"
     Something is holding the CDC port open. Close SkyHawkClient, serial monitors, and any
