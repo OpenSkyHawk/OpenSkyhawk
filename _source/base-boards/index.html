@@ -5331,8 +5331,12 @@ direction, which is what matters for the cross-over.</p>
 </tr>
 </tbody>
 </table>
-<p>3.3 V logic both sides, no level shifter. Optional 33 Ω series on each line (label the
-resistor-to-resistor trunk with the net name). 250000 baud. Cross-over: each MCU's TX drives the
+<p>3.3 V logic both sides, no level shifter. <strong>1 kΩ series on each line</strong> (R16/R17; label the
+resistor-to-resistor trunk with the net name). The two MCUs are on separate supplies — the RP2040
+only from USB, the STM32 from the bus — so either can be unpowered while the other drives an
+idle-high TX into it. With 33 Ω the unpowered chip is back-fed through its ESD diode at tens of
+mA (half-powered rail, messy power-on reset); 1 kΩ caps that at ~3 mA. The edge cost is ~10 ns
+(1 kΩ × pin capacitance) against a 4 µs bit. 250000 baud. Cross-over: each MCU's TX drives the
 <em>other's</em> RX — <code>SIMGW_TO_BRIDGE</code> is the SimGateway transmit net, <code>BRIDGE_TO_SIMGW</code> the Bridge transmit net.</p>
 <h3 id="stm32-pin-assignment-lqfp48">STM32 pin assignment (LQFP48)</h3>
 <table>
@@ -5805,9 +5809,9 @@ vocabulary, not the engine.</p>
 </tr>
 <tr>
 <td>R_uart</td>
-<td>33 Ω ×2 (opt.)</td>
+<td>1 kΩ ×2 (R16/R17)</td>
 <td><code>Device:R</code></td>
-<td>UART series</td>
+<td>UART series between the two power domains (RP2040 on USB, STM32 on the bus) — limits back-feed into whichever side is unpowered to ~3 mA; edge τ ≈ 10 ns, negligible at 250 kbaud</td>
 </tr>
 <tr>
 <td>R_led</td>
