@@ -293,7 +293,8 @@ can be merged by accident.
 - **Each release carries prebuilt firmware**, built by CI from the release tag, for the boards
   that need no per-build setup: the Gateway (both halves) and the production panels in
   `Firmware/Panels/`. Tools get one `.bin` / `.uf2` per board and a `manifest.json` (sizes,
-  SHA-256); people get one zip with a folder per board, `.elf` files and flashing READMEs.
+  SHA-256, and whether each file is a release file or only in the zip); people get one zip with a
+  folder per board, `.elf` files and flashing READMEs.
 
 ### Hardware
 

@@ -6,6 +6,9 @@ name: Firmware release assets
 #     address is built in) and <board>-<v>-full.hex (bootloader + app, for a blank board, #363);
 #     the Gateway .uf2 (which carries the cockpit side's app, so it can update it, #367); plus the
 #     top README, CHANGES, LICENSE and manifest.json.
+# manifest.json lists both. Each file entry says where it is: "asset": true = a flat release file,
+# downloadable by its "name"; "asset": false = only in the zip; "path" = its place in the zip, under
+# the top folder (the .uf2 is both). Tools take only assets — .elf / -full.hex are zip-only.
 # The bootloader has two builds from one source (#367): the CAN one for the nodes and the USART2 one
 # for the Gateway's cockpit side; each board's -full.hex holds its own. On their own
 # (bootloader/bootloader-<v>.elf, bootloader/bootloader-bridge-<v>.elf) they ship only in a release
@@ -169,12 +172,19 @@ jobs:
           echo "| Bootloader, CAN (nodes) | $(bl_footprint Firmware/Bootloader/.pio/build/bootloader/firmware.elf) | — |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Bootloader, USART2 (Gateway cockpit side) | $(bl_footprint Firmware/Bootloader/.pio/build/bridge/firmware.elf) | — |" >> "$GITHUB_STEP_SUMMARY"
 
-          # add_entry file folder node format → one manifest line (node: a NODE_ID, "usb" for the
-          # Gateway's RP2040 half, "-" for none)
+          # add_entry file folder node format [zip copy] → one manifest line (node: a NODE_ID, "usb"
+          # for the Gateway's RP2040 half, "-" for none). Where the file lives: "asset" = a flat release
+          # file, downloadable by its name; "path" = its place inside the zip, under the top folder.
+          # A file in $dist is an asset; a file in $zipdir (or a zip copy given) has a path.
           add_entry() {
+            local zip="${5:-}" asset=false
+            [[ "$1" == "$dist/"* ]] && asset=true
+            [[ "$1" == "$zipdir/"* ]] && zip="$1"
             jq -cn --arg name "$(basename "$1")" --arg board "$2" --arg node "$3" --arg format "$4" \
               --argjson size "$(stat -c %s "$1")" --arg sha256 "$(sha256sum "$1" | cut -d' ' -f1)" \
-              '{name: $name, board: $board, format: $format, size: $size, sha256: $sha256}
+              --argjson asset "$asset" --arg path "${zip#"$zipdir/"}" \
+              '{name: $name, board: $board, format: $format, size: $size, sha256: $sha256, asset: $asset}
+               + (if $path == "" then {} else {path: $path} end)
                + (if $node == "usb" then {side: "usb"} elif $node == "-" then {} else {nodeId: ($node | tonumber)} end)' \
               >> "$entries"
           }
@@ -190,7 +200,7 @@ jobs:
             if [[ "$node" == "usb" ]]; then
               cp "$out/firmware.uf2" "$dist/$base-$VERSION.uf2"
               cp "$out/firmware.uf2" "$zipdir/$folder/$base-$VERSION.uf2"
-              add_entry "$dist/$base-$VERSION.uf2" "$folder" "$node" uf2
+              add_entry "$dist/$base-$VERSION.uf2" "$folder" "$node" uf2 "$zipdir/$folder/$base-$VERSION.uf2"
             else
               cp "$out/firmware.bin" "$dist/$base-$VERSION.bin"
               cp "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION.elf"
