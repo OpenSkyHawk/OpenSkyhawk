@@ -55,7 +55,8 @@ helper functions — **never hard-code these values**, always use the helper.
   bus has not been measured.
 - `BOOT_CMD_n` / `BOOT_RSP_n` are the [bootloader](../firmware/bootloader.md)'s frames: a board
   waiting in its bootloader announces itself once a second and takes a new firmware image in 64-byte
-  blocks. They sit below every control and status frame, so update traffic never delays a control. The
+  blocks. They sit below every input and status frame (only the sim's `CTRL_BCAST` is lower), so
+  update traffic never delays an input. The
   `0x7C0`/`0x7C1` pair is for a board that has no NODE_ID yet.
 - `EVT_n` carries input events from a node back up to PanelBridge.
 - `HB_n` is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).

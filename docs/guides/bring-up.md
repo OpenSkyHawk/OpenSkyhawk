@@ -62,14 +62,16 @@ light through the full loop.
 A firmware update is safe to interrupt: a board switches to its new firmware only once all of it
 has arrived and checked out. If the power goes off partway through:
 
-1. **Power the cockpit back up.** The board whose update was cut short shows **red and green
-   blinking together**: it is waiting in its [bootloader](../firmware/bootloader.md), with no
-   firmware to start. If the cut came before its old firmware was erased, it starts the old
-   version instead.
+1. **Power the cockpit back up.** If the Gateway stayed connected to the PC and the power came back
+   within a few seconds, the update may finish by itself: wait for the LEDs to settle. Otherwise the
+   board whose update was cut short shows **red and green blinking together**: it is waiting in its
+   [bootloader](../firmware/bootloader.md), with no firmware to start. A board cut off before its
+   old firmware was erased starts the old version instead, and one cut off after all of the new
+   firmware had arrived starts the new one.
 2. **Open SkyHawkClient** with the Gateway connected. If it reports the update as failed, or lists
    the board as waiting in its bootloader, the board still needs its firmware.
-3. **Run the update for that board again.** When it finishes, the board restarts on the new
-   firmware and its LEDs go back to the normal patterns above.
+3. **If it does, run the update for that board again.** When it finishes, the board restarts on
+   the new firmware and its LEDs go back to the normal patterns above.
 
 The same steps apply when the board cut short was the Gateway's own PanelBridge chip: update the
 Gateway again.

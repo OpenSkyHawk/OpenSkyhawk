@@ -9,7 +9,7 @@ thing to understand, because it decides who you have to convince before you chan
 | [**Ours — behavioural**](#ours-behavioural) | 16 | a local decision — we own the code that reads it |
 | [**PDU node settings**](#pdu-node-settings-pdu_) | 24 | a local decision, for the power-distribution node only |
 | [**Third-party, set by us**](#third-party-set-by-us) | 7 | **not** a local decision — STM32duino, arduino-pico, and DCS-BIOS own these |
-| [**Test seams**](#test-seams) | 16 | bench-only — never present in a shipped build |
+| [**Test seams**](#test-seams) | 16 | bench-only — 14 seams plus 2 test-sketch pin values, never present in a shipped build |
 
 This page is an inventory: what each flag defaults to, where it's set, and where it's read. Deep
 per-flag semantics live in the library READMEs under `Firmware/Libraries/` and in
@@ -259,7 +259,9 @@ Be clear about what that proves. Both lists come from greps of the same shape, s
 check catches **drift** — a flag added, removed, or renamed after this page was written. It does
 not prove the inventory is **complete**: a flag consumed in some way neither grep looks for would
 be missed by the check exactly as it was missed by the page. Treat 63 as the current count, not a
-guarantee.
+guarantee. Knobs that a single test sketch defines for itself and no environment sets (such as
+`STALL_MS` in the ShiftBus encoder bench gate) are not counted: the read grep covers
+`Firmware/Libraries` only.
 
 ```bash
 grep -rhE '^[^;#]*-D[A-Za-z_]' --include=platformio.ini Firmware | sed -E 's/[;#].*//' | grep -oE '[[:space:]]-D[A-Za-z_][A-Za-z0-9_]*' | sed 's/.*-D//' | sort -u
