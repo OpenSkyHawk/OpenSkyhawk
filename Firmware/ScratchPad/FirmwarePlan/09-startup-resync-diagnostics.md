@@ -21,7 +21,7 @@ app asked for it or the app fails its check, and announces on `BOOT_RSP_n`. See 
 2. Read `NODE_ID` compile-time define.
 3. For each registered expander: init MCP23017, read full port state (baseline), configure
    interrupt pins, call `attachInterrupt()`.
-4. Configure CAN receive filter for `CTRL_BCAST` (0x010), `TEST_SEQ` (0x011), and
+4. Configure CAN receive filter for `CTRL_BCAST` (0x7E0), `TEST_SEQ` (0x011), and
    `SYNC_REQ` (0x012).
 5. `canStart()` — enable CAN peripheral.
 6. **Poll all registered input objects and send CAN EVTs with current values.** EVTs use

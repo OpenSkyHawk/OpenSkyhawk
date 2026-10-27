@@ -128,7 +128,7 @@ forwards whole lines rather than single bytes.)*
 | Frame type | Policy |
 |------------|--------|
 | `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
-| `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. Never build an unbounded backlog. |
+| `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. Never build an unbounded backlog. *(As built until #389 the "attempts" only counted a full mailbox set; a frame that lost arbitration or hit an error was gone. Since D32: lost arbitration always resends, an error up to 3 attempts.)* |
 | `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. *(As built, heartbeats — and the later `HEALTH_n` / `TELEM_n` — take the same bounded retry as event frames; only `CTRL_BCAST` coalesces. See `02-can-protocol.md`.)* |
 | `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
 
@@ -628,7 +628,7 @@ the `ControlPacket` empty-slot sentinel, so CAN can't carry it (it holds the fir
 - *Nodes already ignore what they don't use.* `onControlPacket` hands every packet to every output,
   and each keeps only its own address.
 
-**Cost — confirm on the #290 soak:** `CTRL_BCAST` (the highest-priority frame) now also carries
+**Cost — confirm on the #290 soak:** `CTRL_BCAST` (then the highest-priority frame; the lowest since D31) now also carries
 CommonData (position, heading, model time) and the per-frame update counters, so bus load rises.
 The soak's "no false offline / zero TX drops" checks are the guard; `CTRL_BCAST` keeps the newest
 state when its queue is full.
@@ -833,3 +833,87 @@ cut order if it ever has to shrink (`12` § Freeze).
 `CANProtocol`, `PanelBridge` (`BridgeEnterListener`), `SimGateway` (`Uploader` target 0, UART hand-over),
 `Firmware/shared/bundle_bridge.py` + `osh_image.py` (`bootloader_env`), the release workflow, `03`, `04`, `06`,
 `07`, `12`, TechSpec, `docs/firmware/bootloader.md`, `docs/architecture/sim-gateway.md`, the flashing guide.
+
+---
+
+## D31 — Inputs outrank sim output on CAN (#389)
+
+**Decision:** `CTRL_BCAST`, the sim's export stream from PanelBridge to every node, moves from `0x010`
+(the highest priority on the bus) to `0x7E0` — the lowest: below every node frame and below the
+bootloader's frames. A breaking wire change, shipped in 1.0.0 with every board reflashed together.
+
+**Rationale:**
+- *An input is one-shot; a sim value comes back by itself.* A button press or a pot's last position
+  exists once. A lamp or gauge value is re-sent on the next DCS-BIOS frame when it changes, and
+  autosync re-sends every value every few seconds. When the two collide, the one that can be lost
+  must be the sim's.
+- *At `0x010` the sim won every collision* — and with D4 a node frame that lost arbitration was gone
+  (D32 fixes that half). On the bench, under a real export stream, ~14 % of every node's inputs were
+  lost whatever their rate. Moved to `0x7E0`, nodes lose arbitration only to heartbeats and
+  lower-numbered nodes, and those resends cost a frame time.
+- *Below the bootloader's frames too.* During a live update the sim stream yields to update traffic,
+  which is short and bursty; the bridge's 64-frame ring and its resends absorb the wait. The frozen
+  bootloader (D30) never uses `0x010` or `0x7E0`, so it is unaffected.
+- *Within the inputs, the order stays as it is.* Heartbeat, health and telemetry (`0x1xx`) still
+  outrank `EVT_n` (`0x2xx`); a lost contest there costs one frame time and is resent (D32), so
+  renumbering every input family for a fraction of a millisecond is not worth it.
+
+**Affects:** `CANProtocol.h` (`CAN_ID_CTRL_BCAST`), the `protocol_layout` test, `02`, `09`, TechSpec
+`CANProtocol` + `PanelGroup`, `docs/architecture/can-bus.md`.
+
+---
+
+## D32 — CAN TX and RX are interrupt-driven; the software resends what the hardware won't (#389)
+
+**Decision:** Both CAN interrupts are enabled in the NVIC (priority 2). RX FIFO 0 drains into the
+software ring from its interrupt. TX loads the mailboxes from the TX-complete interrupt and settles
+every finished mailbox first: lost arbitration → resent, always; a bus error → resent up to 3
+attempts in all, then dropped and counted. At most one frame per CAN ID is in the mailboxes at a
+time. `send()` always goes through the ring. Hardware retransmission stays off (D4).
+
+**Rationale:**
+- *The interrupts were never on.* `HAL_CAN_ActivateNotification()` set the controller's interrupt
+  enables, but nothing enabled the NVIC lines, so the HAL callbacks never ran: RX was polled from
+  `loop()` behind a 3-frame hardware FIFO, and the TX ring drained only from `loop()`. A loop pass
+  longer than three frame times lost frames without a trace — the bridge, blocked writing input lines
+  to the Gateway, overran 656 times in one bench run.
+- *D4 is right, its software half was missing.* Hardware retransmission jams a mailbox on an
+  unACKed frame (D4). D7 meant the software to retry instead, but its "attempts" only counted a busy
+  mailbox set. Settling each mailbox's outcome (TXOK / ALST / TERR) before reuse is that half.
+- *Lost arbitration is not an error.* It means the bus works and someone else had priority — the
+  frame will get through, so it is always resent. A bus error keeps D4/D7's bound, so a lone node
+  with nobody to ACK still can't loop.
+- *Order matters for state.* A resend that left after a newer frame of the same control would leave
+  a pot at a stale value. One frame per CAN ID in the mailboxes rules that out; with the
+  TX-complete interrupt refilling in microseconds it costs no throughput.
+- *`send()` skipping the ring was a reorder too.* It loaded a free mailbox even with older frames
+  still queued.
+
+**Bench (63 nodes, a real export stream replayed up to 5×):** inputs lost on the wire 14.5 % → 0;
+bridge RX overruns 656 → 0; every arbitration loss resent, no duplicates, nothing out of order. At 5×
+the sim rate the bus saturates and only the sim yields (D31).
+
+**Affects:** `CANProtocol.cpp` / `.h` (`rxOverrunCount()`), `02` (CAN TX Queue, Receive, HAL
+settings), TechSpec `CANProtocol`, `docs/architecture/can-bus.md`, `docs/architecture/design-decisions.md` D4.
+
+---
+
+## D33 — The Gateway services USB from its main loop only (#389)
+
+**Decision:** SimGateway disables TinyUSB's task IRQ once its first `loop()` runs; `tud_task()` then
+runs only from `yield()` after every `loop()`, as the core already does.
+
+**Rationale:**
+- *A deadlock in interrupt context.* TinyUSB's rp2040 port also runs `tud_task()` from a user IRQ
+  that every USB interrupt pends. `yield()`'s CDC flush holds TinyUSB's endpoint mutex in the main
+  thread; host data arriving then makes the IRQ's CDC callback wait on that mutex forever, with its
+  owner preempted beneath it. The 3 s watchdog (D20) rebooted the Gateway — under heavy host traffic,
+  about one run in two. PC sampling in a profiling build caught every reboot spinning in
+  `mutex_enter_block_until` inside IRQ 31, called from `cdcd_xfer_cb`.
+- *The IRQ path buys nothing here.* `loop()` passes take microseconds (the longest measured: 20 ms),
+  well inside USB's tolerance; five load runs with the IRQ off: 0 watchdog resets.
+- *Found, not hard-coded.* The IRQ number is claimed at run time; SimGateway claims no user IRQ of its
+  own, so the claimed, enabled user IRQ with a handler is TinyUSB's.
+
+**Affects:** `SimGateway.cpp`, `07-simgateway-api.md`, TechSpec `SimGateway`.
+

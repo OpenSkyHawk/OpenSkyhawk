@@ -61,10 +61,10 @@ actually does.
 
 | Flag | Default | Set where | Read at |
 |---|---|---|---|
-| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:246`, `PanelGroup.cpp:304`, `STM32Board.h:29`, `FirmwareImage.h:61` (the image identity block) |
+| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:297`, `PanelGroup.cpp:304`, `STM32Board.h:29`, `FirmwareImage.h:61` (the image identity block) |
 | `PANELBRIDGE_NODE_STATUS` | **on** | `=0` in `Tests/PanelBridge` `test_input_dispatch_dcs` / `_hid` | `PanelBridge.h:38` (default), `PanelBridge.cpp:47` + ~10 more |
-| `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:558` (`serviceNodeStatus`, every node) |
-| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:490`, `CANProtocol.cpp:575` |
+| `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:587` (`serviceNodeStatus`, every node) |
+| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:518`, `CANProtocol.cpp:604` |
 | `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:180` |
 | `PINREF_DEBUG` | off | never set | `PinRef.cpp:8` + ~9 more |
 | `SHIFTBUS_SCK` | `PB3` | never set | `ShiftBus.cpp:13` |

@@ -68,10 +68,8 @@ Firmware/Tests/CANProtocol/
     ├── tx_batching.cpp         — sendBatched() forms ControlPacketPair payloads for CTRL_BCAST
     │                             and EVT_n only; half-full batches flush by deadline; explicit
     │                             flushBatched() emits slot-B null
-    ├── tx_queue.cpp            — rapid send() fills mailboxes; txDropCount() increments on overflow;
-    │                             verifies frame-type policy: CTRL_BCAST keeps newest state,
-    │                             EVT/control frames retry up to 3 attempts then drop; queued
-    │                             frames preserve full payload bytes
+    ├── tx_queue.cpp            — queued frames preserve full payload bytes (loopback); burst order
+    │                             and ring overflow need a real bus (dual_order, dual_overflow)
     ├── status_callbacks.cpp    — onStatusChange fires STARTING before start(); NORMAL immediately
     │                             after start(); callback not called again without a status change
     ├── heartbeat_payload.cpp   — makeHeartbeatPayload() fills nodeId, uptime, flags, rxCount,
@@ -105,7 +103,7 @@ needed. `protocol_layout.cpp` is compile-time/static layout validation only.
 loopback. Those are covered by the existing breadboard test: `Firmware/Prototype/` (Experiment B,
 2026-05-20 — 21-min soak plus fault injection with wire pulls and transceiver power cuts).
 
-`tx_queue.cpp` tests payload preservation in loopback; CTRL_BCAST coalescing and TX ring overflow
+`tx_queue.cpp` tests payload preservation in loopback; CTRL_BCAST burst order and TX ring overflow
 are **SKIP** in loopback — see **Dual-Board Integration Tests** below.
 
 **`platformio.ini`:**
@@ -158,15 +156,15 @@ build_src_filter = -<*> +<heartbeat_payload/heartbeat_payload.cpp>
 ; Sender: NODE_ID=0  Receiver/ACK: NODE_ID=1
 ; Flash sender env to one board, receiver env to the other, then open both serial monitors.
 
-[env:test_dual_coalesce_sender]
+[env:test_dual_order_sender]
 extends = env_base
 build_flags = -DNODE_ID=0 -DHAL_CAN_MODULE_ENABLED -DUSB_NONE -DHSE_VALUE=8000000
-build_src_filter = -<*> +<dual_coalesce/dual_coalesce.cpp>
+build_src_filter = -<*> +<dual_order/dual_order.cpp>
 
-[env:test_dual_coalesce_receiver]
+[env:test_dual_order_receiver]
 extends = env_base
 build_flags = -DNODE_ID=1 -DHAL_CAN_MODULE_ENABLED -DUSB_NONE -DHSE_VALUE=8000000
-build_src_filter = -<*> +<dual_coalesce/dual_coalesce.cpp>
+build_src_filter = -<*> +<dual_order/dual_order.cpp>
 
 [env:test_dual_overflow_sender]
 extends = env_base
@@ -190,36 +188,34 @@ If the receiver boots late it catches the trailing frames; results are still val
 
 ```
 Firmware/Tests/CANProtocol/tests/
-├── dual_coalesce/
-│   └── dual_coalesce.cpp   — CTRL_BCAST coalescing on real bus
+├── dual_order/
+│   └── dual_order.cpp      — CTRL_BCAST burst arrives whole and in order on a real bus (#389)
 │                             NODE_ID=0 (sender): queues 20 CTRL_BCAST frames with values 1–20
 │                               as fast as possible; waits 2 s after start(), then transmits burst.
-│                             NODE_ID=1 (receiver): counts received CTRL_BCAST frames and records
-│                               last payload byte. Reports at t=4 s.
-│                             PASS: rxCount < 20 (coalescing occurred) AND lastValue == 20.
-│                             txDropCount() on sender should be 0 (coalescing, not overflow).
+│                             NODE_ID=1 (receiver): counts received CTRL_BCAST frames and checks
+│                               each value is the previous + 1. Reports at t=5 s.
+│                             PASS: rxCount == 20, in order, lastValue == 20; sender drops == 0.
 │
 └── dual_overflow/
     └── dual_overflow.cpp   — TX ring overflow drop policy
-                              NODE_ID=0 (tester): queues 30 canIdEvt(1) frames in a tight loop
-                                immediately after start() (no delay — fills mailboxes + ring);
-                                reports txDropCount() at t=2 s.
+                              NODE_ID=0 (tester): queues 100 canIdHb(0) frames with IRQs off;
+                                reports txDropCount() at t=3 s.
                               NODE_ID=1 (ACK node): receives and ACKs all frames; reports count at t=4 s.
-                              PASS: txDropCount() > 0 on sender (ring + mailboxes = 19 capacity →
-                                at least 11 frames dropped); ACK node count + sender drops == 30.
+                              PASS: txDropCount() > 0 on sender (one mailbox for the ID + 63 ring
+                                slots = 64 → 36 dropped); ACK node count + sender drops == 100.
 ```
 
-**Expected dual_coalesce output (sender DiagSerial):**
+**Expected dual_order output (sender DiagSerial):**
 ```
-[SENDER] burst sent
-[SENDER] drops=0   PASS (coalescing, not overflow)
+[SENDER] 20-frame burst queued
+[SENDER] drops=0  PASS
 ```
 
-**Expected dual_coalesce output (receiver DiagSerial):**
+**Expected dual_order output (receiver DiagSerial):**
 ```
-[RECV] rx_count=N  lastVal=20
-[RECV] Coalesced: PASS   (N < 20)
-[RECV] Correct val: PASS
+[RECV] rx_count=20  lastVal=20
+[RECV] All 20:   PASS
+[RECV] In order: PASS
 ```
 
 **Expected dual_overflow output (sender DiagSerial):**
@@ -310,7 +306,7 @@ enum class CanStatus {
 
 // ── Fixed CAN arbitration IDs (PanelBridge → All) ────────────────────────────
 
-static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010;  ///< Broadcast ControlPacketPair to all panels
+static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x7E0;  ///< Broadcast ControlPacketPair to all panels — the lowest priority on the bus (#389, D31)
 static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  ///< RTT throughput test
 static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Request all nodes to re-poll inputs
 
@@ -406,7 +402,7 @@ namespace CANProtocol {
      * @brief Accept a specific CAN ID. Use for PanelGroup nodes.
      *
      * Adds one ID to the hardware filter list. Call multiple times for multiple IDs.
-     * CTRL_BCAST (0x010), TEST_SEQ (0x011), and SYNC_REQ (0x012) are always
+     * CTRL_BCAST (0x7E0), TEST_SEQ (0x011), and SYNC_REQ (0x012) are always
      * included automatically by start() — do not add them manually.
      *
      * @param canId 11-bit standard CAN ID to accept.
@@ -419,7 +415,7 @@ namespace CANProtocol {
      * @brief Start the CAN peripheral and apply registered filters.
      *
      * Must be called after STM32Board::begin() and after all filter and callback
-     * registrations. Always adds CTRL_BCAST (0x010), TEST_SEQ (0x011), and
+     * registrations. Always adds CTRL_BCAST (0x7E0), TEST_SEQ (0x011), and
      * SYNC_REQ (0x012) to the active filter — these are mandatory for all nodes
      * and cannot be excluded. On every node except PanelBridge (NODE_ID 0) it also adds
      * HB_0 (0x100) for the serviceNodeStatus() master-loss watchdog (#340), and on every node
@@ -464,12 +460,11 @@ namespace CANProtocol {
     /**
      * @brief Send a CAN frame.
      *
-     * If a TX mailbox is available, sends immediately. If all three mailboxes are
-     * occupied, the frame is placed in the TX software ring buffer (~16 entries).
-     * The buffer is drained automatically when mailboxes free up via TX-complete
-     * interrupt. Overflow is frame-type dependent: CTRL_BCAST may drop/coalesce
-     * stale state; every other frame (EVT/control and the periodic HB/HEALTH/TELEM) retries up
-     * to 3 send attempts before drop. CTRL_BCAST and EVT_n payloads are
+     * Every frame goes through the TX ring (16 entries; 64 on the bridge) and leaves in the
+     * order it was sent; the TX-complete interrupt keeps the mailboxes loaded. A frame that
+     * loses arbitration is resent until it goes out; one that hits a bus error, up to 3
+     * attempts in all (#389, D32). At most one frame per CAN ID is in the mailboxes at a time.
+     * A full ring drops the new frame. CTRL_BCAST and EVT_n payloads are
      * ControlPacketPair batches; a single input/output packet uses slot B controlId == 0x0000
      * as the null sentinel. Special/control/diagnostic frames use their explicit DLC and
      * payload. All drops increment the DIAG_ERR TX drop counter.
@@ -617,6 +612,10 @@ namespace CANProtocol {
     /** @brief Frames lost to a full software RX ring since startup (#387). Should stay 0. */
     uint32_t rxDropCount();
 
+    /** @brief RX FIFO 0 hardware overruns since startup (#389): frames lost because all three
+     *  slots were full. Needs interrupts held off for three frame times; should stay 0. */
+    uint32_t rxOverrunCount();
+
     /**
      * @brief Send this node's boot READY_n with makeReadyPayload(). Called once, at the end of the
      *        node library's setup() (PanelGroup step 8, PduNode) — never by sketches. From then on
@@ -763,8 +762,9 @@ cockpit action.
 
 ### TX Ring Buffer
 
-Software queue used when all three STM32 CAN TX mailboxes are occupied. Drained
-automatically via TX-complete interrupt — no explicit drain call needed from the caller.
+Every `send()` goes through a software ring (16 frames; 64 on PanelBridge, `CAN_TX_RING_SIZE`) and
+leaves in the order it was sent. The TX-complete interrupt (`USB_HP_CAN1_TX_IRQHandler`) keeps the
+three mailboxes loaded; `send()` and `drain()` run the same code with interrupts off.
 
 Each queued entry stores:
 
@@ -773,44 +773,51 @@ struct TxQueueEntry {
     uint32_t canId;
     uint8_t  len;
     uint8_t  data[8];
-    uint8_t  attempts;  // bounded-retry classes only; max 3
+    uint8_t  attempts;  // bus-error attempts so far; at 3 the frame is dropped
 };
 ```
 
 ```
-Capacity:        ~16 frames
-Overflow policy: frame-type dependent
-Drop counter:    txDropCount() — incremented on each drop, visible via DIAG_ERR
+Capacity:        16 frames (64 on PanelBridge)
+Drop counter:    txDropCount() — a full ring, or a frame out of error attempts
 ```
 
-For bounded-retry frames, an attempt means a handoff attempt to the HAL TX mailbox layer.
-Simple queue insertion because all mailboxes are currently occupied does not count as an
-attempt. When `attempts == 3` and the frame still cannot be handed to HAL, drop it and
-increment `txDropCount()`.
+**Settling a mailbox (#389, D32).** `AutoRetransmission` is off (below), so the controller tries a
+frame once. A copy of each mailbox's frame is kept with it; before a mailbox is reused, its outcome
+(one `TSR` read, cleared by writing `RQCP`) decides:
 
-`CTRL_BCAST` carries DCS output state such as gauge positions, LEDs, and dimmers. The payload
-is a `ControlPacketPair`. For these state snapshots, newest value is preferred over stale
-intermediate values; queued frames may be dropped or coalesced by `controlId` where practical.
+| Outcome | Action |
+|---------|--------|
+| `TXOK` | Done. |
+| `ALST` — lost arbitration | Back to the head of the ring, always. |
+| `TERR` — bus error | Back to the head of the ring until 3 attempts in all, then dropped and counted. |
 
-`EVT_n` carries input events as a `ControlPacketPair`. `EVT_n`, `READY_n`, `SYNC_REQ`,
-`TEST_SEQ`, and `ECHO_n` are event/control frames. They use bounded retry: keep the frame
-for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. This
-avoids losing user actions during transient mailbox contention without allowing an unhealthy
-bus to create an unbounded backlog.
+**One frame per CAN ID in the mailboxes.** The ring head waits while a mailbox still holds a frame
+with its CAN ID, so a resend can't land after a newer frame of the same ID (a pot would be left at an
+older value). The TX-complete interrupt refills in microseconds, so this costs no throughput.
 
-The periodic status frames — `HB_n`, `HEALTH_n`, `TELEM_n` — take the same bounded retry; they are
-not coalesced, since the next period's frame carries fresh state anyway.
+`CTRL_BCAST` carries DCS output state such as gauge positions, LEDs, and dimmers, as a
+`ControlPacketPair`. It is queued in order and never coalesced (#389): a frame carries two of ~250
+controls, so replacing a queued one loses two others' updates. It is the lowest-priority frame on
+the bus (D31), so its frames are the ones that wait and get resent.
+
+`EVT_n` carries input events as a `ControlPacketPair`. Every frame type — events, the periodic
+`HB_n` / `HEALTH_n` / `TELEM_n`, `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` — follows the same
+rules; none is coalesced.
 
 ### RX Queue
 
-Frames received in the CAN RX interrupt are placed in a small ring buffer. `drain()`
-processes this buffer in loop() context, outside the ISR. Keeps ISR execution time minimal.
+RX FIFO 0's interrupt (`USB_LP_CAN1_RX0_IRQHandler`) moves frames into a software ring (8 frames;
+128 on PanelBridge, `CAN_RX_RING_SIZE`). `drain()` hands them to the callbacks in loop() context,
+outside the ISR. A full ring drops the new frame (`rxDropCount()`).
 
-The HAL is configured with `ReceiveFifoLocked = DISABLE`: if the hardware FIFO fills before
-the ISR drains it, the oldest frame is overwritten by the newest. This should be rare because
-the RX ISR immediately moves frames into the software RX queue. Unlike DCS output broadcasts,
-EVT frames are discrete user actions, so RX overflow is treated as a diagnostic problem rather
-than a preferred freshness policy.
+The HAL is configured with `ReceiveFifoLocked = DISABLE`: if the 3-frame hardware FIFO fills
+before the ISR drains it, a frame is lost in hardware. Each overrun is counted
+(`rxOverrunCount()`). Until #389 the NVIC line was never enabled and the FIFO was only polled
+from `drain()`, so a slow loop pass overran it without a trace.
+
+Both CAN interrupts run at NVIC priority 2 — below the UARTs (1), above the timers (14). They
+share their vectors with USB, which no OpenSkyhawk STM32 build enables (`-DUSB_NONE`).
 
 ---
 
@@ -825,7 +832,8 @@ fault. Both validated in Experiment B (2026-05-20 soak test and fault injection)
 With auto-retransmit enabled, a single unACKed frame (e.g. during a momentary bus fault)
 fills all three TX mailboxes and the node enters bus-off immediately — the TX queue never
 gets a chance to drain. With `DISABLE`, TEC rises +8 per failed attempt; the node enters
-Error Passive at TEC=128 and self-heals when the fault clears.
+Error Passive at TEC=128 and self-heals when the fault clears. The resend decision is the
+software's instead (TX Ring Buffer above): lost arbitration always, a bus error up to 3 attempts.
 
 **AutoBusOff: ENABLE**
 Hardware auto-recovery from bus-off takes ~3 ms at 500 kbps (1408 recessive bits). With
@@ -839,7 +847,7 @@ overridden.
 
 ### Mandatory filter IDs
 
-`start()` unconditionally adds CTRL_BCAST (0x010), TEST_SEQ (0x011), and SYNC_REQ (0x012)
+`start()` unconditionally adds CTRL_BCAST (0x7E0), TEST_SEQ (0x011), and SYNC_REQ (0x012)
 to the active filter regardless of what the caller registered. These are global — every
 node must receive them. It also adds the node's own `HB_n` (duplicate NODE_ID check, #344) and, on
 every node except PanelBridge, `HB_0` (master-loss watchdog, #340). If `filterAcceptAll()` was called, the hardware is pass-all and
@@ -880,7 +888,7 @@ to `onReceive`. PanelGroup registers `onSyncReq` to trigger input re-poll.
 
 ### CAN status monitoring
 
-A periodic check (inside `drain()` or via TX-complete / error interrupts) reads
+A periodic check (inside `drain()`) reads
 `CAN1->ESR` and updates CanStatus:
 - TEC > 0 and not bus-off → `TX_ERROR`
 - BOFF bit set → `BUS_OFF`
@@ -891,9 +899,9 @@ this to the LED state machine.
 
 ### TX queue draining
 
-Automatic — no explicit call needed from `loop()`. When a TX mailbox completes
-(HAL TX-complete callback), CANProtocol checks the ring buffer and sends the next queued
-frame. This keeps the bus saturated without stalling the main loop.
+Automatic — no explicit call needed from `loop()`. When a TX mailbox completes, the TX-complete
+interrupt settles it and loads the next queued frame (#389). This keeps the bus saturated without
+stalling the main loop.
 
 ---
 
