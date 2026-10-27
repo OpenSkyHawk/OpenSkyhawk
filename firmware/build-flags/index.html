@@ -5288,7 +5288,7 @@ them:</p>
 <p>The STM32's internal die-temperature sensor is <strong>uncalibrated</strong>. Rather than ship a threshold
 nobody has field data for, the overheat bit is computed only when a build defines
 <code>NODE_OVERHEAT_C</code> — and <strong>no shipped environment defines it</strong>: not the templates, not
-<code>Panels/Center_Armament</code>, not the E2E examples. The <code>OVERHEAT</code> flag in the node-health frame is
+the PDU sketches, not the E2E examples. The <code>OVERHEAT</code> flag in the node-health frame is
 therefore never set on any real cockpit node.</p>
 <p>Two bench environments force it deliberately, and only to exercise the path:
 <code>Tests/CANProtocol</code> sets <code>=0</code> (any reading trips it, to test overheat and degraded coexisting)
