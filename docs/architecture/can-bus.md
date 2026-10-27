@@ -44,11 +44,15 @@ helper functions — **never hard-code these values**, always use the helper.
 | `CTRL_BCAST` | `0x7E0` | `CAN_ID_CTRL_BCAST` | PanelBridge → All | 8 |
 
 - **A lower ID wins arbitration**, so the table is also the priority order, highest first. Every
-  input, heartbeat and update frame outranks the sim's output: an input happens once, while a sim
-  value comes back by itself on the next change and on DCS-BIOS's autosync.
+  node's input, heartbeat and update frame outranks the sim's output: an input happens once, while
+  a sim value comes back by itself on the next change and on DCS-BIOS's autosync.
 - `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node — the whole export
   stream, whatever aircraft is flying; each output picks out its own address. It is the
-  lowest-priority frame on the bus: under load the sim waits, the cockpit never does.
+  lowest-priority frame on the bus: under load the sim's output yields to every node's frame.
+- Arbitration orders frames *between* boards, not inside one. Each board sends from a single queue,
+  in order, so PanelBridge's own `HB_0` and `SYNC_REQ` wait behind any `CTRL_BCAST` frames queued
+  before them, and those lose every contest with a node's frame. How long that wait gets on a busy
+  bus has not been measured.
 - `BOOT_CMD_n` / `BOOT_RSP_n` are the [bootloader](../firmware/bootloader.md)'s frames: a board
   waiting in its bootloader announces itself once a second and takes a new firmware image in 64-byte
   blocks. They sit below every control and status frame, so update traffic never delays a control. The
@@ -147,11 +151,13 @@ The `SYNC_REQ` / `READY` handshake makes input state deterministic:
    the next one (or after 150 ms if a node doesn't answer), and it re-announces the node's
    firmware version to a bridge that started after it. A resync READY never starts another sync.
 
-This guarantees PanelBridge can request a fresh input snapshot at any time. Missed *outputs*
-(LEDs, gauges) are tolerable — a fresh DCS-BIOS update arrives within ~50 ms. Missed *inputs*
-(switch positions) are not — they'd leave DCS in the wrong state until the next physical
-change, which is why the handshake exists. See
-[Design Decisions](design-decisions.md) for the reasoning.
+This lets PanelBridge collect a fresh input snapshot at any time. `SYNC_REQ` asks for **inputs
+only**: it does not make DCS-BIOS send the outputs again. Missed *outputs* (LEDs, gauges) are
+tolerable: a value that changes arrives on the next DCS-BIOS frame, and one that doesn't change is
+re-sent only by DCS-BIOS's autosync, every few seconds. So after a reboot an output can sit at its
+default until then, and a late output that catches up is accepted. Missed *inputs* (switch
+positions) are not tolerable — they'd leave DCS in the wrong state until the next physical change,
+which is why the handshake exists. See [Design Decisions](design-decisions.md) for the reasoning.
 
 ## Gotchas — get these right
 
@@ -169,11 +175,13 @@ change, which is why the handshake exists. See
 - **SJW = 4TQ.** Lower values cause intermittent CRC errors from crystal tolerance between
   boards. Keep it at 4TQ permanently — it costs nothing. See
   [D5](design-decisions.md#d5-sjw-4tq-empirically-determined).
-- **Batch flush deadline.** A half-full `ControlPacketPair` must flush within **two firmware
-  `loop()` iterations** — user input must not sit waiting for a slot-B packet that may never
-  arrive. Input-snapshot bursts (boot, `SYNC_REQ` re-polls) flush any trailing single packet
-  immediately at the end of the poll pass.
-- **TX overflow is frame-type dependent.** `CTRL_BCAST` drops stale state and keeps the
-  newest (coalescing by `controlId`); `EVT_n` and the special frames use bounded retry (3
-  attempts) then drop and bump a diagnostic counter. A healthy bus drops nothing — any
-  `EVT_n` drop is a signal, not normal.
+- **Batch flush deadline.** On a node, a half-full `ControlPacketPair` goes out within **two
+  firmware `loop()` iterations**, so user input never sits waiting for a slot-B packet that may
+  never arrive. PanelBridge's `CTRL_BCAST` also waits at least 2 ms for a partner, so the export
+  stream fills both slots. Input-snapshot bursts (boot, `SYNC_REQ` re-polls) flush any trailing
+  single packet immediately at the end of the poll pass.
+- **Nothing is coalesced; a full queue drops the new frame.** Every frame, `CTRL_BCAST` included,
+  queues in order. Replacing a queued `CTRL_BCAST` with a newer one would lose two other controls'
+  updates each time (about a fifth of the sim's output under a real export stream), so it never
+  happens. A dropped frame is counted on the board (`CANProtocol::txDropCount()`), not reported
+  over the bus. A healthy bus drops nothing.

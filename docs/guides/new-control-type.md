@@ -24,7 +24,7 @@ an object registers it — `PanelGroup::setup()` and `PanelGroup::loop()` find i
 | Input (`InputBase`) | Called |
 |---|---|
 | `configure()` | once, at start-up, after the expanders are ready — set your pins up here, not in the constructor |
-| `forceReport()` | at start-up and on every `SYNC_REQ` — send the current state, unconditionally |
+| `forceReport()` | at start-up and on every `SYNC_REQ` for this node — send the control's current state (a position or value), unconditionally; a control with no state of its own (a momentary action, an encoder) sends nothing, never a step or `TOGGLE` |
 | `poll()` | every `loop()` — send only on a confirmed change; never block |
 | `sampleTick()` | optional; from a sampling interrupt on boards that run one — read cached pins only |
 

@@ -17,8 +17,8 @@ format, so a mixed set has no meaning. Every board reports the version it runs (
 | **Your own control classes** | What a class written against [the control-class interface](../guides/new-control-type.md) relies on: the `InputBase` / `OutputBase` methods and self-registration, the `PinRef` methods, `CANProtocol::sendBatched` with `ControlPacket` and the `canIdEvt*` frame IDs, and `FaultSource`. |
 | **Build flags** | The flags [Build Flags](build-flags.md) tells you to set or opt out of (`NODE_ID`, `NODE_HEALTH_TELEM=0`, `PANELBRIDGE_NODE_STATUS=0`, …), and their meaning. |
 | **CAN bus** | Every frame ID and its payload layout, so the [arbitration order](../architecture/can-bus.md) too, and the values those payloads carry (board kinds, fault codes, telemetry pages, flag bits). |
-| **Gateway link** | The HID frame between the Gateway's two chips. |
-| **PC side** | The `_NODE_STATUS`, `_NODE_STATUS_END`, `_NODE_TELEM` and `_BOOT_RSP` messages, the roster request (`0xFF00`) and the bootloader relay addresses (`0xFF10`–`0xFF4F`); the USB calibration channel; the Gateway's USB identity (VID, PID, product and serial-port names), because DCS binds your controls to it. |
+| **Gateway link** | The HID frame between the Gateway's two chips, and the request (`0xFF02`) that sends the PanelBridge chip to its bootloader for an update. |
+| **PC side** | The `_NODE_STATUS`, `_NODE_STATUS_END`, `_NODE_TELEM` and `_BOOT_RSP` messages, the roster request (`0xFF00`), the forget-node request (`0xFF04`) and the bootloader relay addresses (`0xFF10`–`0xFF4F`); the USB calibration channel; the Gateway's USB identity (VID, PID, product and serial-port names), because DCS binds your controls to it. |
 | **Control IDs** | `DCSIN_*` and `CTRL_*` ids never change. `A_4E_C_*` output addresses follow DCS-BIOS (see below). |
 
 ## What isn't covered
@@ -82,9 +82,9 @@ forwards the raw CAN bytes, so its fields stay little-endian.
 
 **Every board on one bus must run the same major version.** Minor and patch versions can differ.
 
-Each board announces its firmware version every time it starts, and the Gateway passes every
-board's version to the client, its own included, so a board left on an older major can be
-spotted. A board that was already running when the Gateway started reads "not reported" until its
-next restart. Reflashing restarts it, so a freshly updated board always reports.
+Each board announces its firmware version every time it starts, and again whenever the Gateway asks
+it for its state, which it does as soon as it sees the board. The Gateway passes every board's
+version to the client, its own included, so a board left on an older major can be spotted — even one
+that was already running when the Gateway started.
 
 To update a cockpit across a major version, reflash every board, the Gateway included.

@@ -1,14 +1,15 @@
 # Build Flags
 
 Every OpenSkyhawk firmware project is configured by `-D` flags in its `platformio.ini`. There are
-**32 of them**, and they come from three different places. That mixed provenance is the first
+**63 of them**, and they come from three different places. That mixed provenance is the first
 thing to understand, because it decides who you have to convince before you change one:
 
 | Group | Count | Changing one is… |
 |---|---|---|
-| [**Ours — behavioural**](#ours-behavioural-13) | 13 | a local decision — we own the code that reads it |
-| [**Third-party, set by us**](#third-party-set-by-us-7) | 7 | **not** a local decision — STM32duino, arduino-pico, and DCS-BIOS own these |
-| [**Test seams**](#test-seams-12) | 12 | bench-only — never present in a shipped build |
+| [**Ours — behavioural**](#ours-behavioural) | 16 | a local decision — we own the code that reads it |
+| [**PDU node settings**](#pdu-node-settings-pdu_) | 24 | a local decision, for the power-distribution node only |
+| [**Third-party, set by us**](#third-party-set-by-us) | 7 | **not** a local decision — STM32duino, arduino-pico, and DCS-BIOS own these |
+| [**Test seams**](#test-seams) | 16 | bench-only — never present in a shipped build |
 
 This page is an inventory: what each flag defaults to, where it's set, and where it's read. Deep
 per-flag semantics live in the library READMEs under `Firmware/Libraries/` and in
@@ -54,10 +55,10 @@ this is just the flags.
 
 `FORCE_CLOCK_FALLBACK`, `PINREF_DEBUG`, `NODE_OVERHEAT_C`, and any `*_TEST` seam. These are bench
 and debug instruments. If one appears in a panel's `platformio.ini`, it is a mistake — see
-[Test seams](#test-seams-12) and [Deliberate non-defaults](#deliberate-non-defaults) for what each
+[Test seams](#test-seams) and [Deliberate non-defaults](#deliberate-non-defaults) for what each
 actually does.
 
-## Ours — behavioural (13)
+## Ours — behavioural
 
 | Flag | Default | Set where | Read at |
 |---|---|---|---|
@@ -74,6 +75,9 @@ actually does.
 | `SHIFTBUS_LATCH` | `PB9` | never set | `ShiftBus.cpp:25` |
 | `SHIFTBUS_ISR_HZ` | unset → polled sampling | `Tests/ShiftBus`, `=1000` | `PanelGroup.cpp:116,231` |
 | `SHIFTBUS_ISR_TIM` | `TIM2` | never set | `PanelGroup.cpp:232` |
+| `CAN_TX_RING_SIZE` | 64 frames on PanelBridge, 16 on a node | never set | `CANProtocol.cpp:37` |
+| `CAN_RX_RING_SIZE` | 128 frames on PanelBridge, 8 on a node | never set | `CANProtocol.cpp:43` |
+| `OSH_BOOT_BRIDGE` | off — the CAN bootloader | `Firmware/Bootloader` env `bridge` | `Bootloader/src/main.cpp:77` |
 
 **What they do, briefly.** `NODE_ID` is the board's CAN address — see
 [NODE_ID & CAN Addressing](node-id.md). `PANELBRIDGE_NODE_STATUS` makes PanelBridge report which
@@ -86,6 +90,10 @@ fault path as well as its verified-72 MHz path (#263).
 `PINREF_DEBUG` adds assertions to the pin abstraction. The `SHIFTBUS_*` pin flags relocate the
 shift-register bus off its default SPI1-remap pins; `SHIFTBUS_ISR_HZ` switches that bus from
 polled to timer-ISR sampling (encoder feel) on the timer named by `SHIFTBUS_ISR_TIM`.
+`CAN_TX_RING_SIZE` / `CAN_RX_RING_SIZE` size CANProtocol's software queues (2–255 frames); PanelBridge
+gets the deep ones because it sends the whole export stream and hears every node. `OSH_BOOT_BRIDGE`
+builds the bootloader for the Gateway's PanelBridge chip, which takes updates over the link to the
+Gateway's USB chip instead of CAN; `bootstrap` and the release files pick the right build for you.
 
 !!! warning "Set `NODE_ID` in `platformio.ini`, never in `main.cpp`"
     A `#define NODE_ID` in a sketch is invisible to library translation units — `CANProtocol` and
@@ -125,15 +133,16 @@ them:
     telemetry and the bridge's node reporting; you need an explicit `=0` to turn either off. The
     client depends on both, so a shipped build keeps them on.
 
-## PDU node thresholds (`PDU_*`)
+## PDU node settings (`PDU_*`)
 
-The power-distribution node (`PowerMonitor` library, `Panels/PDU_*`) takes every limit as a
-`PDU_*` macro with a default in `Firmware/Libraries/PowerMonitor/PduConfig.h`. The defaults are
+The power-distribution node (`PowerMonitor` library, `Panels/PDU_*`) takes its ADC pins and every
+limit as a `PDU_*` macro with a default in `Firmware/Libraries/PowerMonitor/PduConfig.h`. The defaults are
 starting points to tune on the bench against the real load; override one per build, e.g.
 `-DPDU_12V_UV_MV=11200`, with no code change.
 
 | Flag | Default | What it sets |
 |---|---|---|
+| `PDU_PIN_V12` / `PDU_PIN_V5` / `PDU_PIN_I12` / `PDU_PIN_I5` / `PDU_PIN_NTC` | `PA0` / `PA1` / `PA2` / `PA3` / `PA6` | ADC pins, as wired on the PDU board; change them only for a board wired differently |
 | `PDU_12V_UV_MV` / `PDU_12V_OV_MV` | 11400 / 13200 | 12 V under / over-voltage |
 | `PDU_5V_UV_MV` / `PDU_5V_OV_MV` | 4750 / 5500 | 5 V under / over-voltage |
 | `PDU_12V_OC_MA` / `PDU_5V_OC_MA` | 4500 / 1800 | over-current, 90 % of the 5 A / 2 A fuse |
@@ -149,7 +158,7 @@ starting points to tune on the bench against the real load; override one per bui
 `PANELBRIDGE_NODE_STATUS` (above) also gates the bridge's `_NODE_TELEM` forwarding of these
 readings to the host.
 
-## Third-party, set by us (7)
+## Third-party, set by us
 
 These belong to **STM32duino**, **arduino-pico**, and the **DCS-BIOS** library. We only set them —
 we don't own the code that reads them, and a framework update can move a default out from under
@@ -201,7 +210,7 @@ HAL module list, so without our `-D` there is no bxCAN driver to link against.
     it off is that `USBCON` is never defined, and no build config or source under `Firmware/`
     defines it.** The flag documents the decision; it does not enforce it.
 
-## Test seams (12)
+## Test seams
 
 Each of these widens a library's visibility so its on-target tests can assert against internal
 state. **A seam never changes shipped behaviour, and no shipped environment defines one** — each
@@ -211,6 +220,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 |---|---|---|
 | `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:104` |
 | `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:93` |
+| `DIMMER_TEST` | Dimmer | `Outputs/Dimmer/Dimmer.h:71` |
 | `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:278` |
 | `LED_TEST` | LED | `Outputs/LED/LED.h:67` |
 | `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:59` |
@@ -221,15 +231,21 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 | `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:13` (no-op HID stubs) |
 | `STEPPERMOTOR_TEST` | StepperMotor | `Drivers/StepperMotor/StepperMotor.h:151` |
 | `STM32BOARD_TEST` | STM32Board | `STM32Board/STM32Board.h:31` |
+| `SWITCHWITHCOVER_TEST` | SwitchWithCover2Pos | `Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h:62` |
 
 Paths are relative to `Firmware/Libraries/`, and the PanelGroup ones to
 `Firmware/Libraries/PanelGroup/`. Most seams are read in several places; the column gives the
 first, which is where the guarded block starts.
 
-Two test projects set a second library's seam because they drive it: `Tests/NeedleGauge` also sets
-`STEPPERMOTOR_TEST`, and `Tests/AnalogMultiPos` also sets `MULTIPOS_TEST`. Five test projects have
-no seam of their own at all — `Tests/PinRef`, `Tests/CANProtocol`, `Tests/NodeStatus`,
-`Tests/Switch2Pos` and `Tests/PanelGroup` test through the public API.
+Several test projects set another library's seam because they drive or extend it — for example
+`Tests/NeedleGauge` also sets `STEPPERMOTOR_TEST`, `Tests/CANProtocol` sets `STM32BOARD_TEST`, and the
+`MultiPosInput` family's tests set `MULTIPOS_TEST`. Seven test projects set no seam at all and test
+through the public API: `Tests/ActionButton`, `Tests/IntegerOutput`, `Tests/NodeStatus`,
+`Tests/PanelGroup`, `Tests/PinRef`, `Tests/PowerMonitor` and `Tests/Switch2Pos`.
+
+Two more flags are bench values rather than seams: `I2C_TEST_SCL` / `I2C_TEST_SDA` (`PB10` / `PB11`)
+pick the I²C pins for the test sketches in `Tests/PinRef`, `Tests/PanelGroup`, `Tests/StepperMotor`
+and `Tests/DrumDisplay`. No library reads them.
 
 `SIMGATEWAY_TEST` is the one that does more than widen visibility: it swaps the real HID backend
 for no-op stubs so SimGateway logic can be tested without a USB host.
@@ -237,35 +253,36 @@ for no-op stubs so SimGateway logic can be tested without a USB host.
 ## Re-verifying this page
 
 Rather than trust the tables, re-derive them. Run both blocks from the repo root — **their union
-must be 32**. If it isn't, this page is stale.
+must be 63**. If it isn't, this page is stale.
 
 Be clear about what that proves. Both lists come from greps of the same shape, so the union
 check catches **drift** — a flag added, removed, or renamed after this page was written. It does
 not prove the inventory is **complete**: a flag consumed in some way neither grep looks for would
-be missed by the check exactly as it was missed by the page. Treat 32 as the current count, not a
+be missed by the check exactly as it was missed by the page. Treat 63 as the current count, not a
 guarantee.
 
 ```bash
 grep -rhE '^[^;#]*-D[A-Za-z_]' --include=platformio.ini Firmware | sed -E 's/[;#].*//' | grep -oE '[[:space:]]-D[A-Za-z_][A-Za-z0-9_]*' | sed 's/.*-D//' | sort -u
 ```
 
-That's every flag **set** by some environment — 22 of them.
+That's every flag **set** by some environment — 28 of them.
 
 ```bash
 grep -rhoE '#[[:space:]]*(ifdef|ifndef|if|elif)[^A-Za-z_]*defined[^A-Za-z_]*[A-Za-z_][A-Za-z0-9_]*|#[[:space:]]*(ifdef|ifndef)[[:space:]]+[A-Za-z_][A-Za-z0-9_]*' --include='*.h' --include='*.cpp' Firmware/Libraries | grep -oE '[A-Za-z_][A-Za-z0-9_]*$' | sort -u | grep -vE '^(ARDUINO_ARCH_|STM32F1xx$|ATEMP$|guard$|_)'
 ```
 
-That's every flag **read** by a library conditional — 25 of them. The trailing filter drops
+That's every flag **read** by a library conditional — 53 of them. The trailing filter drops
 architecture macros, the `ATEMP` pin macro, and internal include guards; none are build flags.
 
 The two lists deliberately don't match, and the differences are the interesting part:
 
 - **Set but not read** — `NODE_ID` (used as a *value*, `canIdEvt(NODE_ID)`, never in a
-  conditional) plus the six framework flags, which are read inside STM32duino and arduino-pico
-  rather than in our tree.
-- **Read but never set** — the nine flags whose defaults always apply in every committed
-  environment (the five ShiftBus pins, `SHIFTBUS_ISR_TIM`, `NODE_HEALTH_TELEM`,
-  `FORCE_CLOCK_FALLBACK`, `PINREF_DEBUG`), plus `DCSBIOS_DEFAULT_SERIAL`, which is `#define`d in
+  conditional), the six framework flags, which are read inside STM32duino and arduino-pico
+  rather than in our tree, `OSH_BOOT_BRIDGE`, which is read by the bootloader outside
+  `Firmware/Libraries`, and the two `I2C_TEST_*` pins, which are read as values in test sketches.
+- **Read but never set** — the 34 flags whose defaults always apply in every committed
+  environment (the five ShiftBus pins, `SHIFTBUS_ISR_TIM`, `NODE_HEALTH_TELEM`, `PINREF_DEBUG`, the
+  two CAN ring sizes and all 24 `PDU_*` flags), plus `DCSBIOS_DEFAULT_SERIAL`, which is `#define`d in
   sketch source instead of passed as `-D`.
 
 To check the `USB_NONE` claim specifically, both of these must return nothing:

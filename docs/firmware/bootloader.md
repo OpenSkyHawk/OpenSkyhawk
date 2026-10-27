@@ -9,8 +9,8 @@ Gateway's USB chip for the PanelBridge chip, which runs the bus and so can't be 
 
 The bootloader checks the firmware before starting it. Every firmware image carries a small identity
 block: which node it is for, what kind of board, its version, and a checksum over the whole image. If
-the checksum matches, the firmware starts within a few milliseconds and the board behaves as it always
-has. If it doesn't — an update was interrupted, or the board was never flashed — the bootloader stays
+the checksum matches, the firmware starts a fraction of a second later (the bootloader first listens
+for 200 ms, below) and the board behaves as it always has. If it doesn't — an update was interrupted, or the board was never flashed — the bootloader stays
 in charge, blinks the red and green LEDs together, and announces itself on the bus once a second,
 ready for a new image. Red and green lit together always means "in the bootloader" — the firmware
 never shows that pattern; the full list is on the [status LED](debugging.md#in-the-bootloader-red-and-green-together)
@@ -24,7 +24,8 @@ cockpit while the update is waiting.
 
 An update is written so that a failure at any point is safe. The first block of the new firmware is
 held back and written only after the whole image has arrived and its checksum matches. Pull the power
-halfway through, and the board comes back in its bootloader, ready to try again.
+halfway through, and the board comes back in its bootloader, ready to try again — the steps are under
+[Recovering from a power cut during an update](../guides/bring-up.md#recovering-from-a-power-cut-during-an-update).
 
 ## Updating through the cockpit
 
@@ -88,7 +89,8 @@ bootloader takes over the bus: SkyHawkClient sends it through the Gateway. See
 
 The bootloader is frozen from firmware 1.0: boards in the field never get a new one over the bus, so
 every new feature goes into the firmware instead. It is built with a pinned compiler, so the same
-source always builds the same bytes, and it stays within its 4 KB for good. A release that does change
+source always builds the same bytes, and it stays within its 4 KB for good (about 3.7 KB, roughly
+400 B free). A release that does change
 it (a bug fix) ships it on its own as well, for the ST-Link.
 
 ## The bootloader protects itself

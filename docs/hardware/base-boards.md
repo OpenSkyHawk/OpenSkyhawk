@@ -55,8 +55,10 @@ DCS-BIOS and acts as the CAN bus master. Every other board in the cockpit report
 - **One head node for the whole cockpit** — a single USB cable to the PC carries both the HID
   controller and the DCS-BIOS data stream.
 - **Two chips, one job each** — the RP2040 owns USB/HID, the STM32 owns CAN and DCS-BIOS. They
-  talk over a short serial link, and their power supplies stay independent (sharing only ground)
-  so neither can back-feed the other.
+  talk over a short serial link, and their power supplies stay independent, sharing only ground.
+  Series resistors on the serial lines limit what a powered chip can feed into an unpowered one;
+  that limit is calculated, not yet measured (tracked in
+  [#290](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/290)).
 - **Local display ready** — both of the STM32's I²C buses are brought out, handy for a small
   status OLED or a sensor on the head board.
 - **Status cluster** — five LEDs (power, plus red/green for each of the two chips) show link and
