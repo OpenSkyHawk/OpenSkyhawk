@@ -15,6 +15,7 @@
 //   - COMMIT validation: index, deadzone, ordering — each with its own NACK reason and axis
 //   - COMMIT carries exactly one axis; a rejected axis leaves the others alone
 //   - RESET clears an axis and needs no following COMMIT
+//   - no firmware upload during a session: UPL_BEGIN and UPL_FLASH NACKed BUSY (#402)
 //
 // Flash:
 //   pio run -e test_axis_cal_session -t upload
@@ -22,6 +23,8 @@
 
 #include <Arduino.h>
 #include <SimGateway.h>
+#include <UploadProtocol.h>   // UPL_TARGET_BRIDGE, UPL_NODE_ID_KEEP, UPL_FLASH payload fields
+#include <Uploader.h>         // Uploader::busy()
 
 using OpenSkyhawk::CAL_MAX_FRAME;
 namespace OS = OpenSkyhawk;
@@ -223,6 +226,29 @@ static void testCommitAndReset() {
     checkEq(F("[D11] RESET all clears every axis"), rxPay(1), 0x00);
 }
 
+// ── No upload during a session (#402) ─────────────────────────────────────────
+// UPL_FLASH to the bridge with nothing staged flashes the bundled image, so refusing BEGIN alone
+// isn't enough. Both must be answered by the calibration channel and never reach the uploader
+// (which this test doesn't start), so E3-E6 fail without the guard.
+static void testNoUploadInSession() {
+    SimGateway::calResetForTest();
+    openSession(0);
+
+    req(OS::CAL_T_UPL_BEGIN, 0x61, nullptr, 0);
+    checkEq(F("[E1] UPL_BEGIN in a session NACKed"), rxType(), OS::CAL_T_NACK);
+    checkEq(F("[E2] reason BUSY"),                   rxPay(1), OS::CAL_NACK_BUSY);
+
+    uint8_t f[2];
+    f[OS::UPL_FLASH_TARGET]      = OS::UPL_TARGET_BRIDGE;
+    f[OS::UPL_FLASH_NEW_NODE_ID] = OS::UPL_NODE_ID_KEEP;
+    req(OS::CAL_T_UPL_FLASH, 0x62, f, sizeof(f));
+    checkEq(F("[E3] UPL_FLASH in a session NACKed"), rxType(), OS::CAL_T_NACK);
+    checkEq(F("[E4] NACK names UPL_FLASH"),          rxPay(0), OS::CAL_T_UPL_FLASH);
+    checkEq(F("[E5] reason BUSY"),                   rxPay(1), OS::CAL_NACK_BUSY);
+    check  (F("[E6] no flash started"),              !Uploader::busy());
+    check  (F("[E7] calibration session still open"), SimGateway::calSessionOpen());
+}
+
 void setup() {
     Serial.begin(115200);
     delay(2000);
@@ -231,6 +257,7 @@ void setup() {
     testLifecycle();
     testCommitValidation();
     testCommitAndReset();
+    testNoUploadInSession();
     Serial.println(g_allPass ? F("=== ALL PASS ===") : F("=== FAILURES PRESENT ==="));
 }
 
