@@ -354,7 +354,7 @@ vocabulary, not the engine.
 | R_i2c_ser | 33 Ω ×4 | `Device:R` | SDA/SCL series (2/bus) |
 | R_term | 120 Ω | `Device:R` | + J_TERM jumper |
 | R_boot | 10 kΩ | `Device:R` | BOOT0 pull-down |
-| R_uart | 1 kΩ ×2 (R16/R17) | `Device:R` | UART series between the two power domains (RP2040 on USB, STM32 on the bus) — limits back-feed into whichever side is unpowered to ~3 mA; edge τ ≈ 10 ns, negligible at 250 kbaud |
+| R_uart | 1 kΩ ×2 (R16/R17) | `Device:R` | UART series between the two power domains (RP2040 on USB, STM32 on the bus) — limits back-feed into whichever side is unpowered to ~3 mA (calculated). **Measured 2026-10-27 (#290)** on a built 0.2.0 Gateway with 33 Ω on R16/R17: bridge powered from an ST-Link, RP2040-Zero USB unplugged → Zero GP1 (bridge TX via R17) ≈ 3.3 V, GP0 ≈ 3.3 V, Zero 3V3 = 0.3 mV — no back-feed into the unpowered RP2040 even at 33 Ω, so 0.2.0 boards need no rework. Rev 0.2.1 uses 1 kΩ for extra margin. **Not measured:** the reverse direction (Zero on USB, bridge unpowered) and the 12 V bus / regulator path; edge τ ≈ 10 ns, negligible at 250 kbaud |
 | R_led | ≈2.2 k–10 k ×5 | `Device:R` | status/power LEDs, dim (PB R/G + PWR + SimGW R/G) |
 | C_xtal | 22 pF ×2 (C0G/NP0) | `Device:C` | crystal load — stable dielectric |
 | C_dec | 100 nF ×~5 | `Device:C` | per VDD/VDDA + IC decoupling |

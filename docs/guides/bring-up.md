@@ -41,9 +41,11 @@ NODE_ID matches what you claimed.
 ## 4. Join the bus
 
 Connect PanelBridge and the SimGateway. On a healthy bus the node settles to **green blinking**.
-PanelBridge broadcasts `SYNC_REQ`; the node completes its input poll and replies `READY`, then
-re-sends its current input state. Gauge steppers home to position 0 at boot (mechanical-stop
-homing) before any DCS data arrives — so no random needle motion.
+At boot the node completes its input poll, sends its current input state, then `READY`. When
+PanelBridge first sees the node (its `READY`, or its heartbeat if the node was already running), it
+asks that node alone for its state with a `SYNC_REQ`, and the node sends it again. Gauge steppers
+home to position 0 at boot (mechanical-stop homing) before any DCS data arrives — so no random
+needle motion.
 
 ## 5. End-to-end in DCS
 
@@ -54,6 +56,25 @@ Start DCS-BIOS export and load the A-4E-C. Then:
 
 The [E2E_DCS_Test](first-panel.md) example is the simplest case — Master Test lights the gear
 light through the full loop.
+
+## Recovering from a power cut during an update
+
+A firmware update is safe to interrupt: a board switches to its new firmware only once all of it
+has arrived and checked out. If the power goes off partway through:
+
+1. **Power the cockpit back up.** If the Gateway stayed connected to the PC and the power came back
+   within a few seconds, the update may finish by itself: wait for the LEDs to settle. Otherwise the
+   board whose update was cut short shows **red and green blinking together**: it is waiting in its
+   [bootloader](../firmware/bootloader.md), with no firmware to start. A board cut off before its
+   old firmware was erased starts the old version instead, and one cut off after all of the new
+   firmware had arrived starts the new one.
+2. **Open SkyHawkClient** with the Gateway connected. If it reports the update as failed, or lists
+   the board as waiting in its bootloader, the board still needs its firmware.
+3. **If it does, run the update for that board again.** When it finishes, the board restarts on
+   the new firmware and its LEDs go back to the normal patterns above.
+
+The same steps apply when the board cut short was the Gateway's own PanelBridge chip: update the
+Gateway again.
 
 ## Troubleshooting
 
