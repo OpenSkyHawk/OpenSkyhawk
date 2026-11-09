@@ -282,7 +282,7 @@ namespace SimGateway {
      * @brief Initialise USB identity, the HID device, and the UART link. Call from setup().
      *
      * Owns all hardware initialisation — the sketch calls nothing else before this:
-     *   - Sets USB identity: Manufacturer "OpenSkyhawk", Product "A-4E Skyhawk", VID/PID 0x2E8A/0x4134
+     *   - Sets USB identity: Manufacturer "OpenSkyhawk", Product "A-4E Skyhawk", VID/PID 0x2E8A/0x1166
      *   - Records the boot reason for DIAG (watchdog scratch registers)
      *   - Configures UART pins, sets a UART_RX_QUEUE_BYTES (1024) RX queue, calls uart.begin(250000)
      *   - Loads axis calibration from flash, then initialises the TinyUSB HID descriptor

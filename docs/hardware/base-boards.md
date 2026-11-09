@@ -47,7 +47,7 @@ DCS-BIOS and acts as the CAN bus master. Every other board in the cockpit report
 | **Role** | USB-HID + DCS-BIOS head node, CAN bus master |
 | **Node ID** | 0 (the master) |
 | **Microcontrollers** | RP2040-Zero (USB side) + STM32F103 (CAN side) |
-| **PC link** | USB-C on the RP2040 module — HID device `0x2E8A` / `0x4134` |
+| **PC link** | USB-C on the RP2040 module — HID device `0x2E8A` / `0x1166` |
 | **Power** | 5 V from the bus; the RP2040 runs from USB |
 
 **Highlights**

@@ -103,7 +103,7 @@ Set at runtime in `setup()` before the TinyUSB HID device begins.
 not `USB.*` (the latter belongs to the default stack):
 
 ```cpp
-TinyUSBDevice.setID(0x2E8A, 0x4134);                    // VID = Raspberry Pi; PID = A-4E Skyhawk
+TinyUSBDevice.setID(0x2E8A, 0x1166);                    // VID = Raspberry Pi; PID = A-4E Skyhawk
 TinyUSBDevice.setManufacturerDescriptor("OpenSkyhawk");
 TinyUSBDevice.setProductDescriptor("A-4E Skyhawk");
 Serial.setStringDescriptor("A-4E Skyhawk DCS-BIOS");    // CDC iInterface — names the serial port

@@ -6,7 +6,7 @@
 //
 // HOW TO USE:
 //   1. Flash:  pio run -e test_hid_enumeration -t upload
-//   2. Device enumerates as: OpenSkyhawk / A-4E Skyhawk (VID 0x2E8A / PID 0x4134)
+//   2. Device enumerates as: OpenSkyhawk / A-4E Skyhawk (VID 0x2E8A / PID 0x1166)
 //   3. Open joy.cpl (or DIView) — verify joystick appears with 8 axes, 128 buttons, 4 hats.
 //   4. Open DCS World → Options → Controls → any aircraft — verify all axes are bindable.
 //   5. Watch Serial (115200) for which axis/button is currently active.
@@ -88,7 +88,7 @@ void setup() {
 
     Serial.println(F("=== hid_enumeration — TinyUSB axis sweep ==="));
     Serial.println(F("Device: OpenSkyhawk / A-4E Skyhawk"));
-    Serial.println(F("VID 0x2E8A  PID 0x4134"));
+    Serial.println(F("VID 0x2E8A  PID 0x1166"));
     Serial.println(F("Descriptor: 8 axes, 128 buttons, 4 hat switches"));
     Serial.println(F(""));
     Serial.println(F("Check joy.cpl / DIView / DCS Controls to verify."));

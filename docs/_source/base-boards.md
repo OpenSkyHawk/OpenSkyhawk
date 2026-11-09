@@ -186,7 +186,7 @@ as HTSSOP. Go bare only at volume or for tight mechanical integration.
 
 | Domain | Source | Generates 3.3 V | Notes |
 |---|---|---|---|
-| SimGateway (RP2040-Zero) | USB-C from PC (VBUS) | module's own onboard LDO | HID device; VID `0x2E8A` / PID `0x4134` |
+| SimGateway (RP2040-Zero) | USB-C from PC (VBUS) | module's own onboard LDO | HID device; VID `0x2E8A` / PID `0x1166` |
 | PanelBridge (STM32) | bus `+5V` → AMS1117 | AMS1117-3.3 | CAN master + DCS-BIOS |
 
 **The two 3.3 V rails are NOT tied together.** The RP2040-Zero's onboard LDO is hardwired to

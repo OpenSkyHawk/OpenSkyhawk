@@ -52,7 +52,7 @@ void loop() {
 | Manufacturer | OpenSkyhawk |
 | Product | A-4E Skyhawk |
 | VID | 0x2E8A (Raspberry Pi) |
-| PID | 0x4134 |
+| PID | 0x1166 |
 | CDC port (iInterface) | A-4E Skyhawk DCS-BIOS |
 
 The `Product` string names the HID joystick; the CDC interface carries its own `iInterface`

@@ -28,7 +28,7 @@ USB identity is set at runtime before the HID device starts (TinyUSB replaces th
 Pico USB stack):
 
 ```cpp
-TinyUSBDevice.setID(0x2E8A, 0x4134);   // VID = Raspberry Pi, PID = A-4E Skyhawk
+TinyUSBDevice.setID(0x2E8A, 0x1166);   // VID = Raspberry Pi, PID = A-4E Skyhawk
 TinyUSBDevice.setManufacturerDescriptor("OpenSkyhawk");
 TinyUSBDevice.setProductDescriptor("A-4E Skyhawk");
 Serial.setStringDescriptor("A-4E Skyhawk DCS-BIOS"); // CDC interface name (iInterface)
