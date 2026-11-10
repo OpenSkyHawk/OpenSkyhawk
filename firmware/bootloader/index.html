@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -4912,10 +4912,10 @@
 
 
 <h1 id="bootloader">Bootloader</h1>
-<p>Every OpenSkyhawk STM32 board (PanelGroup nodes, PDUs, and the Gateway's PanelBridge chip) carries a
+<p>Every OpenSkyhawk STM32 board (PanelGroup nodes, PDUs, and the Gateway's cockpit side) carries a
 small bootloader in its first 4 KB of flash. It starts the firmware, and it lets the board take a new
 firmware image without an ST-Link: over the cockpit's CAN bus for the nodes, and over the link to the
-Gateway's USB chip for the PanelBridge chip, which runs the bus and so can't be updated across it.</p>
+Gateway's USB side for the Gateway's cockpit side, which runs the bus and so can't be updated across it.</p>
 <h2 id="what-it-does-at-power-up">What it does at power-up</h2>
 <p>The bootloader checks the firmware before starting it. Every firmware image carries a small identity
 block: which node it is for, what kind of board, its version, and a checksum over the whole image. If
@@ -4928,8 +4928,8 @@ page.</p>
 <p>If the firmware passes the check but keeps resetting before it finishes booting, the bootloader
 counts the attempts. After three, it stops starting it and announces the board as unstable (red and
 green together, alternating with red alone) until a new image arrives. And for 200 ms after every reset it listens for an update tool
-asking it to stay — so even firmware that never answers on the bus can be replaced: power-cycle the
-cockpit while the update is waiting.</p>
+asking it to stay — so even firmware that never answers on the bus can be replaced: press the reset
+button on the board being updated while the update is waiting.</p>
 <p>An update is written so that a failure at any point is safe. The first block of the new firmware is
 held back and written only after the whole image has arrived and its checksum matches. Pull the power
 halfway through, and the board comes back in its bootloader, ready to try again — the steps are under
@@ -4939,17 +4939,19 @@ halfway through, and the board comes back in its bootloader, ready to try again 
 simulator does: from the PC through the Gateway's USB, and across the CAN bus. The PC hands the whole
 image to the Gateway, and the Gateway does the rest on its own: it asks the board to restart into its
 bootloader, checks that the image is for that node and that kind of board before erasing anything,
-writes it, and confirms the board comes back running the new version. If the PC goes to sleep or the
-cable comes out halfway, the Gateway still finishes and keeps the result for when the PC is back; if
-the transfer itself fails, it tries again.</p>
-<p>The Gateway updates its own PanelBridge chip the same way, minus the bus: the Gateway firmware carries
-the PanelBridge firmware it was released with, and flashes it straight over the serial link between
+writes it, and confirms the board comes back running the new version. If the transfer itself fails,
+it tries again. Keep the PC awake and the cable in while an update runs: the Gateway's USB side runs
+from the cable, so unplugging it stops the update. Plug it back in and check the client: if the
+board is still on its old version or waiting in its bootloader, update it again.</p>
+<p>The Gateway updates its own cockpit side the same way, minus the bus: the Gateway firmware carries
+the cockpit-side firmware it was released with, and flashes it straight over the serial link between
 the two chips. Updating the Gateway therefore brings the cockpit side along, and the update tool can
-tell when that half is behind. If the PanelBridge firmware ever stops answering, press the Gateway's
-reset button while the update is waiting; the bootloader catches it the same way.</p>
+tell when that half is behind. If the cockpit side's firmware ever stops answering, press the
+Gateway's reset button while the update is waiting; the bootloader catches it the same way.</p>
 <p>An update of a typical board takes about three seconds — around six for one with a full 60 KB of
-firmware, and about four for the PanelBridge chip. The Gateway's PanelBridge reports each board's state as it goes — running, waiting in its
-bootloader, or being updated — along with the bootloader version it has.</p>
+firmware, and about four for the Gateway's cockpit side. The cockpit side reports each board's state
+as it goes — running, waiting in its bootloader, or being updated — along with the bootloader
+version it has.</p>
 <h2 id="how-a-board-knows-its-node-number">How a board knows its node number</h2>
 <p>A board's NODE_ID still comes from the firmware you build (<code>-DNODE_ID</code> in <code>platformio.ini</code>, see
 <a href="../node-id/">NODE_ID &amp; CAN Addressing</a>). The bootloader keeps a copy of it, so a board whose firmware
@@ -5078,7 +5080,7 @@ itself again on its first boot.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../../assets/js/sidebar-fit.js"></script>
       
