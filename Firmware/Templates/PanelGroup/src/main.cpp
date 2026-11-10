@@ -62,8 +62,8 @@
 // read throttle (125 Hz/axis). The HID path has far more headroom, and a flight control
 // wants finer steps and a faster read than a volume knob:
 //
-//   OpenSkyhawk::AnalogInput <name>(CTRL_<ID>, PIN_<NET>, /*reverse=*/false, 0, 65535,
-//                                   /*hysteresis=*/32, /*ewmaShift=*/4, /*pollMs=*/2);
+//   OpenSkyhawk::AnalogInput <name>(CTRL_<ID>, PIN_<NET>,
+//                                   { .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 });
 //
 // That is the measured stick config (assembled PanelGroup Rev 1): both axes emitted zero
 // times in 100 consecutive seconds at rest. 2 ms = 500 Hz/axis, which is exactly SimGateway's
