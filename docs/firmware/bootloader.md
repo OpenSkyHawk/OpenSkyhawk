@@ -1,9 +1,9 @@
 # Bootloader
 
-Every OpenSkyhawk STM32 board (PanelGroup nodes, PDUs, and the Gateway's PanelBridge chip) carries a
+Every OpenSkyhawk STM32 board (PanelGroup nodes, PDUs, and the Gateway's cockpit side) carries a
 small bootloader in its first 4 KB of flash. It starts the firmware, and it lets the board take a new
 firmware image without an ST-Link: over the cockpit's CAN bus for the nodes, and over the link to the
-Gateway's USB chip for the PanelBridge chip, which runs the bus and so can't be updated across it.
+Gateway's USB side for the Gateway's cockpit side, which runs the bus and so can't be updated across it.
 
 ## What it does at power-up
 
@@ -19,8 +19,8 @@ page.
 If the firmware passes the check but keeps resetting before it finishes booting, the bootloader
 counts the attempts. After three, it stops starting it and announces the board as unstable (red and
 green together, alternating with red alone) until a new image arrives. And for 200 ms after every reset it listens for an update tool
-asking it to stay — so even firmware that never answers on the bus can be replaced: power-cycle the
-cockpit while the update is waiting.
+asking it to stay — so even firmware that never answers on the bus can be replaced: press the reset
+button on the board being updated while the update is waiting.
 
 An update is written so that a failure at any point is safe. The first block of the new firmware is
 held back and written only after the whole image has arrived and its checksum matches. Pull the power
@@ -33,19 +33,21 @@ A board doesn't need its own connection for an update. The firmware updater reac
 simulator does: from the PC through the Gateway's USB, and across the CAN bus. The PC hands the whole
 image to the Gateway, and the Gateway does the rest on its own: it asks the board to restart into its
 bootloader, checks that the image is for that node and that kind of board before erasing anything,
-writes it, and confirms the board comes back running the new version. If the PC goes to sleep or the
-cable comes out halfway, the Gateway still finishes and keeps the result for when the PC is back; if
-the transfer itself fails, it tries again.
+writes it, and confirms the board comes back running the new version. If the transfer itself fails,
+it tries again. Keep the PC awake and the cable in while an update runs: the Gateway's USB side runs
+from the cable, so unplugging it stops the update. Plug it back in and check the client: if the
+board is still on its old version or waiting in its bootloader, update it again.
 
-The Gateway updates its own PanelBridge chip the same way, minus the bus: the Gateway firmware carries
-the PanelBridge firmware it was released with, and flashes it straight over the serial link between
+The Gateway updates its own cockpit side the same way, minus the bus: the Gateway firmware carries
+the cockpit-side firmware it was released with, and flashes it straight over the serial link between
 the two chips. Updating the Gateway therefore brings the cockpit side along, and the update tool can
-tell when that half is behind. If the PanelBridge firmware ever stops answering, press the Gateway's
-reset button while the update is waiting; the bootloader catches it the same way.
+tell when that half is behind. If the cockpit side's firmware ever stops answering, press the
+Gateway's reset button while the update is waiting; the bootloader catches it the same way.
 
 An update of a typical board takes about three seconds — around six for one with a full 60 KB of
-firmware, and about four for the PanelBridge chip. The Gateway's PanelBridge reports each board's state as it goes — running, waiting in its
-bootloader, or being updated — along with the bootloader version it has.
+firmware, and about four for the Gateway's cockpit side. The cockpit side reports each board's state
+as it goes — running, waiting in its bootloader, or being updated — along with the bootloader
+version it has.
 
 ## How a board knows its node number
 
