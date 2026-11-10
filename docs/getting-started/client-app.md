@@ -47,7 +47,7 @@ The client runs in one of three modes, selected on the Connection tab:
 ### Connection
 
 Where you choose how to connect and watch the link come up. The **device card** shows the
-auto-detected SimGateway — identity (*A-4E Skyhawk*), USB **VID/PID `0x2E8A / 0x4134`**, the
+auto-detected SimGateway — identity (*A-4E Skyhawk*), USB **VID/PID `0x2E8A / 0x1166`**, the
 serial port (`scanning…` until the device is found), the **CDC serial + HID** interfaces, and
 a **Relaying / Stopped** indicator. An **Auto-reconnect** toggle re-opens the port
 automatically if the cockpit is unplugged and replugged.

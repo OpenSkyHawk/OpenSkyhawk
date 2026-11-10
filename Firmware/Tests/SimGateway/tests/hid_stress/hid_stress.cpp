@@ -173,7 +173,7 @@ void setup() {
     Serial.begin(115200);
 
     // USB identity — set before TinyUSB enumerates.
-    // PID 0x4135 (stress) vs 0x4134 (production) avoids host cache conflicts.
+    // PID 0x4135 (stress) vs 0x1166 (production) avoids host cache conflicts.
     TinyUSBDevice.setID(0x2E8A, 0x4135);
     TinyUSBDevice.setManufacturerDescriptor("OpenSkyhawk");
     TinyUSBDevice.setProductDescriptor("A-4E Stress");
