@@ -4903,6 +4903,10 @@ and <code>.bin</code> (firmware alone), which <a href="../../getting-started/cli
 loads onto a board that already has the bootloader, with no ST-Link. The Gateway's PanelBridge chip
 takes a different build of the bootloader from the nodes; <code>bootstrap</code> and the release files already
 pick the right one for each board.</p>
+<p>The release has no PanelGroup file. Every panel group has its own NODE_ID and its own controls, so
+you build its firmware from source and flash it with <code>bootstrap</code> as above.
+<code>Firmware/Examples/PanelGroupSample/</code> is a working one to start from, in your clone or in the
+release's <strong>Source code</strong> archive.</p>
 <p>The bootloader write-protects itself, so anything that writes from address 0 — the per-library test
 sketches, or a new bootloader — needs the protection lifted first. The one-line command is on the
 <a href="../../firmware/bootloader/#the-bootloader-protects-itself">Bootloader</a> page.</p>

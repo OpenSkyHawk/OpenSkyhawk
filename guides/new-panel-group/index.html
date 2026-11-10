@@ -4920,7 +4920,9 @@ overview; this is the recipe.</p>
 add your row (panel group, console, status). Commit it in the same PR that starts the work.
 NODE_IDs are permanent — never reuse one. See <a href="../../firmware/node-id/">NODE_ID &amp; CAN Addressing</a>.</p>
 <h2 id="step-2-create-the-firmware-project">Step 2 — Create the firmware project</h2>
-<p>Copy <code>Firmware/Templates/PanelGroup/</code> to <code>Firmware/Panels/&lt;YourPanel&gt;/</code>. In <code>platformio.ini</code>:</p>
+<p>Copy <code>Firmware/Templates/PanelGroup/</code> to <code>Firmware/Panels/&lt;YourPanel&gt;/</code>, or copy
+<code>Firmware/Examples/PanelGroupSample/</code> to start from a node that already works. In
+<code>platformio.ini</code>:</p>
 <ul>
 <li>Set <code>-DNODE_ID=N</code> to the number you just claimed.</li>
 <li>Set <code>board</code> per the <a href="../../firmware/platformio-setup/">variant policy</a> — <code>genericSTM32F103C8</code>

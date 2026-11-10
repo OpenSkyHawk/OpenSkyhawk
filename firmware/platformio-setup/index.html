@@ -4897,6 +4897,9 @@ project. Start from the templates in <code>Firmware/Templates/</code> — <stron
 <p><code>Firmware/Templates/</code> has a ready project per tier: <code>PanelGroup/</code>, <code>PanelBridge/</code>, and
 <code>SimGateway/</code>. Copy the one you need into place (a PanelGroup goes under
 <code>Firmware/Panels/&lt;YourPanel&gt;/</code>) and edit its <code>platformio.ini</code>.</p>
+<p>For a PanelGroup that already works, start from <code>Firmware/Examples/PanelGroupSample/</code> instead:
+one of each common control on the base board's own pins, with the same <code>platformio.ini</code> as the
+template. It copies to <code>Firmware/Panels/&lt;YourPanel&gt;/</code> unchanged.</p>
 <h2 id="a-panelgroup-platformioini-annotated">A PanelGroup platformio.ini, annotated</h2>
 <div class="highlight"><pre><span></span><code><span class="k">[env:PanelGroup]</span>
 <span class="na">platform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">ststm32@^20.0.0</span><span class="w">        </span><span class="c1">; major held on purpose — see note below</span>
