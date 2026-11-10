@@ -33,6 +33,11 @@ loads onto a board that already has the bootloader, with no ST-Link. The Gateway
 takes a different build of the bootloader from the nodes; `bootstrap` and the release files already
 pick the right one for each board.
 
+The release has no PanelGroup file. Every panel group has its own NODE_ID and its own controls, so
+you build its firmware from source and flash it with `bootstrap` as above.
+`Firmware/Examples/PanelGroupSample/` is a working one to start from, in your clone or in the
+release's **Source code** archive.
+
 The bootloader write-protects itself, so anything that writes from address 0 — the per-library test
 sketches, or a new bootloader — needs the protection lifted first. The one-line command is on the
 [Bootloader](../firmware/bootloader.md#the-bootloader-protects-itself) page.

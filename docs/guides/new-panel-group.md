@@ -12,7 +12,9 @@ NODE_IDs are permanent — never reuse one. See [NODE_ID & CAN Addressing](../fi
 
 ## Step 2 — Create the firmware project
 
-Copy `Firmware/Templates/PanelGroup/` to `Firmware/Panels/<YourPanel>/`. In `platformio.ini`:
+Copy `Firmware/Templates/PanelGroup/` to `Firmware/Panels/<YourPanel>/`, or copy
+`Firmware/Examples/PanelGroupSample/` to start from a node that already works. In
+`platformio.ini`:
 
 - Set `-DNODE_ID=N` to the number you just claimed.
 - Set `board` per the [variant policy](../firmware/platformio-setup.md) — `genericSTM32F103C8`

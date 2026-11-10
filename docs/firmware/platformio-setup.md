@@ -10,6 +10,10 @@ project. Start from the templates in `Firmware/Templates/` — **not** from an e
 `SimGateway/`. Copy the one you need into place (a PanelGroup goes under
 `Firmware/Panels/<YourPanel>/`) and edit its `platformio.ini`.
 
+For a PanelGroup that already works, start from `Firmware/Examples/PanelGroupSample/` instead:
+one of each common control on the base board's own pins, with the same `platformio.ini` as the
+template. It copies to `Firmware/Panels/<YourPanel>/` unchanged.
+
 ## A PanelGroup platformio.ini, annotated
 
 ```ini
