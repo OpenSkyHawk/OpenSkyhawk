@@ -20,7 +20,8 @@ OpenSkyhawk/
 │   └── Shared/             ← reusable knobs, guards, light rings
 ├── Firmware/
 │   ├── Examples/
-│   │   └── E2E_DCS_Test/   ← working reference sketch (LED + Switch2Pos + real DCS-BIOS)
+│   │   ├── E2E_DCS_Test/   ← working reference sketch (LED + Switch2Pos + real DCS-BIOS)
+│   │   └── PanelGroupSample/ ← a working PanelGroup node to start a panel from
 │   ├── Libraries/          ← production shared libraries
 │   ├── Panels/             ← panel-group sketches (one folder per group)
 │   ├── PanelBridge/        ← STM32 PanelBridge sketch
@@ -70,6 +71,9 @@ Three places matter most if you're writing firmware:
   exercises an LED output and a Switch2Pos input against real DCS-BIOS IDs. The best starting
   point for understanding a PanelGroup sketch end to end. It's used as the worked example in
   [Your First Panel](../guides/first-panel.md).
+- **`Firmware/Examples/PanelGroupSample/`** — a small PanelGroup node that works on a bare base
+  board: one of each common control, wired to the board's own pins. Copy it to start a panel
+  group from working code.
 - **`Firmware/Templates/`** — PlatformIO project templates for PanelBridge, SimGateway, and
   PanelGroup. Start a new panel group by copying from here.
 
