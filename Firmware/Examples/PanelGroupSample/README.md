@@ -1,8 +1,8 @@
 # PanelGroupSample — a working PanelGroup node
 
 A small sketch that runs as a real PanelGroup node: one of each common control, wired straight to
-the STM32's own pins, so it works on a bare PanelGroup base board (or a Blue Pill) with no expander
-or other parts fitted. The controls are the ones the
+the STM32's own pins, so it works on a bare PanelGroup base board with no expander or other parts
+fitted. The controls are the ones the
 [Getting Started → Controls](https://openskyhawk.github.io/OpenSkyhawk/getting-started/controls/)
 pages walk through, put together in one sketch that compiles.
 
@@ -36,8 +36,11 @@ PB2 (7) and PC14 (11) are left free.
 
 Copy this folder to `Firmware/Panels/<YourPanel>/`, either in your clone or in the
 **Source code** archive of a firmware release. The paths in `platformio.ini` work from there
-unchanged. Then set your own NODE_ID in `platformio.ini` (1–63, unique on your bus) and, with an
-ST-Link on the board's SWD header:
+unchanged. Then take the next free NODE_ID from `Firmware/NODE_IDS.md`, register it there, and set
+it in `platformio.ini`. The `1` in the sample is reserved, and `tools/check_node_ids.py` fails on a
+copy in `Panels/` whose ID isn't registered (Step 1 of
+[Adding a New Panel Group](../../../docs/guides/new-panel-group.md)). With an ST-Link on the
+board's SWD header:
 
 ```bash
 pio run -t bootstrap   # a new board: the bootloader + this sketch, once

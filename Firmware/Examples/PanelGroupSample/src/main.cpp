@@ -1,8 +1,7 @@
 // PanelGroupSample — STM32F103C8
 //
 // A small, working PanelGroup node: one of each common control class, wired straight to the
-// STM32's own pins, so it runs on a bare PanelGroup base board (or a Blue Pill) with nothing
-// else fitted. The controls are the ones on the Getting Started → Controls pages.
+// STM32's own pins, so it runs on a bare PanelGroup base board with nothing else fitted. The controls are the ones on the Getting Started → Controls pages.
 //
 // NODE_ID is set in platformio.ini build_flags, not here.
 // A #define in main.cpp would be invisible to library translation units.
