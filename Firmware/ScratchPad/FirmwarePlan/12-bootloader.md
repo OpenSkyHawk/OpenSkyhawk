@@ -3,7 +3,7 @@
 **Owns:** the bootloader every STM32 board carries — its two builds (CAN for the nodes, USART2 for the
 Gateway's PanelBridge), flash layout, boot flow, its self-protection, the NODE_ID / kind copy in the
 option bytes, the crash-loop counter, the update protocol on `BOOT_CMD_n` / `BOOT_RSP_n` (and the
-unconfigured pair, and the bridge's serial framing), and the freeze.
+unconfigured pair, and the bridge's serial framing), the rollout to boards (first setup, update order, recovery), and the freeze.
 **Does not own:** the CAN ID map (`02-can-protocol.md` — the IDs are listed there), the image
 identity block (`08-hardware-firmware-contracts.md#image-layout--identity-block-362`), the app side
 of entering the bootloader (`STM32Board::enterBootloader()`) and the bridge relay (`06`, #365), the
@@ -65,8 +65,8 @@ At every reset:
 |---|---|---|
 | `REQUESTED` | entry flag | `BOOT_RSP_n`, n = Data0 |
 | `UNCONFIGURED` | no valid app, Data0 = `0xFF` | `UNCONFIGURED_RSP_ID` (`0x7C1`) |
-| `APP_INVALID` | no valid app, Data0 set — or a BEGIN has erased the app | `BOOT_RSP_n` |
-| `APP_UNSTABLE` | `DR2` ≥ `ATTEMPT_LIMIT` (3): the app reset that many times without reporting healthy | `BOOT_RSP_n` |
+| `APP_INVALID` (client: *"Needs firmware"*) | no valid app, Data0 set — or a BEGIN has erased the app | `BOOT_RSP_n` |
+| `APP_UNSTABLE` (client: *"Won't start"*) | `DR2` ≥ `ATTEMPT_LIMIT` (3): the app reset that many times without reporting healthy | `BOOT_RSP_n` |
 | `CAUGHT` | a `CONNECT` on `BOOT_CMD_n` within `CATCH_WINDOW_MS` (200 ms) after the reset | `BOOT_RSP_n` |
 
    With none of these, `DR2` goes up by one and the bootloader **jumps**: SysTick off, CAN / USART2 reset (and its DMA),
@@ -75,8 +75,8 @@ At every reset:
    the app's stack and bus-faulted on the #361 bench).
 
 **Catch at boot** costs every boot 200 ms. It rescues an app that never takes an enter-bootloader
-request (CAN broken, hung before READY): the host sends `CONNECT` repeatedly and the cockpit is
-power-cycled or the board reset.
+request (CAN broken, hung before READY): the host sends `CONNECT` repeatedly and the board is reset
+by its button (§ Rollout — not a cockpit power cycle, which restarts the relay too).
 
 **Idle timeout** — `REQUESTED` or `CAUGHT`, the old app still valid, and no command for
 `IDLE_TIMEOUT_MS` (30 s): reset into the app. Never after a successful BEGIN (the app is gone) and never for
@@ -261,6 +261,82 @@ resetting the board catches it), and has `--listen`, `--unconfigured`, `--set-no
 `--stop-after N` and `--delay-ms` (power-pull tests). Without #365, request the bootloader over
 ST-Link instead: write `0xB007` to `DR1` (`0x40006C04`, with the PWR / BKP clocks and `PWR_CR.DBP` on)
 and reset.
+
+---
+
+## Rollout (#380)
+
+How boards get the bootloader, and how they are updated from then on. The public walkthrough is
+`docs/guides/first-setup.md`; this section is the rule it follows.
+
+- **Boards ship with the bootloader**, so there is no 0.2.0 → 1.0 migration. A kit (or assembled board)
+  leaves with the latest firmware at shipment, its NODE_ID with it: a PDU or the Gateway's cockpit side
+  gets the release's `-full.hex` (bootloader + app), a PanelGroup board `pio run -t bootstrap` of its
+  panel sketch.
+- **The bootloader never changes in the field** (§ Freeze). A wrong build (CAN on the cockpit side,
+  USART2 on a node) or a bootloader fix takes an ST-Link and the board's `-full.hex`.
+
+### First setup
+
+For a board without the bootloader (DIY, or fully erased). Every file is in the release zip
+(`.github/workflows/firmware-release-assets.yml:3-15`, the board list `:109-115`):
+
+1. **Gateway cockpit side** — ST-Link, `gateway/gateway-bridge-<v>-full.hex` (the `bridge` build + app).
+2. **Gateway USB side** — a blank RP2040 mounts as `RPI-RP2` by itself; drag `gateway/gateway-<v>.uf2`
+   onto it. BOOTSEL by hand only if its firmware hangs before USB comes up.
+3. **Each node** — ST-Link, the CAN build + app:
+   - PDUs: `pdu-<side>/pdu-<side>-<v>-full.hex` (nodes 3 / 4 / 5).
+   - PanelGroup boards: `pio run -t bootstrap` from the board's own sketch project
+     (`Firmware/shared/osh_image.py:101`). A release has no PanelGroup image — NODE_ID and panel config
+     are per build; `Firmware/Examples/PanelGroupSample/` (#304) is source only.
+
+### Every update after that
+
+Over USB from SkyHawkClient, in this order:
+
+1. **Gateway USB side** (SkyHawkClient#173).
+2. **Gateway cockpit side**, from the copy the new Gateway firmware carries — behind while
+   `UPL_INFO_ACK.bridgeFw` ≠ the node-0 row (`03` § Firmware upload, `UploadProtocol.h:83`; SkyHawkClient#187).
+3. **Nodes**, one at a time, through the bridge. The bridge goes first because the relay to the nodes
+   is bridge firmware, which a release may change. Every board updates over the bus; only the image's
+   source differs:
+   - **From the release**, where it has the node's image (the PDUs today): one board
+     (SkyHawkClient#175) or Update all (SkyHawkClient#176).
+   - **From your own build** (PanelGroup boards): *From file…* (SkyHawkClient#177). Update all skips
+     these as custom firmware.
+
+**Keep the PC awake.** The uploader holds the image and its result only in RAM, on a USB-powered chip
+(`Uploader.cpp:37-57`; `docs/hardware/base-boards.md:51`): a cable pull ends the update. A sleeping
+host is unproven — the link-recovery ladder may reboot the USB side when the host stops reading
+(`LinkRecovery.h:29-31`; it doesn't check `Uploader::busy()`). Bench: SkyHawkClient#175, step 9.
+
+### Recovery
+
+User-facing labels in quotes; the public pages use only those.
+
+- **Interrupted update** → `APP_INVALID`, *"Needs firmware"*: the board waits in its bootloader (red +
+  green, 1 Hz); update it again. Cut off before BEGIN's erase, the old app is still valid and the
+  board goes back to it after `IDLE_TIMEOUT_MS` (§ Boot Flow); never asked to enter, it kept running.
+- **Crash loop** → `APP_UNSTABLE`, *"Won't start"*: the app kept resetting before `markBootHealthy()`;
+  install a different version.
+- **App that never takes the request** (hung, or its CAN broken): click Retry, then press the reset
+  button (SW1) on the board being updated — every board type has one. The Gateway may also be
+  power-cycled. **No cockpit power cycle** as a recovery step: it restarts the cockpit side too, which
+  is the relay. The cockpit side is caught by the Gateway's reset (§ The Gateway's cockpit side, catch
+  at boot). A node is caught by the uploader's `CONNECT` every 100 ms (`Uploader.cpp:28`) landing in
+  its 200 ms window — proven with a CANable and a board reset (#377), **through the Gateway still to
+  prove** (SkyHawkClient#175 bench, step 8).
+- **Wrong bootloader build, or a bootloader fix:** ST-Link, the board's `-full.hex`.
+
+### NODE_ID cases
+
+- **Changing a board's NODE_ID.** An update never does it; an image for another node is refused
+  (`WRONG_NODE`) before anything is written (§ NODE_ID rule). Over the bus the client sets the new ID
+  first (§ SET_NODE_ID, kinds must match; SkyHawkClient#177), then installs that node's image. Or
+  ST-Link with the new node's image: the board takes its ID.
+- **A board with only the bootloader** (no app, no ID; `UNCONFIGURED`). It takes its first image over
+  the bus through the client's blank-board setup (SkyHawkClient#177) and adopts that image's NODE_ID
+  (§ Unconfigured boards). One such board on the bus at a time.
 
 ---
 
