@@ -76,7 +76,7 @@ At every reset:
 
 **Catch at boot** costs every boot 200 ms. It rescues an app that never takes an enter-bootloader
 request (CAN broken, hung before READY): the host sends `CONNECT` repeatedly and the board is reset
-by its button (§ Rollout — not a cockpit power cycle, which restarts the relay too).
+(the recovery step uses its reset button, not a cockpit power cycle — § Rollout).
 
 **Idle timeout** — `REQUESTED` or `CAUGHT`, the old app still valid, and no command for
 `IDLE_TIMEOUT_MS` (30 s): reset into the app. Never after a successful BEGIN (the app is gone) and never for
