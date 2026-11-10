@@ -57,13 +57,13 @@
 // OpenSkyhawk::Switch2Pos  <name>(CTRL_<ID>, PIN_<NET>);   // routes to HID button
 // OpenSkyhawk::AnalogInput <name>(CTRL_<ID>, PIN_<NET>);   // routes to HID axis
 //
-// AnalogInput's defaults are ported from DCS-BIOS PotentiometerEWMA and are sized for a
-// cockpit pot on a bandwidth-constrained serial link: 128 counts of hysteresis and an 8 ms
-// read throttle (125 Hz/axis). The HID path has far more headroom, and a flight control
-// wants finer steps and a faster read than a volume knob:
+// AnalogInput's defaults are ported from DCS-BIOS PotentiometerEWMA: an 8 ms read throttle
+// (125 Hz/axis) and a hysteresis picked from the controlId — 1024 counts for a DCSIN_* pot
+// (sized for the bandwidth-constrained serial link), 128 for a CTRL_* axis. The HID path has
+// far more headroom, and a flight control wants finer steps and a faster read than that:
 //
-//   OpenSkyhawk::AnalogInput <name>(CTRL_<ID>, PIN_<NET>, /*reverse=*/false, 0, 65535,
-//                                   /*hysteresis=*/32, /*ewmaShift=*/4, /*pollMs=*/2);
+//   OpenSkyhawk::AnalogInput <name>(CTRL_<ID>, PIN_<NET>,
+//                                   { .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 });
 //
 // That is the measured stick config (assembled PanelGroup Rev 1): both axes emitted zero
 // times in 100 consecutive seconds at rest. 2 ms = 500 Hz/axis, which is exactly SimGateway's
@@ -74,7 +74,8 @@
 // Two preconditions, both of which bind:
 //   * A 1k + 100nF RC at the MCU end of the analog input. Without it that channel's raw noise
 //     doubles (48 -> 96), well over a hysteresis of 32, and the axis chatters at rest. The
-//     base board carries this part per variant.
+//     PanelGroup base board doesn't fit it — its PA0–PA5 go straight from J_BREAKOUT to the
+//     MCU — so fit it yourself at the board's end of the wire, as close to J_BREAKOUT as you can.
 //   * setDebug(false) — see the note below. With debug on the chain caps near 285 Hz.
 //
 // pollMs and ewmaShift are coupled: the filter time constant is 2^ewmaShift x pollMs. The
