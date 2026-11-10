@@ -33,12 +33,10 @@ A board doesn't need its own connection for an update. The firmware updater reac
 simulator does: from the PC through the Gateway's USB, and across the CAN bus. The PC hands the whole
 image to the Gateway, and the Gateway does the rest on its own: it asks the board to restart into its
 bootloader, checks that the image is for that node and that kind of board before erasing anything,
-writes it, and confirms the board comes back running the new version. If the PC goes to sleep
-halfway, the Gateway still finishes and keeps the result for when the PC is back; if the transfer
-itself fails, it tries again. The cable is different: the Gateway's USB side runs from it, so
-unplugging it stops the update, and the board being updated waits in its bootloader. Update it
-again, or follow
-[Recovering from a power cut during an update](../guides/bring-up.md#recovering-from-a-power-cut-during-an-update).
+writes it, and confirms the board comes back running the new version. If the transfer itself fails,
+it tries again. Keep the PC awake and the cable in while an update runs: the Gateway's USB side runs
+from the cable, so unplugging it stops the update. Plug it back in and check the client: if the
+board is still on its old version or waiting in its bootloader, update it again.
 
 The Gateway updates its own cockpit side the same way, minus the bus: the Gateway firmware carries
 the cockpit-side firmware it was released with, and flashes it straight over the serial link between
