@@ -8,6 +8,8 @@ guides walk you through *doing* them.
 
 - **[Your First Panel](first-panel.md)** — the end-to-end walkthrough using the working
   `E2E_DCS_Test` example: one LED, one switch, real DCS-BIOS IDs. Do this first.
+- **[First Setup & Updates](first-setup.md)** — flash every board once, then update the Gateway
+  from SkyHawkClient
 
 ## Building a panel
 

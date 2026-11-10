@@ -17,8 +17,9 @@ never shows that pattern; the full list is on the [status LED](debugging.md#in-t
 page.
 
 If the firmware passes the check but keeps resetting before it finishes booting, the bootloader
-counts the attempts. After three, it stops starting it and announces the board as unstable (red and
-green together, alternating with red alone) until a new image arrives. And for 200 ms after every reset it listens for an update tool
+counts the attempts. After three, it stops starting it and stays in charge (red and green together,
+alternating with red alone) until a new image arrives; SkyHawkClient shows the board as
+**Won't start**. And for 200 ms after every reset it listens for an update tool
 asking it to stay — so even firmware that never answers on the bus can be replaced: press the reset
 button on the board being updated while the update is waiting.
 
@@ -85,7 +86,7 @@ bootloader takes over the bus: SkyHawkClient sends it through the Gateway. See
 !!! note "Your own sketch works too"
     The bootloader starts any firmware with a valid identity block, and every sketch built on the
     PanelGroup library gets one automatically. A bare sketch that uses none of the OpenSkyhawk node
-    libraries has no identity block, and the bootloader won't start it.
+    libraries has no identity block, and the bootloader treats it as no firmware at all.
 
 ## It doesn't change after 1.0
 
