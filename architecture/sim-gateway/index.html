@@ -4979,7 +4979,7 @@ rate exactly, so there's no buffering mismatch on the relay.</p>
 </ul>
 <p>USB identity is set at runtime before the HID device starts (TinyUSB replaces the default
 Pico USB stack):</p>
-<div class="highlight"><pre><span></span><code><span class="n">TinyUSBDevice</span><span class="p">.</span><span class="n">setID</span><span class="p">(</span><span class="mh">0x2E8A</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4134</span><span class="p">);</span><span class="w">   </span><span class="c1">// VID = Raspberry Pi, PID = A-4E Skyhawk</span>
+<div class="highlight"><pre><span></span><code><span class="n">TinyUSBDevice</span><span class="p">.</span><span class="n">setID</span><span class="p">(</span><span class="mh">0x2E8A</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1166</span><span class="p">);</span><span class="w">   </span><span class="c1">// VID = Raspberry Pi, PID = A-4E Skyhawk</span>
 <span class="n">TinyUSBDevice</span><span class="p">.</span><span class="n">setManufacturerDescriptor</span><span class="p">(</span><span class="s">"OpenSkyhawk"</span><span class="p">);</span>
 <span class="n">TinyUSBDevice</span><span class="p">.</span><span class="n">setProductDescriptor</span><span class="p">(</span><span class="s">"A-4E Skyhawk"</span><span class="p">);</span>
 <span class="n">Serial</span><span class="p">.</span><span class="n">setStringDescriptor</span><span class="p">(</span><span class="s">"A-4E Skyhawk DCS-BIOS"</span><span class="p">);</span><span class="w"> </span><span class="c1">// CDC interface name (iInterface)</span>

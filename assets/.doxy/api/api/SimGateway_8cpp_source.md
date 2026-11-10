@@ -1230,7 +1230,7 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
 
 #ifndef SIMGATEWAY_TEST
     // USB identity must be set before TinyUSB begins enumerating.
-    TinyUSBDevice.setID(0x2E8A, 0x4134);
+    TinyUSBDevice.setID(0x2E8A, 0x1166);
     TinyUSBDevice.setManufacturerDescriptor("OpenSkyhawk");
     TinyUSBDevice.setProductDescriptor("A-4E Skyhawk");
     Serial.begin(250000); // start Adafruit_USBD_CDC; required before available()/write() work
