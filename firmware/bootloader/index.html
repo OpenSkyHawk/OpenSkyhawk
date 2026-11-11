@@ -3555,6 +3555,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../guides/first-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First Setup & Updates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../guides/bring-up/" class="md-nav__link">
         
   
@@ -4926,8 +4954,9 @@ ready for a new image. Red and green lit together always means "in the bootloade
 never shows that pattern; the full list is on the <a href="../debugging/#in-the-bootloader-red-and-green-together">status LED</a>
 page.</p>
 <p>If the firmware passes the check but keeps resetting before it finishes booting, the bootloader
-counts the attempts. After three, it stops starting it and announces the board as unstable (red and
-green together, alternating with red alone) until a new image arrives. And for 200 ms after every reset it listens for an update tool
+counts the attempts. After three, it stops starting it and stays in charge (red and green together,
+alternating with red alone) until a new image arrives; SkyHawkClient shows the board as
+<strong>Won't start</strong>. And for 200 ms after every reset it listens for an update tool
 asking it to stay — so even firmware that never answers on the bus can be replaced: press the reset
 button on the board being updated while the update is waiting.</p>
 <p>An update is written so that a failure at any point is safe. The first block of the new firmware is
@@ -4980,7 +5009,7 @@ bootloader takes over the bus: SkyHawkClient sends it through the Gateway. See
 <p class="admonition-title">Your own sketch works too</p>
 <p>The bootloader starts any firmware with a valid identity block, and every sketch built on the
 PanelGroup library gets one automatically. A bare sketch that uses none of the OpenSkyhawk node
-libraries has no identity block, and the bootloader won't start it.</p>
+libraries has no identity block, and the bootloader treats it as no firmware at all.</p>
 </div>
 <h2 id="it-doesnt-change-after-10">It doesn't change after 1.0</h2>
 <p>The bootloader is frozen from firmware 1.0: boards in the field never get a new one over the bus, so
