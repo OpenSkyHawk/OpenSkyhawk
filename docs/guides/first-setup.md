@@ -78,7 +78,8 @@ SkyHawkClient names the two cases that need you:
 
 - **Needs firmware** — the last update didn't finish. Update the board again.
 - **Won't start** — its firmware kept restarting, so the board stopped running it. Install a
-  different version.
+  different version. On a board you flash by ST-Link, switch the cockpit off and on afterwards: until
+  then the board keeps refusing to start.
 
 If an update can't reach a board because its firmware has stopped answering, click **Retry**, then
 press the reset button on the board being updated. After a power cut during an update, follow

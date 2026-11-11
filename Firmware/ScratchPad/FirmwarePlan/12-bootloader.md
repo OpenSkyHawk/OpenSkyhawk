@@ -318,7 +318,9 @@ User-facing labels in quotes; the public pages use only those.
   green, 1 Hz); update it again. Cut off before BEGIN's erase, the old app is still valid and the
   board goes back to it after `IDLE_TIMEOUT_MS` (§ Boot Flow); never asked to enter, it kept running.
 - **Crash loop** → `APP_UNSTABLE`, *"Won't start"*: the app kept resetting before `markBootHealthy()`;
-  install a different version.
+  install a different version. Over the bus the commit clears `DR2`; by ST-Link it doesn't (the reset
+  after a flash keeps the backup domain), so the board stays `APP_UNSTABLE` until it is powered off
+  and on (§ Crash-loop counter).
 - **App that never takes the request** (hung, or its CAN broken): click Retry, then press the reset
   button (SW1) on the board being updated — every board type has one. **No cockpit power cycle** as a recovery step: it restarts the cockpit side too, which
   is the relay. The cockpit side is caught by the Gateway's reset (§ The Gateway's cockpit side, catch
