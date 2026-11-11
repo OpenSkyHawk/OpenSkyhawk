@@ -83,7 +83,7 @@ request (CAN broken, hung before READY): the host sends `CONNECT` repeatedly and
 `APP_UNSTABLE` (it would only crash again).
 
 **Status LEDs — red and green together = "in the bootloader"** (#365). The app never lights both at
-once (`docs/firmware/debugging.md`):
+once (`08-hardware-firmware-contracts.md` § Status LED — Bi-Color; its warning state alternates):
 
 | State | LEDs |
 |---|---|
@@ -306,7 +306,7 @@ Over USB from SkyHawkClient, in this order:
      these as custom firmware.
 
 **Keep the PC awake.** The uploader holds the image and its result only in RAM, on a USB-powered chip
-(`Uploader.cpp:37-57`; `docs/hardware/base-boards.md:51`): a cable pull ends the update. A sleeping
+(`Uploader.cpp:37-57`; `docs/_source/base-boards.md:213-214`): a cable pull ends the update. A sleeping
 host is unproven — the link-recovery ladder may reboot the USB side when the host stops reading
 (`LinkRecovery.h:29-31`; it doesn't check `Uploader::busy()`). Bench: SkyHawkClient#175, step 9.
 
@@ -320,8 +320,7 @@ User-facing labels in quotes; the public pages use only those.
 - **Crash loop** → `APP_UNSTABLE`, *"Won't start"*: the app kept resetting before `markBootHealthy()`;
   install a different version.
 - **App that never takes the request** (hung, or its CAN broken): click Retry, then press the reset
-  button (SW1) on the board being updated — every board type has one. The Gateway may also be
-  power-cycled. **No cockpit power cycle** as a recovery step: it restarts the cockpit side too, which
+  button (SW1) on the board being updated — every board type has one. **No cockpit power cycle** as a recovery step: it restarts the cockpit side too, which
   is the relay. The cockpit side is caught by the Gateway's reset (§ The Gateway's cockpit side, catch
   at boot). A node is caught by the uploader's `CONNECT` every 100 ms (`Uploader.cpp:28`) landing in
   its 200 ms window — proven with a CANable and a board reset (#377), **through the Gateway still to
