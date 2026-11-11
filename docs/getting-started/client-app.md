@@ -42,6 +42,9 @@ The client runs in one of three modes, selected on the Connection tab:
     - *Unicast listen* — if you've edited `BIOSConfig.lua` to send a unicast export.
 4. Press **Start relay** (Bridge/Monitor) or **Start** (Replay).
 
+To flash your boards the first time and keep the Gateway's firmware up to date from the client, see
+[First Setup & Updates](../guides/first-setup.md).
+
 ## Tabs
 
 ### Connection

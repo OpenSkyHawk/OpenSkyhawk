@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .bg    { fill:#ffffff; }
+    .pc    { fill:#eef2f7; stroke:#334155; stroke-width:1.5; }
+    .gw    { fill:none; stroke:#c2410c; stroke-width:2; stroke-dasharray:6 4; }
+    .half  { fill:#fff7ed; stroke:#c2410c; stroke-width:2; }
+    .node  { fill:#eff6ff; stroke:#1d4ed8; stroke-width:1.5; }
+    .num   { fill:#0f172a; }
+    .numt  { font-size:15px; font-weight:700; fill:#ffffff; }
+    .title { font-size:20px; font-weight:700; fill:#0f172a; }
+    .lbl   { font-size:14px; font-weight:600; fill:#0f172a; }
+    .sub   { font-size:12px; fill:#475569; }
+    .grp   { font-size:13px; font-weight:700; fill:#c2410c; }
+    .wire  { stroke:#475569; stroke-width:1.6; fill:none; }
+    .note  { font-size:12px; fill:#64748b; font-style:italic; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="960" height="300"/>
+  <text class="title" x="30" y="38">Update order</text>
+
+  <!-- PC -->
+  <rect class="pc" x="30" y="100" width="150" height="90" rx="6"/>
+  <text class="lbl" x="105" y="138" text-anchor="middle">PC</text>
+  <text class="sub" x="105" y="158" text-anchor="middle">SkyHawkClient</text>
+
+  <!-- Gateway -->
+  <rect class="gw" x="230" y="70" width="400" height="150" rx="10"/>
+  <text class="grp" x="250" y="92">Gateway</text>
+
+  <rect class="half" x="250" y="105" width="165" height="90" rx="8"/>
+  <circle class="num" cx="272" cy="127" r="13"/>
+  <text class="numt" x="272" y="132" text-anchor="middle">1</text>
+  <text class="lbl" x="340" y="152" text-anchor="middle">USB side</text>
+  <text class="sub" x="340" y="172" text-anchor="middle">RP2040</text>
+
+  <rect class="half" x="445" y="105" width="165" height="90" rx="8"/>
+  <circle class="num" cx="467" cy="127" r="13"/>
+  <text class="numt" x="467" y="132" text-anchor="middle">2</text>
+  <text class="lbl" x="535" y="152" text-anchor="middle">Cockpit side</text>
+  <text class="sub" x="535" y="172" text-anchor="middle">STM32</text>
+
+  <!-- Other boards -->
+  <rect class="node" x="700" y="70" width="230" height="40" rx="6"/>
+  <text class="lbl" x="815" y="95" text-anchor="middle">PDU</text>
+  <rect class="node" x="700" y="125" width="230" height="40" rx="6"/>
+  <text class="lbl" x="815" y="150" text-anchor="middle">PanelGroup board</text>
+  <rect class="node" x="700" y="180" width="230" height="40" rx="6"/>
+  <text class="lbl" x="815" y="205" text-anchor="middle">…</text>
+  <circle class="num" cx="700" cy="70" r="13"/>
+  <text class="numt" x="700" y="75" text-anchor="middle">3</text>
+
+  <!-- Arrows -->
+  <path class="wire" d="M180 150 L248 150" marker-end="url(#arrow)"/>
+  <path class="wire" d="M415 150 L443 150" marker-end="url(#arrow)"/>
+  <path class="wire" d="M610 150 L698 150" marker-end="url(#arrow)"/>
+  <path class="wire" d="M655 150 L655 90 L698 90" marker-end="url(#arrow)"/>
+  <path class="wire" d="M655 150 L655 200 L698 200" marker-end="url(#arrow)"/>
+
+  <text class="note" x="30" y="262">1 · the USB side first: it carries the cockpit side's new firmware.</text>
+  <text class="note" x="30" y="282">2 · then the cockpit side.   3 · then every other board, one at a time.</text>
+</svg>

@@ -73,7 +73,7 @@ has arrived and checked out. If the power goes off partway through:
 3. **If it does, run the update for that board again.** When it finishes, the board restarts on
    the new firmware and its LEDs go back to the normal patterns above.
 
-The same steps apply when the board cut short was the Gateway's own PanelBridge chip: update the
+The same steps apply when the board cut short was the Gateway's own cockpit side: update the
 Gateway again.
 
 ## Troubleshooting

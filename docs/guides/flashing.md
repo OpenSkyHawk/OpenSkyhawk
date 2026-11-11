@@ -29,9 +29,10 @@ carries every board's firmware in one zip, `openskyhawk-firmware-<version>.zip`,
 board. Each STM32 board's folder has three files: `-full.hex` (bootloader + firmware) for a new
 board and `.elf` (firmware alone) for one that already has the bootloader, both for the ST-Link,
 and `.bin` (firmware alone), which [SkyHawkClient](../getting-started/client-app.md)
-loads onto a board that already has the bootloader, with no ST-Link. The Gateway's PanelBridge chip
+loads onto a board that already has the bootloader, with no ST-Link. The Gateway's cockpit side
 takes a different build of the bootloader from the nodes; `bootstrap` and the release files already
-pick the right one for each board.
+pick the right one for each board. [First Setup & Updates](first-setup.md) walks through which file
+goes on which board, in order.
 
 The release has no PanelGroup file. Every panel group has its own NODE_ID and its own controls, so
 you build its firmware from source and flash it with `bootstrap` as above.
