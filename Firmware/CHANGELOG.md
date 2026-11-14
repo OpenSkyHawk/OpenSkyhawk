@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/OpenSkyHawk/OpenSkyhawk/compare/firmware-v0.3.0...firmware-v0.4.0) (2026-11-11)
+
+
+### Features
+
+* **firmware:** add a PanelGroup sample sketch ([#413](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/413)) ([e437379](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/e4373792162eada1d627a2288baf647a265ad4ba))
+
+
+### Bug Fixes
+
+* **firmware:** use the assigned Raspberry Pi USB PID 0x1166 ([#411](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/411)) ([5e1d30c](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/5e1d30c8219c6e4cf3d141e01dcc631efb6132f8))
+
 ## [0.3.0](https://github.com/OpenSkyHawk/OpenSkyhawk/compare/firmware-v0.2.0...firmware-v0.3.0) (2026-10-27)
 
 
